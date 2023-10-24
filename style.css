@@ -57,7 +57,9 @@ a {
 
 h1 {
   font-size: 2em;
-  margin: 0.67em 0; }
+  margin: 0.67em 0;
+  color: darkblue;
+}
 
 h2 {
   font-size: 1.5em;
@@ -84,7 +86,10 @@ abbr[title] {
 
 b,
 strong {
-  font-weight: bold; }
+  font-weight: bold;
+  color: darkblue;
+  font-size: 16px;
+}
 
 dfn {
   font-style: italic; }
@@ -211,7 +216,7 @@ table {
  * Global Styles
  */
 body {
-  background-color: #212121;
+  background-color: white;
   color: #d3d3d3;
   font-family: "Roboto Condensed", "Open Sans", sans-serif;
   font-size: 14px;
@@ -232,14 +237,24 @@ ul, ol {
 
 a {
   text-decoration: none;
-  color: #f4c545; }
+  color: darkblue;}
+a-project {
+  text-decoration: none;
+  color: black
+
+;}
 
 address {
   font-style: normal; }
 
 p {
   margin-top: 0; }
+p-address {
+  margin-top: 0;
+  color: black;
+  font-size: 15px;
 
+}
 form input, form textarea, form select {
   outline: none;
   border: 2px solid #383838;
@@ -1259,7 +1274,9 @@ form input[type="submit"], form button, form input[type="reset"] {
  * Header Styles
  */
 .site-header {
-  *zoom: 1; }
+  *zoom: 1;
+  background: white;
+}
   .site-header:after {
     content: " ";
     clear: both;
@@ -1288,9 +1305,8 @@ form input[type="submit"], form button, form input[type="reset"] {
     #branding .site-title a {
       color: white; }
   #branding .site-description {
-    font-size: 11px;
-    font-size: 0.7857142857em;
-    color: #585858; }
+    font-size: 19px;
+    color: orange; }
 
 .main-navigation {
   float: right; }
@@ -1324,7 +1340,7 @@ form input[type="submit"], form button, form input[type="reset"] {
       padding: 40px 15px;
       position: relative;
       display: block;
-      color: #d3d3d3;
+      color: black;
       text-transform: uppercase; }
       .main-navigation .menu-item a:after {
         content: "/";
@@ -1334,8 +1350,8 @@ form input[type="submit"], form button, form input[type="reset"] {
     .main-navigation .menu-item:last-child a:after {
       display: none; }
     .main-navigation .menu-item.current-menu-item a, .main-navigation .menu-item:hover a {
-      color: #f4c545;
-      border-bottom: 2px solid #f4c545; }
+      color: darkblue;
+      border-bottom: 2px solid orange; }
 
 .mobile-navigation {
   clear: both;
@@ -1423,7 +1439,8 @@ form input[type="submit"], form button, form input[type="reset"] {
 .fullwidth-block {
   padding: 50px 0; }
   .fullwidth-block.image-block {
-    min-height: 300px; }
+    min-height: 500px;
+  padding-right: 40px; }
 
 .section-title {
   font-size: 36px;
@@ -1735,7 +1752,9 @@ form input[type="submit"], form button, form input[type="reset"] {
  * Footer Styles
  */
 .site-footer {
-  margin-top: 50px; }
+  margin-top: 50px;
+ background: orange;
+}
   .site-footer .container {
     border-top: 1px solid #383838;
     padding: 50px 15px 30px;
@@ -1755,7 +1774,9 @@ form input[type="submit"], form button, form input[type="reset"] {
     font-size: 1.2857142857em; }
   .site-footer .colophon {
     padding-top: 30px;
-    clear: both; }
+    clear: both;
+    color: black;
+  }
   .site-footer .social-links a {
     width: 40px;
     height: 40px;
