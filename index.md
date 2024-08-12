@@ -4,19 +4,16 @@ layout: homepage
 
 ## About Me
 
-I am a Ph.D. student at ...
+My name is Mevlüt Çelik. I am an undergraduate student at METU and an Undergraduate Researcher at ENRG.
+
 
 ## Research Interests
 
-- **Computer Vision:** image recognition, image generation, video captioning
+- **Particle and Neutrino Physcics:** neutrinos, accelerators, standart model
+- **Data Analysis:** ROOT framework, pandas etc.
 - **Machine Learning:** meta-learning, incremental learning, transfer learning
+- **AI in Education:** AI and LLM application for educational purposes
 
-## News
-
-- **[Feb. 2020]** Our paper about incremental learning is accepted to CVPR 2020.
-- **[Feb. 2020]** We will host the ACM Multimedia Asia 2020 conference in Singapore!
-- **[Sept. 2019]** Our paper about few-shot learning is accepted to NeurIPS 2019.
-- **[Mar. 2019]** Our paper about few-shot learning is accepted to CVPR 2019.
 
 {% include_relative _includes/publications.md %}
 
