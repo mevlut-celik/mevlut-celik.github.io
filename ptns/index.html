@@ -9,79 +9,155 @@
     <style>
         body {
             padding-top: 50px;
+            padding-bottom: 20px
         }
-        .logo {
-            width: 190px;
-            height: auto;
-            z-index: 10;
-          }
-        img {
+         img {
     vertical-align: middle;
     border-style: none;
     width: 190px;
     height: auto;
     z-index: 10;
-}
+    }
+        .modal-content {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-<img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
+<img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="img">
     <div class="container">
-        <h1 class="text-center">Gönüllü Katılımcı Formu</h1>
+        <h1 class="text-center mb-4">Gönüllü Katılımcı Formu</h1>
         <form id="volunteerForm" class="mt-4">
             <div class="form-group">
-                <label for="name">Ad:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="surname">Soyad:</label>
-                <input type="text" class="form-control" id="surname" name="surname" required>
-            </div>
-            <div class="form-group">
-                <label for="department">Mezun Olunan Bölüm:</label>
-                <input type="text" class="form-control" id="department" name="department" required>
-            </div>
-            <div class="form-group">
-                <label for="age">Yaş:</label>
+                <label for="age">Yaşınız:</label>
                 <input type="number" class="form-control" id="age" name="age" required>
             </div>
             <div class="form-group">
-                <label for="gender">Cinsiyet:</label>
+                <label for="gender">Cinsiyetiniz:</label>
                 <select class="form-control" id="gender" name="gender" required>
                     <option value="Erkek">Erkek</option>
                     <option value="Kadın">Kadın</option>
                     <option value="Diğer">Diğer</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Gönder</button>
+            <div class="form-group">
+                <label for="educationLevel">En Son Tamamlanan Eğitim Düzeyi:</label>
+                <select class="form-control" id="educationLevel" name="educationLevel" required>
+                    <option value="Lisans">Lisans</option>
+                    <option value="Yüksek Lisans">Yüksek Lisans</option>
+                    <option value="Doktora">Doktora</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="graduateEducation">Devam Ettiğiniz Lisansüstü Bir Eğitim Var Mı?</label>
+                <select class="form-control" id="graduateEducation" name="graduateEducation" required>
+                    <option value="Yok">Yok</option>
+                    <option value="Yüksek Lisans">Yüksek Lisans</option>
+                    <option value="Doktora">Doktora</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="department">Mezun Olunan Bölüm/Fakülte:</label>
+                <input type="text" class="form-control" id="department" name="department" required>
+            </div>
+            <div class="form-group">
+                <label for="experience">Mesleki Deneyim Süresi:</label>
+                <input type="number" class="form-control" id="experience" name="experience" required>
+            </div>
+            <div class="form-group">
+                <label for="schoolType">Çalışılan Okul Türü:</label>
+                <input type="text" class="form-control" id="schoolType" name="schoolType" required>
+            </div>
+            <div class="form-group">
+                <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
+                <input type="text" class="form-control" id="classLevels" name="classLevels" required>
+            </div>
+            <div class="form-group">
+                <label for="trainingExperience">Daha Önce Hizmet İçi Eğitim aldınız mı?(Evet ise eğitim konularını belirtin):</label>
+                <textarea class="form-control" id="trainingExperience" name="trainingExperience" rows="3" required></textarea>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="submitButton">Formu Gönder</button>
         </form>
     </div>
 
-    <!-- Bootstrap 4 ve jQuery JS -->
+    <!-- Bootstrap 4 JS ve jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
-        document.getElementById('volunteerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
+        document.getElementById('submitButton').addEventListener('click', function () {
             // Form verilerini al
-            const name = document.getElementById('name').value;
-            const surname = document.getElementById('surname').value;
-            const department = document.getElementById('department').value;
-            const age = document.getElementById('age').value;
-            const gender = document.getElementById('gender').value;
+            const formData = {
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                educationLevel: document.getElementById('educationLevel').value,
+                graduateEducation: document.getElementById('graduateEducation').value,
+                department: document.getElementById('department').value,
+                experience: document.getElementById('experience').value,
+                schoolType: document.getElementById('schoolType').value,
+                classLevels: document.getElementById('classLevels').value,
+                trainingExperience: document.getElementById('trainingExperience').value,
+            };
 
-            // Verileri sessionStorage'a kaydedin
-            sessionStorage.setItem('name', name);
-            sessionStorage.setItem('surname', surname);
-            sessionStorage.setItem('department', department);
-            sessionStorage.setItem('age', age);
-            sessionStorage.setItem('gender', gender);
+            // Pop-up mesajı
+            const modalMessage = `
+                <h4>Katılım Onayı</h4>
+                <p><strong>Yaşınız:</strong> ${formData.age}</p>
+                <p><strong>Cinsiyetiniz:</strong> ${formData.gender}</p>
+                <p><strong>Eğitim Düzeyiniz:</strong> ${formData.educationLevel}</p>
+                <p><strong>Devam Ettiğiniz Eğitim:</strong> ${formData.graduateEducation}</p>
+                <p><strong>Mezun Olunan Bölüm/Fakülte:</strong> ${formData.department}</p>
+                <p><strong>Mesleki Deneyim Süresi:</strong> ${formData.experience}</p>
+                <p><strong>Çalıştığınız Okul Türü:</strong> ${formData.schoolType}</p>
+                <p><strong>Verdiğiniz Sınıf Düzeyleri:</strong> ${formData.classLevels}</p>
+                <p><strong>Hizmet İçi Eğitim Durumu:</strong> ${formData.trainingExperience}</p>
+                <p>Bu bilgilerin doğru olduğunu onaylıyor musunuz?</p>
+                <label>
+                    <input type="checkbox" id="consentCheckbox"> Yukarıdaki bilgileri okudum ve bu çalışmaya gönüllü olarak katılıyorum.
+                </label>
+                <br>
+                <button id="confirmButton" class="btn btn-success mt-3" disabled>Onayla</button>
+                <button id="cancelButton" class="btn btn-danger mt-3">Vazgeç</button>
+            `;
 
-            // Kullanıcıyı yeni sayfaya yönlendirin
-            window.location.href = 'survey.html';
+            // Modal Oluştur
+            const modal = document.createElement('div');
+            modal.id = 'modal';
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center;
+                z-index: 1000;
+            `;
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background-color: #fff; padding: 20px; max-width: 600px; text-align: left;
+                border-radius: 8px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); font-size: 16px;
+            `;
+            modalContent.innerHTML = modalMessage;
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            // Onay kutusu değişirse butonu etkinleştir
+            document.getElementById('consentCheckbox').addEventListener('change', function () {
+                document.getElementById('confirmButton').disabled = !this.checked;
+            });
+
+           document.getElementById('confirmButton').addEventListener('click', function () {
+                // Formu survey.html sayfasına yönlendirerek gönder
+                const queryString = new URLSearchParams(formData).toString();
+                window.location.href = `survey.html?${queryString}`;  // survey.html sayfasına yönlendirme
+
+                // Burada formu gönderebilirsiniz
+                // document.getElementById('volunteerForm').submit(); // formu gönder
+                document.body.removeChild(modal); // Modalı kaldır
+            });
+
+            // Vazgeçme butonuna tıklandığında modalı kapat
+            document.getElementById('cancelButton').addEventListener('click', function () {
+                document.body.removeChild(modal); // Modalı kaldır
+            });
         });
     </script>
 </body>
