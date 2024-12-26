@@ -37,8 +37,15 @@
                 <select class="form-control" id="gender" name="gender" required>
                     <option value="Erkek">Erkek</option>
                     <option value="Kadın">Kadın</option>
-                    <option value="Diğer">Diğer</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="department">Bulunduğunuz İl:</label>
+                <input type="text" class="form-control" id="province" name="province" required>
+            </div>
+             <div class="form-group">
+                <label for="department">Bulunduğunuz İlçe:</label>
+                <input type="text" class="form-control" id="city" name="city" required>
             </div>
             <div class="form-group">
                 <label for="educationLevel">En Son Tamamlanan Eğitim Düzeyi:</label>
@@ -91,6 +98,8 @@
             // Form verilerini al
             const formData = {
                 age: document.getElementById('age').value,
+                province: document.getElementById('province').value,
+                city: document.getElementById('city').value,
                 gender: document.getElementById('gender').value,
                 educationLevel: document.getElementById('educationLevel').value,
                 graduateEducation: document.getElementById('graduateEducation').value,
@@ -105,6 +114,8 @@
             const modalMessage = `
                 <h4>Katılım Onayı</h4>
                 <p><strong>Yaşınız:</strong> ${formData.age}</p>
+                <p><strong>İl:</strong> ${formData.province}</p>
+                <p><strong>İlçe:</strong> ${formData.city}</p>
                 <p><strong>Cinsiyetiniz:</strong> ${formData.gender}</p>
                 <p><strong>Eğitim Düzeyiniz:</strong> ${formData.educationLevel}</p>
                 <p><strong>Devam Ettiğiniz Eğitim:</strong> ${formData.graduateEducation}</p>
