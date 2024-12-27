@@ -277,6 +277,46 @@
             detailsForm.style.display = 'block';
 	    document.getElementById('submitButton').style.display = 'none';
         }
+
     </script>
+<script>
+    // URL'den parametreleri al
+    const urlParams = new URLSearchParams(window.location.search);
+    const hiddenInputs = [];
+    urlParams.forEach((value, key) => {
+        hiddenInputs.push(`<input type="hidden" name="${key}" value="${value}">`);
+    });
+
+    // Forma ekle
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('detailsForm');
+        form.insertAdjacentHTML('afterbegin', hiddenInputs.join(''));
+    });
+</script>
+<script>
+document.getElementById('detailsForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const selectedSentences = document.querySelectorAll('.selected');
+    if (selectedSentences.length === 0) {
+        alert('Lütfen en az bir cümle seçiniz.');
+        return;
+    }
+
+    const sentences = Array.from(selectedSentences).map(sentence => sentence.textContent.trim());
+    const hiddenInput = document.getElementById('selectedSentencesInput');
+    hiddenInput.value = JSON.stringify(sentences);
+
+    this.submit();
+});
+
+function selectSentence(element) {
+    if (element.classList.contains('selected')) {
+        element.classList.remove('selected');
+    } else {
+        element.classList.add('selected');
+    }
+}
+</script>
 </body>
 </html>
