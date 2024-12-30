@@ -193,17 +193,15 @@
 <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Sıcaklığı yüksekse iç enerjisi de yüksek olur ya o yüzden ısı transferi iç enerjisi yüksek olan maddeden iç enerjisi düşük olana doğru gerçekleşir demeliyiz.</p>
 
         </div>
-
         <!-- Submit Button -->
-        <button id="submitButton" class="btn btn-primary" onclick="submitSelection()">Seçimi Gönder</button>
-        <button id="submitButton" class="btn btn-primary" onclick="window.location.href = 'index.html';">Önceki Sayfaya Dön</button>
-      <!-- Details Form -->
-      <form id="detailsForm" style="display: none;" method="post" action="process.php">
-            <div id="selectedSentences" class="mt-4"></div>
-            <button type="submit" class="btn btn-success mt-3">Gönder</button>
-        </form>
-    </div>
+        <!-- Details Form -->
 
+    <form id="detailsForm" style="display: none;" method="post" action="process.php">
+        <div id="selectedSentences"></div>
+        <button class="btn btn-primary" onclick="submitSelection()">Seçimi Gönder</button>
+    </form>
+
+    <script>
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -300,50 +298,9 @@
                 selectedSentencesDiv.appendChild(div);
             });
 
-            detailsForm.style.display = 'block';
+      detailsForm.style.display = 'block';
 	    document.getElementById('submitButton').style.display = 'none';
         }
-
     </script>
-<script>
-  script>
-    // URL'deki parametreleri al ve gizli alanlara ekle
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const hiddenFields = document.getElementById('hiddenFields');
-        urlParams.forEach((value, key) => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = value;
-            hiddenFields.appendChild(input);
-        });
-    });
-</script>
-<script>
-document.getElementById('detailsForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const selectedSentences = document.querySelectorAll('.selected');
-    if (selectedSentences.length === 0) {
-        alert('Lütfen en az bir cümle seçiniz.');
-        return;
-    }
-
-    const sentences = Array.from(selectedSentences).map(sentence => sentence.textContent.trim());
-    const hiddenInput = document.getElementById('selectedSentencesInput');
-    hiddenInput.value = JSON.stringify(sentences);
-
-    this.submit();
-});
-
-function selectSentence(element) {
-    if (element.classList.contains('selected')) {
-        element.classList.remove('selected');
-    } else {
-        element.classList.add('selected');
-    }
-}
-</script>
 </body>
 </html>
