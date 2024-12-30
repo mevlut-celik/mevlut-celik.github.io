@@ -1,5 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+ <script>
+        // URL parametrelerini gizli input alanlarına ekler
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hiddenFields = document.getElementById('hiddenFields');
+            urlParams.forEach((value, key) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                hiddenFields.appendChild(input);
+            });
+        });
+
+        // Cümleleri seçmek için kullanılır
+        function selectSentence(element) {
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+            } else {
+                element.classList.add('selected');
+            }
+        }
+    </script>
+</head>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,7 +132,7 @@
 <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
 <form id="detailsForm" method="POST" action="process.php">
     <!-- Gizli Alanlar Burada Eklenecek -->
-    <div id="hiddenFields"></div>
+ <div id="hiddenFields"></div>
 <div class="container">
     <h1 class="text-center mb-4">SINIF İÇİ DİYALOG (SENARYO)</h1>
     <h2 class=""align="justify">Bir eğitim öğretim sürecinde aşağıdaki konuşmalar fizik dersi esnasında öğretmen ve öğrenciler arasında geçmiştir. Bu diyalogda öğretmen tartışmaların akışını sağlayan kişi rolündedir. Yönlendirme yapmadan öğrencilerin kavramsal bilgi ve akıl yürütmelerini anlamaya çalışmaktadır.</h2>
