@@ -23,7 +23,6 @@
             }
         }
     </script>
-</head>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -191,70 +190,16 @@
 <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Bence burada sıcaklık yerine iç enerji desek daha doğru olur.</p>
 <p class="statement">Öğretmen: Ne demek istediğini biraz daha açıklar mısın?</p>
 <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Sıcaklığı yüksekse iç enerjisi de yüksek olur ya o yüzden ısı transferi iç enerjisi yüksek olan maddeden iç enerjisi düşük olana doğru gerçekleşir demeliyiz.</p>
-
-        </div>
-        <!-- Submit Button -->
-        <!-- Details Form -->
-
+</div>
     <form id="detailsForm" style="display: none;" method="post" action="process.php">
         <div id="selectedSentences"></div>
-        <button class="btn btn-primary" onclick="submitSelection()">Seçimi Gönder</button>
+        <button type="submit" class="btn btn-primary">Gönder</button>
     </form>
 
     <script>
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-        window.scrollTo(0, 0);
-        const maxSelection = 50;
-        let selectedCount = 0;
-        document.addEventListener('DOMContentLoaded', function () {
-            const modalMessage = `
-                Önceki sayfada yer alan diyalogtan dikkatinizi çeken ifadelerin yer aldığı satırları seçtiniz. Yapmış olduğunuz her bir seçim ile ilgili olarak ilgili öğrenci ifadesi yeniden gösterilmiş ve altına 2 metin kutusu yerleştirilmiştir. 'Açıklama' kutusuna seçiminizle ilgili öğrencilerin tartışılan kavramla ilgili kavramsal bilgi ve/veya akıl yürütmeleri hakkında neler ortaya koyduğunu düşündüğünüzü belirtmenizi, bunun sizin için ne ifade ettiğini yorumlamanızı istiyoruz. 'Yapılacaklar' kutusuna ise, bu sınıftaki öğretmen siz olsaydınız (yukarıdaki yorumlarınız ışığında) ne/neler yapmaya karar verirdiniz ve ders işleyişinizle ilgili herhangi bir değişiklik düşünür müydünüz? (Aynı durum için birbirinden farklı kararlar alabileceğinizi/değişiklikler yapabileceğinizi düşünüyorsanız lütfen hepsini detaylı bir şekilde yazın.)
-            `;
-
-            // Pop-up Modal Oluştur
-            function showModal(event) {
-                event.preventDefault(); // Formun otomatik gönderilmesini engelle
-
-                // Modal Alanı
-                const modal = document.createElement('div');
-                modal.id = 'modal';
-                modal.style.cssText = `
-                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                    background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center;
-                    z-index: 1000;
-                `;
-
-                // Modal İçeriği
-                const modalContent = document.createElement('div');
-                modalContent.style.cssText = `
-                    background-color: #fff; padding: 20px; max-width: 600px; text-align: justify;
-                    border-radius: 8px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); font-size: 16px;
-                `;
-
-                modalContent.innerHTML = `
-                    <p>${modalMessage}</p>
-                    <button id="modalClose" style="
-                        margin-top: 20px; padding: 10px 15px; background-color: #007BFF; color: white;
-                        border: none; border-radius: 5px; cursor: pointer;">Okudum, Anladım.</button>
-                `;
-
-                modal.appendChild(modalContent);
-                document.body.appendChild(modal);
-
-                // Pop-up Kapat ve Formu Gönder
-                document.getElementById('modalClose').addEventListener('click', function () {
-                    document.body.removeChild(modal); // Pop-up'ı kaldır
-                    document.getElementById('submitForm').submit(); // Formu gönder
-                });
-            }
-
-            // Submit Butonuna Olay Ekle
-            const submitButton = document.getElementById('submitButton');
-            submitButton.addEventListener('click', showModal);
-        });
-
         function selectSentence(element) {
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
@@ -264,7 +209,6 @@
                 selectedCount++;
             }
         }
-
         function submitSelection() {
             const selectedSentences = document.querySelectorAll('.selected');
             if (selectedSentences.length === 0) {
@@ -298,7 +242,7 @@
                 selectedSentencesDiv.appendChild(div);
             });
 
-      detailsForm.style.display = 'block';
+            detailsForm.style.display = 'block';
 	    document.getElementById('submitButton').style.display = 'none';
         }
     </script>
