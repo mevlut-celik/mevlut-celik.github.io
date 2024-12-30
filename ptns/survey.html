@@ -106,7 +106,10 @@
 </head>
 <body>
 <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
-    <div class="container">
+<form id="detailsForm" method="POST" action="process.php">
+    <!-- Gizli Alanlar Burada Eklenecek -->
+    <div id="hiddenFields"></div>
+<div class="container">
     <h1 class="text-center mb-4">SINIF İÇİ DİYALOG (SENARYO)</h1>
     <h2 class=""align="justify">Bir eğitim öğretim sürecinde aşağıdaki konuşmalar fizik dersi esnasında öğretmen ve öğrenciler arasında geçmiştir. Bu diyalogda öğretmen tartışmaların akışını sağlayan kişi rolündedir. Yönlendirme yapmadan öğrencilerin kavramsal bilgi ve akıl yürütmelerini anlamaya çalışmaktadır.</h2>
     <h3 class=""align="justify">Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir? Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız. Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.</h3>
@@ -279,17 +282,18 @@
 
     </script>
 <script>
-    // URL'den parametreleri al
-    const urlParams = new URLSearchParams(window.location.search);
-    const hiddenInputs = [];
-    urlParams.forEach((value, key) => {
-        hiddenInputs.push(`<input type="hidden" name="${key}" value="${value}">`);
-    });
-
-    // Forma ekle
+  script>
+    // URL'deki parametreleri al ve gizli alanlara ekle
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('detailsForm');
-        form.insertAdjacentHTML('afterbegin', hiddenInputs.join(''));
+        const urlParams = new URLSearchParams(window.location.search);
+        const hiddenFields = document.getElementById('hiddenFields');
+        urlParams.forEach((value, key) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = value;
+            hiddenFields.appendChild(input);
+        });
     });
 </script>
 <script>

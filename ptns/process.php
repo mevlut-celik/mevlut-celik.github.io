@@ -1,56 +1,55 @@
 <?php
-// Veritabanı bağlantısı
-$host = "localhost";
-$dbname = "form_data";
-$username = "root";
-$password = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $file_path = "data_collection.txt"; // Verilerin kaydedileceği dosya
+    $data = "";
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Zaman damgası ve IP adresi
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    $timestamp = date('Y-m-d H:i:s');
+    $data .= "Timestamp: $timestamp\n";
+    $data .= "IP Address: $ip_address\n";
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // İlk form verileri
-        $age = $_POST['age'];
-        $province = $_POST['province'];
-        $city = $_POST['city'];
-        $gender = $_POST['gender'];
-        $educationLevel = $_POST['educationLevel'];
-        $graduateEducation = $_POST['graduateEducation'];
-        $department = $_POST['department'];
-        $experience = $_POST['experience'];
-        $schoolType = $_POST['schoolType'];
-        $classLevels = $_POST['classLevels'];
-        $trainingExperience = $_POST['trainingExperience'];
+    // `index.html` verilerini alma
+    $data .= "Yaş: " . ($_POST['age'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Cinsiyet: " . ($_POST['gender'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Şehir: " . ($_POST['city'] ?? 'Bilinmiyor') . "\n";
+    $data .= "İlçe: " . ($_POST['district'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Eğitim Düzeyi: " . ($_POST['educationLevel'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Lisansüstü Eğitim: " . ($_POST['graduateEducation'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Mezun Olunan Fakülte: " . ($_POST['department'] ?? 'Bilinmiyor') . "\n";
+    $data .= "Mesleki Deneyim: " . ($_POST['experience'] ?? 'Bilinmiyor') . " yıl\n";
+    $data .= "Okul Türü: " . ($_POST['schoolType'] ?? 'Bilinmiyor') . "\n";
 
-        // Survey formundaki seçilen cümleler
-        $selectedSentences = isset($_POST['selectedSentences']) ? json_decode($_POST['selectedSentences'], true) : [];
-
-        // Veritabanına kaydet
-        $stmt = $conn->prepare("
-            INSERT INTO form_responses
-            (age, province, city, gender, education_level, graduate_education, department, experience, school_type, class_levels, training_experience, selected_sentences)
-            VALUES (:age, :province, :city, :gender, :educationLevel, :graduateEducation, :department, :experience, :schoolType, :classLevels, :trainingExperience, :selectedSentences)
-        ");
-
-        $stmt->bindParam(':age', $age);
-        $stmt->bindParam(':province', $province);
-        $stmt->bindParam(':city', $city);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':educationLevel', $educationLevel);
-        $stmt->bindParam(':graduateEducation', $graduateEducation);
-        $stmt->bindParam(':department', $department);
-        $stmt->bindParam(':experience', $experience);
-        $stmt->bindParam(':schoolType', $schoolType);
-        $stmt->bindParam(':classLevels', $classLevels);
-        $stmt->bindParam(':trainingExperience', $trainingExperience);
-        $stmt->bindParam(':selectedSentences', json_encode($selectedSentences)); // JSON olarak kaydet
-
-        $stmt->execute();
-
-        echo "Veriler başarıyla kaydedildi!";
+    // Sınıf düzeylerini birleştir
+    if (isset($_POST['classLevels']) && is_array($_POST['classLevels'])) {
+        $classLevels = implode(", ", $_POST['classLevels']);
+        $data .= "Ders Verilen Sınıf Düzeyleri: $classLevels\n";
+    } else {
+        $data .= "Ders Verilen Sınıf Düzeyleri: Bilinmiyor\n";
     }
-} catch (PDOException $e) {
-    echo "Veritabanı Hatası: " . $e->getMessage();
+
+    $data .= "Hizmet İçi Eğitim Deneyimi: " . ($_POST['trainingExperience'] ?? 'Bilinmiyor') . "\n";
+
+    // `survey.html` verilerini alma
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'sentence') !== false) {
+            $index = str_replace('sentence', '', $key);
+            $explanationKey = 'explanation' . $index;
+            $actionsKey = 'actions' . $index;
+
+            $data .= "\nSeçilen Cümle: " . $value . "\n";
+            $data .= "Açıklama: " . ($_POST[$explanationKey] ?? 'Yok') . "\n";
+            $data .= "Yapılacaklar: " . ($_POST[$actionsKey] ?? 'Yok') . "\n";
+        }
+    }
+
+    $data .= "------------------------------------\n";
+
+    // Dosyaya yazma işlemi
+    if (file_put_contents($file_path, $data, FILE_APPEND)) {
+        echo "Cevaplarınız başarıyla kaydedildi. Zaman ayırdığınız için teşekkür ederiz.";
+    } else {
+        echo "Bir hata oluştu. Lütfen tekrar deneyin.";
+    }
 }
 ?>
