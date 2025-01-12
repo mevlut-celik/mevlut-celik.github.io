@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Kayıtlı Form Verileri</h1>
+        <div id="submissions"></div>
+        <button class="btn btn-primary mt-3" onclick="refreshData()">Verileri Yenile</button>
+        <button class="btn btn-success mt-3 ml-2" onclick="exportToExcel()">Excel'e Aktar</button>
+    </div>
+
+    <script>
+        // Verileri sunucudan al ve göster
+        async function loadSubmissions() {
+            try {
+                const response = await fetch('https://sizin-backend-url.com/submissions');
+                const data = await response.json();
+                
+                const submissionsDiv = document.getElementById('submissions');
+                submissionsDiv.innerHTML = data.map((item, index) => `
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Kayıt #${index + 1} - ${new Date(item.timestamp).toLocaleString()}
+                        </div>
+                        <div class="card-body">
+                            <h5>Kişisel Bilgiler</h5>
+                            <p><strong>Yaş:</strong> ${item.age}</p>
+                            <p><strong>Şehir:</strong> ${item.city}</p>
+                            <p><strong>İlçe:</strong> ${item.district}</p>
+                            <p><strong>Cinsiyet:</strong> ${item.gender}</p>
+                            <p><strong>Eğitim:</strong> ${item.educationLevel}</p>
+                            <p><strong>Lisansüstü:</strong> ${item.graduateEducation}</p>
+                            <p><strong>Bölüm:</strong> ${item.department}</p>
+                            <p><strong>Deneyim:</strong> ${item.experience} yıl</p>
+                            <p><strong>Okul Türü:</strong> ${item.schoolType}</p>
+                            <p><strong>Sınıf Düzeyleri:</strong> ${item.classLevels}</p>
+                            <p><strong>Hizmet İçi Eğitim:</strong> ${item.trainingExperience}</p>
+
+                            <h5 class="mt-4">Seçimler ve Yorumlar</h5>
+                            ${item.selections.map((selection, i) => `
+                                <div class="mb-3 p-3 bg-light">
+                                    <strong>Seçim ${i + 1}:</strong>
+                                    <p class="mt-2 font-italic">${selection.sentence}</p>
+                                    <p><strong>Açıklama:</strong> ${selection.explanation}</p>
+                                    <p><strong>Yapılacaklar:</strong> ${selection.actions}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                alert('Veriler yüklenirken bir hata oluştu');
+            }
+        }
+
+        // Verileri Excel'e aktar
+        function exportToExcel() {
+            fetch('http://localhost:3001/submissions')
+                .then(response => response.json())
+                .then(data => {
+                    // Excel için veriyi düzenle
+                    const excelData = data.map(item => ({
+                        'Tarih': new Date(item.timestamp).toLocaleString(),
+                        'Yaş': item.age,
+                        'Şehir': item.city,
+                        'İlçe': item.district,
+                        'Cinsiyet': item.gender,
+                        'Eğitim': item.educationLevel,
+                        'Lisansüstü': item.graduateEducation,
+                        'Bölüm': item.department,
+                        'Deneyim': item.experience,
+                        'Okul Türü': item.schoolType,
+                        'Sınıf Düzeyleri': item.classLevels,
+                        'Hizmet İçi Eğitim': item.trainingExperience,
+                        'Seçimler': item.selections.map(s => s.sentence).join('\n'),
+                        'Açıklamalar': item.selections.map(s => s.explanation).join('\n'),
+                        'Yapılacaklar': item.selections.map(s => s.actions).join('\n')
+                    }));
+
+                    // CSV formatına dönüştür
+                    const headers = Object.keys(excelData[0]);
+                    const csv = [
+                        headers.join(','),
+                        ...excelData.map(row => headers.map(header => 
+                            `"${row[header]?.toString().replace(/"/g, '""')}"`
+                        ).join(','))
+                    ].join('\n');
+
+                    // Dosyayı indir
+                    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'form-verileri.csv';
+                    link.click();
+                })
+                .catch(error => {
+                    console.error('Excel dışa aktarma hatası:', error);
+                    alert('Excel dosyası oluşturulurken bir hata oluştu');
+                });
+        }
+
+        // Verileri yenile
+        function refreshData() {
+            loadSubmissions();
+        }
+
+        // Sayfa yüklendiğinde verileri göster
+        window.onload = loadSubmissions;
+    </script>
+</body>
+</html> 
