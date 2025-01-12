@@ -240,7 +240,7 @@
             }
 
             // Verileri sunucuya gönder
-            const API_URL = 'https://ptns-backend.vercel.app';
+            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
 
             fetch(`${API_URL}/submit`, {
                 method: 'POST',
@@ -251,31 +251,22 @@
                 body: JSON.stringify(formObject)
             })
             .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Sunucu hatası');
-                    });
-                }
+                console.log('Response status:', response.status);
                 return response.json();
             })
             .then(data => {
+                console.log('Response data:', data);
                 if (data.success) {
-                    // URL parametrelerini oluştur ve survey.html'e yönlendir
                     const queryString = new URLSearchParams(formObject).toString();
-                    console.log('Query String:', queryString); // Debug için
                     window.scrollTo(0, 0);
-                    window.location.href = `survey.html?${queryString}`;
+                    window.location.href = `ptns/survey.html?${queryString}`;
                 } else {
                     throw new Error(data.error || 'Bilinmeyen bir hata oluştu');
                 }
             })
             .catch(error => {
-                console.error('Hata:', error);
-                if (error.message === 'Failed to fetch') {
-                    alert('Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.');
-                } else {
-                    alert('Bir hata oluştu: ' + error.message);
-                }
+                console.error('Fetch error:', error);
+                alert('Sunucu hatası: ' + error.message);
             });
         });
     </script>

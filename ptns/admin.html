@@ -18,7 +18,7 @@
         // Verileri sunucudan al ve göster
         async function loadSubmissions() {
             try {
-                const API_URL = 'https://mevlut-celik-github-io.vercel.app'; // Vercel'deki backend URL'niz
+                const API_URL = 'https://mevlut-celik-github-io.vercel.app';
                 const response = await fetch(`${API_URL}/submissions`);
                 const data = await response.json();
                 
@@ -62,7 +62,7 @@
 
         // Verileri Excel'e aktar
         function exportToExcel() {
-            const API_URL = 'https://mevlut-celik-github-io.vercel.app'; // Vercel'deki backend URL'niz
+            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
             fetch(`${API_URL}/submissions`)
                 .then(response => response.json())
                 .then(data => {

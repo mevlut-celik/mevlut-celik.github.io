@@ -105,7 +105,7 @@
         function redirectToThankYou() {
             window.scrollTo(0, 0);
             setTimeout(() => {
-                window.location.href = 'tesekkur.html';
+                window.location.href = 'ptns/tesekkur.html';
             }, 100);
         }
     </script>
@@ -283,7 +283,7 @@
             console.log('Gönderilecek veri:', allData); // Debug için
 
             // MongoDB'ye gönder
-            const API_URL = 'https://mevlut-celik-github-io.vercel.app'; // Vercel'deki backend URL'niz
+            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
 
             fetch(`${API_URL}/submit`, {
                 method: 'POST',
