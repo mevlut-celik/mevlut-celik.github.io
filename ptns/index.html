@@ -240,10 +240,13 @@
             }
 
             // Verileri sunucuya gönder
-            fetch('https://mevlut-celik-github-io.vercel.app/submit', {
+            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
+
+            fetch(`${API_URL}/submit`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(formObject)
             })
@@ -251,7 +254,8 @@
             .then(data => {
                 if (data.success) {
                     const queryString = new URLSearchParams(formObject).toString();
-                    window.location.href = `survey.html?${queryString}`;
+                    window.scrollTo(0, 0);
+                    window.location.href = `ptns/survey.html?${queryString}`;
                 }
             })
             .catch(error => {

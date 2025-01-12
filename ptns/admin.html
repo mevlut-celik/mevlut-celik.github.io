@@ -18,7 +18,8 @@
         // Verileri sunucudan al ve göster
         async function loadSubmissions() {
             try {
-                const response = await fetch('https://mevlut-celik-github-io.vercel.app/submissions');
+                const API_URL = 'https://mevlut-celik-github-io.vercel.app';
+                const response = await fetch(`${API_URL}/submissions`);
                 const data = await response.json();
                 
                 const submissionsDiv = document.getElementById('submissions');
