@@ -22,11 +22,10 @@
                 const response = await fetch(`${API_URL}/submissions`, {
                     method: 'GET',
                     headers: {
-                        'Accept': 'application/json',
-                        'Origin': 'https://mevlut-celik.github.io'
+                        'Accept': 'application/json'
                     },
                     mode: 'cors',
-                    credentials: 'include'
+                    credentials: 'omit'
                 });
                 const data = await response.json();
                 

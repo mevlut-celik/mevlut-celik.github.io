@@ -289,11 +289,10 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Origin': 'https://mevlut-celik.github.io'
+                    'Accept': 'application/json'
                 },
                 mode: 'cors',
-                credentials: 'include',
+                credentials: 'omit',
                 body: JSON.stringify(allData)
             })
             .then(response => {

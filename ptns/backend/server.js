@@ -12,10 +12,10 @@ const PORT = process.env.PORT || 3001;
 
 // CORS ayarları
 app.use(cors({
-    origin: '*',
+    origin: 'https://mevlut-celik.github.io',
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept', 'Origin'],
-    credentials: true
+    credentials: false
 }));
 
 // Pre-flight istekleri için

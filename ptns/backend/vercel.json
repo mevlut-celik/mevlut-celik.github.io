@@ -11,10 +11,10 @@
       "src": "/(.*)",
       "dest": "/server.js",
       "headers": {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://mevlut-celik.github.io",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept, Origin",
-        "Access-Control-Allow-Credentials": "true"
+        "Access-Control-Allow-Headers": "Content-Type, Accept, Origin",
+        "Access-Control-Max-Age": "86400"
       }
     }
   ]

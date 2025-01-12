@@ -246,33 +246,19 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Origin': 'https://mevlut-celik.github.io'
+                    'Accept': 'application/json'
                 },
                 mode: 'cors',
-                credentials: 'include',
+                credentials: 'omit',
                 body: JSON.stringify(formObject)
             })
             .then(response => {
-                console.log('Response:', response);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(response.statusText);
                 return response.json();
             })
-            .then(data => {
-                console.log('Response data:', data);
-                if (data.success) {
-                    const queryString = new URLSearchParams(formObject).toString();
-                    window.scrollTo(0, 0);
-                    window.location.href = `ptns/survey.html?${queryString}`;
-                } else {
-                    throw new Error(data.error || 'Bilinmeyen bir hata oluştu');
-                }
-            })
             .catch(error => {
-                console.error('Fetch error details:', error);
-                alert('Bağlantı hatası: ' + error.message);
+                console.error('Fetch error:', error);
+                alert('Sunucuya bağlanılamadı. Lütfen daha sonra tekrar deneyiniz.');
             });
         });
     </script>
