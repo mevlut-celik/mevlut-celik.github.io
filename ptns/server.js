@@ -8,7 +8,11 @@ const app = express();
 
 // CORS ve body-parser ayarları
 app.use(cors({
-    origin: ['https://mevlut-celik.github.io', 'http://localhost:3001'],
+    origin: [
+        'https://mevlut-celik.github.io',
+        'http://localhost:3001',
+        'https://mevlut-celik-github-io.vercel.app'
+    ],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Accept']
 }));

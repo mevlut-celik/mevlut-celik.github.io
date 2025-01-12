@@ -283,7 +283,9 @@
             console.log('Gönderilecek veri:', allData); // Debug için
 
             // MongoDB'ye gönder
-            fetch('https://sizin-backend-url.com/submit', {
+            const API_URL = 'https://mevlut-celik-github-io.vercel.app'; // Vercel'deki backend URL'niz
+
+            fetch(`${API_URL}/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -240,7 +240,7 @@
             }
 
             // Verileri sunucuya gönder
-            const API_URL = 'https://mevlut-celik-github-io.vercel.app/';
+            const API_URL = 'https://ptns-backend.vercel.app';
 
             fetch(`${API_URL}/submit`, {
                 method: 'POST',
@@ -271,9 +271,8 @@
             })
             .catch(error => {
                 console.error('Hata:', error);
-                // Hata mesajını daha detaylı gösterelim
                 if (error.message === 'Failed to fetch') {
-                    alert('Sunucuya bağlanılamadı. Lütfen sunucunun çalıştığından emin olun.');
+                    alert('Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.');
                 } else {
                     alert('Bir hata oluştu: ' + error.message);
                 }
