@@ -17,10 +17,5 @@
         "Access-Control-Allow-Credentials": "true"
       }
     }
-  ],
-  "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "CORS_ORIGIN": "@cors_origin",
-    "PORT": "@port"
-  }
+  ]
 }
