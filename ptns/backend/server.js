@@ -5,12 +5,17 @@ const cors = require('cors');
 
 const app = express();
 
-// CORS ayarlarını güncelle
+// Environment variables
+const MONGODB_URI = process.env.MONGODB_URI;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://mevlut-celik.github.io/ptns';
+const PORT = process.env.PORT || 3001;
+
+// CORS ayarları
 app.use(cors({
     origin: [
-        'https://mevlut-celik.github.io/ptns',
-        'https://mevlut-celik-github-io.vercel.app',
-        'http://localhost:3001'
+        CORS_ORIGIN,
+        'http://localhost:3001',
+        'https://mevlut-celik-github-io.vercel.app'
     ],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept']
@@ -19,8 +24,6 @@ app.use(cors({
 app.use(bodyParser.json());
 
 // MongoDB bağlantısı
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://mevlutttttt54:Qw2183481@cluster0.9bxtc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('MongoDB Atlas\'a başarıyla bağlandı'))
     .catch(err => console.error('MongoDB bağlantı hatası:', err));
@@ -80,7 +83,6 @@ app.get('/submissions', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
