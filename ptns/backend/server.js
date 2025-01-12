@@ -12,16 +12,18 @@ const PORT = process.env.PORT || 3001;
 
 // CORS ayarları
 app.use(cors({
-    origin: [
-        CORS_ORIGIN,
-        'http://localhost:3001',
-        'https://mevlut-celik-github-io.vercel.app'
-    ],
+    origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept']
+    allowedHeaders: ['Content-Type', 'Accept', 'Origin'],
+    credentials: true
 }));
 
-app.use(bodyParser.json());
+// Pre-flight istekleri için
+app.options('*', cors());
+
+// Body parser limiti artır
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // MongoDB bağlantısı
 mongoose.connect(MONGODB_URI)

@@ -19,7 +19,15 @@
         async function loadSubmissions() {
             try {
                 const API_URL = 'https://mevlut-celik-github-io.vercel.app';
-                const response = await fetch(`${API_URL}/submissions`);
+                const response = await fetch(`${API_URL}/submissions`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Origin': 'https://mevlut-celik.github.io'
+                    },
+                    mode: 'cors',
+                    credentials: 'include'
+                });
                 const data = await response.json();
                 
                 const submissionsDiv = document.getElementById('submissions');

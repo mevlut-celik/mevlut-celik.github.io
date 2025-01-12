@@ -246,12 +246,18 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Origin': 'https://mevlut-celik.github.io'
                 },
+                mode: 'cors',
+                credentials: 'include',
                 body: JSON.stringify(formObject)
             })
             .then(response => {
-                console.log('Response status:', response.status);
+                console.log('Response:', response);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 return response.json();
             })
             .then(data => {
@@ -265,8 +271,8 @@
                 }
             })
             .catch(error => {
-                console.error('Fetch error:', error);
-                alert('Sunucu hatası: ' + error.message);
+                console.error('Fetch error details:', error);
+                alert('Bağlantı hatası: ' + error.message);
             });
         });
     </script>
