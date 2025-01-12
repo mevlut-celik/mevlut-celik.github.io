@@ -5,30 +5,22 @@ const cors = require('cors');
 
 const app = express();
 
-// Environment variables
-const MONGODB_URI = process.env.MONGODB_URI;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://mevlut-celik.github.io/ptns';
-const PORT = process.env.PORT || 3001;
-
 // CORS ayarları
 app.use(cors({
-    origin: 'https://mevlut-celik.github.io',
+    origin: '*',  // Tüm originlere izin ver
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept', 'Origin'],
-    credentials: false
+    allowedHeaders: ['Content-Type', 'Accept']
 }));
 
-// Pre-flight istekleri için
-app.options('*', cors());
-
-// Body parser limiti artır
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+// Body parser ayarları
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB bağlantısı
+const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.connect(MONGODB_URI)
-    .then(() => console.log('MongoDB Atlas\'a başarıyla bağlandı'))
-    .catch(err => console.error('MongoDB bağlantı hatası:', err));
+    .then(() => console.log('MongoDB bağlantısı başarılı'))
+    .catch(err => console.error('MongoDB hatası:', err));
 
 // Form şeması
 const formSchema = new mongoose.Schema({
@@ -85,8 +77,7 @@ app.get('/submissions', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;

@@ -288,11 +288,8 @@
             fetch(`${API_URL}/submit`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
-                mode: 'cors',
-                credentials: 'omit',
                 body: JSON.stringify(allData)
             })
             .then(response => {
