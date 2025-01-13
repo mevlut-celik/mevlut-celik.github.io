@@ -240,27 +240,27 @@
             }
 
             // Verileri sunucuya gönder
-            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
-
-            fetch(`${API_URL}/submit`, {
+            fetch('https://mevlut-celik-github-io.vercel.app/submit', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formObject)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response:', response); // Debug için
+                return response.json();
+            })
             .then(data => {
+                console.log('Data:', data); // Debug için
                 if (data.success) {
                     const queryString = new URLSearchParams(formObject).toString();
-                    window.scrollTo(0, 0);
-                    window.location.href = `ptns/survey.html?${queryString}`;
+                    window.location.href = `survey.html?${queryString}`;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Sunucuya bağlanılamadı. Lütfen daha sonra tekrar deneyiniz.');
+                alert('Sunucu hatası: ' + error.message);
             });
         });
     </script>

@@ -7,11 +7,7 @@ const app = express();
 
 // CORS ayarlarını güncelle
 app.use(cors({
-    origin: [
-        'https://mevlut-celik.github.io/ptns',
-        'https://mevlut-celik-github-io.vercel.app',
-        'http://localhost:3001'
-    ],
+    origin: '*',  // Tüm originlere izin ver
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept']
 }));

@@ -9,13 +9,12 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "index.html",
+      "dest": "/server.js",
       "methods": ["GET", "POST", "OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://mevlut-celik.github.io/",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Accept",
-        "Access-Control-Allow-Credentials": "true"
+        "Access-Control-Allow-Headers": "Content-Type, Accept"
       }
     }
   ]
