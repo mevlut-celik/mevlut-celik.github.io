@@ -1,25 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-// CORS ayarlarını güncelle
-app.use(cors({
-    origin: '*',  // Tüm originlere izin ver
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept']
-}));
-
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB bağlantısı
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://mevlutttttt54:Qw2183481@cluster0.9bxtc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-mongoose.connect(MONGODB_URI)
-    .then(() => console.log('MongoDB Atlas\'a başarıyla bağlandı'))
-    .catch(err => console.error('MongoDB bağlantı hatası:', err));
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB bağlantısı başarılı'))
+    .catch(err => console.error('MongoDB hatası:', err));
 
 // Form şeması
 const formSchema = new mongoose.Schema({
@@ -39,46 +32,38 @@ const formSchema = new mongoose.Schema({
         explanation: String,
         actions: String
     }],
-    timestamp: {
-        type: Date,
-        default: Date.now
-    }
+    timestamp: { type: Date, default: Date.now }
 });
 
 const Form = mongoose.model('Form', formSchema);
 
-// Test endpoint'i
+// Test endpoint
 app.get('/test', (req, res) => {
     res.json({ message: 'API çalışıyor!' });
 });
 
-// Form verilerini kaydetme
+// Form gönderme endpoint'i
 app.post('/submit', async (req, res) => {
     try {
-        console.log('Gelen veri:', req.body);
-        const formData = new Form(req.body);
-        await formData.save();
+        const form = new Form(req.body);
+        await form.save();
         res.status(201).json({ success: true });
     } catch (error) {
-        console.error('Sunucu hatası:', error);
         res.status(400).json({ success: false, error: error.message });
     }
 });
 
-// Tüm verileri getirme
+// Tüm formları getirme endpoint'i
 app.get('/submissions', async (req, res) => {
     try {
-        const submissions = await Form.find().sort({ timestamp: -1 });
-        res.json(submissions);
+        const forms = await Form.find().sort({ timestamp: -1 });
+        res.json(forms);
     } catch (error) {
-        console.error('Veri çekme hatası:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server ${PORT} portunda çalışıyor`));
 
 module.exports = app;

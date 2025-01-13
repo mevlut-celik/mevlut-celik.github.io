@@ -283,35 +283,27 @@
             console.log('Gönderilecek veri:', allData); // Debug için
 
             // MongoDB'ye gönder
-            const API_URL = 'https://mevlut-celik-github-io.vercel.app';
-
-            fetch(`${API_URL}/submit`, {
+            fetch('https://ptns.vercel.app/submit', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(allData)
             })
             .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Sunucu hatası');
-                    });
-                }
+                console.log('Response:', response); // Debug için
                 return response.json();
             })
             .then(data => {
+                console.log('Data:', data); // Debug için
                 if (data.success) {
                     alert('Cevaplarınız başarıyla kaydedildi. Teşekkür ederiz.');
-                    redirectToThankYou();
-                } else {
-                    throw new Error(data.error || 'Bilinmeyen bir hata oluştu');
+                    window.location.href = 'tesekkur.html';
                 }
             })
             .catch(error => {
-                console.error('Hata:', error);
-                alert('Bir hata oluştu: ' + error.message);
+                console.error('Error:', error);
+                alert('Sunucu hatası: ' + error.message);
             });
         });
 
