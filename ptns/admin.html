@@ -18,7 +18,7 @@
         // Verileri sunucudan al ve göster
         async function loadSubmissions() {
             try {
-                const response = await fetch('https://ptns-oy8ufal3b-mevlut-celiks-projects.vercel.app/submissions');
+                const response = await fetch('https://ptns-m6ywbb1l2-mevlut-celiks-projects.vercel.app/api/submissions');
                 const data = await response.json();
                 
                 const submissionsDiv = document.getElementById('submissions');
@@ -61,7 +61,7 @@
 
         // Verileri Excel'e aktar
         function exportToExcel() {
-            fetch('https://ptns-oy8ufal3b-mevlut-celiks-projects.vercel.app/submissions')
+            fetch('https://ptns-m6ywbb1l2-mevlut-celiks-projects.vercel.app/submissions')
                 .then(response => response.json())
                 .then(data => {
                     // Excel için veriyi düzenle

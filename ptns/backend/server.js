@@ -7,7 +7,11 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Accept']
+}));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
@@ -59,7 +63,7 @@ const formSchema = new mongoose.Schema({
 const Form = mongoose.models.Form || mongoose.model('Form', formSchema);
 
 // Test endpoint
-app.get('/test', async (req, res) => {
+app.get('/api/test', async (req, res) => {
     try {
         await connectDB();
         res.json({ message: 'API çalışıyor!' });
@@ -73,7 +77,7 @@ app.get('/test', async (req, res) => {
 });
 
 // Form gönderme endpoint'i
-app.post('/submit', async (req, res) => {
+app.post('/api/submit', async (req, res) => {
     try {
         await connectDB();
         console.log('Gelen veri:', req.body);
@@ -91,7 +95,7 @@ app.post('/submit', async (req, res) => {
 });
 
 // Tüm formları getirme endpoint'i
-app.get('/submissions', async (req, res) => {
+app.get('/api/submissions', async (req, res) => {
     try {
         await connectDB();
         const forms = await Form.find().sort({ timestamp: -1 });
