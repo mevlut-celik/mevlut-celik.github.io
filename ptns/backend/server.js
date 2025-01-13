@@ -6,13 +6,24 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors({
+    origin: ['https://mevlut-celik.github.io', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // MongoDB bağlantısı
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB bağlantısı başarılı'))
-    .catch(err => console.error('MongoDB hatası:', err));
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB bağlantısı başarılı'))
+.catch(err => {
+    console.error('MongoDB bağlantı hatası:', err);
+    console.error('MONGODB_URI:', process.env.MONGODB_URI ? 'Tanımlı' : 'Tanımlı değil');
+});
 
 // Form şeması
 const formSchema = new mongoose.Schema({
@@ -45,11 +56,17 @@ app.get('/test', (req, res) => {
 // Form gönderme endpoint'i
 app.post('/submit', async (req, res) => {
     try {
+        console.log('Gelen veri:', req.body);
         const form = new Form(req.body);
         await form.save();
         res.status(201).json({ success: true });
     } catch (error) {
-        res.status(400).json({ success: false, error: error.message });
+        console.error('Form kaydetme hatası:', error);
+        res.status(400).json({ 
+            success: false, 
+            error: error.message,
+            details: error.stack 
+        });
     }
 });
 
@@ -59,7 +76,12 @@ app.get('/submissions', async (req, res) => {
         const forms = await Form.find().sort({ timestamp: -1 });
         res.json(forms);
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        console.error('Form getirme hatası:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message,
+            details: error.stack 
+        });
     }
 });
 

@@ -248,18 +248,25 @@
                 body: JSON.stringify(formObject)
             })
             .then(response => {
-                console.log('Response:', response); // Debug için
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${err.error}`);
+                    });
+                }
                 return response.json();
             })
             .then(data => {
-                console.log('Data:', data); // Debug için
+                console.log('Success:', data);
                 if (data.success) {
                     const queryString = new URLSearchParams(formObject).toString();
                     window.location.href = `survey.html?${queryString}`;
+                } else {
+                    throw new Error('Sunucu başarılı yanıt vermedi');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error details:', error);
                 alert('Sunucu hatası: ' + error.message);
             });
         });
