@@ -14,11 +14,12 @@
             "headers": {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Accept"
+                "Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Accept"
             }
         }
     ],
     "env": {
-        "MONGODB_URI": "@mongodb_uri"
+        "MONGODB_URI": "@mongodb_uri",
+        "NODE_ENV": "production"
     }
 } 
