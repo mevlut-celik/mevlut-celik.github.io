@@ -7,9 +7,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ['https://mevlut-celik.github.io', 'http://localhost:3000'],
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
+    origin: ['https://mevlut-celik.github.io', 'http://localhost:3000', 'https://ptns-oy8ufal3b-mevlut-celiks-projects.vercel.app'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Accept']
 }));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
