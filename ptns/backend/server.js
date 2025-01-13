@@ -9,21 +9,28 @@ const app = express();
 app.use(cors({
     origin: ['https://mevlut-celik.github.io', 'http://localhost:3000', 'https://ptns-oy8ufal3b-mevlut-celiks-projects.vercel.app'],
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept']
+    allowedHeaders: ['Content-Type', 'Accept'],
+    credentials: true
 }));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // MongoDB bağlantısı
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB bağlantısı başarılı'))
-.catch(err => {
-    console.error('MongoDB bağlantı hatası:', err);
-    console.error('MONGODB_URI:', process.env.MONGODB_URI ? 'Tanımlı' : 'Tanımlı değil');
-});
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('MongoDB bağlantısı başarılı');
+    } catch (err) {
+        console.error('MongoDB bağlantı hatası:', err);
+        console.error('MONGODB_URI:', process.env.MONGODB_URI ? 'Tanımlı' : 'Tanımlı değil');
+        process.exit(1);
+    }
+};
+
+connectDB();
 
 // Form şeması
 const formSchema = new mongoose.Schema({

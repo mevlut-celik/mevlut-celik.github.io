@@ -9,13 +9,10 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "backend/server.js",
-            "methods": ["GET", "POST", "OPTIONS"],
-            "headers": {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Accept"
-            }
+            "dest": "backend/server.js"
         }
-    ]
+    ],
+    "env": {
+        "MONGODB_URI": "@mongodb_uri"
+    }
 } 
