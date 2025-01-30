@@ -246,7 +246,7 @@
             e.preventDefault();
             
             // Form1 verilerini localStorage'dan al
-            const form1Data = localStorage.getItem('form1Data');
+            const form1Data = JSON.parse(localStorage.getItem('form1Data') || '{}');
 
             // Seçilen cümleleri ve açıklamaları topla
             const selections = [];
@@ -260,19 +260,26 @@
 
             // FormData oluştur
             const formData = new FormData();
-            formData.append('form1Data', form1Data);
+            
+            // Form1 verilerini ekle
+            Object.keys(form1Data).forEach(key => {
+                formData.append(key, form1Data[key]);
+            });
+
+            // Seçimleri ekle
             formData.append('selections', JSON.stringify(selections));
 
             // Google Apps Script URL
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwIlgCISCJxbAk1hebe1tAZGEbw7L6oRsATACd-SKNG0DUKMkCMpHRoew4aw3paDxuoWg/exec';
 
+            // Verileri gönder
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: formData
             })
             .then(() => {
-                localStorage.removeItem('form1Data');
+                localStorage.removeItem('form1Data'); // localStorage'ı temizle
                 alert('Form başarıyla gönderildi!');
                 window.location.href = 'tesekkur.html';
             })
