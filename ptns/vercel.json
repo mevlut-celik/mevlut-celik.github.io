@@ -2,18 +2,17 @@
     "version": 2,
     "builds": [
         {
-            "src": "backend/server.py",
-            "use": "@vercel/python",
-            "config": { "runtime": "python3.9" }
+            "src": "api/index.py",
+            "use": "@vercel/python"
         }
     ],
     "routes": [
         {
-            "src": "/api/(.*)",
-            "dest": "backend/server.py"
+            "src": "/(.*)",
+            "dest": "api/index.py"
         }
     ],
     "env": {
-        "MONGODB_URI": "@mongodb_uri"
+        "MONGODB_URI": "mongodb+srv://mevlutttttt54:Qw2183481@cluster0.reovq.mongodb.net/ptns?retryWrites=true&w=majority&appName=Cluster0"
     }
 } 
