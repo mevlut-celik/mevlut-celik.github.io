@@ -4,120 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manyetik Kuvvet Simülasyonu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
             --bg-color: #ffffff;
             --text-color: #000000;
             --canvas-border: #000000;
-            --button-bg: #f0f0f0;
-            --button-text: #000000;
         }
 
         [data-theme="dark"] {
             --bg-color: #121212;
             --text-color: #ffffff;
             --canvas-border: #ffffff;
-            --button-bg: #333333;
-            --button-text: #ffffff;
         }
 
         body {
-            font-family: Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            text-align: center;
-            padding: 20px;
             transition: background-color 0.3s, color 0.3s;
+            padding: 20px;
         }
 
         canvas {
             border: 1px solid var(--canvas-border);
             display: block;
             margin: 20px auto;
+            max-width: 100%;
+            height: auto;
         }
 
-        .controls {
-            margin: 20px 0;
+        .range-container {
+            margin-bottom: 1rem;
         }
 
-        .toggle-buttons button {
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .toggle-buttons button:hover {
-            opacity: 0.8;
-        }
-
-        table {
-            width: 60%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .toggle-buttons button:hover {
-            opacity: 0.8;
+        .data-buttons {
+            margin: 1.5rem 0;
         }
     </style>
 </head>
 <body>
-    <h1>Manyetik Kuvvet Simülasyonu</h1>
-    <div class="controls">
-        <label>Sinüs Açı (θ): <span id="angle-val">90</span>°</label>
-        <input type="range" id="angle" min="0" max="90" step="1" value="90"><br>
+    <div class="container">
+        <h1 class="text-center mb-4">Manyetik Kuvvet Simülasyonu</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="controls">
+                            <div class="range-container">
+                                <label class="form-label">Sinüs Açı (θ): <span id="angle-val">90</span>°</label>
+                                <input type="range" class="form-range" id="angle" min="0" max="90" step="1" value="90">
+                            </div>
 
-        <label>Akım (I): <span id="current-val">1</span> A</label>
-        <input type="range" id="current" min="0.1" max="10" step="0.1" value="1"><br>
+                            <div class="range-container">
+                                <label class="form-label">Akım (I): <span id="current-val">1</span> A</label>
+                                <input type="range" class="form-range" id="current" min="0.1" max="10" step="0.1" value="1">
+                            </div>
 
-        <label>Manyetik Alan (B): <span id="field-val">0.5</span> T</label>
-        <input type="range" id="field" min="0.1" max="2" step="0.1" value="0.5"><br>
+                            <div class="range-container">
+                                <label class="form-label">Manyetik Alan (B): <span id="field-val">0.5</span> T</label>
+                                <input type="range" class="form-range" id="field" min="0.1" max="2" step="0.1" value="0.5">
+                            </div>
 
-        <label>Tel Uzunluğu (L): <span id="length-val">1</span> m</label>
-        <input type="range" id="length" min="0.1" max="5" step="0.1" value="1"><br>
+                            <div class="range-container">
+                                <label class="form-label">Tel Uzunluğu (L): <span id="length-val">1</span> m</label>
+                                <input type="range" class="form-range" id="length" min="0.1" max="5" step="0.1" value="1">
+                            </div>
 
-        <button id="save-data">Verileri Kaydet</button><br>
+                            <button id="save-data" class="btn btn-primary w-100 mb-3">Verileri Kaydet</button>
 
-        <button id="sinus-force-data">Sinüs-Kuvvet Verilerini Al</button>
-        <button id="current-force-data">Akım-Kuvvet Verilerini Al</button>
-        <button id="length-force-data">Tel Uzunluğu-Kuvvet Verilerini Al</button>
-        <button id="field-force-data">Manyetik Alan-Kuvvet Verilerini Al</button>
+                            <div class="data-buttons d-grid gap-2">
+                                <button id="sinus-force-data" class="btn btn-secondary">Sinüs-Kuvvet Verilerini Al</button>
+                                <button id="current-force-data" class="btn btn-secondary">Akım-Kuvvet Verilerini Al</button>
+                                <button id="length-force-data" class="btn btn-secondary">Tel Uzunluğu-Kuvvet Verilerini Al</button>
+                                <button id="field-force-data" class="btn btn-secondary">Manyetik Alan-Kuvvet Verilerini Al</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-4">
+            <table id="data-table" class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Açı (°)</th>
+                        <th>Sinüs(θ)</th>
+                        <th>Akım (A)</th>
+                        <th>Manyetik Alan (T)</th>
+                        <th>Tel Uzunluğu (m)</th>
+                        <th>Kuvvet (N)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <canvas id="simulation" width="1000" height="500"></canvas>
     </div>
 
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>Açı (°)</th>
-                <th>Sinüs(θ)</th>
-                <th>Akım (A)</th>
-                <th>Manyetik Alan (T)</th>
-                <th>Tel Uzunluğu (m)</th>
-                <th>Kuvvet (N)</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-    <canvas id="simulation" width="800" height="400"></canvas>
-
+    <!-- Bootstrap JS ve gerekli bağımlılıklar -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="simulation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
     <script src="exportData.js"></script>
