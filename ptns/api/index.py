@@ -65,7 +65,7 @@ class FormData(BaseModel):
     timestamp: Optional[datetime] = None
 
 # Test endpoint'i
-@app.get("/test")
+@app.get("/api/test")
 async def test():
     try:
         logger.info("Test endpoint'i çağrıldı")
@@ -76,7 +76,7 @@ async def test():
         raise HTTPException(status_code=500, detail=str(e))
 
 # Form gönderme endpoint'i
-@app.post("/submit")
+@app.post("/api/submit")
 async def submit_form(form_data: FormData):
     try:
         logger.info("Form gönderme endpoint'i çağrıldı")
@@ -91,7 +91,7 @@ async def submit_form(form_data: FormData):
         raise HTTPException(status_code=400, detail=str(e))
 
 # Tüm formları getirme endpoint'i
-@app.get("/submissions")
+@app.get("/api/submissions")
 async def get_submissions():
     try:
         logger.info("Tüm formları getirme endpoint'i çağrıldı")
@@ -106,4 +106,4 @@ async def get_submissions():
         raise HTTPException(status_code=500, detail=str(e))
 
 # Vercel handler
-handler = Mangum(app, lifespan="off") 
+handler = Mangum(app) 
