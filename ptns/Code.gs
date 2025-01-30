@@ -79,7 +79,9 @@ function doPost(e) {
           formData.trainingExperience,
           selection.sentence || '',
           selection.explanation || '',
-          selection.actions || ''
+          selection.actions || '',
+          formData.isVolunteer || '',
+          formData.contactEmail || ''
         ];
         sheet.appendRow(row);
         Logger.log('Satır ' + (index + 1) + ' eklendi');
@@ -102,7 +104,9 @@ function doPost(e) {
         formData.trainingExperience,
         '',
         '',
-        ''
+        '',
+        formData.isVolunteer || '',
+        formData.contactEmail || ''
       ];
       sheet.appendRow(row);
       Logger.log('Tek satır eklendi');
