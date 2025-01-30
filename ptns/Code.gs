@@ -1,5 +1,6 @@
 function doGet(e) {
-  if (e.parameter.action === 'getResponses') {
+  // e parametresi undefined olabilir, kontrol ekleyelim
+  if (e && e.parameter && e.parameter.action === 'getResponses') {
     var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
     var sheet = spreadsheet.getActiveSheet();
     var data = sheet.getDataRange().getValues();
@@ -8,9 +9,15 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
   
+  // Parametre yoksa veya action=getResponses değilse
+  var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
+  var sheet = spreadsheet.getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  
   return ContentService.createTextOutput(JSON.stringify({
     'status': 'success',
-    'message': 'GET request received'
+    'message': 'GET request received',
+    'data': data
   })).setMimeType(ContentService.MimeType.JSON);
 }
 
