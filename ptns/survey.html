@@ -113,11 +113,19 @@
 <body>
     <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
     
+    <!-- Açıklama metni ekleniyor -->
+    <div class="container mb-4">
+        <h1 class="text-center mb-4">SINIF İÇİ DİYALOG (SENARYO)</h1>
+        <p class="lead" style="text-align: justify;">
+            Bir eğitim öğretim sürecinde aşağıdaki konuşmalar fizik dersi esnasında öğretmen ve öğrenciler arasında geçmiştir. Bu diyalogda öğretmen tartışmaların akışını sağlayan kişi rolündedir. Yönlendirme yapmadan öğrencilerin kavramsal bilgi ve akıl yürütmelerini anlamaya çalışmaktadır.
+        </p>
+        <p class="lead" style="text-align: justify;">
+            Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir? Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız. Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.
+        </p>
+    </div>
+
     <!-- Seçim formu -->
     <div id="selectionForm">
-        <h2>Lütfen aşağıdaki diyalogdan dikkatinizi çeken ifadeleri seçiniz.</h2>
-        <h3>Seçmek için cümlelere tıklayınız.</h3>
-        
         <div class="sentences-container mb-4">
             <p class="statement">Öğretmen: Bugünkü dersimize ısı ve sıcaklık ünitesi ile ilgili bugüne kadar öğrendiklerimiz hakkında konuşarak başlayacağız. Ünitedeki temel kavramlarımızı ele alalım. Isı ve sıcaklık nedir? Açıklamak isteyen var mı?</p>
             <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Isı cisimlerin sahip olduğu enerjidir, sıcaklık ise o enerjinin göstergesidir ve bunu termometre ile ölçeriz.</p>
@@ -175,6 +183,11 @@
 
     <!-- Detay formu -->
     <form id="detailsForm" style="display: none;">
+        <div class="container mb-4">
+            <p class="lead" style="text-align: justify;">
+                Önceki sayfada yer alan diyalogtan dikkatinizi çeken ifadelerin yer aldığı satırları seçtiniz. Yapmış olduğunuz her bir seçim ile ilgili olarak ilgili öğrenci ifadesi yeniden gösterilmiş ve altına 2 metin kutusu yerleştirilmiştir. 'Açıklama' kutusuna seçiminizle ilgili öğrencilerin tartışılan kavramla ilgili kavramsal bilgi ve/veya akıl yürütmeleri hakkında neler ortaya koyduğunu düşündüğünüzü belirtmenizi, bunun sizin için ne ifade ettiğini yorumlamanızı istiyoruz. 'Yapılacaklar' kutusuna ise, bu sınıftaki öğretmen siz olsaydınız (yukarıdaki yorumlarınız ışığında) ne/neler yapmaya karar verirdiniz ve ders işleyişinizle ilgili herhangi bir değişiklik düşünür müydünüz? (Aynı durum için birbirinden farklı kararlar alabileceğinizi/değişiklikler yapabileceğinizi düşünüyorsanız lütfen hepsini detaylı bir şekilde yazın.)
+            </p>
+        </div>
         <div id="selectedSentences"></div>
         <button type="submit" class="btn btn-primary">Gönder</button>
     </form>
@@ -209,9 +222,7 @@
             }
 
             document.getElementById('selectionForm').style.display = 'none';
-            const instructions = document.querySelector('h2');
-            instructions.innerHTML = "Önceki sayfada yer alan diyalogtan dikkatinizi çeken ifadelerin yer aldığı satırları seçtiniz...";
-
+            
             const detailsForm = document.getElementById('detailsForm');
             const selectedSentencesDiv = document.getElementById('selectedSentences');
             selectedSentencesDiv.innerHTML = '';
