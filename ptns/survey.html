@@ -258,28 +258,31 @@
                 });
             });
 
-            // FormData oluştur
-            const formData = new FormData();
+            // URLSearchParams oluştur
+            const formData = new URLSearchParams();
             
             // Form1 verilerini ekle
             Object.keys(form1Data).forEach(key => {
                 formData.append(key, form1Data[key]);
             });
-
+            
             // Seçimleri ekle
             formData.append('selections', JSON.stringify(selections));
 
             // Google Apps Script URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwIlgCISCJxbAk1hebe1tAZGEbw7L6oRsATACd-SKNG0DUKMkCMpHRoew4aw3paDxuoWg/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbx_r91QZlHjQuuVNmsur2WmprFMRNqOciwp2c7itXysK4e6bpkB-DhSAUjtw6tjM-6c/exec';
 
             // Verileri gönder
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
             })
             .then(() => {
-                localStorage.removeItem('form1Data'); // localStorage'ı temizle
+                localStorage.removeItem('form1Data');
                 alert('Form başarıyla gönderildi!');
                 window.location.href = 'tesekkur.html';
             })
