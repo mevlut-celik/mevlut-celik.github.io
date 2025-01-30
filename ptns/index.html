@@ -210,68 +210,41 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
-        document.getElementById('submitButton').addEventListener('click', function () {
+        document.getElementById('submitButton').addEventListener('click', function() {
             // Form verilerini al
-            const form = document.getElementById('volunteerForm');
-            const formData = new FormData(form);
-            
-            // Form verilerini objeye dönüştür
-            const formObject = {
-                age: formData.get('age') || '',
-                city: formData.get('city') || '',
-                district: formData.get('district') || '',
-                gender: formData.get('gender') || '',
-                educationLevel: formData.get('educationLevel') || '',
-                graduateEducation: formData.get('graduateEducation') || '',
-                department: formData.get('department') || '',
-                experience: formData.get('experience') || '',
-                schoolType: formData.get('schoolType') || '',
-                classLevels: Array.from(document.querySelectorAll('input[name="classLevels[]"]:checked')).map(cb => cb.value).join(', '),
-                trainingExperience: formData.get('trainingExperience') || ''
+            const formData = {
+                timestamp: new Date().toLocaleString('tr-TR'),
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                educationLevel: document.getElementById('educationLevel').value,
+                graduateEducation: document.getElementById('graduateEducation').value,
+                department: document.getElementById('department').value,
+                experience: document.getElementById('experience').value,
+                schoolType: document.getElementById('schoolType').value,
+                classLevels: Array.from(document.querySelectorAll('input[name="classLevels[]"]:checked'))
+                    .map(cb => cb.value)
+                    .join(', '),
+                trainingExperience: document.getElementById('trainingExperience').value
             };
 
             // Zorunlu alanları kontrol et
-            const requiredFields = ['age', 'gender', 'city', 'educationLevel', 'experience', 'schoolType'];
-            const missingFields = requiredFields.filter(field => !formObject[field]);
-
-            if (missingFields.length > 0) {
-                alert('Lütfen şu alanları doldurun: ' + missingFields.join(', '));
+            if (!formData.age || !formData.gender || !formData.city || 
+                !formData.educationLevel || !formData.experience || !formData.schoolType) {
+                alert('Lütfen tüm zorunlu alanları doldurun!');
                 return;
             }
 
-            // Verileri sunucuya gönder
-            fetch('https://mevlut-celik-github-io-py.vercel.app/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formObject)
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(`HTTP error! status: ${response.status}, message: ${err.error}`);
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-                if (data.success) {
-                    const queryString = new URLSearchParams(formObject).toString();
-                    window.location.href = `survey.html?${queryString}`;
-                } else {
-                    throw new Error('Sunucu başarılı yanıt vermedi');
-                }
-            })
-            .catch(error => {
-                console.error('Error details:', error);
-                alert('Sunucu hatası: ' + error.message);
-            });
+            // Form verilerini localStorage'a kaydet
+            localStorage.setItem('form1Data', JSON.stringify(formData));
+            
+            // GitHub Pages'deki survey.html'e yönlendir
+            window.location.href = '/ptns/survey.html';
         });
     </script>
-<script>
+
+    <script>
         document.getElementById('city').addEventListener('change', function () {
             const districts = {
                 "Adana": ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
@@ -340,7 +313,7 @@
                 "Osmaniye": ["Bahçe", "Kadirli", "Merkez"],
                 "Rize": ["Ardeşen", "Çayeli", "Fındıklı", "Merkez", "Pazar"],
                 "Sakarya": ["Akyazı", "Geyve", "Hendek", "Karasu", "Kaynarca", "Merkez", "Sapanca", "Taraklı"],
-                "Samsun": ["Alaçam", "Bafra", "Çarşamba", "Havza", "Kavak", "Ladik", "Merkez", "Salıpazarı", "Tekkeköy", "Terme", "Vezirköprü"],
+                "Samsun": ["Alaçam", "Bafra", "Çarşamba", "Havza", "Kavak", "Ladik", "Merkez", "Salıpazarı", "Tekkeköprü"],
                 "Şanlıurfa": ["Akçakale", "Birecik", "Bozova", "Halfeti", "Harran", "Hilvan", "Merkez", "Siverek", "Suruç", "Viranşehir"],
                 "Siirt": ["Aydınlar", "Baykan", "Eruh", "Kurtalan", "Merkez"],
                 "Sinop": ["Ayancık", "Boyabat", "Durağan", "Erfelek", "Gerze", "Merkez"],

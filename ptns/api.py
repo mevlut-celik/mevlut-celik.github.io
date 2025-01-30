@@ -1,9 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import json
 from typing import List, Optional
 import os
+from datetime import datetime
 
 app = FastAPI()
 
@@ -43,23 +45,38 @@ def save_responses(responses):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(responses, f, ensure_ascii=False, indent=2)
 
-@app.post("/submit")
+@app.post("/api/submit")
 async def submit_form(form_data: FormData):
     try:
         responses = load_responses()
-        responses.append(form_data.dict())
+        form_dict = form_data.dict()
+        form_dict["timestamp"] = datetime.now().isoformat()
+        responses.append(form_dict)
         save_responses(responses)
-        return {"success": True, "message": "Form başarıyla kaydedildi"}
+        return JSONResponse(
+            content={"success": True, "message": "Form başarıyla kaydedildi"},
+            status_code=200
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return JSONResponse(
+            content={"success": False, "message": str(e)},
+            status_code=500
+        )
 
-@app.get("/get-responses")
+@app.get("/api/responses")
 async def get_responses():
     try:
-        return load_responses()
+        responses = load_responses()
+        return JSONResponse(
+            content=responses,
+            status_code=200
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return JSONResponse(
+            content={"success": False, "message": str(e)},
+            status_code=500
+        )
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="localhost", port=3000) 

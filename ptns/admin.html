@@ -3,33 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Yanıtları</title>
-    <!-- Bootstrap 4 CSS -->
+    <title>Admin Paneli</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .table-responsive {
             margin-top: 20px;
         }
-        .loading {
-            text-align: center;
-            padding: 20px;
+        .export-btn {
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center my-4">Form Yanıtları</h1>
-        <div class="loading">Yanıtlar yükleniyor...</div>
+        
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success export-btn" onclick="exportToExcel()">Excel'e Aktar</button>
+                <button class="btn btn-danger export-btn ml-2" onclick="clearResponses()">Tüm Verileri Sil</button>
+            </div>
+        </div>
+
         <div class="table-responsive">
-            <table class="table table-striped" id="responsesTable">
-                <thead>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
                     <tr>
+                        <th>Tarih</th>
                         <th>Yaş</th>
                         <th>Cinsiyet</th>
                         <th>İl</th>
                         <th>İlçe</th>
                         <th>Eğitim Düzeyi</th>
-                        <th>Lisansüstü Eğitim</th>
+                        <th>Lisansüstü</th>
                         <th>Fakülte</th>
                         <th>Deneyim</th>
                         <th>Okul Türü</th>
@@ -37,47 +43,56 @@
                         <th>Hizmet İçi Eğitim</th>
                     </tr>
                 </thead>
-                <tbody id="responseBody">
+                <tbody id="responsesTableBody">
                 </tbody>
             </table>
         </div>
     </div>
 
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script>
-        // Verileri sunucudan al ve tabloya ekle
-        fetch('https://mevlut-celik-github-io-py.vercel.app/get-responses')
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.getElementById('responseBody');
-                document.querySelector('.loading').style.display = 'none';
-                
-                data.forEach(response => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${response.age}</td>
-                        <td>${response.gender}</td>
-                        <td>${response.city}</td>
-                        <td>${response.district}</td>
-                        <td>${response.educationLevel}</td>
-                        <td>${response.graduateEducation}</td>
-                        <td>${response.department}</td>
-                        <td>${response.experience}</td>
-                        <td>${response.schoolType}</td>
-                        <td>${response.classLevels}</td>
-                        <td>${response.trainingExperience}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.querySelector('.loading').textContent = 'Veriler yüklenirken bir hata oluştu.';
-            });
-    </script>
+        function loadResponses() {
+            const responses = JSON.parse(localStorage.getItem('formResponses') || '[]');
+            const tbody = document.getElementById('responsesTableBody');
+            tbody.innerHTML = '';
 
-    <!-- Bootstrap 4 JS ve jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            responses.forEach(response => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${response.timestamp}</td>
+                    <td>${response.age}</td>
+                    <td>${response.gender}</td>
+                    <td>${response.city}</td>
+                    <td>${response.district}</td>
+                    <td>${response.educationLevel}</td>
+                    <td>${response.graduateEducation}</td>
+                    <td>${response.department}</td>
+                    <td>${response.experience}</td>
+                    <td>${response.schoolType}</td>
+                    <td>${response.classLevels}</td>
+                    <td>${response.trainingExperience}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportToExcel() {
+            const responses = JSON.parse(localStorage.getItem('formResponses') || '[]');
+            const ws = XLSX.utils.json_to_sheet(responses);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Form Yanıtları");
+            XLSX.writeFile(wb, "form_yanitlari.xlsx");
+        }
+
+        function clearResponses() {
+            if (confirm('Tüm yanıtları silmek istediğinizden emin misiniz?')) {
+                localStorage.removeItem('formResponses');
+                loadResponses();
+            }
+        }
+
+        // Sayfa yüklendiğinde yanıtları göster
+        window.onload = loadResponses;
+    </script>
 </body>
 </html> 
