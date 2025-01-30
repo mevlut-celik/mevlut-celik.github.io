@@ -2,18 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "backend/server.js",
-            "use": "@vercel/node"
+            "src": "backend/server.py",
+            "use": "@vercel/python",
+            "config": { "runtime": "python3.9" }
         }
     ],
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "backend/server.js"
+            "dest": "backend/server.py"
         }
     ],
     "env": {
-        "MONGODB_URI": "@mongodb_uri",
-        "NODE_ENV": "production"
+        "MONGODB_URI": "@mongodb_uri"
     }
 } 
