@@ -258,6 +258,9 @@
             
             // Form1 verilerini localStorage'dan al
             const form1Data = JSON.parse(localStorage.getItem('form1Data') || '{}');
+            
+            // Gönüllülük bilgilerini localStorage'dan al
+            const volunteerInfo = JSON.parse(localStorage.getItem('volunteerInfo') || '{}');
 
             // Seçilen cümleleri ve açıklamaları topla
             const selections = [];
@@ -277,11 +280,15 @@
                 formData.append(key, form1Data[key]);
             });
             
+            // Gönüllülük bilgilerini ekle
+            formData.append('isVolunteer', volunteerInfo.isVolunteer || '');
+            formData.append('contactEmail', volunteerInfo.email || '');
+            
             // Seçimleri ekle
             formData.append('selections', JSON.stringify(selections));
 
             // Google Apps Script URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwJpLDK22o6enFjbdzc2UykB_mdZWZLFZumd9ABNU7hGqJonfTxRTxkyBompLI3i0GkTA/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxyKg-WVZ8k5Bdza3x5CJ-N3QaMGTjpZXzl3gZd7_wfX4B1b0Ey0H8zT7Yy1SJgpxXC1g/exec';
 
             // Verileri gönder
             fetch(scriptURL, {
@@ -293,7 +300,9 @@
                 body: formData.toString()
             })
             .then(() => {
+                // Tüm localStorage verilerini temizle
                 localStorage.removeItem('form1Data');
+                localStorage.removeItem('volunteerInfo');
                 alert('Form başarıyla gönderildi!');
                 window.location.href = 'tesekkur.html';
             })
