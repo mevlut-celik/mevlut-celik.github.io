@@ -106,4 +106,4 @@ async def get_submissions():
         raise HTTPException(status_code=500, detail=str(e))
 
 # Vercel handler
-handler = Mangum(app) 
+handler = app 
