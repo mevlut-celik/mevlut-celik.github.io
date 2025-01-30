@@ -6,14 +6,17 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  // Belirli bir spreadsheet'i ID ile aç
-  var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
-  var sheet = spreadsheet.getActiveSheet();
-  
   try {
-    // Gelen veriyi logla
-    Logger.log('Raw request: ' + JSON.stringify(e));
-    Logger.log('Parameters: ' + JSON.stringify(e.parameter));
+    // Debug için tüm gelen veriyi logla
+    Logger.log('Gelen istek: ' + JSON.stringify(e));
+    Logger.log('Parametreler: ' + JSON.stringify(e.parameter));
+    
+    // Spreadsheet'e erişim kontrolü
+    var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
+    Logger.log('Spreadsheet açıldı: ' + spreadsheet.getName());
+    
+    var sheet = spreadsheet.getActiveSheet();
+    Logger.log('Aktif sayfa: ' + sheet.getName());
     
     // Form verilerini al
     var formData = {
@@ -31,11 +34,14 @@ function doPost(e) {
       trainingExperience: e.parameter.trainingExperience || ''
     };
     
+    Logger.log('Form verileri: ' + JSON.stringify(formData));
+    
     // Seçimleri parse et
     var selections = [];
     if (e.parameter.selections) {
       try {
         selections = JSON.parse(e.parameter.selections);
+        Logger.log('Seçimler başarıyla parse edildi: ' + JSON.stringify(selections));
       } catch (parseError) {
         Logger.log('Seçimler parse edilemedi: ' + parseError);
       }
@@ -43,8 +49,9 @@ function doPost(e) {
     
     // En az bir satır ekle
     if (selections && selections.length > 0) {
-      selections.forEach(function(selection) {
-        sheet.appendRow([
+      Logger.log('Seçimler ekleniyor. Seçim sayısı: ' + selections.length);
+      selections.forEach(function(selection, index) {
+        var row = [
           formData.timestamp,
           formData.age,
           formData.gender,
@@ -60,10 +67,13 @@ function doPost(e) {
           selection.sentence || '',
           selection.explanation || '',
           selection.actions || ''
-        ]);
+        ];
+        sheet.appendRow(row);
+        Logger.log('Satır ' + (index + 1) + ' eklendi');
       });
     } else {
-      sheet.appendRow([
+      Logger.log('Seçim yok, tek satır ekleniyor');
+      var row = [
         formData.timestamp,
         formData.age,
         formData.gender,
@@ -79,16 +89,20 @@ function doPost(e) {
         '',
         '',
         ''
-      ]);
+      ];
+      sheet.appendRow(row);
+      Logger.log('Tek satır eklendi');
     }
     
+    Logger.log('İşlem başarıyla tamamlandı');
     return ContentService.createTextOutput(JSON.stringify({
       'success': true,
       'message': 'Veri başarıyla kaydedildi'
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch(error) {
-    Logger.log('Hata: ' + error);
+    Logger.log('HATA OLUŞTU: ' + error.toString());
+    Logger.log('Hata stack: ' + error.stack);
     return ContentService.createTextOutput(JSON.stringify({
       'success': false,
       'message': error.toString()
