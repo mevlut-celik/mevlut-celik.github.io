@@ -3,11 +3,7 @@
     "builds": [
         {
             "src": "api/index.py",
-            "use": "@vercel/python",
-            "config": {
-                "maxLambdaSize": "15mb",
-                "runtime": "python3.11"
-            }
+            "use": "@vercel/python"
         }
     ],
     "routes": [
@@ -15,8 +11,5 @@
             "src": "/api/(.*)",
             "dest": "api/index.py"
         }
-    ],
-    "env": {
-        "MONGODB_URI": "mongodb+srv://mevlutttttt54:Qw2183481@cluster0.reovq.mongodb.net/ptns?retryWrites=true&w=majority&appName=Cluster0"
-    }
+    ]
 } 
