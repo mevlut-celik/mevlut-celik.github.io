@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-    <html lang="tr">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,14 +130,14 @@
                     <option value="Kilis">Kilis</option>
                     <option value="Osmaniye">Osmaniye</option>
                     <option value="Düzce">Düzce</option>
-                </select>
-            </div>
+        </select>
+        </div>
             <div class="form-group">
                 <label for="district">İlçe:</label>
                 <select class="form-control" id="district" name="district" required>
                     <option value="">İlçe Seçiniz</option>
-                </select>
-            </div>
+        </select>
+    </div>
             <div class="form-group">
                 <label for="educationLevel">En Son Tamamlanan Eğitim Düzeyi:</label>
                 <select class="form-control" id="educationLevel" name="educationLevel" required>
@@ -156,12 +156,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="department">Lisans Derecesinin Mezun Olunan Fakülte:</label>
+      <label for="department">Lisans Derecesinin Mezun Olunan Fakülte:</label>
                 <select class="form-control" id="department" name="department" required>
                     <option value="">Seçiniz</option>
                     <option value="Eğitim Fakültesi">Eğitim Fakültesi</option>
                     <option value="Fen-Edebiyat Fakültesi">Fen-Edebiyat Fakültesi</option>
-                </select>
+</select>
             </div>
             <div class="form-group">
                 <label for="experience">Mesleki Deneyim Süresi:</label>
@@ -172,29 +172,29 @@
                 <select class="form-control" id="schoolType" name="schoolType" required>
                     <option value="devlet">Devlet</option>
                     <option value="özel">Özel</option>
-                </select>
+                    </select>
             </div>
-            <div class="form-group">
-                <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
-                <div id="classLevels">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade9" name="classLevels[]" value="9">
-                        <label class="form-check-label" for="grade9">9. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade10" name="classLevels[]" value="10">
-                        <label class="form-check-label" for="grade10">10. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade11" name="classLevels[]" value="11">
-                        <label class="form-check-label" for="grade11">11. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade12" name="classLevels[]" value="12">
-                        <label class="form-check-label" for="grade12">12. Sınıf</label>
-                    </div>
-                </div>
-            </div>
+           <div class="form-group">
+    <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
+    <div id="classLevels">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="grade9" name="classLevels[]" value="9">
+            <label class="form-check-label" for="grade9">9. Sınıf</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="grade10" name="classLevels[]" value="10">
+            <label class="form-check-label" for="grade10">10. Sınıf</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="grade11" name="classLevels[]" value="11">
+            <label class="form-check-label" for="grade11">11. Sınıf</label>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="grade12" name="classLevels[]" value="12">
+            <label class="form-check-label" for="grade12">12. Sınıf</label>
+        </div>
+    </div>
+</div>
             <div class="form-group">
                 <label for="trainingExperience">Daha Önce Hizmet İçi Eğitim aldınız mı?(Evet ise eğitim konularını belirtin):</label>
                 <textarea class="form-control" id="trainingExperience" name="trainingExperience" rows="3" required></textarea>
@@ -271,7 +271,7 @@
             });
         });
     </script>
-    <script>
+<script>
         document.getElementById('city').addEventListener('change', function () {
             const districts = {
                 "Adana": ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
