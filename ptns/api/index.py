@@ -65,7 +65,7 @@ class FormData(BaseModel):
     timestamp: Optional[datetime] = None
 
 # Test endpoint'i
-@app.get("/api/test")
+@app.get("/test")
 async def test():
     try:
         logger.info("Test endpoint'i çağrıldı")
@@ -76,7 +76,7 @@ async def test():
         raise HTTPException(status_code=500, detail=str(e))
 
 # Form gönderme endpoint'i
-@app.post("/api/submit")
+@app.post("/submit")
 async def submit_form(form_data: FormData):
     try:
         logger.info("Form gönderme endpoint'i çağrıldı")
@@ -91,7 +91,7 @@ async def submit_form(form_data: FormData):
         raise HTTPException(status_code=400, detail=str(e))
 
 # Tüm formları getirme endpoint'i
-@app.get("/api/submissions")
+@app.get("/submissions")
 async def get_submissions():
     try:
         logger.info("Tüm formları getirme endpoint'i çağrıldı")
