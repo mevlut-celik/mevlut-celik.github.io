@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Araştırmaya Gönüllü Katılım Formu</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .consent-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .logo {
+            width: 190px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .consent-text {
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+        .signature-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+            <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
+        </div>
+        
+        <div class="consent-container">
+            <h2 class="text-center mb-4">ARAŞTIRMAYA GÖNÜLLÜ KATILIM FORMU</h2>
+            
+            <div class="consent-text">
+                <p>Bu çalışma ODTÜ Eğitim Fakültesi, Matematik ve Fen Bilimleri Eğitimi Bölümü öğretim üyelerinden Doç. Dr. Ömer Faruk Özdemir danışmanlığında ve araştırmacı Sınav Kökalan tarafından yürütülmektedir. Bu form araştırma koşulları hakkında bilgilendirmek için hazırlanmıştır.</p>
+                
+                <h5>Çalışmanın Amacı Nedir?</h5>
+                <p>Çalışmanın amacı çeşitli seviyelerde fizik eğitiminde rol alan öğretmen adayları, öğretmenler ve akademisyenlerin öğrencilerin kavramsal bilgi ve akıl yürütmeleri üzerinde öğretmen fark etme becerisini farklı kategorilerde ortaya çıkarmaktır.</p>
+                
+                <h5>Bize Nasıl Yardımcı Olmanız İstenecek?</h5>
+                <p>Araştırma sunf ortamı diyaloğu yapılacaktır. Öğretmen adayları, öğretmenler ve akademisyenler çalışmaya katılımcı olarak davet edilecek, katılmak isteyenler yaklaşık 30 dakikalık anket uygulamasına katılacaklardır. Anket uygulaması tamamlandıktan sonra elde edilen verilerin açık ve yeterli olabilmesi için gerekli durumlarda katılımcıların da gönüllü onayıyla anket cevapları hakkında görüşmeler yapılır.</p>
+                
+                <h5>Katılımınızla ilgili bilmeniz gerekenler:</h5>
+                <p>Bu çalışmaya katılmak tamamen gönüllülük esasına dayalıdır. Herhangi bir yaptırıma veya cezaya maruz kalmadan çalışmaya katılmayı reddedebilir veya çalışmayı bırakabilirsiniz.</p>
+                <p>Bu araştırmaya katılmanızla toplanan veriler tamamen gizli tutulacak, veriler ve kimlik bilgileri herhangi bir şekilde eşleştirilmeyecektir. Ayrıca toplanan verilere sadece araştırmacılar ulaşabilecektir. Bu araştırmanın sonuçları bilimsel ve profesyonel yayınlarda veya eğitim amaçlı kullanılabilecek, fakat katılımcıların kimliği gizli tutulacaktır.</p>
+                
+                <h5>Riskler:</h5>
+                <p>Çalışmamız kapsamında herhangi bir fiziksel veya psikolojik risk saptanmamıştır. Çalışmanın amacı katılımcıları doğrudan açıklanmıştır.</p>
+                
+                <h5>Araştırmayla ilgili daha fazla bilgi almak isterseniz:</h5>
+                <p>Çalışmayla ilgili soru ve yorumlarınızı araştırmacılara aşağıda belirtilen mail adreslerini kullanarak iletebilirsiniz:</p>
+                <p>
+                    Doç. Dr. Ömer Faruk Özdemir (<a href="mailto:ozdemir@metu.edu.tr">ozdemir@metu.edu.tr</a>)<br>
+                    Sınav Kökalan (<a href="mailto:sinav@metu.edu.tr">sinav@metu.edu.tr</a>) Tel: 0312 07 89
+                </p>
+            </div>
+
+            <div class="signature-area">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="consentCheck" required>
+                    <label class="form-check-label" for="consentCheck">
+                        Yukarıdaki bilgileri okudum ve bu çalışmaya tamamen gönüllü olarak katılıyorum.
+                    </label>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Gerekli durumlarda görüşme yapmak için gönüllü müsünüz?</label>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="volunteerYes" name="volunteer" class="custom-control-input" value="Evet" onchange="toggleEmailField()">
+                        <label class="custom-control-label" for="volunteerYes">Evet</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="volunteerNo" name="volunteer" class="custom-control-input" value="Hayır" onchange="toggleEmailField()">
+                        <label class="custom-control-label" for="volunteerNo">Hayır</label>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3" id="emailField" style="display: none;">
+                    <label for="contactEmail">E-mail adresiniz:</label>
+                    <input type="email" class="form-control" id="contactEmail" placeholder="ornek@email.com">
+                    <small class="form-text text-muted">Lütfen geçerli bir e-mail adresi giriniz.</small>
+                </div>
+                
+                <button onclick="proceedToForm()" class="btn btn-primary" disabled id="proceedButton">
+                    Devam Et
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Checkbox durumuna göre butonu aktif/pasif yap
+        document.getElementById('consentCheck').addEventListener('change', function() {
+            document.getElementById('proceedButton').disabled = !this.checked;
+        });
+
+        // Email alanını göster/gizle
+        function toggleEmailField() {
+            const emailField = document.getElementById('emailField');
+            const volunteerYes = document.getElementById('volunteerYes');
+            emailField.style.display = volunteerYes.checked ? 'block' : 'none';
+            
+            // Eğer "Hayır" seçilirse email alanını temizle
+            if (!volunteerYes.checked) {
+                document.getElementById('contactEmail').value = '';
+            }
+        }
+
+        // Devam et butonuna tıklandığında
+        function proceedToForm() {
+            if (document.getElementById('consentCheck').checked) {
+                // Görüşme ve email bilgilerini localStorage'a kaydet
+                const volunteerInfo = {
+                    isVolunteer: document.getElementById('volunteerYes').checked ? 'Evet' : 'Hayır',
+                    email: document.getElementById('volunteerYes').checked ? 
+                           document.getElementById('contactEmail').value : ''
+                };
+                localStorage.setItem('volunteerInfo', JSON.stringify(volunteerInfo));
+                
+                // Form sayfasına yönlendir
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gönüllü Katılımcı Formu</title>
+    <title>Katılımcı Bilgileri</title>
     <!-- Bootstrap 4 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -31,11 +31,20 @@
 <body>
 <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="img">
     <div class="container">
-        <h1 class="text-center mb-4">Gönüllü Katılımcı Formu</h1>
+        <h1 class="text-center mb-4">Katılımcı Bilgileri</h1>
         <form id="volunteerForm" class="mt-4">
             <div class="form-group">
                 <label for="age">Yaşınız:</label>
-                <input type="number" class="form-control" id="age" name="age" required>
+                <input type="number" 
+                       class="form-control" 
+                       id="age" 
+                       name="age" 
+                       min="20" 
+                       max="65" 
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                       required>
+                <small class="form-text text-muted">Lütfen 20-65 yaş aralığında bir değer giriniz.</small>
             </div>
             <div class="form-group">
                 <label for="gender">Cinsiyet:</label>
@@ -164,8 +173,45 @@
 </select>
             </div>
             <div class="form-group">
-                <label for="experience">Mesleki Deneyim Süresi:</label>
-                <input type="number" class="form-control" id="experience" name="experience" required>
+                <label>Mesleki Deneyim Süreniz:</label>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group mb-2">
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="experienceYears" 
+                                   name="experienceYears" 
+                                   min="0" 
+                                   max="45" 
+                                   placeholder="Yıl"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                                   required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Yıl</span>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">0-45 yıl arası</small>
+                    </div>
+                    <div class="col-6">
+                        <div class="input-group mb-2">
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="experienceMonths" 
+                                   name="experienceMonths" 
+                                   min="0" 
+                                   max="11" 
+                                   placeholder="Ay"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                                   required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">Ay</span>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">0-11 ay arası</small>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="schoolType">Çalışılan Okul Türü:</label>
@@ -221,7 +267,8 @@
                 educationLevel: document.getElementById('educationLevel').value,
                 graduateEducation: document.getElementById('graduateEducation').value,
                 department: document.getElementById('department').value,
-                experience: document.getElementById('experience').value,
+                experienceYears: document.getElementById('experienceYears').value,
+                experienceMonths: document.getElementById('experienceMonths').value,
                 schoolType: document.getElementById('schoolType').value,
                 classLevels: Array.from(document.querySelectorAll('input[name="classLevels[]"]:checked'))
                     .map(cb => cb.value)
@@ -231,7 +278,7 @@
 
             // Zorunlu alanları kontrol et
             if (!formData.age || !formData.gender || !formData.city || 
-                !formData.educationLevel || !formData.experience || !formData.schoolType) {
+                !formData.educationLevel || !formData.experienceYears || !formData.experienceMonths || !formData.schoolType) {
                 alert('Lütfen tüm zorunlu alanları doldurun!');
                 return;
             }

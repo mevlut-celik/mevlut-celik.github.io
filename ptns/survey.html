@@ -113,14 +113,14 @@
 <body>
     <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
     
-    <!-- Açıklama metni ekleniyor -->
+    <!-- İlk sayfa açıklaması -->
     <div class="container mb-4">
         <h1 class="text-center mb-4">SINIF İÇİ DİYALOG (SENARYO)</h1>
         <p class="lead" style="text-align: justify;">
-            Bir eğitim öğretim sürecinde aşağıdaki konuşmalar fizik dersi esnasında öğretmen ve öğrenciler arasında geçmiştir. Bu diyalogda öğretmen tartışmaların akışını sağlayan kişi rolündedir. Yönlendirme yapmadan öğrencilerin kavramsal bilgi ve akıl yürütmelerini anlamaya çalışmaktadır.
+            Bir eğitim öğretim sürecinde aşağıdaki konuşmalar fizik dersi esnasında öğretmen ve öğrenciler arasında geçmiştir. Bu diyalogda <strong>öğretmen tartışmaların akışını sağlayan kişi rolündedir. Yönlendirme yapmadan öğrencilerin kavramsal bilgi ve akıl yürütmelerini anlamaya çalışmaktadır.</strong>
         </p>
         <p class="lead" style="text-align: justify;">
-            Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir? Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız. Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.
+            Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, <strong>öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir?</strong> Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız. <strong>Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.</strong>
         </p>
     </div>
 
@@ -184,7 +184,7 @@
     <!-- Detay formu -->
     <form id="detailsForm" style="display: none;">
         <div class="container mb-4">
-            <p class="lead" style="text-align: justify;">
+            <p class="lead" style="text-align: justify; color: #dc3545; font-weight: bold;">
                 Önceki sayfada yer alan diyalogtan dikkatinizi çeken ifadelerin yer aldığı satırları seçtiniz. Yapmış olduğunuz her bir seçim ile ilgili olarak ilgili öğrenci ifadesi yeniden gösterilmiş ve altına 2 metin kutusu yerleştirilmiştir. 'Açıklama' kutusuna seçiminizle ilgili öğrencilerin tartışılan kavramla ilgili kavramsal bilgi ve/veya akıl yürütmeleri hakkında neler ortaya koyduğunu düşündüğünüzü belirtmenizi, bunun sizin için ne ifade ettiğini yorumlamanızı istiyoruz. 'Yapılacaklar' kutusuna ise, bu sınıftaki öğretmen siz olsaydınız (yukarıdaki yorumlarınız ışığında) ne/neler yapmaya karar verirdiniz ve ders işleyişinizle ilgili herhangi bir değişiklik düşünür müydünüz? (Aynı durum için birbirinden farklı kararlar alabileceğinizi/değişiklikler yapabileceğinizi düşünüyorsanız lütfen hepsini detaylı bir şekilde yazın.)
             </p>
         </div>
@@ -281,7 +281,7 @@
             formData.append('selections', JSON.stringify(selections));
 
             // Google Apps Script URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzfDSsCkAlRzmYswamTq_T4e33i2ecPcSsKw-pp53HPOR4vkP1noA34sKGn3ds3z8FJFQ/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwJpLDK22o6enFjbdzc2UykB_mdZWZLFZumd9ABNU7hGqJonfTxRTxkyBompLI3i0GkTA/exec';
 
             // Verileri gönder
             fetch(scriptURL, {

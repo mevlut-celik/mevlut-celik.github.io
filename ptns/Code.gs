@@ -37,10 +37,13 @@ function doPost(e) {
       educationLevel: e.parameter.educationLevel || '',
       graduateEducation: e.parameter.graduateEducation || '',
       department: e.parameter.department || '',
-      experience: e.parameter.experience || '',
+      experienceYears: e.parameter.experienceYears || '',
+      experienceMonths: e.parameter.experienceMonths || '',
       schoolType: e.parameter.schoolType || '',
       classLevels: e.parameter.classLevels || '',
-      trainingExperience: e.parameter.trainingExperience || ''
+      trainingExperience: e.parameter.trainingExperience || '',
+      isVolunteer: e.parameter.isVolunteer || '',
+      contactEmail: e.parameter.contactEmail || ''
     };
     
     Logger.log('Form verileri: ' + JSON.stringify(formData));
@@ -69,7 +72,8 @@ function doPost(e) {
           formData.educationLevel,
           formData.graduateEducation,
           formData.department,
-          formData.experience,
+          formData.experienceYears,
+          formData.experienceMonths,
           formData.schoolType,
           formData.classLevels,
           formData.trainingExperience,
@@ -91,7 +95,8 @@ function doPost(e) {
         formData.educationLevel,
         formData.graduateEducation,
         formData.department,
-        formData.experience,
+        formData.experienceYears,
+        formData.experienceMonths,
         formData.schoolType,
         formData.classLevels,
         formData.trainingExperience,
