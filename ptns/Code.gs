@@ -1,4 +1,13 @@
 function doGet(e) {
+  if (e.parameter.action === 'getResponses') {
+    var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
+    var sheet = spreadsheet.getActiveSheet();
+    var data = sheet.getDataRange().getValues();
+    
+    return ContentService.createTextOutput(JSON.stringify(data))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
   return ContentService.createTextOutput(JSON.stringify({
     'status': 'success',
     'message': 'GET request received'

@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col">
                 <button class="btn btn-success export-btn" onclick="exportToExcel()">Excel'e Aktar</button>
-                <button class="btn btn-danger export-btn ml-2" onclick="clearResponses()">Tüm Verileri Sil</button>
+                <button class="btn btn-primary export-btn ml-2" onclick="loadResponses()">Verileri Yenile</button>
             </div>
         </div>
 
@@ -41,6 +41,9 @@
                         <th>Okul Türü</th>
                         <th>Sınıf Düzeyleri</th>
                         <th>Hizmet İçi Eğitim</th>
+                        <th>Seçilen Cümle</th>
+                        <th>Açıklama</th>
+                        <th>Yapılacaklar</th>
                     </tr>
                 </thead>
                 <tbody id="responsesTableBody">
@@ -51,47 +54,53 @@
 
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script>
-        function loadResponses() {
-            const responses = JSON.parse(localStorage.getItem('formResponses') || '[]');
-            const tbody = document.getElementById('responsesTableBody');
-            tbody.innerHTML = '';
+        // Google Apps Script URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw73H-j1IqNx75_qCjSIWuyP3sj760Uwl6NPMk7BqAhmgM-aTLIZGvJQB9U3Wa2dolyQA/exec';
 
-            responses.forEach(response => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${response.timestamp}</td>
-                    <td>${response.age}</td>
-                    <td>${response.gender}</td>
-                    <td>${response.city}</td>
-                    <td>${response.district}</td>
-                    <td>${response.educationLevel}</td>
-                    <td>${response.graduateEducation}</td>
-                    <td>${response.department}</td>
-                    <td>${response.experience}</td>
-                    <td>${response.schoolType}</td>
-                    <td>${response.classLevels}</td>
-                    <td>${response.trainingExperience}</td>
-                `;
-                tbody.appendChild(row);
-            });
+        async function loadResponses() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getResponses');
+                const data = await response.json();
+                
+                const tbody = document.getElementById('responsesTableBody');
+                tbody.innerHTML = '';
+
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row[0] || ''}</td>
+                        <td>${row[1] || ''}</td>
+                        <td>${row[2] || ''}</td>
+                        <td>${row[3] || ''}</td>
+                        <td>${row[4] || ''}</td>
+                        <td>${row[5] || ''}</td>
+                        <td>${row[6] || ''}</td>
+                        <td>${row[7] || ''}</td>
+                        <td>${row[8] || ''}</td>
+                        <td>${row[9] || ''}</td>
+                        <td>${row[10] || ''}</td>
+                        <td>${row[11] || ''}</td>
+                        <td>${row[12] || ''}</td>
+                        <td>${row[13] || ''}</td>
+                        <td>${row[14] || ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                alert('Veriler yüklenirken bir hata oluştu.');
+            }
         }
 
         function exportToExcel() {
-            const responses = JSON.parse(localStorage.getItem('formResponses') || '[]');
-            const ws = XLSX.utils.json_to_sheet(responses);
+            const table = document.querySelector('table');
+            const ws = XLSX.utils.table_to_sheet(table);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Form Yanıtları");
             XLSX.writeFile(wb, "form_yanitlari.xlsx");
         }
 
-        function clearResponses() {
-            if (confirm('Tüm yanıtları silmek istediğinizden emin misiniz?')) {
-                localStorage.removeItem('formResponses');
-                loadResponses();
-            }
-        }
-
-        // Sayfa yüklendiğinde yanıtları göster
+        // Sayfa yüklendiğinde verileri yükle
         window.onload = loadResponses;
     </script>
 </body>
