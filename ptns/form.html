@@ -26,6 +26,27 @@
         .modal-content {
             text-align: left;
         }
+        .required-field::after {
+            content: " *";
+            color: red;
+            font-weight: bold;
+        }
+        
+        .form-group.has-error label {
+            color: #dc3545;
+        }
+        
+        .form-group.has-error input,
+        .form-group.has-error select {
+            border-color: #dc3545;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 80%;
+            margin-top: 0.25rem;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -34,25 +55,27 @@
         <h1 class="text-center mb-4">Katılımcı Bilgileri</h1>
         <form id="volunteerForm" class="mt-4">
             <div class="form-group">
-                <label for="age">Yaşınız:</label>
-                <input type="number" 
+                <label for="age" class="required-field">Yaşınız</label>
+                <input type="text" 
                        class="form-control" 
                        id="age" 
                        name="age" 
-                       min="20" 
-                       max="65" 
-                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                       maxlength="2"
+                       pattern="[2-6][0-9]"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,2); if(this.value > 65) this.value = 65; if(this.value < 20) this.value = '';"
                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
                        required>
                 <small class="form-text text-muted">Lütfen 20-65 yaş aralığında bir değer giriniz.</small>
+                <div class="error-message">Bu alan zorunludur ve 20-65 yaş aralığında olmalıdır</div>
             </div>
             <div class="form-group">
-                <label for="gender">Cinsiyet:</label>
+                <label for="gender" class="required-field">Cinsiyet</label>
                 <select class="form-control" id="gender" name="gender" required>
                     <option value="">Seçiniz</option>
                     <option value="Kadın">Kadın</option>
                     <option value="Erkek">Erkek</option>
                 </select>
+                <div class="error-message">Lütfen bir seçim yapınız</div>
             </div>
             <div class="form-group">
                 <label for="city">İl:</label>
@@ -139,14 +162,14 @@
                     <option value="Kilis">Kilis</option>
                     <option value="Osmaniye">Osmaniye</option>
                     <option value="Düzce">Düzce</option>
-        </select>
-        </div>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="district">İlçe:</label>
                 <select class="form-control" id="district" name="district" required>
                     <option value="">İlçe Seçiniz</option>
-        </select>
-    </div>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="educationLevel">En Son Tamamlanan Eğitim Düzeyi:</label>
                 <select class="form-control" id="educationLevel" name="educationLevel" required>
@@ -165,12 +188,12 @@
                 </select>
             </div>
             <div class="form-group">
-      <label for="department">Lisans Derecesinin Mezun Olunan Fakülte:</label>
+                <label for="department">Lisans Derecesinin Mezun Olunan Fakülte:</label>
                 <select class="form-control" id="department" name="department" required>
                     <option value="">Seçiniz</option>
                     <option value="Eğitim Fakültesi">Eğitim Fakültesi</option>
                     <option value="Fen-Edebiyat Fakültesi">Fen-Edebiyat Fakültesi</option>
-</select>
+                </select>
             </div>
             <div class="form-group">
                 <label>Mesleki Deneyim Süreniz:</label>
@@ -218,29 +241,29 @@
                 <select class="form-control" id="schoolType" name="schoolType" required>
                     <option value="devlet">Devlet</option>
                     <option value="özel">Özel</option>
-                    </select>
+                </select>
             </div>
-           <div class="form-group">
-    <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
-    <div id="classLevels">
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="grade9" name="classLevels[]" value="9">
-            <label class="form-check-label" for="grade9">9. Sınıf</label>
-        </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="grade10" name="classLevels[]" value="10">
-            <label class="form-check-label" for="grade10">10. Sınıf</label>
-        </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="grade11" name="classLevels[]" value="11">
-            <label class="form-check-label" for="grade11">11. Sınıf</label>
-        </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="grade12" name="classLevels[]" value="12">
-            <label class="form-check-label" for="grade12">12. Sınıf</label>
-        </div>
-    </div>
-</div>
+            <div class="form-group">
+                <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
+                <div id="classLevels">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="grade9" name="classLevels[]" value="9">
+                        <label class="form-check-label" for="grade9">9. Sınıf</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="grade10" name="classLevels[]" value="10">
+                        <label class="form-check-label" for="grade10">10. Sınıf</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="grade11" name="classLevels[]" value="11">
+                        <label class="form-check-label" for="grade11">11. Sınıf</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="grade12" name="classLevels[]" value="12">
+                        <label class="form-check-label" for="grade12">12. Sınıf</label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="trainingExperience">Daha Önce Hizmet İçi Eğitim aldınız mı?(Evet ise eğitim konularını belirtin):</label>
                 <textarea class="form-control" id="trainingExperience" name="trainingExperience" rows="3" required></textarea>
@@ -400,6 +423,57 @@
         window.onload = function() {
             window.scrollTo(0, 0);
         };
+    </script>
+
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let hasError = false;
+        
+        // Tüm required alanları kontrol et
+        this.querySelectorAll('[required]').forEach(element => {
+            const formGroup = element.closest('.form-group');
+            const errorMessage = formGroup.querySelector('.error-message');
+            
+            if (!element.value) {
+                e.preventDefault();
+                hasError = true;
+                formGroup.classList.add('has-error');
+                if (errorMessage) {
+                    errorMessage.style.display = 'block';
+                }
+            } else {
+                formGroup.classList.remove('has-error');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+        });
+        
+        if (hasError) {
+            // Sayfayı ilk hata mesajına kaydır
+            const firstError = document.querySelector('.has-error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            alert('Lütfen zorunlu alanları doldurunuz (kırmızı yıldız * ile işaretli alanlar)');
+        }
+    });
+
+    // Input alanları değiştiğinde hata durumunu temizle
+    document.querySelectorAll('[required]').forEach(element => {
+        element.addEventListener('input', function() {
+            const formGroup = this.closest('.form-group');
+            const errorMessage = formGroup.querySelector('.error-message');
+            
+            if (this.value) {
+                formGroup.classList.remove('has-error');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+        });
+    });
     </script>
 </body>
 </html>
