@@ -9,15 +9,9 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
   
-  // Parametre yoksa veya action=getResponses değilse
-  var spreadsheet = SpreadsheetApp.openById('1VNSvtoRdEM05KB-4ZJ0JBgrfjClUYshFpf9AxfpZwug');
-  var sheet = spreadsheet.getActiveSheet();
-  var data = sheet.getDataRange().getValues();
-  
   return ContentService.createTextOutput(JSON.stringify({
     'status': 'success',
-    'message': 'GET request received',
-    'data': data
+    'message': 'GET request received'
   })).setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -30,14 +24,10 @@ function doPost(e) {
     var formData = {};
     if (e.postData && e.postData.contents) {
       formData = JSON.parse(e.postData.contents);
-    } else if (e.parameter) {
-      formData = e.parameter;
-      if (formData.selections) {
-        formData.selections = JSON.parse(formData.selections);
-      }
+      Logger.log('Gelen JSON verisi: ' + JSON.stringify(formData));
+    } else {
+      throw new Error('Veri alınamadı');
     }
-    
-    Logger.log('Gelen veri: ' + JSON.stringify(formData));
 
     // Seçimler varsa her biri için satır ekle
     if (formData.selections && Array.isArray(formData.selections)) {
@@ -63,30 +53,10 @@ function doPost(e) {
           formData.contactEmail || ''
         ];
         sheet.appendRow(row);
+        Logger.log('Satır eklendi: ' + JSON.stringify(row));
       });
     } else {
-      // Seçim yoksa tek satır ekle
-      var row = [
-        new Date().toLocaleString('tr-TR'),
-        formData.age || '',
-        formData.gender || '',
-        formData.city || '',
-        formData.district || '',
-        formData.educationLevel || '',
-        formData.graduateEducation || '',
-        formData.department || '',
-        formData.experienceYears || '',
-        formData.experienceMonths || '',
-        formData.schoolType || '',
-        formData.classLevels || '',
-        formData.trainingExperience || '',
-        '',
-        '',
-        '',
-        formData.isVolunteer || '',
-        formData.contactEmail || ''
-      ];
-      sheet.appendRow(row);
+      throw new Error('Geçerli seçim bulunamadı');
     }
     
     return ContentService.createTextOutput(JSON.stringify({
@@ -96,6 +66,7 @@ function doPost(e) {
     
   } catch(error) {
     Logger.log('HATA: ' + error.toString());
+    Logger.log('Hata stack: ' + error.stack);
     return ContentService.createTextOutput(JSON.stringify({
       'success': false,
       'message': error.toString()
