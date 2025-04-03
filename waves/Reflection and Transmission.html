@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-8175315-29"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-8175315-29');
+</script>
+
+  <meta charset="utf-8">
+  <title>Reflection and Transmission</title>
+</head>
+
+<body style="font-family:sans-serif; font-size:15px; width:600px; margin-left:auto; margin-right:auto;">
+<center>
+<H3> Reflection and Transmission</H3>
+</center>
+    <canvas id="myCanvas" width="600" height="280"></canvas>
+<center>
+    <div id="buttons">
+      <input type="button" id="play" value="Başlat" onclick="play()">
+      <input type="button" id="pause" value="Durdur" onclick="pause()">
+      <input type="button" id="stepback" value="<< Geri" onclick="stepBack()">
+      <input type="button" id="stepforward" value="İleri >>" onclick="stepForward()">
+      <input type="button" id="reset" value="Reset" onclick="reset()">
+    </div>
+    <div id="morebuttons">
+      <input type="button" id="fixed" value="Sağ Uç Sabit" onclick="setSign(-1); mode = 1;">
+      <input type="button" id="free" value="Sağ Uç Serbest" onclick="setSign(1); mode = 2;">
+      <input type="button" id="ltoh" value="İnce Yaydan Kalın Yaya" onclick="setSign(-1); mode = 3;">
+      <input type="button" id="htol" value="Kalın Yaydan İnce Yaya" onclick="setSign(1); mode = 4;">
+    </div>
+
+</center>
+
+  <script>
+
+      function setSign(newValue)
+      {
+        sign = Number(newValue);
+        reset();
+      }
+
+      function play() {
+        window.clearTimeout(timer);
+        runFlag = 1;
+        runMotion();
+
+      }
+
+      function pause() {
+        window.clearTimeout(timer);
+        runFlag = 0;
+
+      }
+
+      function stepForward() {
+        window.clearTimeout(timer);
+        runFlag = 1;
+        drawMotion();
+
+      }
+
+      function stepBack() {
+        window.clearTimeout(timer);
+        index = index-2;
+        if (index < -1) index = -1;
+        time = index/20;
+        xPos = xBase;
+        runFlag = 1;
+        drawMotion();
+
+      }
+
+
+      function reset() {
+        window.clearTimeout(timer);
+        index = -1;
+        time = 0.0;
+        v = Math.sqrt(1000*Tension/mu);
+        v = 40;
+        lambda2 = v/f2;
+
+        runFlag = 1;
+        runMotion();
+
+      }
+
+
+      var canvas = document.getElementById("myCanvas");
+      var context = canvas.getContext("2d");
+      var index = -1;
+      var xBase = 70;
+      var yBase = 30;
+      var yBase1 = yBase + 140;
+      var yBase2 = yBase + 40;
+      var xInit = 37;
+      var graphType = 1;
+      var graphTitle = 'The sum of the waves';
+      var yAxisTitle = 'y (mm)';
+      var xAxisTitle = 'x (m)';
+      var yIncrement = 20;
+      var yNumDecimals = 0;
+      var yStart = yBase+120;
+      var plotColor = '#ff00ff';
+      var scenario = 1;
+      var freq = 48;
+      var A = 20;
+      var Tension = 100;
+      var mu = 20;
+      var v = Math.sqrt(1000*Tension/mu);
+      v = 40;
+      var lambda = v/freq;
+      var f2 = 30;
+      var lambda2 = v/f2;
+      var radius = 5;
+      var time = 0.0;
+      var deltat = 1/20.0;
+      var timer;
+      var runFlag = 1;
+      var sign = -1;
+      var mode = 1;
+      var arraySize = 401;
+      var ray = new Array(arraySize);
+        for (var i = 0; i < arraySize; i++) {
+         ray[i] = {};
+         ray[i].right = 0.0;
+         ray[i].left = 0.0;
+        }
+
+      reset();
+
+    function drawMotion() {
+
+  //    console.log("In the drawMotion function, with runFlag = " + runFlag );
+
+      if (index >= 1100) index = -1;
+
+  //    console.log("In the drawMotion function, with runFlag = " + runFlag + " Fx = " + Fx);
+
+      if (runFlag == 1) {    //      run if runFlag equal 1, not if equal 0
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        index = index + 1;
+
+        // set background color for the entire thing
+           context.fillStyle = "#ffd";
+           context.fillRect(0, 0, canvas.width, canvas.height);
+
+
+        // set background color for the 3rd graph
+           context.fillStyle = "#eff";
+           context.fillRect(xBase, yBase2, 400, 160);
+
+
+           context.strokeStyle = '#000';
+           context.lineWidth = 1;
+
+        // vertical grid lines
+         for (var i = 0; i <= 10; i++) {
+
+           context.beginPath();
+           context.moveTo(xBase+40*i, yBase2);
+           context.lineTo(xBase+40*i, yBase2+166);
+           context.stroke();
+           context.font = '14pt Calibri';
+           context.fillStyle = 'black';
+           context.textAlign = 'center';
+           context.textBaseline = 'middle';
+           axisValue = i;
+           axisLabel = axisValue.toFixed(0);
+           context.fillText(axisLabel, xBase+40*i, yBase2+175);
+
+          }
+
+         // horizontal grid lines
+
+         for (i = 0; i <= 4; i++) {
+           context.beginPath();
+           context.moveTo(xBase-10, yBase2+40*i);
+           context.lineTo(xBase+400, yBase2+40*i);
+           context.stroke();
+           context.font = '14pt Calibri';
+           context.fillStyle = 'black';
+           context.textAlign = 'center';
+           context.textBaseline = 'middle';
+
+           if (graphType == 1) {
+              axisValue = yIncrement*(2-i);
+
+           }
+
+
+           axisLabel = axisValue.toFixed(yNumDecimals);
+           context.fillText(axisLabel, xBase-24, yBase2+40*i);
+
+          }
+
+         // x-axis
+           context.strokeStyle = '#000';
+           context.lineWidth = 4;
+           context.beginPath();
+           context.moveTo(xBase-1, yBase2+80);
+           context.lineTo(xBase+420, yBase2+80);
+           context.stroke();
+           context.moveTo(xBase+410, yBase2+80-6);
+           context.lineTo(xBase+420, yBase2+80);
+           context.lineTo(xBase+410, yBase2+80+6);
+           context.lineJoin = 'miter';
+           context.stroke();
+           context.font = '16pt Calibri';
+           context.fillStyle = 'black';
+           context.textAlign = 'left';
+           context.fillText(xAxisTitle, xBase+428, yBase2+80);
+
+
+         // y-axis
+           context.strokeStyle = '#000';
+           context.beginPath();
+           context.moveTo(xBase, yBase2-20);
+           context.lineTo(xBase, yBase2+80);
+           context.stroke();
+           context.moveTo(xBase-6, yBase2-10);
+           context.lineTo(xBase, yBase2-20);
+           context.lineTo(xBase+6, yBase2-10);
+           context.lineJoin = 'miter';
+           context.stroke();
+           context.strokeStyle = '#000';
+           context.textAlign = 'center';
+           context.fillText(yAxisTitle, xBase, yBase2-35);
+
+        // set line color
+           context.strokeStyle = '#999';
+           context.lineWidth = 2;
+
+           time = index/1000.0;
+
+         if (mode <= 2) {
+           for (var i = 0; i <= 400; i++) {
+             ray[i].right = Math.exp(-(Math.abs(i+50-20*freq*time)/(40))*(Math.abs(i+50-20*freq*time)/(40)));
+             ray[i].left = sign*Math.exp(-(Math.abs(i-800-50+20*freq*time)/(40))*(Math.abs(i-800-50+20*freq*time)/(40)));
+           }
+         }
+
+         if (mode == 3) {
+           var v1 = 3.0;
+           var v2 = 1.0;
+           var transK = (4/(v1*v2)/((1/v1 + 1/v2)*(1/v1 + 1/v2)));
+           var reflectK = Math.sqrt(1-transK);
+           transK = Math.sqrt(v2*transK/v1);
+
+           for (var i = 0; i <= 400; i++) {
+             ray[i].right = Math.exp(-(Math.abs(i+50-20*freq*time)/(40))*(Math.abs(i+50-20*freq*time)/(40)))+reflectK*sign*Math.exp(-(Math.abs(i-400-50+20*freq*time)/(40))*(Math.abs(i-400-50+20*freq*time)/(40)));
+             ray[i].left = transK*Math.exp(-(Math.abs(i-117-20*(freq/v1)*time)/(40/v1))*(Math.abs(i-117-20*(freq/v1)*time)/(40/v1)));
+           }
+         }
+
+         if (mode == 4) {
+           var v1 = 1.0;
+           var v2 = 3.0;
+           var transK = (4/(v1*v2)/((1/v1 + 1/v2)*(1/v1 + 1/v2)));
+           var reflectK = Math.sqrt(1-transK);
+           transK = Math.sqrt(v2*transK/v1);
+
+           for (var i = 0; i <= 400; i++) {
+             ray[i].left = transK*Math.exp(-(Math.abs(i+50-20*freq*time)/(40))*(Math.abs(i+50-20*freq*time)/(40)));
+             ray[i].right = Math.exp(-(Math.abs(i-117-20*(freq/v2)*time)/(40/v2))*(Math.abs(i-117-20*(freq/v2)*time)/(40/v2)))+reflectK*sign*Math.exp(-(Math.abs(i-283+20*(freq/v2)*time)/(40/v2))*(Math.abs(i-283+20*(freq/v2)*time)/(40/v2)));
+           }
+         }
+
+
+
+         // draw the third wave
+           if (mode <= 2) {
+             context.strokeStyle = '#808';
+             context.lineWidth = 2*mu/10;
+             context.beginPath();
+             context.moveTo(xBase, yBase2+80-40*ray[0].right-40*ray[0].left);
+             for (var i=1; i<=400; i++) {
+              context.lineTo(xBase+i, yBase2+80-40*ray[i].right-40*ray[i].left);
+            }
+             context.stroke();
+           }
+           else {
+             context.strokeStyle = 'red';
+             context.lineWidth = 2*mu/10;
+             if (mode == 4) {
+               context.strokeStyle = 'blue';
+               context.lineWidth = 2*2*mu/10;
+             }
+             context.beginPath();
+             context.moveTo(xBase, yBase2+80-40*ray[0].right);
+             for (var i=1; i<=200; i++) {
+              context.lineTo(xBase+i, yBase2+80-40*ray[i].right);
+            }
+             context.stroke();
+             context.strokeStyle = 'blue';
+             context.lineWidth = 2*2*mu/10;
+             if (mode == 4) {
+               context.strokeStyle = 'red';
+               context.lineWidth = 2*mu/10;
+             }
+             context.beginPath();
+             context.moveTo(xBase+200, yBase2+80-40*ray[200].left);
+             for (var i=201; i<=400; i++) {
+              context.lineTo(xBase+i, yBase2+80-40*ray[i].left);
+            }
+             context.stroke();
+
+           }
+
+        // draw the scenario
+
+ //     console.log("In the drawMotion function, with runFlag = " + runFlag + " x2 = " + x2);
+
+
+           if (mode == 1) graphTitle = "Sağ Uç Sabit";
+           if (mode == 2) graphTitle = "Sağ Uç Serbest";
+           if (mode == 3) graphTitle = "İnce Yaydan Kalın Yaya";
+           if (mode == 4) graphTitle = "Kalın Yaydan İnce Yaya";
+
+           // graph title
+           context.font = 'bold 16pt Calibri';
+           context.fillStyle = 'purple';
+           context.textAlign = 'center';
+           context.fillText(graphTitle, (canvas.width)/2-30, yBase2-20);
+
+           context.font = '16pt Calibri';
+           context.fillStyle = 'black';
+
+        var timeLabel = 't = ';
+        timeLabel = timeLabel + time.toFixed(3) + ' s';
+        context.textAlign = 'left';
+        context.fillText(timeLabel, xBase+410, 50);
+
+
+      }
+    }
+
+    function runMotion() {
+        drawMotion();
+        if (runFlag == 1) {
+          timer = window.setTimeout(runMotion, 1000/60);
+        }
+      }
+
+  </script>
+
+<p>This is a simulation of a wave traveling through one medium. If the wave encounters a
+fixed end, the wave is reflected upside down. If the wave encounters a free end, the wave is
+reflected upright.
+<BR>If the wave is on a light string that is connected to a heavy string, the interface acts
+like a fixed end, and the part of the wave that reflects is reflected upside down.
+<BR>If the wave is on a heavy string that is connected to a light string, the interface acts
+like a free end, and the part of the wave that reflects is reflected upright.
+<BR>The transmitted part of the wave is always transmitted upright.</p>
+
+<p>This is relevant for light, when it encounters an interface between two boundaries.
+The light string is analogous to a low-n (fast) medium, and the heavy string is analogous to a
+high-n (slow) medium.</p>
+
+
+<p>Simulation written by Andrew Duffy, and first posted on 8-19-2017.</p>
+
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" rel="dct:type">work</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Duffy</span> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />This simulation can be found in the collection at <a xmlns:dct="http://purl.org/dc/terms/" href="http://physics.bu.edu/~duffy/classroom.html" rel="dct:source">http://physics.bu.edu/~duffy/classroom.html</a>.
+
+            <p>The counter has been running on this page since 8-14-2018. The number of people accessing the page since then is:
+<br><img src="http://physics.bu.edu/cgi-bin/Count.cgi?df=reflection_transmission.dat" align="absmiddle">
+
+
+</body>
+</html>
