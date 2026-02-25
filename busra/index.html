@@ -20,9 +20,12 @@
     <nav class="navbar glass">
         <div class="nav-content">
             <a href="index.html" class="logo">Büşra<span>Nur</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="ph ph-list"></i>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Ana Sayfa</a></li>
-                <li><a href="#about">Hakkımda</a></li>
+                <li><a href="about.html">Hakkımda</a></li>
                 <li><a href="#blog">Yazılarım</a></li>
                 <li><a href="admin.html" class="admin-link">Yönetim Paneli <i class="ph ph-lock-key"></i></a></li>
             </ul>
@@ -37,7 +40,7 @@
             <p class="subtitle animate-up delay-1">Lalelerin zarafetiyle örülmüş, modern bir dünya.</p>
             <div class="hero-actions animate-up delay-2">
                 <a href="#blog" class="btn btn-primary">Yazılarımı Keşfet</a>
-                <a href="#about" class="btn btn-outline">Hakkımda</a>
+                <a href="about.html" class="btn btn-outline">Hakkımda</a>
             </div>
         </div>
     </header>
@@ -166,6 +169,16 @@
             // Prepend new posts to the top of the grid
             blogGrid.insertBefore(article, blogGrid.firstChild);
         });
+
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.querySelector('.nav-links');
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
     </script>
 </body>
 

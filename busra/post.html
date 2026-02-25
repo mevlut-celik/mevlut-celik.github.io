@@ -20,6 +20,9 @@
     <nav class="navbar glass">
         <div class="nav-content">
             <a href="index.html" class="logo">Büşra<span>Nur</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="ph ph-list"></i>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Ana Sayfa</a></li>
                 <li><a href="about.html">Hakkımda</a></li>
@@ -117,6 +120,16 @@
                     document.getElementById('post-image').src = post.image;
                 }
             }
+        }
+
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.querySelector('.nav-links');
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
         }
     </script>
 </body>

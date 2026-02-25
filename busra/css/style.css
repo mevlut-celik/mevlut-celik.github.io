@@ -448,6 +448,7 @@ h6 {
     margin-bottom: 1.5rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -912,13 +913,50 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Menu Toggle */
+.menu-toggle {
+    display: none;
+    font-size: 2.2rem;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.menu-toggle:hover {
+    color: var(--primary-dark);
+}
+
 /* =========================================
    Responsive Adjustments
 ========================================= */
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
     .nav-links {
-        display: none;
-        /* In a real app, add a hamburger menu */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem 0;
+        gap: 1.5rem;
+        transition: var(--transition);
+        transform: translateY(-150%);
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        z-index: 1000;
     }
 
     .hero h1 {
