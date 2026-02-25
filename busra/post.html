@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazı | Büşra Nur Yüksel</title>
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar glass">
+        <div class="nav-content">
+            <a href="index.html" class="logo">Büşra<span>Nur</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="about.html">Hakkımda</a></li>
+                <li><a href="index.html#blog" class="active">Yazılarım</a></li>
+                <li><a href="admin.html" class="admin-link">Yönetim Paneli <i class="ph ph-lock-key"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="post-main">
+        <article class="single-post">
+            <header class="post-header">
+                <div class="category text-badge">Deneme</div>
+                <h1 id="post-title">Baharın İlk Fısıltıları</h1>
+                <div class="post-meta">
+                    <span id="post-date"><i class="ph ph-calendar-blank"></i> 18 Şubat 2026</span>
+                    <span><i class="ph ph-clock"></i> <span id="post-read-time">4</span> dk okuma</span>
+                </div>
+            </header>
+
+            <div class="post-hero-image" id="post-image-container" style="display: none;">
+                <img id="post-image" src="" alt="Yazı Görseli">
+            </div>
+
+            <div class="post-content" id="post-body">
+                <p class="dropcap">Rüzgarın yönü değiştiğinde içimizde uyanan o tarifsiz umut hissi... Doğanın sessiz
+                    ama güçlü bir şekilde yeniden doğuşunu izlemek, bize kendi hayatımızdaki döngüleri hatırlatıyor.
+                    Bazen sadece durup dinlemek gerekir.</p>
+                <p>Kışın o uzun ve yorucu günlerinin ardından, topraktan başını uzatan o ilk yeşillik, adeta direnişin
+                    en naif halidir. İnsan hayatı da öyledir; bazen her şeyin bittiğini sandığınız o gri günlerin
+                    ardından, en güzel yeşiller filizlenmeye başlar.</p>
+                <h2>Laleler Neden Özeldir?</h2>
+                <p>Bir lale düşünün; gösterişten uzak ama bir o kadar da göz alıcı. Gövdesi incecik olmasına rağmen, o
+                    büyük çiçeği cesaretle taşır. Hayatta böyle olmalı değil miyiz? Ne kadar fırtınalı olursa olsun
+                    günlerimiz, kendi renklerimizi sakince açmalıyız rüzgara karşı.</p>
+                <blockquote>
+                    Eğer bir çiçek olmayı seçebilseydim, kesinlikle bir lale olurdum. Sessiz, sakin ama nereye baksan
+                    kendini fark ettiren.
+                </blockquote>
+                <p>Bu baharda kendinize bir iyilik yapın. Pencerelerinizi açın, o taze havayı içinize çekin ve doğanın o
+                    muazzam döngüsüne şahitlik edin. Göreceksiniz, içinizdeki o küçük umut tohumları da havayla temas
+                    ettikçe yeşermeye başlayacak.</p>
+            </div>
+
+            <div class="post-footer">
+                <a href="index.html#blog" class="btn btn-outline"><i class="ph ph-arrow-left"></i> Tüm Yazılara Dön</a>
+                <div class="post-share">
+                    <span>Paylaş:</span>
+                    <a href="#"><i class="ph ph-x-logo"></i></a>
+                    <a href="#"><i class="ph ph-linkedin-logo"></i></a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Büşra<span>Nur</span></h2>
+                <p>Zarafet, sadelik ve ilham dolu yazılar.</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="ph ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph ph-x-logo"></i></a>
+                <a href="#"><i class="ph ph-linkedin-logo"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Büşra Nur Yüksel Blog. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if there's post data passed via query parameter (for the dummy LocalStorage flow)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        if (postId) {
+            // Load post from LocalStorage
+            const posts = JSON.parse(localStorage.getItem('busra_posts')) || [];
+            const post = posts.find(p => p.id === postId);
+
+            if (post) {
+                document.getElementById('post-title').innerText = post.title;
+                document.getElementById('post-date').innerHTML = `<i class="ph ph-calendar-blank"></i> ${post.date}`;
+                document.getElementById('post-body').innerHTML = `<p class="dropcap">${post.content.replace(/\n/g, '<br>')}</p>`;
+                document.querySelector('.category').innerText = post.category.charAt(0).toUpperCase() + post.category.slice(1);
+
+                // Read time approximation
+                const words = post.content.split(' ').length;
+                document.getElementById('post-read-time').innerText = Math.max(1, Math.ceil(words / 200));
+
+                if (post.image) {
+                    document.getElementById('post-image-container').style.display = 'block';
+                    document.getElementById('post-image').src = post.image;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

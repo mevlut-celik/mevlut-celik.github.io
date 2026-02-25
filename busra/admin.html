@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Büşra Nur Yüksel</title>
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body class="admin-bg">
+    <nav class="navbar glass">
+        <div class="nav-content">
+            <a href="index.html" class="logo">Büşra<span>Nur</span> <span class="admin-tag">Admin</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Siteye Dön</a></li>
+                <li><a href="#" class="active"><i class="ph ph-plus-circle"></i> Yeni Yazı Ekle</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="admin-main" id="adminContent" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2>Yeni Yazı Oluştur</h2>
+                <p>Bloguna yeni bir lale zarafeti ekle.</p>
+            </div>
+
+            <!-- Login Overlay -->
+            <div id="loginOverlay" class="login-overlay">
+                <div class="login-card glass-panel">
+                    <h3>Yönetici Girişi</h3>
+                    <p>Paneli görüntülemek için şifrenizi girin.</p>
+                    <div class="form-group">
+                        <input type="password" id="adminPassword" placeholder="Şifrenizi girin" autofocus>
+                    </div>
+                    <button class="btn btn-primary" onclick="checkPassword()"
+                        style="width: 100%; justify-content: center;">Giriş Yap</button>
+                    <p id="loginError" class="login-error"
+                        style="display: none; color: #d81b60; margin-top: 1rem; font-size: 0.9rem;">Hatalı şifre, lütfen
+                        tekrar deneyin.</p>
+                    <a href="index.html" class="btn btn-outline"
+                        style="width: 100%; justify-content: center; margin-top: 1rem;">Siteye Dön</a>
+                </div>
+            </div>
+
+            <form class="admin-form glass-panel">
+                <div class="form-group">
+                    <label for="postTitle">Yazı Başlığı</label>
+                    <input type="text" id="postTitle" placeholder="Örn: Lalelerin Dili" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="postCategory">Kategori</label>
+                        <select id="postCategory">
+                            <option value="ilham">İlham</option>
+                            <option value="gunluk">Günlük</option>
+                            <option value="minimalizm">Minimalizm</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label for="postDate">Tarih</label>
+                        <input type="date" id="postDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postImage">Kapak Görseli</label>
+                    <div class="file-upload">
+                        <i class="ph ph-image"></i>
+                        <span>Görsel seçmek için tıklayın veya sürükleyin</span>
+                        <input type="file" id="postImage" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postContent">Yazı İçeriği</label>
+                    <textarea id="postContent" rows="10" placeholder="Aklından geçenleri yaz..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline">Taslak Olarak Kaydet</button>
+                    <button type="submit" class="btn btn-primary">Yazıyı Yayınla <i
+                            class="ph ph-paper-plane-tilt"></i></button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('postDate').valueAsDate = new Date();
+
+        // Simple login logic
+        function checkPassword() {
+            var password = document.getElementById('adminPassword').value;
+            var overlay = document.getElementById('loginOverlay');
+            var content = document.getElementById('adminContent');
+            var error = document.getElementById('loginError');
+
+            // Hardcoded simple password for demonstration
+            if (password === 'lale') {
+                overlay.style.display = 'none';
+                content.style.display = 'block';
+                error.style.display = 'none';
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        // Allow pressing Enter to submit password
+        document.getElementById('adminPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        // Handle form submission
+        document.querySelector('.admin-form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent page reload
+
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const date = document.getElementById('postDate').value; // We might want to format this later, but raw is fine.
+            const content = document.getElementById('postContent').value;
+            const imageInput = document.getElementById('postImage');
+
+            // Format date to Turkish like "18 Şubat 2026"
+            const dateObj = new Date(date);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = dateObj.toLocaleDateString('tr-TR', options);
+
+            const newPost = {
+                id: 'post_' + Date.now(),
+                title: title,
+                category: category,
+                date: formattedDate,
+                content: content,
+                image: null // Default if no image
+            };
+
+            // Setup a function to save the post once we have the image data (if any)
+            const savePost = (postToSave) => {
+                let existingPosts = JSON.parse(localStorage.getItem('busra_posts')) || [];
+                existingPosts.push(postToSave);
+                localStorage.setItem('busra_posts', JSON.stringify(existingPosts));
+
+                // Show success and redirect
+                alert('Harika! Yeni blog yazınız başarıyla eklendi.');
+                window.location.href = 'index.html#blog';
+            };
+
+            // Check if an image was uploaded, read it as Data URL (Base64) to save in LocalStorage
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    newPost.image = event.target.result;
+                    savePost(newPost);
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                savePost(newPost);
+            }
+        });
+    </script>
+</body>
+
+</html>
