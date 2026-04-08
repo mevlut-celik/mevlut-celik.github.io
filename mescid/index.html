@@ -22,13 +22,11 @@
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:22px 0}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
     .card h3{margin:0 0 7px;font-size:16px}.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
-    .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-bottom:16px}
-    .shot{min-height:280px;border:1px solid #313131;border-radius:14px;background:#121212;color:#8f8f8f;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px}
     .cta{margin:24px 0 50px;padding:20px;border:1px solid #3c0000;border-radius:18px;background:#130909;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
     .foot{color:#8c8c8c;border-top:1px solid #1f1f1f;padding:24px 0 40px}
     code{color:#fff;background:#1c1c1c;border:1px solid #2e2e2e;padding:2px 6px;border-radius:8px}
-    @media(max-width:900px){.grid,.shots{grid-template-columns:1fr 1fr}}
-    @media(max-width:640px){.grid,.shots{grid-template-columns:1fr}}
+    @media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -58,15 +56,6 @@
       <article class="card"><h3>Kur'an Modları</h3><p>Sure/sayfa görünümü, yazı boyutu ve meal seçenekleri.</p></article>
       <article class="card"><h3>Riyazü's-Salihin</h3><p>Arama, kitap/bab gezintisi ve kaldığın yer takibi.</p></article>
       <article class="card"><h3>Bildirimler</h3><p>Ezan, ezan öncesi hatırlatma ve kalıcı özet bildirim.</p></article>
-    </section>
-
-    <section class="shots">
-      <div class="shot"><div><b>Ana Ekran</b><br><small>screenshots/home.png</small></div></div>
-      <div class="shot"><div><b>Harita</b><br><small>screenshots/map.png</small></div></div>
-      <div class="shot"><div><b>Kıble</b><br><small>screenshots/qibla.png</small></div></div>
-      <div class="shot"><div><b>Kur'an</b><br><small>screenshots/quran.png</small></div></div>
-      <div class="shot"><div><b>Riyazü's-Salihin</b><br><small>screenshots/riyazus.png</small></div></div>
-      <div class="shot"><div><b>Ayarlar</b><br><small>screenshots/settings.png</small></div></div>
     </section>
 
     <section class="cta">
