@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parlar | Kaynak Geliştirme ve İş Birlikleri Direktörü</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <img class="hero-logo" src="./logo.png" alt="Parlar Logo" />
+        <p class="badge">Parlar Kariyer</p>
+        <h1>Kaynak Geliştirme ve İş Birlikleri Direktörü</h1>
+        <p class="hero-text">
+          Kurumumuzun sürdürülebilir büyüme hedefleri doğrultusunda ulusal ve uluslararası düzeyde
+          kaynak geliştirme faaliyetlerini yürütecek, stratejik iş birlikleri kuracak lider bir ekip
+          arkadaşı arıyoruz.
+        </p>
+      </div>
+    </header>
+
+    <main class="container page-grid">
+      <section class="card">
+        <h2>Görev ve Sorumluluklar</h2>
+        <ul>
+          <li>Kurumun kısa, orta ve uzun vadeli kaynak geliştirme stratejisini oluşturmak ve uygulamak</li>
+          <li>Kamu, özel sektör, uluslararası kuruluşlar ve STK'larla stratejik iş birlikleri geliştirmek</li>
+          <li>Hibe, sponsorluk ve proje bazlı fonları araştırmak; başvuru ve müzakere süreçlerini yönetmek</li>
+          <li>Mevcut iş birliklerini sürdürülebilirlik ve katma değer odağında büyütmek</li>
+          <li>Kaynak geliştirme performansını ölçmek, raporlamak ve üst yönetime sunmak</li>
+          <li>Kurum itibarını güçlendirecek etkili ortaklık modelleri kurgulamak</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Aranan Nitelikler</h2>
+        <ul>
+          <li>Kaynak geliştirme, iş geliştirme veya stratejik ortaklıklarda en az 8-10 yıl deneyim</li>
+          <li>Kamu, özel sektör ve/veya uluslararası kurumlarla iş birliği geliştirmede kanıtlanmış başarı</li>
+          <li>Proje geliştirme ve hibe süreçlerine hakimiyet</li>
+          <li>Güçlü iletişim, müzakere ve temsil kabiliyeti</li>
+          <li>Stratejik düşünme ve sonuç odaklı çalışma yaklaşımı</li>
+          <li>İleri düzey İngilizce</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Tercih Sebepleri</h2>
+        <ul>
+          <li>Uluslararası fon programları (AB, Dünya Bankası vb.) deneyimi</li>
+          <li>Akademi-sanayi iş birliği geliştirme tecrübesi</li>
+          <li>Büyük ölçekli projelerde liderlik geçmişi</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Pozisyonun Amacı</h2>
+        <p>
+          Bu rol, kurumun finansal sürdürülebilirliğini destekleyecek yeni kaynak alanları oluştururken,
+          yüksek katma değerli ve uzun soluklu iş birlikleri ile kurumsal etki alanını genişletmeyi hedefler.
+        </p>
+      </section>
+    </main>
+
+    <section class="container form-wrapper">
+      <div class="card form-card">
+        <h2>İş Başvuru Formu</h2>
+        <p class="form-intro">Aşağıdaki formu eksiksiz doldurarak başvurunuzu iletebilirsiniz.</p>
+
+        <form
+          id="applicationForm"
+          action="./submit.php"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="field-row">
+            <div class="field">
+              <label for="fullName">Ad Soyad *</label>
+              <input id="fullName" name="fullName" type="text" required />
+            </div>
+            <div class="field">
+              <label for="email">E-posta *</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Telefon *</label>
+              <input id="phone" name="phone" type="tel" required />
+            </div>
+            <div class="field">
+              <label for="linkedin">LinkedIn Profili</label>
+              <input id="linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="experienceYears">Toplam Deneyim (Yıl) *</label>
+            <input id="experienceYears" name="experienceYears" type="number" min="0" required />
+          </div>
+
+          <div class="field">
+            <label for="coverLetter">Niyet Mektubu / Ön Yazı *</label>
+            <textarea id="coverLetter" name="coverLetter" rows="6" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="cv">CV Yükleme (PDF, DOC, DOCX - max 10MB) *</label>
+            <input id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" required />
+          </div>
+
+          <label class="checkbox">
+            <input id="kvkkConsent" name="kvkkConsent" type="checkbox" required />
+            <span>
+              KVKK kapsamında kişisel verilerimin başvuru süreçleri için işlenmesine açık rıza verdiğimi
+              onaylıyorum. *
+            </span>
+          </label>
+
+          <input
+            type="text"
+            name="website"
+            id="website"
+            style="position:absolute;left:-9999px;opacity:0"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+
+          <button id="submitBtn" type="submit">Başvuruyu Gönder</button>
+        </form>
+      </div>
+    </section>
+  </body>
+  </html>
