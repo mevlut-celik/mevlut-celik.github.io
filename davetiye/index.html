@@ -122,18 +122,26 @@
         padding: 1rem;
       }
 
+      .image-grid {
+        display: grid;
+        gap: 0.9rem;
+        grid-template-columns: 1fr;
+      }
+
+      @media (min-width: 600px) {
+        .image-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: start;
+        }
+      }
+
       .invite-image {
         width: 100%;
         height: auto;
+        display: block;
         border-radius: 12px;
         border: 1px solid #f0e0e0;
         box-shadow: 0 8px 20px rgba(70, 45, 45, 0.12);
-      }
-
-      .cover-image {
-        max-width: 420px;
-        margin: 0 auto;
-        display: block;
       }
 
       h2 {
@@ -212,12 +220,7 @@
     <main class="wrapper">
       <section class="invitation">
         <header class="hero">
-          <img
-            class="invite-image cover-image"
-            src="1.png"
-            alt="Büşra Nur ve Mevlüt düğün davetiyesi kapak görseli"
-          />
-          <div class="label" style="margin-top: 1.2rem">Düğün Daveti</div>
+          <div class="label">Düğün Daveti</div>
           <h1>Büşra Nur &amp; Mevlüt</h1>
           <p class="subtitle">Sizleri aramızda görmekten mutluluk duyarız.</p>
           <p class="subtitle">28 Haziran 2026 · 5 Temmuz 2026</p>
@@ -230,11 +233,18 @@
         <div class="content">
           <div class="card">
             <h2>Davetiyemiz</h2>
-            <img
-              class="invite-image"
-              src="2.png"
-              alt="Düğün davetiyesi detay görseli"
-            />
+            <div class="image-grid">
+              <img
+                class="invite-image"
+                src="1.png"
+                alt="Büşra Nur ve Mevlüt düğün davetiyesi kapak görseli"
+              />
+              <img
+                class="invite-image"
+                src="2.png"
+                alt="Düğün davetiyesi detay görseli"
+              />
+            </div>
           </div>
 
           <div class="grid">
