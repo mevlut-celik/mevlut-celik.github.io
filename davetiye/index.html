@@ -76,8 +76,26 @@
       }
 
       .subtitle {
-        margin: 0;
+        margin: 0.25rem 0;
         color: var(--muted);
+      }
+
+      .parents {
+        margin-top: 0.8rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .venue {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .note {
+        color: var(--rose);
+        font-size: 0.92rem;
+        font-weight: 600;
       }
 
       .content {
@@ -104,25 +122,18 @@
         padding: 1rem;
       }
 
-      .image-grid {
-        display: grid;
-        gap: 0.9rem;
-      }
-
-      @media (min-width: 760px) {
-        .image-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
       .invite-image {
         width: 100%;
-        height: 100%;
-        max-height: 620px;
-        object-fit: cover;
+        height: auto;
         border-radius: 12px;
         border: 1px solid #f0e0e0;
         box-shadow: 0 8px 20px rgba(70, 45, 45, 0.12);
+      }
+
+      .cover-image {
+        max-width: 420px;
+        margin: 0 auto;
+        display: block;
       }
 
       h2 {
@@ -201,34 +212,37 @@
     <main class="wrapper">
       <section class="invitation">
         <header class="hero">
-          <div class="label">Düğün Daveti</div>
+          <img
+            class="invite-image cover-image"
+            src="1.png"
+            alt="Büşra Nur ve Mevlüt düğün davetiyesi kapak görseli"
+          />
+          <div class="label" style="margin-top: 1.2rem">Düğün Daveti</div>
           <h1>Büşra Nur &amp; Mevlüt</h1>
-          <p class="subtitle">28 Haziran 2026 - Saat 14:00</p>
-          <p class="subtitle">Yüksel &amp; Çelik Aileleri</p>
+          <p class="subtitle">Sizleri aramızda görmekten mutluluk duyarız.</p>
+          <p class="subtitle">28 Haziran 2026 · 5 Temmuz 2026</p>
+          <div class="parents">
+            <div>Emin Yüksel &nbsp;|&nbsp; Osman Ali Çelik</div>
+            <div>Nuray Yüksel &nbsp;|&nbsp; Çiğdem Çelik</div>
+          </div>
         </header>
 
         <div class="content">
           <div class="card">
-            <h2>Davetiye Görseli</h2>
-            <p>Sizleri aramızda görmekten mutluluk duyarız.</p>
-            <div class="image-grid">
-              <img
-                class="invite-image"
-                src="1.png"
-                alt="Düğün davetiyesi kapak görseli"
-              />
-              <img
-                class="invite-image"
-                src="2.png"
-                alt="Düğün davetiyesi detay görseli"
-              />
-            </div>
+            <h2>Davetiyemiz</h2>
+            <img
+              class="invite-image"
+              src="2.png"
+              alt="Düğün davetiyesi detay görseli"
+            />
           </div>
 
           <div class="grid">
             <article class="card">
-              <h2>Düğün - Ankara</h2>
-              <p class="event-time">28 Haziran 2026 - Saat 14:00</p>
+              <h2>Düğün — Ankara</h2>
+              <p class="event-time">28 Haziran 2026, Pazar — 14:00</p>
+              <p class="note">Gelin Alma: 13:00</p>
+              <p class="venue">Asr-ı Saadet Düğün Salonu</p>
               <p class="address">
                 Turgut Özal Mah. 20. Cd. 81/16, Yenimahalle / Ankara
               </p>
@@ -243,17 +257,17 @@
                   class="btn"
                   target="_blank"
                   rel="noopener"
-                  href="https://www.google.com/maps/search/?api=1&query=Turgut+Özal+Mah.+20.+Cd.+81%2F16,+Yenimahalle,+Ankara"
+                  href="https://www.google.com/maps/search/?api=1&query=Asr-ı+Saadet+Düğün+Salonu,+Turgut+Özal+Mah.+20.+Cd.+81%2F16,+Yenimahalle,+Ankara"
                   >Haritada Aç</a
                 >
               </div>
             </article>
 
             <article class="card">
-              <h2>Yemek - Isparta</h2>
-              <p class="event-time">5 Temmuz 2026 - Saat 10:00</p>
+              <h2>Yemek — Isparta</h2>
+              <p class="event-time">5 Temmuz 2026, Pazar — 11:00 – 15:00</p>
               <p class="address">
-                Keçeci Mahallesi 2320. Sokak, Isparta / Merkez
+                Keçeci Mahallesi 2320. Sokak No:13, Isparta / Merkez
               </p>
               <div class="countdown" id="countdownDinner">
                 <div class="box"><strong id="dDays">0</strong>Gün</div>
@@ -266,7 +280,7 @@
                   class="btn"
                   target="_blank"
                   rel="noopener"
-                  href="https://www.google.com/maps/search/?api=1&query=Keçeci+Mahallesi+2320.+Sokak,+Isparta+Merkez"
+                  href="https://www.google.com/maps/search/?api=1&query=Keçeci+Mahallesi+2320.+Sokak+No+13,+Isparta+Merkez"
                   >Haritada Aç</a
                 >
               </div>
@@ -282,7 +296,7 @@
 
     <script>
       const weddingDate = new Date("2026-06-28T14:00:00+03:00");
-      const dinnerDate = new Date("2026-07-05T10:00:00+03:00");
+      const dinnerDate = new Date("2026-07-05T11:00:00+03:00");
 
       function setCountdown(prefix, containerId, targetDate, finishedText) {
         const now = new Date();
