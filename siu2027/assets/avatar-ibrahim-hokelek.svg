@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="grad_İH" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B3D66" />
+      <stop offset="100%" stop-color="#001A2C" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="100" fill="url(#grad_İH)" />
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#00A3E0" stroke-width="3" stroke-dasharray="8 6" opacity="0.6"/>
+  <circle cx="100" cy="72" r="32" fill="#00A3E0" opacity="0.18"/>
+  <text x="100" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="46" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">İH</text>
+  <text x="100" y="152" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="12" fill="#00A3E0" text-anchor="middle" letter-spacing="1.5">SİU 2027</text>
+</svg>

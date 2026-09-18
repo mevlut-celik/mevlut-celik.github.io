@@ -1,0 +1,49 @@
+/* ==========================================================================
+   SİU 2027 — komiteler.html sayfa kuralları
+   style.css'ten SONRA yüklenir; yalnızca bu sayfaya özgü ayrıntılar.
+   Genel olması gerekenler çıktıda "promote" olarak bildirildi.
+   ========================================================================== */
+
+/* Eş başkanlar (01): hiyerarşi kutuyla değil boyutla — daha geniş kart, daha
+   büyük avatar, adı bir kademe büyük. */
+.committee-grid--lead { grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
+.committee-grid--lead .committee-card { grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-4); align-items: center; }
+.committee-grid--lead .committee-avatar-wrap img { width: 4.5rem; height: 4.5rem; }
+.committee-grid--lead .committee-name { font-size: var(--step-1); }
+
+/* Avatar sarmalayıcısı: satır içi img'nin alt boşluğunu kaldır (promote adayı) */
+.committee-avatar-wrap,
+.committee-avatar-wrap img { display: block; }
+
+/* Kart metni: uzun görev adları için sıkı satır aralığı */
+.committee-role-badge { line-height: 1.35; }
+.committee-name { line-height: var(--lh-snug); margin-top: 0.15rem; }
+
+/* Henüz belirlenmemiş görev: etkileşimsiz kart (div) — hover/altçizgi yok,
+   kurum satırı italik, avatar sessiz. */
+.committee-card.pending { cursor: default; }
+.committee-card.pending:hover { border-color: var(--rule-2); }
+.committee-card.pending:hover .committee-name { text-decoration: none; }
+.committee-card.pending .committee-affiliation { font-style: italic; }
+.committee-card.pending .committee-avatar-wrap img { opacity: 0.75; }
+
+/* Yan sütun: sekreterlik satırları */
+.side__text + .side__text { margin-top: var(--space-1); }
+.side__text a { color: var(--cyan-text); text-decoration: none; }
+.side__text a:hover { text-decoration: underline; }
+
+/* Biyografi modalı: main.js kaynak bağlantısına style="color:var(--medipol-cyan)"
+   yazıyor; bu değişken style.css'te yok → sayfa kapsamında takma ad (promote adayı). */
+.bio-modal-note { --medipol-cyan: var(--cyan-text); }
+.bio-modal-note a { font-weight: 600; }
+.bio-modal-note a:hover { text-decoration: underline; }
+.bio-modal-text { max-width: none; }
+
+/* Baskı: kartlar iki sütun, sayfa kesmesinde bölünmez */
+@media print {
+  .committee-grid,
+  .committee-grid--lead { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  .committee-card { border-color: #999; padding: 0.5rem; break-inside: avoid; }
+  .committee-card.pending { border-style: dashed; }
+  .breadcrumb { display: none; }
+}

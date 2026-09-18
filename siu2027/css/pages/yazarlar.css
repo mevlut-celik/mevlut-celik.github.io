@@ -1,0 +1,127 @@
+/* ==========================================================================
+   yazarlar.html — sayfaya özel kurallar (css/style.css'ten SONRA bağlanır)
+   Aynı dil: hairline çizgiler, kenarda sayaç, kutu/gölge/ikon yok.
+   Genelleştirilebilir adaylar (promote): .page-head--facts, .terms, .steps,
+   .notice > .notice__text:first-child sıfırlaması, .toc--dict
+   ========================================================================== */
+
+/* 1. Sayfa başlığı: solda h1 + lede, sağda sakin künye (index hero ile aynı aile) */
+.page-head--facts .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6) var(--space-8);
+}
+.page-head__facts { align-self: start; }
+.page-head__facts > div { grid-template-columns: minmax(0, 1fr); }
+.page-head__facts > div:first-child { border-top: 2px solid var(--navy); }
+.page-head__facts .facts__val { font-size: var(--step-1); }
+.page-head__facts--deadline .facts__val { color: var(--cyan-text); }
+
+@media (min-width: 48em) {
+  .page-head--facts { padding-block: var(--space-8) var(--space-7); }
+  .page-head--facts .wrap { grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 1fr); align-items: start; }
+  .page-head__facts { margin-top: var(--space-2); }
+}
+
+/* 2. CFP koşulları: çizgili tanım listesi; ≥48em iki sütun, satır çizgileri hizalı */
+.terms {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--space-6);
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+}
+.terms__item { padding-block: var(--space-4); border-bottom: 1px solid var(--rule); }
+.terms dt { font-weight: 700; color: var(--navy); }
+.terms dd { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-2); max-width: 46ch; }
+/* .prose dl (max-content + 1fr) bu tanım listesi için geçerli değil: özgüllüğü aşar */
+.prose .terms { grid-template-columns: minmax(0, 1fr); gap: 0 var(--space-6); }
+@media (min-width: 48em) {
+  .terms, .prose .terms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.cfp-downloads { margin-top: var(--space-6); }
+
+/* 3. Kulvar satırları: başlık solda, alt konular sağda iki sütun.
+      Konu listesi sözlükten "<span>• …</span>" olarak gelir; asılı girinti ile hizalanır. */
+.track-list { border-top: 1px solid var(--rule); }
+.track-list__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3) var(--space-5);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--rule);
+}
+.track-list__title { font-size: var(--step-1); }
+.track-list__topics {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  columns: 2;
+  column-gap: var(--space-5);
+}
+.track-list__topics > span {
+  display: block;
+  break-inside: avoid;
+  padding: 0.15rem 0 0.15rem 1em;
+  text-indent: -1em;
+}
+@media (min-width: 48em) {
+  .track-list__item { grid-template-columns: 16rem minmax(0, 1fr); }
+}
+@media (max-width: 30em) {
+  .track-list__topics { columns: 1; }
+}
+
+/* 4. Adım listesi (CMT gönderimi, baskıya hazır süreç): kenarda sayaç, çizgili satırlar */
+.steps__title { margin-top: var(--space-6); font-size: var(--step-0); }
+.steps {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  counter-reset: step;
+  border-top: 1px solid var(--rule);
+}
+.section__body + .steps { margin-top: var(--space-5); }
+.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding: var(--space-3) 0 var(--space-3) 2.75rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-2);
+}
+.steps > li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: var(--space-3);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.steps > li strong { color: var(--navy); }
+
+/* CMT teşekkür metni (İngilizce, sabit): sessiz dipnot */
+.cmt-ack {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--2);
+  color: var(--ink-3);
+}
+
+/* 5. Şablonlar: iki sütun, hairline üst çizgili maddeler (kart değil) */
+.templates { margin-top: var(--space-6); }
+.template { padding-top: var(--space-4); border-top: 1px solid var(--rule); }
+.template__desc { margin-top: var(--space-2); font-size: var(--step--1); color: var(--ink-2); }
+.template__link { margin-top: var(--space-3); }
+.templates + .notice { margin-top: var(--space-6); }
+.notice > .notice__text:first-child { margin-top: 0; }
+
+/* 6. Yan sütun: sözlükten "• " ile gelen kılavuz maddeleri — sayaç kapalı, madde imi metinden */
+.toc--dict li::before { content: none; }
+.toc--dict li { padding-block: 0.3rem; }
+
+/* 7. Baskı */
+@media print {
+  .cfp-downloads, .cmt-ack { display: none !important; }
+  .track-list__topics { columns: 2; }
+  .steps > li, .terms__item, .template { break-inside: avoid; }
+}

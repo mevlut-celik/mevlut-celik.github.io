@@ -1,0 +1,26 @@
+/* SİU 2027 — yarisma.html sayfaya özel kurallar (css/style.css'ten SONRA yüklenir)
+   Genel bileşen tanımlanmaz; yalnızca bu sayfadaki üç küçük düzeltme. */
+
+/* Yan sütun dizini: sözlükten gelen maddeler kendi "•" imini taşıyor (yr002–yr004);
+   .toc sayacı kapatılır ki im ikilenmesin. Sol çizgi de yok: im tek başına yeter. */
+.toc--bullet li::before { content: none; }
+
+/* Ödül listesi (.facts) .prose içinde: genel .prose dl ızgarası yerine satır düzeni.
+   Büyük harf sözlük etiketleri .kicker ölçüsüne indirilir (metin değişmez). */
+.prose > .awards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  max-width: 32rem;
+}
+.awards dt {
+  font-size: var(--step--2);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  align-self: baseline;
+}
+.awards + .small { margin-top: var(--space-2); }
+
+/* Yan sütun: sekreterlik bloğundaki bağlantı listesi e-postadan bir adım aşağıda */
+.side__links { margin-top: var(--space-3); }

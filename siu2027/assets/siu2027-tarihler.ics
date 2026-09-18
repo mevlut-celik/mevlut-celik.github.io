@@ -1,0 +1,155 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//IEEE SIU 2027//Kurultay Takvimi//TR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:IEEE SİU 2027 — Önemli Tarihler
+X-WR-TIMEZONE:Europe/Istanbul
+BEGIN:VEVENT
+UID:siu2027-ozel-oturum-davet@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:SİU 2027 · Özel oturum düzenleme daveti — son tarih
+DESCRIPTION:Call for special session proposals — deadline\nKesin son tari
+ h: 30 Kasım 2026\nFirm deadline: 30 November 2026\n\nhttps://siu2027.medi
+ pol.edu.tr/yazarlar.html#ozel-oturumlar
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#ozel-oturumlar
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Özel oturum düzenleme daveti — son tarih
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-seminer-davet@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:SİU 2027 · Eğitim semineri düzenleme daveti — son tarih
+DESCRIPTION:Call for tutorial proposals — deadline\nKesin son tarih: 30 K
+ asım 2026\nFirm deadline: 30 November 2026\n\nhttps://siu2027.medipol.edu
+ .tr/program.html#seminerler
+URL:https://siu2027.medipol.edu.tr/program.html#seminerler
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Eğitim semineri düzenleme daveti — son tarih
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-ozel-oturum-kabul@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+SUMMARY:SİU 2027 · Özel oturum kabullerinin bildirilmesi
+DESCRIPTION:Notification of special session acceptance\nKesin son tarih: 14
+  Aralık 2026\nFirm deadline: 14 December 2026\n\nhttps://siu2027.medipol.
+ edu.tr/yazarlar.html#ozel-oturumlar
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#ozel-oturumlar
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Özel oturum kabullerinin bildirilmesi
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-seminer-kabul@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+SUMMARY:SİU 2027 · Eğitim semineri kabullerinin bildirilmesi
+DESCRIPTION:Notification of tutorial acceptance\nKesin son tarih: 14 Aralı
+ k 2026\nFirm deadline: 14 December 2026\n\nhttps://siu2027.medipol.edu.tr/
+ program.html#seminerler
+URL:https://siu2027.medipol.edu.tr/program.html#seminerler
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Eğitim semineri kabullerinin bildirilmesi
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-bildiri-gonderim@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20270201
+DTEND;VALUE=DATE:20270202
+SUMMARY:SİU 2027 · Bildirilerin gönderilmesi — son tarih
+DESCRIPTION:Paper submission — deadline\nKesin son tarih: 1 Mart 2027\nFi
+ rm deadline: 1 March 2027\n\nhttps://siu2027.medipol.edu.tr/yazarlar.html#
+ gonderim
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#gonderim
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Bildirilerin gönderilmesi — son tarih
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-sonuc@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20270430
+DTEND;VALUE=DATE:20270501
+SUMMARY:SİU 2027 · Sonuçların açıklanması
+DESCRIPTION:Notification of acceptance\nKesin son tarih: 3 Mayıs 2027\nFir
+ m deadline: 3 May 2027\n\nhttps://siu2027.medipol.edu.tr/yazarlar.html#cfp
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#cfp
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Sonuçların açıklanması
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-baskiya-hazir@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20270524
+DTEND;VALUE=DATE:20270525
+SUMMARY:SİU 2027 · Baskıya hazır bildiri ve yazar kaydı — son tarih
+DESCRIPTION:Camera-ready paper & author registration\nKesin son tarih: 31 M
+ ayıs 2027\nFirm deadline: 31 May 2027\n\nhttps://siu2027.medipol.edu.tr/y
+ azarlar.html#baskiya-hazir
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#baskiya-hazir
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P7D
+DESCRIPTION:SİU 2027 · Baskıya hazır bildiri ve yazar kaydı — son ta
+ rih
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:siu2027-kurultay@siu2027.medipol.edu.tr
+DTSTAMP:20260918T090000Z
+DTSTART;VALUE=DATE:20270704
+DTEND;VALUE=DATE:20270708
+SUMMARY:IEEE SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamaları 
+ Kurultayı
+DESCRIPTION:35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı (Sİ
+ U 2027).\nAyrıntılar: https://siu2027.medipol.edu.tr
+LOCATION:İstanbul Medipol Üniversitesi\, Kavacık Güney Yerleşkesi\, G
+ öztepe Mah. Atatürk Cad. No: 40/16\, 34815 Beykoz / İstanbul
+URL:https://siu2027.medipol.edu.tr/
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P30D
+DESCRIPTION:IEEE SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamala
+ rı Kurultayı
+END:VALARM
+END:VEVENT
+END:VCALENDAR

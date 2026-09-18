@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /_tools/
+Disallow: /api/
+Disallow: /data/
+
+Sitemap: https://siu2027.medipol.edu.tr/sitemap.xml

@@ -1,0 +1,3 @@
+# Veri dizini web üzerinden okunamaz
+Require all denied
+Deny from all

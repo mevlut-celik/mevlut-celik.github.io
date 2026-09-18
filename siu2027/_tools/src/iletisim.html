@@ -1,0 +1,120 @@
+<!--META
+{"title":"İletişim ve Kurultay Sekreterliği | IEEE SİU 2027",
+ "desc":"IEEE SİU 2027 Kurultay Sekreterliği: adres, e-posta adresleri, telefon, otopark bilgisi ve doğrudan iletişim formu.",
+ "ogDesc":"SİU 2027 Kurultay Sekreterliği adres, telefon, e-posta ve iletişim formu.",
+ "titleKey":"ttlIletisim","nav":"iletisim.html","pageCss":["iletisim"]}
+-->
+    <section class="page-head" aria-labelledby="sayfa-title">
+      <div class="wrap">
+        <ol class="breadcrumb">
+          <li><a href="index.html" i18n="navHome"></a></li>
+          <li i18n="navContact"></li>
+        </ol>
+        <p class="visually-hidden" i18n="iletisimKicker"></p>
+        <h1 class="page-head__title" id="sayfa-title" i18n="iletisimPageTitle"></h1>
+        <p class="page-head__lede lede" i18n="iletisimPageDesc"></p>
+      </div>
+    </section>
+
+    <div class="wrap body-grid">
+
+      <div class="col-main">
+
+        <section class="section" id="sekreterlik" aria-labelledby="sekreterlik-title">
+          <div class="section__head">
+            <span class="section__num" aria-hidden="true">01</span>
+            <h2 id="sekreterlik-title" i18n="il002"></h2>
+            <p class="visually-hidden" i18n="il001"></p>
+          </div>
+          <div class="section__body">
+            <dl class="facts contact-facts">
+              <div>
+                <dt i18n="il003"></dt>
+                <dd><address class="contact-facts__address" i18n="il004"></address></dd>
+              </div>
+              <div>
+                <dt i18n="il005"></dt>
+                <dd i18n="il006"></dd>
+              </div>
+              <div>
+                <dt i18n="il007"></dt>
+                <dd><span class="facts__val" i18n="il008"></span></dd>
+              </div>
+              <div>
+                <dt i18n="il009"></dt>
+                <dd i18n="il010"></dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="section" id="form" aria-labelledby="form-title">
+          <div class="section__head">
+            <span class="section__num" aria-hidden="true">02</span>
+            <h2 id="form-title" i18n="il012"></h2>
+            <p class="visually-hidden" i18n="il011"></p>
+          </div>
+          <div class="section__body">
+            <form class="form" id="contactForm" action="mailto:siu2027@medipol.edu.tr" method="post" enctype="text/plain">
+              <div class="form-grid">
+                <div class="form-row">
+                  <label for="cfName" i18n="il013"></label>
+                  <input type="text" id="cfName" name="ad_soyad" required autocomplete="name">
+                </div>
+                <div class="form-row">
+                  <label for="cfMail" i18n="il014"></label>
+                  <input type="email" id="cfMail" name="eposta" required autocomplete="email">
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="cfOrg" i18n="il015"></label>
+                <input type="text" id="cfOrg" name="kurum" autocomplete="organization">
+              </div>
+              <div class="form-row">
+                <label for="cfSubject" i18n="il016"></label>
+                <select id="cfSubject" name="konu" required>
+                  <option value="" i18n="il017"></option>
+                  <option value="cmt" i18n="il018"></option>
+                  <option value="kayit" i18n="il019"></option>
+                  <option value="ozel-oturum" i18n="il020"></option>
+                  <option value="yarisma" i18n="il021"></option>
+                  <option value="sponsorluk" i18n="il022"></option>
+                  <option value="diger" i18n="il023"></option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="cfMessage" i18n="il024"></label>
+                <textarea id="cfMessage" name="mesaj" rows="6" required></textarea>
+              </div>
+              <label class="form-check" for="cfKvkk">
+                <input type="checkbox" id="cfKvkk" name="kvkk_onay" required>
+                <span i18n="il025"></span>
+              </label>
+              <div class="form-actions">
+                <button type="submit" class="btn btn--primary" i18n="il026"></button>
+              </div>
+              <p class="form-help" i18n="il027"></p>
+            </form>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="col-side side" aria-label="Sayfa içi gezinme">
+        <nav class="side__block side__block--toc" aria-label="Bu sayfada">
+          <ol class="toc">
+            <li><a href="#sekreterlik" i18n="il002"></a></li>
+            <li><a href="#form" i18n="il012"></a></li>
+          </ol>
+        </nav>
+        <div class="side__block">
+          <h2 class="side__title" i18n="il005"></h2>
+          <ul class="quick-links">
+            <li><a href="mailto:siu2027@medipol.edu.tr">siu2027@medipol.edu.tr</a></li>
+            <li><a href="mailto:siu-kayit@medipol.edu.tr">siu-kayit@medipol.edu.tr</a></li>
+            <li><a href="kvkk.html" i18n="kv001"></a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>

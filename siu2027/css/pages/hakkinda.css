@@ -1,0 +1,75 @@
+/* ==========================================================================
+   SİU 2027 — hakkinda.html sayfa kuralları
+   style.css'ten SONRA yüklenir; yalnız bu sayfaya özgü düzenler.
+   Genel bileşen adayı olanlar çıktıda "promote" olarak bildirilmiştir.
+   ========================================================================== */
+
+/* 1. Yan sütun bölüm listesi: sözlük metni kendi "• " imini taşıyor,
+      bu yüzden sayaç ve sol çizgi kapalı (promote adayı: .toc--bare) */
+.toc--bare li { padding-left: 0; }
+.toc--bare li::before { content: none; }
+
+/* 1b. Yan sütun künyesi: dar sütunda etiket değerin üstüne biner
+      (index hero ile aynı çözüm; promote adayı: .facts--stack) */
+.side .facts > div { grid-template-columns: minmax(0, 1fr); }
+
+/* 2. Hoş geldiniz mektubu: paragraf ritmi + hairline üstlü imza bloğu
+      (promote adayı: .letter, .letter__sign*) */
+.letter { max-width: var(--measure); }
+.letter > * + * { margin-top: var(--space-4); }
+.letter__salutation { color: var(--ink-2); }
+.letter__sign {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+.letter__sign-for { font-size: var(--step--1); color: var(--ink-3); }
+.letter__sign-name { margin-top: var(--space-1); font-weight: 700; color: var(--navy); }
+.letter__sign-role { font-size: var(--step--2); color: var(--ink-3); }
+
+/* 3. İlkeler (Kapsam ve Amaç): .grid-2 üstüne hairline + h3; kutu yok */
+.principles__item { padding-top: var(--space-3); border-top: 1px solid var(--rule); }
+.principles__item h3 { font-size: var(--step-0); }
+.principles__item p { margin-top: var(--space-2); font-size: var(--step--1); color: var(--ink-2); }
+
+/* 4. Amblem satırı (ev sahibi kurum, resmî logo): solda görsel + ilgili
+      bağlantılar, sağda okuma metni (promote adayı: .emblem-row) */
+.emblem-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5) var(--space-7);
+  align-items: start;
+}
+.emblem-row__figure { max-width: 14rem; }
+.emblem-row__figure--square { max-width: 9rem; }
+.emblem-row__figure img { width: 100%; }
+.emblem-row__links {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  font-size: var(--step--1);
+}
+.emblem-row__links .link-more { justify-self: start; }
+.emblem-row__text > * + * { margin-top: var(--space-4); }
+.emblem-row__text h3 { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--rule); }
+.emblem-row__text h3 + p { margin-top: var(--space-2); }
+.emblem-row__list { padding-left: 1.25em; list-style: disc; max-width: var(--measure); }
+.emblem-row__list li + li { margin-top: var(--space-2); }
+.emblem-row__list li::marker { color: var(--ink-3); }
+.emblem-row__list strong { color: var(--navy); }
+
+@media (min-width: 40em) {
+  .emblem-row { grid-template-columns: 12rem minmax(0, 1fr); }
+  .emblem-row__figure,
+  .emblem-row__figure--square { max-width: none; }
+  .emblem-row__figure--square img { max-width: 10rem; }
+}
+
+/* 5. İndirme bağlantısı: ok aşağı iner (dış bağlantıda sağa kayan ok kalır) */
+.link-more--down:hover .arrow { transform: translateY(2px); }
+
+/* 6. Baskı: amblem satırı tek sütun, indirme bağlantıları gizli */
+@media print {
+  .emblem-row { grid-template-columns: 1fr; }
+  .emblem-row__links { display: none; }
+}

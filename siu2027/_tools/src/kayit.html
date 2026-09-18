@@ -1,0 +1,150 @@
+<!--META
+{"title":"Kayıt Formu | IEEE SİU 2027",
+ "desc":"IEEE SİU 2027 katılımcı ön kayıt formu. Kayıt kategorisi, kurum ve fatura bilgilerinizi bildirin; ücretler kesinleştiğinde ödeme adımı duyurulacaktır.",
+ "ogDesc":"SİU 2027 katılımcı ön kayıt formu — ücretler kesinleştiğinde ödeme adımı duyurulacaktır.",
+ "titleKey":"ttlKayit","nav":"katilim.html","pageCss":["kayit"]}
+-->
+    <section class="page-head" aria-labelledby="sayfa-title">
+      <div class="wrap">
+        <ol class="breadcrumb">
+          <li><a href="index.html" i18n="navHome"></a></li>
+          <li><a href="katilim.html" i18n="navRegistration"></a></li>
+          <li i18n="kyTitle"></li>
+        </ol>
+        <p class="visually-hidden" i18n="kyKicker"></p>
+        <h1 class="page-head__title" id="sayfa-title" i18n="kyTitle"></h1>
+        <p class="page-head__lede lede" i18n="kyLede"></p>
+      </div>
+    </section>
+
+    <div class="wrap body-grid">
+
+      <div class="col-main">
+
+        <div class="notice" id="kayitSonuc" role="status" hidden>
+          <p class="notice__title" i18n="ky029"></p>
+          <dl class="facts">
+            <div>
+              <dt i18n="ky030"></dt>
+              <dd><span class="facts__val" id="kayitRef">—</span></dd>
+            </div>
+          </dl>
+          <p class="notice__text" i18n="ky031"></p>
+        </div>
+
+        <form class="form" id="kayitForm" action="api/kayit.php" method="post" novalidate>
+          <input type="hidden" name="csrf" id="kayitCsrf" value="">
+          <input type="hidden" name="dil" id="kayitDil" value="tr">
+          <p class="kayit-honeypot" aria-hidden="true">
+            <label for="website">Bu alanı boş bırakın</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </p>
+
+          <fieldset class="form-block">
+            <legend i18n="ky001"></legend>
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="ad_soyad"><span i18n="ky002"></span> <span class="form-required" aria-hidden="true">*</span></label>
+                <input type="text" id="ad_soyad" name="ad_soyad" required autocomplete="name" maxlength="120">
+                <p class="form-error" data-error-for="ad_soyad" hidden></p>
+              </div>
+              <div class="form-row">
+                <label for="eposta"><span i18n="ky003"></span> <span class="form-required" aria-hidden="true">*</span></label>
+                <input type="email" id="eposta" name="eposta" required autocomplete="email" maxlength="160">
+                <p class="form-error" data-error-for="eposta" hidden></p>
+              </div>
+              <div class="form-row">
+                <label for="kurum"><span i18n="ky004"></span> <span class="form-required" aria-hidden="true">*</span></label>
+                <input type="text" id="kurum" name="kurum" required autocomplete="organization" maxlength="160">
+                <p class="form-error" data-error-for="kurum" hidden></p>
+              </div>
+              <div class="form-row">
+                <label for="unvan" i18n="ky005"></label>
+                <input type="text" id="unvan" name="unvan" autocomplete="organization-title" maxlength="80">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-block">
+            <legend i18n="ky006"></legend>
+            <div class="form-row">
+              <label class="visually-hidden" for="kategori" i18n="ky006"></label>
+              <select id="kategori" name="kategori" required>
+                <option value="" i18n="ky007"></option>
+                <option value="tam" i18n="ky008"></option>
+                <option value="ogrenci_yazar" i18n="ky009"></option>
+                <option value="lisansustu" i18n="ky010"></option>
+                <option value="lisans" i18n="ky011"></option>
+              </select>
+              <p class="form-error" data-error-for="kategori" hidden></p>
+            </div>
+            <div class="form-row">
+              <label for="bildiri_no" i18n="ky012"></label>
+              <input type="text" id="bildiri_no" name="bildiri_no" maxlength="40" inputmode="text">
+              <p class="form-help" i18n="ky013"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-block">
+            <legend i18n="ky014"></legend>
+            <div class="form-choice">
+              <label class="form-check"><input type="radio" name="fatura_tipi" value="bireysel" checked> <span i18n="ky015"></span></label>
+              <label class="form-check"><input type="radio" name="fatura_tipi" value="kurumsal"> <span i18n="ky016"></span></label>
+            </div>
+            <div class="form-grid" id="faturaAlanlari" hidden>
+              <div class="form-row form-row--wide">
+                <label for="fatura_unvan" i18n="ky017"></label>
+                <input type="text" id="fatura_unvan" name="fatura_unvan" maxlength="200">
+              </div>
+              <div class="form-row">
+                <label for="vergi_dairesi" i18n="ky018"></label>
+                <input type="text" id="vergi_dairesi" name="vergi_dairesi" maxlength="120">
+              </div>
+              <div class="form-row">
+                <label for="vergi_no" i18n="ky019"></label>
+                <input type="text" id="vergi_no" name="vergi_no" maxlength="20" inputmode="numeric">
+              </div>
+              <p class="form-error form-row--wide" data-error-for="fatura" hidden></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-block">
+            <legend i18n="ky020"></legend>
+            <div class="form-row">
+              <label class="visually-hidden" for="not_metni" i18n="ky020"></label>
+              <textarea id="not_metni" name="not_metni" rows="4" maxlength="1500"></textarea>
+              <p class="form-help" i18n="ky021"></p>
+            </div>
+          </fieldset>
+
+          <label class="form-check" for="kvkk_onay">
+            <input type="checkbox" id="kvkk_onay" name="kvkk_onay" value="1" required>
+            <span i18n="il025"></span>
+          </label>
+          <p class="form-error" data-error-for="kvkk_onay" hidden></p>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary" id="kayitGonder" i18n="ky022"></button>
+            <span class="small muted"><span class="form-required" aria-hidden="true">*</span> <span i18n="ky023"></span></span>
+          </div>
+          <p class="form-error form-error--genel" id="kayitHata" hidden></p>
+        </form>
+
+      </div>
+
+      <aside class="col-side side" aria-label="Kayıt hakkında">
+        <div class="side__block">
+          <h2 class="side__title" i18n="ky027"></h2>
+          <p class="small" i18n="ky028"></p>
+        </div>
+        <div class="side__block">
+          <h2 class="side__title" i18n="ky024"></h2>
+          <p class="small" i18n="ky025"></p>
+          <ul class="quick-links">
+            <li><a href="katilim.html#kayit" i18n="ky026"></a></li>
+            <li><a href="kvkk.html" i18n="kv001"></a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
