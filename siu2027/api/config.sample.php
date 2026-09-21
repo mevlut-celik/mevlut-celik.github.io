@@ -18,7 +18,7 @@ return [
     'mail' => [
         'from'        => 'siu2027@medipol.edu.tr',
         'from_name'   => 'IEEE SİU 2027 Kurultay Sekreterliği',
-        'secretariat' => 'siu-kayit@medipol.edu.tr',
+        'secretariat' => 'siu2027@medipol.edu.tr',
         'bcc'         => '',
         'enabled'     => true,
     ],

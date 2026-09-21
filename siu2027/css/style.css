@@ -812,7 +812,6 @@ p { max-width: var(--measure); }
 .dates-table__desc { display: block; margin-top: 0.15rem; font-size: var(--step--2); color: var(--ink-3); max-width: 44ch; }
 .dates-table__date { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .dates-table__date--main { font-weight: 600; color: var(--ink); }
-.dates-table__firm { color: var(--ink-3); }
 .dates-table__status { color: var(--ink-3); }
 .dates-table__status--active { color: var(--cyan-text); font-weight: 600; }
 .dates-table__status--event { color: var(--navy); font-weight: 600; }
@@ -823,13 +822,13 @@ p { max-width: var(--measure); }
 .dates-table__note { margin-top: var(--space-3); font-size: var(--step--2); color: var(--ink-3); }
 
 /* Mobil: yatay kaydırma yok; her satır bloğa katlanır
-   (üstte aşama adı, altında Son Tarih · Kesin Son Tarih · Durum, etiketler sözlükten). */
+   (üstte aşama adı, altında Son Tarih · Durum, etiketler sözlükten). */
 @media (max-width: 40em) {
   .dates-table, .dates-table tbody, .dates-table tr, .dates-table th, .dates-table td { display: block; }
   .dates-table colgroup, .dates-table thead { display: none; }
   .dates-table tbody tr {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2) var(--space-3);
     padding-block: var(--space-4);
     padding-inline: 0;
@@ -839,7 +838,6 @@ p { max-width: var(--measure); }
   .dates-table tbody tr:last-child { border-bottom: 1px solid var(--navy); }
   .dates-table tbody th, .dates-table tbody td { padding: 0; border: 0; }
   .dates-table tbody th { grid-column: 1 / -1; }
-  .dates-table tbody td[colspan] { grid-column: span 2; }
   .dates-table tbody tr:last-child > * { border-bottom: 0; }
   .dates-table__date { white-space: normal; }
   .dates-table__cell-label { display: block; font-size: var(--step--2); font-weight: 400; color: var(--ink-3); margin-bottom: 0.1rem; }

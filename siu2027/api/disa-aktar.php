@@ -15,6 +15,19 @@ if ($token === '' || !hash_equals((string)$cfg['export_token'], $token)) {
     exit("Yetkisiz istek.\n");
 }
 
+/**
+ * Excel/LibreOffice formül enjeksiyonunu önler. Bir hücre =, +, -, @, sekme ya da
+ * satır başı ile başlıyorsa elektronik tablo onu formül sayar; başına tek tırnak
+ * koyarak düz metne zorlarız. Tek tırnak hücrede görünmez, değer bozulmaz.
+ */
+function siu_csv_guvenli($v): string {
+    $v = (string)$v;
+    if ($v !== '' && strpos("=+-@\t\r", $v[0]) !== false) {
+        $v = "'" . $v;
+    }
+    return $v;
+}
+
 $pdo = siu_db($cfg);
 $satirlar = $pdo->query(
     'SELECT ref, olusturma, ad_soyad, eposta, kurum, unvan, kategori, bildiri_no,
@@ -31,5 +44,5 @@ fwrite($out, "\xEF\xBB\xBF");                       // Excel'in UTF-8'i tanımas
 fputcsv($out, ['Kayıt No','Tarih (UTC)','Ad Soyad','E-posta','Kurum','Unvan','Kategori',
                'Bildiri No','Fatura Tipi','Fatura Unvanı','Vergi Dairesi','Vergi No',
                'Durum','Dil','Not'], ';', '"', '\\');
-foreach ($satirlar as $s) fputcsv($out, array_values($s), ';', '"', '\\');
+foreach ($satirlar as $s) fputcsv($out, array_map('siu_csv_guvenli', array_values($s)), ';', '"', '\\');
 fclose($out);

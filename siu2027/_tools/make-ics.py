@@ -10,15 +10,15 @@ SITE  = 'https://siu2027.medipol.edu.tr'
 ORG   = 'IEEE SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı'
 VENUE = 'İstanbul Medipol Üniversitesi, Kavacık Güney Yerleşkesi, Göztepe Mah. Atatürk Cad. No: 40/16, 34815 Beykoz / İstanbul'
 
-# (uid, başlık TR, başlık EN, son tarih, kesin son tarih, sayfa)
+# (uid, başlık TR, başlık EN, son tarih, sayfa) — kurulun nihai takvimi, tek tarih
 MILESTONES = [
-    ('ozel-oturum-davet',  'Özel oturum düzenleme daveti — son tarih',        'Call for special session proposals — deadline', '20261116', '30 Kasım 2026', '30 November 2026', 'yazarlar.html#ozel-oturumlar'),
-    ('seminer-davet',      'Eğitim semineri düzenleme daveti — son tarih',    'Call for tutorial proposals — deadline',        '20261116', '30 Kasım 2026', '30 November 2026', 'program.html#seminerler'),
-    ('ozel-oturum-kabul',  'Özel oturum kabullerinin bildirilmesi',           'Notification of special session acceptance',    '20261130', '14 Aralık 2026', '14 December 2026', 'yazarlar.html#ozel-oturumlar'),
-    ('seminer-kabul',      'Eğitim semineri kabullerinin bildirilmesi',       'Notification of tutorial acceptance',           '20261130', '14 Aralık 2026', '14 December 2026', 'program.html#seminerler'),
-    ('bildiri-gonderim',   'Bildirilerin gönderilmesi — son tarih',           'Paper submission — deadline',                   '20270201', '1 Mart 2027',   '1 March 2027',    'yazarlar.html#gonderim'),
-    ('sonuc',              'Sonuçların açıklanması',                          'Notification of acceptance',                    '20270430', '3 Mayıs 2027',  '3 May 2027',      'yazarlar.html#cfp'),
-    ('baskiya-hazir',      'Baskıya hazır bildiri ve yazar kaydı — son tarih','Camera-ready paper & author registration',      '20270524', '31 Mayıs 2027', '31 May 2027',     'yazarlar.html#baskiya-hazir'),
+    ('ozel-oturum-davet',  'Özel oturum düzenleme daveti — son tarih',        'Call for special session proposals — deadline', '20261116', 'yazarlar.html#ozel-oturumlar'),
+    ('seminer-davet',      'Eğitim semineri düzenleme daveti — son tarih',    'Call for tutorial proposals — deadline',        '20261116', 'program.html#seminerler'),
+    ('ozel-oturum-kabul',  'Özel oturum kabullerinin bildirilmesi',           'Notification of special session acceptance',    '20261130', 'yazarlar.html#ozel-oturumlar'),
+    ('seminer-kabul',      'Eğitim semineri kabullerinin bildirilmesi',       'Notification of tutorial acceptance',           '20261130', 'program.html#seminerler'),
+    ('bildiri-gonderim',   'Bildirilerin gönderilmesi — son tarih',           'Paper submission — deadline',                   '20270201', 'yazarlar.html#gonderim'),
+    ('sonuc',              'Sonuçların açıklanması',                          'Notification of acceptance',                    '20270430', 'yazarlar.html#cfp'),
+    ('baskiya-hazir',      'Baskıya hazır bildiri ve yazar kaydı — son tarih','Camera-ready paper & author registration',      '20270524', 'yazarlar.html#baskiya-hazir'),
 ]
 
 def esc(t):
@@ -74,12 +74,12 @@ open('assets/siu2027.ics', 'w', encoding='utf-8', newline='').write(
 
 # 2) Tüm önemli tarihler (+ kurultay)
 evs = []
-for uid, tr, en, due, firm_tr, firm_en, page in MILESTONES:
+for uid, tr, en, due, page in MILESTONES:
     evs += vevent('siu2027-' + uid, due, day_after(due),
                   'SİU 2027 · ' + tr,
-                  '%s\nKesin son tarih: %s\nFirm deadline: %s\n\n%s/%s' % (en, firm_tr, firm_en, SITE, page),
+                  '%s\n\n%s/%s' % (en, SITE, page),
                   '%s/%s' % (SITE, page), alarm_days=7)
-evs += conf
+evs += [l.replace('UID:siu2027-kurultay@', 'UID:siu2027-kurultay-tarihler@') for l in conf]
 open('assets/siu2027-tarihler.ics', 'w', encoding='utf-8', newline='').write(
     cal(evs, 'IEEE SİU 2027 — Önemli Tarihler'))
 

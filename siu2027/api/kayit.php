@@ -28,7 +28,7 @@ $M = [
    'kategori'   => 'Lütfen bir kayıt kategorisi seçin.',
    'kvkk'       => 'Devam etmek için aydınlatma metnini onaylamanız gerekir.',
    'vergi'      => 'Kurumsal fatura için fatura unvanı, vergi dairesi ve vergi numarası zorunludur.',
-   'sunucu'     => 'Kayıt sırasında bir sorun oluştu. Lütfen siu-kayit@medipol.edu.tr adresine yazın.',
+   'sunucu'     => 'Kayıt sırasında bir sorun oluştu. Lütfen siu2027@medipol.edu.tr adresine yazın.',
    'basarili'   => 'Ön kaydınız alındı.',
    'eposta_konu'=> 'SİU 2027 ön kayıt onayı',
    'selam'      => 'Sayın',
@@ -39,7 +39,7 @@ $M = [
    'bildiri'    => 'Bildiri numarası',
    'odeme_yok'  => 'Kayıt ücretleri henüz kesinleşmemiştir. Ücretler ve ödeme adımı duyurulduğunda bu e-posta adresine bilgi verilecektir.',
    'odeme_var'  => 'Ödemenizi tamamlamak için: {url}',
-   'iletisim'   => 'Sorularınız için: siu-kayit@medipol.edu.tr',
+   'iletisim'   => 'Sorularınız için: siu2027@medipol.edu.tr',
  ],
  'en' => [
    'yontem'     => 'Invalid request method.',
@@ -50,7 +50,7 @@ $M = [
    'kategori'   => 'Please choose a registration category.',
    'kvkk'       => 'You must accept the privacy notice to continue.',
    'vergi'      => 'Invoice title, tax office and tax number are required for a corporate invoice.',
-   'sunucu'     => 'Something went wrong. Please write to siu-kayit@medipol.edu.tr.',
+   'sunucu'     => 'Something went wrong. Please write to siu2027@medipol.edu.tr.',
    'basarili'   => 'Your pre-registration has been received.',
    'eposta_konu'=> 'SIU 2027 pre-registration confirmation',
    'selam'      => 'Dear',
@@ -61,7 +61,7 @@ $M = [
    'bildiri'    => 'Paper number',
    'odeme_yok'  => 'Registration fees have not been finalised yet. You will be notified at this address once the fees and the payment step are announced.',
    'odeme_var'  => 'To complete your payment: {url}',
-   'iletisim'   => 'Questions: siu-kayit@medipol.edu.tr',
+   'iletisim'   => 'Questions: siu2027@medipol.edu.tr',
  ],
 ][$dil];
 

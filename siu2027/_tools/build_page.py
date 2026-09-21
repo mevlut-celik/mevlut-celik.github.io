@@ -18,6 +18,13 @@ def dicts():
 
 TR, EN = dicts()
 
+def site_version():
+    """Önbellek sürümünü index.html'den okur; kaynak şablonlardaki ?v= değeri
+    eskidiği için üretilen sayfa her zaman sitedeki güncel sürüme hizalanır."""
+    h = open('index.html', encoding='utf-8').read()
+    v = re.findall(r'\?v=(\d+)', h)
+    return max(int(x) for x in v) if v else 1
+
 def shell():
     h = open('index.html', encoding='utf-8').read()
     def grab(a, b):
@@ -94,7 +101,7 @@ def build(src, dest):
   <meta property="og:image" content="https://siu2027.medipol.edu.tr/assets/og-siu2027.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="IEEE SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı, 04–07 Temmuz 2027, İstanbul Medipol Üniversitesi">
+  <meta property="og:image:alt" content="IEEE SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı, 4–7 Temmuz 2027, İstanbul Medipol Üniversitesi">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{meta['title']}">
   <meta name="twitter:description" content="{meta['ogDesc']}">
@@ -126,6 +133,7 @@ def build(src, dest):
 </html>
 '''
     page = re.sub(r'\n{3,}', '\n\n', page)
+    page = re.sub(r'\?v=\d+', '?v=%d' % site_version(), page)
     open(dest, 'w', encoding='utf-8').write(page)
     print('yazıldı: %s (%d satır)' % (dest, page.count('\n')))
 
