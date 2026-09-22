@@ -228,8 +228,8 @@ const i18nDictionary = {
     ar111: "Boğaziçi Üniversitesi",
     ar112: "Bebek, İstanbul",
     arsivKicker: "KURUMSAL BELLEK & BİLİMSEL ARŞİV",
-    arsivPageDesc: "Boğaziçi Üniversitesi'nde başlayan 35 yıllık kurultay kronolojisi, ev sahibi kurumlar, etkinlik yerleri ve yayın indeksleri.",
-    arsivPageTitle: "SİU Tarihsel Arşivi (1993 – 2026)",
+    arsivPageDesc: "Boğaziçi Üniversitesi'nde başlayan 35 yıllık kurultay kronolojisi, ev sahibi kurumlar ve etkinlik yerleri.",
+    arsivPageTitle: "SİU Tarihsel Arşivi (1993 – 2027)",
     brandSubtitle: "35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı",
     btnCfp: "Bildiri Çağrısı (CFP)",
     btnTracks: "Bildiri Konuları / Kulvarlar",
@@ -739,7 +739,7 @@ const i18nDictionary = {
     tracksKicker: "TEKNİK PROGRAM VE KAPSAM",
     tracksTitle: "Konular ve Araştırma Kulvarları",
     ttl404: "Sayfa Bulunamadı (404) | IEEE SİU 2027",
-    ttlArsiv: "SİU Kurultay Arşivi 1993–2026 | IEEE SİU 2027",
+    ttlArsiv: "SİU Kurultay Arşivi 1993–2027 | IEEE SİU 2027",
     ttlHakkinda: "Kurultay Hakkında | IEEE SİU 2027 — İstanbul Medipol Üniversitesi",
     ttlIletisim: "İletişim ve Kurultay Sekreterliği | IEEE SİU 2027",
     ttlIndex: "IEEE SİU 2027 | 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı",
@@ -925,7 +925,7 @@ const i18nDictionary = {
     ft008: "Düzenleme Kurulu",
     ft009: "Teknik Program Komitesi",
     ft010: "İstanbul Medipol Üniversitesi",
-    ft011: "1993–2026 Kurultay Arşivi",
+    ft011: "1993–2027 Kurultay Arşivi",
     ft012: "Adres",
     ft013: "E-posta",
     ft014: "Telefon",
@@ -935,6 +935,7 @@ const i18nDictionary = {
     ft018: "KVKK Aydınlatma Metni",
     ft019: "Kalıcı Arşiv",
     ft020: "Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.",
+    searchNoResults: "Eşleşen sonuç bulunamadı.",
     ft021: "Aramayı kapat",
     ft022: "Menüyü kapat",
     ft023: "Menüyü aç",
@@ -1018,8 +1019,8 @@ const i18nDictionary = {
     ar111: "Boğaziçi University",
     ar112: "Bebek, İstanbul",
     arsivKicker: "INSTITUTIONAL MEMORY & SCIENTIFIC ARCHIVE",
-    arsivPageDesc: "35-year conference chronology originating at Bogazici University, host institutions, locations, and publication indexes.",
-    arsivPageTitle: "SIU Historical Archive (1993 – 2026)",
+    arsivPageDesc: "35-year conference chronology originating at Bogazici University, with host institutions and locations.",
+    arsivPageTitle: "SIU Historical Archive (1993 – 2027)",
     brandSubtitle: "35th Signal Processing & Communications Applications Conference",
     btnCfp: "Call for Papers (CFP)",
     btnTracks: "Paper Topics / Tracks",
@@ -1529,7 +1530,7 @@ const i18nDictionary = {
     tracksKicker: "TECHNICAL PROGRAM & TRACKS",
     tracksTitle: "Topics and Research Tracks",
     ttl404: "Page Not Found (404) | IEEE SIU 2027",
-    ttlArsiv: "SIU Conference Archive 1993–2026 | IEEE SIU 2027",
+    ttlArsiv: "SIU Conference Archive 1993–2027 | IEEE SIU 2027",
     ttlHakkinda: "About the Conference | IEEE SIU 2027 — Istanbul Medipol University",
     ttlIletisim: "Contact and Conference Secretariat | IEEE SIU 2027",
     ttlIndex: "IEEE SIU 2027 | 35th Signal Processing and Communications Applications Conference",
@@ -1715,7 +1716,7 @@ const i18nDictionary = {
     ft008: "Organising Committee",
     ft009: "Technical Programme Committee",
     ft010: "Istanbul Medipol University",
-    ft011: "1993–2026 Conference Archive",
+    ft011: "1993–2027 Conference Archive",
     ft012: "Address",
     ft013: "E-mail",
     ft014: "Telephone",
@@ -1725,6 +1726,7 @@ const i18nDictionary = {
     ft018: "Personal Data Protection (KVKK) Notice",
     ft019: "Permanent Archive",
     ft020: "Type what you are looking for, or pick one of the shortcuts.",
+    searchNoResults: "No matching results.",
     ft021: "Close search",
     ft022: "Close menu",
     ft023: "Open menu",
@@ -1882,7 +1884,7 @@ function initProgramFilters() {
 }
 
 /* ==========================================================================
-   5. Tarihsel Arşiv Canlı Arama (1993–2026 SİU Tablosu)
+   5. Tarihsel Arşiv Canlı Arama (1993–2027 SİU Tablosu)
    ========================================================================== */
 function initArchiveSearch() {
   const archiveInput = document.getElementById('archiveSearchInput');
@@ -1924,9 +1926,7 @@ function initSearchModal() {
           <button type="button" class="search-modal-close" aria-label="Aramayı kapat">&times;</button>
         </div>
         <div class="search-modal-results" id="globalSearchResults">
-          <div style="padding:16px;color:#94A3B8;text-align:center;font-size:0.85rem;">
-            Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.
-          </div>
+          <p class="search-modal__hint">Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.</p>
         </div>
       </div>
     `;
@@ -1969,43 +1969,76 @@ function initSearchModal() {
     }
   });
 
+  // Arama dizini: her kayıt iki dilde başlık/yol + eşleşme için anahtar kelimeler.
   const searchIndex = [
-    { title: "Bildiri Çağrısı (CFP)", url: "yazarlar.html#cfp", crumb: "Yazarlar İçin > Bildiri Çağrısı" },
-    { title: "Konular ve Araştırma Kulvarları", url: "yazarlar.html#kulvarlar", crumb: "Yazarlar İçin > Kulvarlar" },
-    { title: "Bildiri Şablonları", url: "yazarlar.html#sablonlar", crumb: "Yazarlar İçin > Şablonlar" },
-    { title: "Önemli Tarihler & Son Başvuru", url: "index.html#tarihler", crumb: "Kurultay > Önemli Tarihler" },
-    { title: "Bilimsel Program & Oturumlar", url: "program.html", crumb: "Program > Ayrıntılı Program" },
-    { title: "Davetli Konuşmacılar (Keynotes)", url: "program.html#konusmacilar", crumb: "Program > Davetli Konuşmacılar" },
-    { title: "Kayıt Ücretleri", url: "katilim.html#kayit", crumb: "Katılım > Kayıt Ücretleri" },
-    { title: "İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü Ulaşım", url: "katilim.html#ulasim", crumb: "Katılım > Ulaşım ve Harita" },
-    { title: "Düzenleme ve Teknik Program Komiteleri", url: "komiteler.html", crumb: "Komiteler > Kurullar" },
-    { title: "1993–2026 SİU Tarihçesi ve Bildiri Arşivi", url: "arsiv.html", crumb: "Arşiv > Kurultay Kronolojisi" },
-    { title: "İletişim ve Sekreterlik", url: "iletisim.html", crumb: "İletişim > Adres & E-posta" }
+    { url: 'yazarlar.html#cfp', tr: ['Bildiri Çağrısı (CFP)', 'Yazarlar İçin › Bildiri Çağrısı'], en: ['Call for Papers (CFP)', 'For Authors › Call for Papers'], kw: 'cfp bildiri çağrı gönderim cmt call papers paper submission' },
+    { url: 'yazarlar.html#kulvarlar', tr: ['Konular ve Araştırma Kulvarları', 'Yazarlar İçin › Kulvarlar'], en: ['Topics and Research Tracks', 'For Authors › Tracks'], kw: 'kulvar konu iletişim ağlar 6g görüntü bilgisayarlı görü sinyal robotik makine öğrenmesi yapay zeka biyomedikal doğal dil track topic communications vision robotics machine learning ai biomedical nlp' },
+    { url: 'yazarlar.html#sablonlar', tr: ['Bildiri Şablonları', 'Yazarlar İçin › Şablonlar'], en: ['Paper Templates', 'For Authors › Templates'], kw: 'şablon latex word format ieee template' },
+    { url: 'yazarlar.html#ozel-oturumlar', tr: ['Özel Oturum Çağrısı', 'Yazarlar İçin › Özel Oturumlar'], en: ['Call for Special Sessions', 'For Authors › Special Sessions'], kw: 'özel oturum öneri special session proposal' },
+    { url: 'yazarlar.html#baskiya-hazir', tr: ['Baskıya Hazır Bildiri ve Telif', 'Yazarlar İçin › Baskıya Hazır'], en: ['Camera-Ready Paper and Copyright', 'For Authors › Camera-Ready'], kw: 'baskıya hazır telif ecf pdf express camera ready copyright' },
+    { url: 'index.html#tarihler', tr: ['Önemli Tarihler', 'Kurultay › Önemli Tarihler'], en: ['Important Dates', 'Conference › Important Dates'], kw: 'tarih son tarih takvim deadline dates calendar' },
+    { url: 'program.html', tr: ['Bilimsel Program', 'Program'], en: ['Scientific Programme', 'Programme'], kw: 'program oturum akış session schedule' },
+    { url: 'program.html#konusmacilar', tr: ['Davetli Konuşmacılar', 'Program › Davetli Konuşmacılar'], en: ['Keynote Speakers', 'Programme › Keynote Speakers'], kw: 'keynote davetli konuşmacı speaker' },
+    { url: 'program.html#seminerler', tr: ['Eğitim Seminerleri', 'Program › Eğitim Seminerleri'], en: ['Tutorials', 'Programme › Tutorials'], kw: 'tutorial seminer eğitim' },
+    { url: 'program.html#sosyal-program', tr: ['Sosyal Program', 'Program › Sosyal Program'], en: ['Social Programme', 'Programme › Social Programme'], kw: 'sosyal gala etkinlik social dinner' },
+    { url: 'katilim.html#kayit', tr: ['Kayıt Ücretleri ve Paketler', 'Katılım › Kayıt Ücretleri'], en: ['Registration Fees and Packages', 'Registration › Fees'], kw: 'kayıt ücret paket öğrenci registration fee package student' },
+    { url: 'kayit.html', tr: ['Kayıt Formu', 'Katılım › Kayıt Formu'], en: ['Registration Form', 'Registration › Form'], kw: 'kayıt form kaydol register form' },
+    { url: 'katilim.html#konaklama', tr: ['Konaklama', 'Katılım › Konaklama'], en: ['Accommodation', 'Registration › Accommodation'], kw: 'konaklama otel oda accommodation hotel room' },
+    { url: 'katilim.html#ulasim', tr: ['Ulaşım ve Kampüs Haritası', 'Katılım › Ulaşım'], en: ['Travel and Campus Map', 'Registration › Travel'], kw: 'ulaşım harita havalimanı otobüs kavacık güney kampüs travel map airport bus campus' },
+    { url: 'komiteler.html', tr: ['Komiteler ve Kurullar', 'Komiteler'], en: ['Committees', 'Committees'], kw: 'komite kurul başkan eş başkan tpc onur kurulu committee chair co-chair honorary' },
+    { url: 'hakkinda.html', tr: ['Kurultay Hakkında', 'Kurultay › Hakkında'], en: ['About the Conference', 'Conference › About'], kw: 'hakkında hoş geldiniz kapsam medipol ev sahibi about welcome scope host' },
+    { url: 'arsiv.html', tr: ['SİU Kurultay Arşivi (1993–2027)', 'Arşiv › Kurultay Kronolojisi'], en: ['SIU Conference Archive (1993–2027)', 'Archive › Chronology'], kw: 'arşiv tarihçe geçmiş kronoloji archive history chronology' },
+    { url: 'iletisim.html', tr: ['İletişim ve Sekreterlik', 'İletişim › Adres ve E-posta'], en: ['Contact and Secretariat', 'Contact › Address and E-mail'], kw: 'iletişim sekreterlik e-posta telefon adres contact secretariat email phone address' },
+    { url: 'kvkk.html', tr: ['KVKK Aydınlatma Metni', 'Kurumsal › KVKK'], en: ['Privacy Notice', 'Legal › Privacy'], kw: 'kvkk gizlilik kişisel veri çerez privacy personal data cookie' }
   ];
 
+  // Karşılaştırma harf ve aksandan bağımsız: "sablon" → "Şablon", "iletisim" → "İletişim".
+  function fold(text) {
+    return text.toLocaleLowerCase('tr').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ı/g, 'i');
+  }
+  searchIndex.forEach(item => {
+    item.hay = fold([item.tr[0], item.tr[1], item.en[0], item.en[1], item.kw].join(' '));
+  });
+
+  // Bağlantılar sayfanın bulunduğu köke göre kurulur (404 sayfası kök yollar kullanır).
+  const cssLink = document.querySelector('link[href*="css/style.css"]');
+  const base = cssLink ? cssLink.getAttribute('href').split('css/style.css')[0] : '';
+
+  function currentLang() { return getStoredLang() === 'en' ? 'en' : 'tr'; }
+  function t(key) {
+    const dict = i18nDictionary[currentLang()] || i18nDictionary.tr;
+    return dict[key] || i18nDictionary.tr[key] || '';
+  }
+
+  function render() {
+    if (!input || !resultsWrap) return;
+    const lang = currentLang();
+    const words = fold(input.value.trim()).split(/\s+/).filter(Boolean);
+    const matches = words.length
+      ? searchIndex.filter(item => words.every(w => item.hay.includes(w)))
+      : searchIndex;
+
+    const hint = words.length ? '' : `<p class="search-modal__hint">${t('ft020')}</p>`;
+    if (!matches.length) {
+      resultsWrap.innerHTML = `<p class="search-modal__hint">${t('searchNoResults')}</p>`;
+      return;
+    }
+    resultsWrap.innerHTML = hint + matches.map(item => `
+      <a href="${base}${item.url}" class="search-result-item">
+        <div class="search-result-title">${item[lang][0]}</div>
+        <div class="search-result-crumb">${item[lang][1]}</div>
+      </a>
+    `).join('');
+  }
+
   if (input && resultsWrap) {
-    input.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      if (!q) {
-        resultsWrap.innerHTML = '<div style="padding:16px;color:#94A3B8;text-align:center;font-size:0.85rem;">Aramak istediğiniz konuyu yazın (Örn: bildiri, şablon, kayıt, program)...</div>';
-        return;
-      }
-
-      const matches = searchIndex.filter(item => 
-        item.title.toLowerCase().includes(q) || item.crumb.toLowerCase().includes(q)
-      );
-
-      if (matches.length === 0) {
-        resultsWrap.innerHTML = '<div style="padding:16px;color:#94A3B8;text-align:center;font-size:0.85rem;">Eşleşen sonuç bulunamadı.</div>';
-      } else {
-        resultsWrap.innerHTML = matches.map(item => `
-          <a href="${item.url}" class="search-result-item">
-            <div class="search-result-title">${item.title}</div>
-            <div class="search-result-crumb">${item.crumb}</div>
-          </a>
-        `).join('');
-      }
+    input.addEventListener('input', render);
+    openBtns.forEach(btn => btn.addEventListener('click', render));
+    document.querySelectorAll('.lang-btn-tr, .lang-btn-en').forEach(btn => btn.addEventListener('click', () => setTimeout(render, 0)));
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key && e.key.toLowerCase() === 'k') setTimeout(render, 0);
     });
+    render();
   }
 }
 
