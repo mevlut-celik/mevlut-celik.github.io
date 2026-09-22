@@ -1,4 +1,0 @@
-<FilesMatch "^(config|config\.sample)\.php$">
-  Require all denied
-  Deny from all
-</FilesMatch>

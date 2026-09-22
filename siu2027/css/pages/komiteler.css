@@ -6,10 +6,43 @@
 
 /* Eş başkanlar (01): hiyerarşi kutuyla değil boyutla — daha geniş kart, daha
    büyük avatar, adı bir kademe büyük. */
-.committee-grid--lead { grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
+.committee-grid--lead { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .committee-grid--lead .committee-card { grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-4); align-items: center; }
 .committee-grid--lead .committee-avatar-wrap img { width: 4.5rem; height: 4.5rem; }
 .committee-grid--lead .committee-name { font-size: var(--step-1); }
+/* Dar ekranda iki kart yan yana sığsın diye fotoğraf üstte, metin altta ve ortalı */
+@media (max-width: 39.99em) {
+  .committee-grid--lead { gap: var(--space-3); }
+  .committee-grid--lead .committee-card {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-2);
+    text-align: center;
+  }
+  .committee-grid--lead .committee-avatar-wrap img { width: 4rem; height: 4rem; }
+  .committee-grid--lead .committee-name { font-size: var(--step-0); }
+}
+
+/* TPC eş başkanları (02): üç kart her genişlikte tek satırda; dar kartta
+   yatay düzen sığmadığı için fotoğraf üstte, metin altta ve ortalı. */
+.committee-grid--trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.committee-grid--trio .committee-card {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-2);
+  text-align: center;
+}
+.committee-grid--trio .committee-avatar-wrap img { width: 4rem; height: 4rem; }
+@media (max-width: 29.99em) {
+  .committee-grid--trio { gap: var(--space-2); }
+  .committee-grid--trio .committee-card { padding: var(--space-3) var(--space-1); }
+  .committee-grid--trio .committee-avatar-wrap img { width: 3rem; height: 3rem; }
+  .committee-grid--trio .committee-name { font-size: var(--step--1); }
+}
 
 /* Avatar sarmalayıcısı: satır içi img'nin alt boşluğunu kaldır (promote adayı) */
 .committee-avatar-wrap,

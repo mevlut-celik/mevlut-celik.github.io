@@ -41,6 +41,7 @@
 }
 
 .cfp-downloads { margin-top: var(--space-6); }
+.cfp-xplore { margin-top: var(--space-6); }
 
 /* 3. Kulvar satırları: başlık solda, alt konular sağda iki sütun.
       Konu listesi sözlükten "<span>• …</span>" olarak gelir; asılı girinti ile hizalanır. */

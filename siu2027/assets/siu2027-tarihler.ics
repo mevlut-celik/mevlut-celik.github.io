@@ -80,8 +80,8 @@ DTSTART;VALUE=DATE:20270201
 DTEND;VALUE=DATE:20270202
 SUMMARY:SİU 2027 · Bildirilerin gönderilmesi — son tarih
 DESCRIPTION:Paper submission — deadline\n\nhttps://siu2027.medipol.edu.tr
- /yazarlar.html#gonderim
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#gonderim
+ /yazarlar.html#cfp
+URL:https://siu2027.medipol.edu.tr/yazarlar.html#cfp
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
