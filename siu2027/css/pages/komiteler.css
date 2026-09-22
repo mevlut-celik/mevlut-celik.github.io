@@ -4,6 +4,9 @@
    Genel olması gerekenler çıktıda "promote" olarak bildirildi.
    ========================================================================== */
 
+/* Sayfa başlığı ekranda gösterilmez (ekran okuyucular için h1 kalır); bant yalnız yol satırını taşır */
+.page-head--bare { padding-block: var(--space-5) var(--space-4); }
+
 /* Eş başkanlar (01): hiyerarşi kutuyla değil boyutla — daha geniş kart, daha
    büyük avatar, adı bir kademe büyük. */
 .committee-grid--lead { grid-template-columns: repeat(2, minmax(0, 1fr)); }
