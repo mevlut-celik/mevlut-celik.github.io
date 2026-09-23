@@ -25,8 +25,8 @@
   <meta name="twitter:image" content="https://siu2027.medipol.edu.tr/assets/og-siu2027.jpg">
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfa kuralları -->
-  <link rel="stylesheet" href="css/style.css?v=96">
-  <link rel="stylesheet" href="css/pages/komiteler.css?v=96">
+  <link rel="stylesheet" href="css/style.css?v=98">
+  <link rel="stylesheet" href="css/pages/komiteler.css?v=98">
 
   <!-- Favicon / Touch Icon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -79,7 +79,7 @@
         </li>
 
         <li class="site-nav__item">
-          <a href="hakkinda" class="site-nav__link site-nav__link--menu"><span data-i18n="navAbout">Kurultay Hakkında</span></a>
+          <a href="hakkinda" class="site-nav__link site-nav__link--menu active" aria-current="page"><span data-i18n="navAbout">Kurultay Hakkında</span></a>
           <div class="site-nav__menu">
             <a href="hakkinda#hosgeldiniz">
               <span data-i18n="navAboutMsg">Hoş Geldiniz Mesajı</span>
@@ -89,13 +89,21 @@
               <span data-i18n="navAboutScope">Kapsam ve Amaç</span>
               <span class="menu-desc" data-i18n="descAboutScope">Bilimsel vizyon ve misyon</span>
             </a>
+            <a href="komiteler">
+              <span data-i18n="navCommittees">Düzenleme Komitesi</span>
+              <span class="menu-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span>
+            </a>
             <a href="hakkinda#ev-sahibi">
-              <span data-i18n="navAboutHost">Ev Sahibi Kurum</span>
+              <span data-i18n="navAboutHost">Kurultay Yeri</span>
               <span class="menu-desc" data-i18n="descAboutHost">İstanbul Medipol Üniversitesi</span>
             </a>
             <a href="arsiv">
               <span data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span>
               <span class="menu-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span>
+            </a>
+            <a href="komiteler#onur-kurulu">
+              <span data-i18n="navAboutHonor">Onur Kurulu</span>
+              <span class="menu-desc" data-i18n="descAboutHonor">SİU Onur Kurulu üyeleri</span>
             </a>
           </div>
         </li>
@@ -181,10 +189,6 @@
             </a>
           </div>
         </li>
-
-        <li class="site-nav__item">
-          <a href="komiteler" class="site-nav__link active" aria-current="page"><span data-i18n="navCommittees">Komiteler</span></a>
-        </li>
         <li class="site-nav__item">
           <a href="arsiv" class="site-nav__link"><span data-i18n="navArchive">Arşiv</span></a>
         </li>
@@ -208,7 +212,7 @@
       <div class="wrap">
         <ol class="breadcrumb">
           <li><a href="./" data-i18n="navHome">Ana Sayfa</a></li>
-          <li><span data-i18n="navCommittees">Komiteler</span></li>
+          <li><span data-i18n="navCommittees">Düzenleme Komitesi</span></li>
         </ol>
         <p class="visually-hidden" data-i18n="komitelerKicker">ORGANİZASYON VE BİLİMSEL LİDERLİK</p>
         <h1 class="page-head__title visually-hidden" id="sayfa-title" data-i18n="komitelerPageTitle">Kurultay Komiteleri</h1>
@@ -284,7 +288,7 @@
         <!-- 03 DÜZENLEME KURULU & GÖREV DAĞILIMI -->
         <section class="section" id="duzenleme" aria-labelledby="duzenleme-title">
           <div class="section__head">
-            <h2 id="duzenleme-title" data-i18n="km008">Düzenleme Kurulu & Görev Dağılımı</h2>
+            <h2 id="duzenleme-title" data-i18n="km008">Düzenleme Komitesi</h2>
           </div>
 
           <div class="section__body committee-grid">
@@ -447,7 +451,7 @@
           <ol class="toc">
             <li><a href="#baskanlar" data-i18n="km001">Kurultay Eş Başkanları</a></li>
             <li><a href="#tpc" data-i18n="km004">Teknik Program Komitesi Eş Başkanları</a></li>
-            <li><a href="#duzenleme" data-i18n="km008">Düzenleme Kurulu & Görev Dağılımı</a></li>
+            <li><a href="#duzenleme" data-i18n="km008">Düzenleme Komitesi</a></li>
             <li><a href="#onur-kurulu" data-i18n="km022">Onur Kurulu</a></li>
           </ol>
         </nav>
@@ -565,12 +569,14 @@
     <nav class="mobile-menu-list" aria-label="Mobil Ana Menü">
       <a href="./" class="mobile-nav-link" data-i18n="navHome">Ana Sayfa</a>
 
-      <a href="hakkinda" class="mobile-nav-link" data-i18n="navAbout">Kurultay Hakkında</a>
+      <a href="hakkinda" class="mobile-nav-link active" data-i18n="navAbout" aria-current="page">Kurultay Hakkında</a>
       <div class="mobile-sub-menu">
         <a href="hakkinda#hosgeldiniz" class="mobile-sub-link" data-i18n="navAboutMsg">Hoş Geldiniz Mesajı</a>
         <a href="hakkinda#kapsam" class="mobile-sub-link" data-i18n="navAboutScope">Kapsam ve Amaç</a>
-        <a href="hakkinda#ev-sahibi" class="mobile-sub-link" data-i18n="navAboutHost">Ev Sahibi Kurum</a>
+        <a href="komiteler" class="mobile-sub-link" data-i18n="navCommittees">Düzenleme Komitesi</a>
+        <a href="hakkinda#ev-sahibi" class="mobile-sub-link" data-i18n="navAboutHost">Kurultay Yeri</a>
         <a href="arsiv" class="mobile-sub-link" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</a>
+        <a href="komiteler#onur-kurulu" class="mobile-sub-link" data-i18n="navAboutHonor">Onur Kurulu</a>
       </div>
 
       <a href="yazarlar" class="mobile-nav-link" data-i18n="navAuthors">Yazarlar İçin</a>
@@ -602,7 +608,6 @@
         <a href="katilim#ulasim" class="mobile-sub-link" data-i18n="navRegistrationTravel">Ulaşım ve Kampüs Haritası</a>
       </div>
 
-      <a href="komiteler" class="mobile-nav-link active" data-i18n="navCommittees" aria-current="page">Komiteler</a>
       <a href="arsiv" class="mobile-nav-link" data-i18n="navArchive">Arşiv</a>
       <a href="iletisim" class="mobile-nav-link" data-i18n="navContact">İletişim</a>
     </nav>
@@ -632,6 +637,6 @@
   </div>
 
   <!-- JavaScript (dokunulmaz) -->
-  <script src="js/main.js?v=96"></script>
+  <script src="js/main.js?v=98"></script>
 </body>
 </html>
