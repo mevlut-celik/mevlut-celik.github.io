@@ -864,7 +864,8 @@ p { max-width: var(--measure); }
   padding-block: var(--space-5);
   border-bottom: 1px solid var(--rule);
 }
-.track__head { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; }
+.track__head { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; align-content: start; }
+.track__chair { margin-top: var(--space-1); font-size: var(--step--1); color: var(--ink-3); }
 .track__topics {
   font-size: var(--step--1);
   color: var(--ink-2);
