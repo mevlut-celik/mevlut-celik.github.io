@@ -216,14 +216,6 @@ body { overflow-x: hidden; }
   align-items: center;
   gap: 10px;
 }
-.nav__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #1fbf5f;
-  box-shadow: 0 0 0 4px rgba(31, 191, 95, 0.18);
-}
-
 .nav__menu {
   display: flex;
   align-items: center;
