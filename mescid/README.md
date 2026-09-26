@@ -1,16 +1,15 @@
-# Tanitim Site Klasoru
+# ODTÜ Mescid — tanıtım sayfası
 
-Bu klasoru oldugu gibi GitHub'a yukleyebilirsin.
+Uygulamanın tanıtım ve APK indirme sayfası. Sitenin diğer projeleriyle aynı yapıda:
 
-## Gerekli dosyalar
+```
+index.html            içerik
+assets/css/main.css   tokenlar → reset → bileşenler → responsive
+assets/js/main.js     initX() modülleri + tek boot()
+downloads/odtu-mescid.apk
+```
 
-- `index.html` -> tanitim sayfasi
-- `downloads/odtu-mescid.apk` -> indirme butonunun hedefi
-- (Opsiyonel) `screenshots/*.png` -> ekran goruntuleri
+## APK güncelleme
 
-## Hızlı kullanim
-
-1. Bu klasorun icinde `downloads` klasoru olustur.
-2. APK dosyasini `downloads/odtu-mescid.apk` adi ile koy.
-3. `index.html` icindeki `https://github.com/` linkini kendi repo linkin ile degistir.
-
+Yeni sürümü `downloads/odtu-mescid.apk` adıyla aynı yere koy. Dosya boyutu
+değişirse `index.html` içindeki "27 MB" ifadelerini güncelle.

@@ -1,479 +1,247 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katılımcı Bilgileri</title>
-    <!-- Bootstrap 4 CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            scroll-behavior: smooth;
-            scroll-padding-top: 0;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-         img {
-    vertical-align: middle;
-    border-style: none;
-    width: 190px;
-    height: auto;
-    z-index: 10;
-    }
-        .modal-content {
-            text-align: left;
-        }
-        .required-field::after {
-            content: " *";
-            color: red;
-            font-weight: bold;
-        }
-        
-        .form-group.has-error label {
-            color: #dc3545;
-        }
-        
-        .form-group.has-error input,
-        .form-group.has-error select {
-            border-color: #dc3545;
-        }
-        
-        .error-message {
-            color: #dc3545;
-            font-size: 80%;
-            margin-top: 0.25rem;
-            display: none;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katılımcı Bilgileri | Araştırma Anketi</title>
+<link rel="icon" href="./assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
 </head>
+
 <body>
-<img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="img">
-    <div class="container">
-        <h1 class="text-center mb-4">Katılımcı Bilgileri</h1>
-        <form id="volunteerForm" class="mt-4">
-            <div class="form-group">
-                <label for="age" class="required-field">Yaşınız</label>
-                <input type="text" 
-                       class="form-control" 
-                       id="age" 
-                       name="age" 
-                       maxlength="2"
-                       pattern="[2-6][0-9]"
-                       oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,2); if(this.value > 65) this.value = 65; if(this.value < 20) this.value = '';"
-                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                       required>
-                <small class="form-text text-muted">Lütfen 20-65 yaş aralığında bir değer giriniz.</small>
-                <div class="error-message">Bu alan zorunludur ve 20-65 yaş aralığında olmalıdır</div>
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <img class="nav__logo" src="./assets/img/logo.png" alt="ODTÜ" width="630" height="250">
+    <p class="nav__title">Fizik Eğitiminde Öğretmen Fark Etme Becerisi<br>Araştırma Anketi</p>
+  </div>
+</header>
+<ol class="steps" aria-label="Anket adımları">
+  <li class="steps__item is-done">Onam</li>
+  <li class="steps__item is-current" aria-current="step">Katılımcı bilgileri</li>
+  <li class="steps__item">Senaryo</li>
+  <li class="steps__item">Tamamlandı</li>
+</ol>
+
+<main class="band">
+  <div class="band__inner">
+    <article class="sheet">
+      <p class="eyebrow">Adım 2 &middot; Katılımcı bilgileri</p>
+      <h1 class="display display--lg">Katılımcı Bilgileri</h1>
+      <p class="lead"><abbr class="required" title="zorunlu">*</abbr> işaretli alanlar zorunludur. Bilgileriniz kimliğinizle eşleştirilmez.</p>
+
+      <form class="form" id="volunteerForm" novalidate>
+        <p class="notice notice--error" id="form-error" hidden>Lütfen işaretli alanları kontrol ediniz.</p>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="label" for="age">Yaşınız <abbr title="zorunlu">*</abbr></label>
+            <input class="input" type="text" id="age" name="age" inputmode="numeric" maxlength="2" autocomplete="off">
+            <p class="hint">20&ndash;65 yaş aralığında bir değer giriniz.</p>
+            <p class="field__error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="label" for="gender">Cinsiyet <abbr title="zorunlu">*</abbr></label>
+            <select class="input" id="gender" name="gender">
+              <option value="">Seçiniz</option>
+              <option value="Kadın">Kadın</option>
+              <option value="Erkek">Erkek</option>
+            </select>
+            <p class="field__error" hidden></p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="label" for="city">İl <abbr title="zorunlu">*</abbr></label>
+            <select class="input" id="city" name="city">
+              <option value="">İl seçiniz</option>
+              <option value="Adana">Adana</option>
+              <option value="Adıyaman">Adıyaman</option>
+              <option value="Afyonkarahisar">Afyonkarahisar</option>
+              <option value="Ağrı">Ağrı</option>
+              <option value="Amasya">Amasya</option>
+              <option value="Ankara">Ankara</option>
+              <option value="Antalya">Antalya</option>
+              <option value="Artvin">Artvin</option>
+              <option value="Aydın">Aydın</option>
+              <option value="Balıkesir">Balıkesir</option>
+              <option value="Bilecik">Bilecik</option>
+              <option value="Bingöl">Bingöl</option>
+              <option value="Bitlis">Bitlis</option>
+              <option value="Bolu">Bolu</option>
+              <option value="Burdur">Burdur</option>
+              <option value="Bursa">Bursa</option>
+              <option value="Çanakkale">Çanakkale</option>
+              <option value="Çankırı">Çankırı</option>
+              <option value="Çorum">Çorum</option>
+              <option value="Denizli">Denizli</option>
+              <option value="Diyarbakır">Diyarbakır</option>
+              <option value="Edirne">Edirne</option>
+              <option value="Elazığ">Elazığ</option>
+              <option value="Erzincan">Erzincan</option>
+              <option value="Erzurum">Erzurum</option>
+              <option value="Eskişehir">Eskişehir</option>
+              <option value="Gaziantep">Gaziantep</option>
+              <option value="Giresun">Giresun</option>
+              <option value="Gümüşhane">Gümüşhane</option>
+              <option value="Hakkâri">Hakkâri</option>
+              <option value="Hatay">Hatay</option>
+              <option value="Isparta">Isparta</option>
+              <option value="Mersin">Mersin</option>
+              <option value="İstanbul">İstanbul</option>
+              <option value="İzmir">İzmir</option>
+              <option value="Kars">Kars</option>
+              <option value="Kastamonu">Kastamonu</option>
+              <option value="Kayseri">Kayseri</option>
+              <option value="Kırklareli">Kırklareli</option>
+              <option value="Kırşehir">Kırşehir</option>
+              <option value="Kocaeli">Kocaeli</option>
+              <option value="Konya">Konya</option>
+              <option value="Kütahya">Kütahya</option>
+              <option value="Malatya">Malatya</option>
+              <option value="Manisa">Manisa</option>
+              <option value="Kahramanmaraş">Kahramanmaraş</option>
+              <option value="Mardin">Mardin</option>
+              <option value="Muğla">Muğla</option>
+              <option value="Muş">Muş</option>
+              <option value="Nevşehir">Nevşehir</option>
+              <option value="Niğde">Niğde</option>
+              <option value="Ordu">Ordu</option>
+              <option value="Rize">Rize</option>
+              <option value="Sakarya">Sakarya</option>
+              <option value="Samsun">Samsun</option>
+              <option value="Şanlıurfa">Şanlıurfa</option>
+              <option value="Siirt">Siirt</option>
+              <option value="Sinop">Sinop</option>
+              <option value="Sivas">Sivas</option>
+              <option value="Tekirdağ">Tekirdağ</option>
+              <option value="Tokat">Tokat</option>
+              <option value="Trabzon">Trabzon</option>
+              <option value="Tunceli">Tunceli</option>
+              <option value="Uşak">Uşak</option>
+              <option value="Van">Van</option>
+              <option value="Yozgat">Yozgat</option>
+              <option value="Zonguldak">Zonguldak</option>
+              <option value="Aksaray">Aksaray</option>
+              <option value="Bayburt">Bayburt</option>
+              <option value="Karaman">Karaman</option>
+              <option value="Kırıkkale">Kırıkkale</option>
+              <option value="Batman">Batman</option>
+              <option value="Şırnak">Şırnak</option>
+              <option value="Bartın">Bartın</option>
+              <option value="Ardahan">Ardahan</option>
+              <option value="Iğdır">Iğdır</option>
+              <option value="Yalova">Yalova</option>
+              <option value="Karabük">Karabük</option>
+              <option value="Kilis">Kilis</option>
+              <option value="Osmaniye">Osmaniye</option>
+              <option value="Düzce">Düzce</option>
+            </select>
+            <p class="field__error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="label" for="district">İlçe</label>
+            <select class="input" id="district" name="district">
+              <option value="">İlçe seçiniz</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="label" for="educationLevel">En son tamamlanan eğitim düzeyi <abbr title="zorunlu">*</abbr></label>
+            <select class="input" id="educationLevel" name="educationLevel">
+              <option value="">Seçiniz</option>
+              <option value="Lisans">Lisans</option>
+              <option value="Yüksek Lisans">Yüksek Lisans</option>
+              <option value="Doktora">Doktora</option>
+            </select>
+            <p class="field__error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="label" for="graduateEducation">Devam ettiğiniz lisansüstü bir eğitim var mı?</label>
+            <select class="input" id="graduateEducation" name="graduateEducation">
+              <option value="Yok">Yok</option>
+              <option value="Yüksek Lisans">Yüksek Lisans</option>
+              <option value="Doktora">Doktora</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="department">Lisans derecesinin mezun olunan fakülte</label>
+          <select class="input" id="department" name="department">
+            <option value="">Seçiniz</option>
+            <option value="Eğitim Fakültesi">Eğitim Fakültesi</option>
+            <option value="Fen-Edebiyat Fakültesi">Fen-Edebiyat Fakültesi</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="label" for="experienceYears">Mesleki deneyim &mdash; yıl <abbr title="zorunlu">*</abbr></label>
+            <div class="suffix">
+              <input class="input" type="text" id="experienceYears" name="experienceYears" inputmode="numeric" maxlength="2" placeholder="0">
+              <span class="suffix__unit">Yıl</span>
             </div>
-            <div class="form-group">
-                <label for="gender" class="required-field">Cinsiyet</label>
-                <select class="form-control" id="gender" name="gender" required>
-                    <option value="">Seçiniz</option>
-                    <option value="Kadın">Kadın</option>
-                    <option value="Erkek">Erkek</option>
-                </select>
-                <div class="error-message">Lütfen bir seçim yapınız</div>
+            <p class="hint">0&ndash;45 yıl arası</p>
+            <p class="field__error" hidden></p>
+          </div>
+          <div class="field">
+            <label class="label" for="experienceMonths">Mesleki deneyim &mdash; ay <abbr title="zorunlu">*</abbr></label>
+            <div class="suffix">
+              <input class="input" type="text" id="experienceMonths" name="experienceMonths" inputmode="numeric" maxlength="2" placeholder="0">
+              <span class="suffix__unit">Ay</span>
             </div>
-            <div class="form-group">
-                <label for="city">İl:</label>
-                <select class="form-control" id="city" name="city" required>
-                    <option value="">İl Seçiniz</option>
-                    <option value="Adana">Adana</option>
-                    <option value="Adıyaman">Adıyaman</option>
-                    <option value="Afyonkarahisar">Afyonkarahisar</option>
-                    <option value="Ağrı">Ağrı</option>
-                    <option value="Amasya">Amasya</option>
-                    <option value="Ankara">Ankara</option>
-                    <option value="Antalya">Antalya</option>
-                    <option value="Artvin">Artvin</option>
-                    <option value="Aydın">Aydın</option>
-                    <option value="Balıkesir">Balıkesir</option>
-                    <option value="Bilecik">Bilecik</option>
-                    <option value="Bingöl">Bingöl</option>
-                    <option value="Bitlis">Bitlis</option>
-                    <option value="Bolu">Bolu</option>
-                    <option value="Burdur">Burdur</option>
-                    <option value="Bursa">Bursa</option>
-                    <option value="Çanakkale">Çanakkale</option>
-                    <option value="Çankırı">Çankırı</option>
-                    <option value="Çorum">Çorum</option>
-                    <option value="Denizli">Denizli</option>
-                    <option value="Diyarbakır">Diyarbakır</option>
-                    <option value="Edirne">Edirne</option>
-                    <option value="Elazığ">Elazığ</option>
-                    <option value="Erzincan">Erzincan</option>
-                    <option value="Erzurum">Erzurum</option>
-                    <option value="Eskişehir">Eskişehir</option>
-                    <option value="Gaziantep">Gaziantep</option>
-                    <option value="Giresun">Giresun</option>
-                    <option value="Gümüşhane">Gümüşhane</option>
-                    <option value="Hakkâri">Hakkâri</option>
-                    <option value="Hatay">Hatay</option>
-                    <option value="Isparta">Isparta</option>
-                    <option value="Mersin">Mersin</option>
-                    <option value="İstanbul">İstanbul</option>
-                    <option value="İzmir">İzmir</option>
-                    <option value="Kars">Kars</option>
-                    <option value="Kastamonu">Kastamonu</option>
-                    <option value="Kayseri">Kayseri</option>
-                    <option value="Kırklareli">Kırklareli</option>
-                    <option value="Kırşehir">Kırşehir</option>
-                    <option value="Kocaeli">Kocaeli</option>
-                    <option value="Konya">Konya</option>
-                    <option value="Kütahya">Kütahya</option>
-                    <option value="Malatya">Malatya</option>
-                    <option value="Manisa">Manisa</option>
-                    <option value="Kahramanmaraş">Kahramanmaraş</option>
-                    <option value="Mardin">Mardin</option>
-                    <option value="Muğla">Muğla</option>
-                    <option value="Muş">Muş</option>
-                    <option value="Nevşehir">Nevşehir</option>
-                    <option value="Niğde">Niğde</option>
-                    <option value="Ordu">Ordu</option>
-                    <option value="Rize">Rize</option>
-                    <option value="Sakarya">Sakarya</option>
-                    <option value="Samsun">Samsun</option>
-                    <option value="Şanlıurfa">Şanlıurfa</option>
-                    <option value="Siirt">Siirt</option>
-                    <option value="Sinop">Sinop</option>
-                    <option value="Sivas">Sivas</option>
-                    <option value="Tekirdağ">Tekirdağ</option>
-                    <option value="Tokat">Tokat</option>
-                    <option value="Trabzon">Trabzon</option>
-                    <option value="Tunceli">Tunceli</option>
-                    <option value="Uşak">Uşak</option>
-                    <option value="Van">Van</option>
-                    <option value="Yozgat">Yozgat</option>
-                    <option value="Zonguldak">Zonguldak</option>
-                    <option value="Aksaray">Aksaray</option>
-                    <option value="Bayburt">Bayburt</option>
-                    <option value="Karaman">Karaman</option>
-                    <option value="Kırıkkale">Kırıkkale</option>
-                    <option value="Batman">Batman</option>
-                    <option value="Şırnak">Şırnak</option>
-                    <option value="Bartın">Bartın</option>
-                    <option value="Ardahan">Ardahan</option>
-                    <option value="Iğdır">Iğdır</option>
-                    <option value="Yalova">Yalova</option>
-                    <option value="Karabük">Karabük</option>
-                    <option value="Kilis">Kilis</option>
-                    <option value="Osmaniye">Osmaniye</option>
-                    <option value="Düzce">Düzce</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="district">İlçe:</label>
-                <select class="form-control" id="district" name="district" required>
-                    <option value="">İlçe Seçiniz</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="educationLevel">En Son Tamamlanan Eğitim Düzeyi:</label>
-                <select class="form-control" id="educationLevel" name="educationLevel" required>
-                    <option value="">Seçiniz</option>
-                    <option value="Lisans">Lisans</option>
-                    <option value="Yüksek Lisans">Yüksek Lisans</option>
-                    <option value="Doktora">Doktora</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="graduateEducation">Devam Ettiğiniz Lisansüstü Bir Eğitim Var Mı?</label>
-                <select class="form-control" id="graduateEducation" name="graduateEducation" required>
-                    <option value="Yok">Yok</option>
-                    <option value="Yüksek Lisans">Yüksek Lisans</option>
-                    <option value="Doktora">Doktora</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="department">Lisans Derecesinin Mezun Olunan Fakülte:</label>
-                <select class="form-control" id="department" name="department" required>
-                    <option value="">Seçiniz</option>
-                    <option value="Eğitim Fakültesi">Eğitim Fakültesi</option>
-                    <option value="Fen-Edebiyat Fakültesi">Fen-Edebiyat Fakültesi</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Mesleki Deneyim Süreniz:</label>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="input-group mb-2">
-                            <input type="number" 
-                                   class="form-control" 
-                                   id="experienceYears" 
-                                   name="experienceYears" 
-                                   min="0" 
-                                   max="45" 
-                                   placeholder="Yıl"
-                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                                   required>
-                            <div class="input-group-append">
-                                <span class="input-group-text">Yıl</span>
-                            </div>
-                        </div>
-                        <small class="form-text text-muted">0-45 yıl arası</small>
-                    </div>
-                    <div class="col-6">
-                        <div class="input-group mb-2">
-                            <input type="number" 
-                                   class="form-control" 
-                                   id="experienceMonths" 
-                                   name="experienceMonths" 
-                                   min="0" 
-                                   max="11" 
-                                   placeholder="Ay"
-                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                   onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                                   required>
-                            <div class="input-group-append">
-                                <span class="input-group-text">Ay</span>
-                            </div>
-                        </div>
-                        <small class="form-text text-muted">0-11 ay arası</small>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="schoolType">Çalışılan Okul Türü:</label>
-                <select class="form-control" id="schoolType" name="schoolType" required>
-                    <option value="devlet">Devlet</option>
-                    <option value="özel">Özel</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="classLevels">Meslek Hayatınız Boyunca Hangi Sınıf Düzeylerinde Ders Verdiniz? (9/10/11/12. Sınıf):</label>
-                <div id="classLevels">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade9" name="classLevels[]" value="9">
-                        <label class="form-check-label" for="grade9">9. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade10" name="classLevels[]" value="10">
-                        <label class="form-check-label" for="grade10">10. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade11" name="classLevels[]" value="11">
-                        <label class="form-check-label" for="grade11">11. Sınıf</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="grade12" name="classLevels[]" value="12">
-                        <label class="form-check-label" for="grade12">12. Sınıf</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="trainingExperience">Daha Önce Hizmet İçi Eğitim aldınız mı?(Evet ise eğitim konularını belirtin):</label>
-                <textarea class="form-control" id="trainingExperience" name="trainingExperience" rows="3" required></textarea>
-            </div>
+            <p class="hint">0&ndash;11 ay arası</p>
+            <p class="field__error" hidden></p>
+          </div>
+        </div>
 
-            <button type="button" class="btn btn-primary" id="submitButton">Formu Gönder</button>
-        </form>
-    </div>
+        <div class="field">
+          <label class="label" for="schoolType">Çalışılan okul türü <abbr title="zorunlu">*</abbr></label>
+          <select class="input" id="schoolType" name="schoolType">
+            <option value="devlet">Devlet</option>
+            <option value="özel">Özel</option>
+          </select>
+          <p class="field__error" hidden></p>
+        </div>
 
-    <!-- Bootstrap 4 JS ve jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <fieldset class="field fieldset">
+          <legend class="label">Meslek hayatınız boyunca hangi sınıf düzeylerinde ders verdiniz?</legend>
+          <div class="choices" id="classLevels">
+            <label class="choice"><input type="checkbox" id="grade9" name="classLevels[]" value="9"> 9. Sınıf</label>
+            <label class="choice"><input type="checkbox" id="grade10" name="classLevels[]" value="10"> 10. Sınıf</label>
+            <label class="choice"><input type="checkbox" id="grade11" name="classLevels[]" value="11"> 11. Sınıf</label>
+            <label class="choice"><input type="checkbox" id="grade12" name="classLevels[]" value="12"> 12. Sınıf</label>
+          </div>
+        </fieldset>
 
-    <script>
-        document.getElementById('submitButton').addEventListener('click', function() {
-            // Form verilerini al
-            const formData = {
-                timestamp: new Date().toLocaleString('tr-TR'),
-                age: document.getElementById('age').value,
-                gender: document.getElementById('gender').value,
-                city: document.getElementById('city').value,
-                district: document.getElementById('district').value,
-                educationLevel: document.getElementById('educationLevel').value,
-                graduateEducation: document.getElementById('graduateEducation').value,
-                department: document.getElementById('department').value,
-                experienceYears: document.getElementById('experienceYears').value,
-                experienceMonths: document.getElementById('experienceMonths').value,
-                schoolType: document.getElementById('schoolType').value,
-                classLevels: Array.from(document.querySelectorAll('input[name="classLevels[]"]:checked'))
-                    .map(cb => cb.value)
-                    .join(', '),
-                trainingExperience: document.getElementById('trainingExperience').value
-            };
+        <div class="field">
+          <label class="label" for="trainingExperience">Daha önce hizmet içi eğitim aldınız mı?</label>
+          <textarea class="input" id="trainingExperience" name="trainingExperience" rows="3"></textarea>
+          <p class="hint">Evet ise eğitim konularını belirtiniz.</p>
+        </div>
 
-            // Zorunlu alanları kontrol et
-            if (!formData.age || !formData.gender || !formData.city || 
-                !formData.educationLevel || !formData.experienceYears || !formData.experienceMonths || !formData.schoolType) {
-                alert('Lütfen tüm zorunlu alanları doldurun!');
-                return;
-            }
+        <div class="actions">
+          <a class="btn btn--ghost" href="index.html">&larr; Onam</a>
+          <button class="btn" type="submit" id="submitButton">Devam et &rarr;</button>
+        </div>
+      </form>
+    </article>
+  </div>
+</main>
 
-            // Form verilerini localStorage'a kaydet
-            localStorage.setItem('form1Data', JSON.stringify(formData));
-            
-            // GitHub Pages'deki survey.html'e yönlendir
-            window.location.href = '/ptns/survey.html';
-        });
-    </script>
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <p class="footer__inner">ODTÜ Eğitim Fakültesi &middot; Matematik ve Fen Bilimleri Eğitimi Bölümü &middot; <span data-year>2026</span></p>
+</footer>
 
-    <script>
-        document.getElementById('city').addEventListener('change', function () {
-            const districts = {
-                "Adana": ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
-                "Adıyaman": ["Adıyaman", "Besni", "Çelikhan", "Gerger", "Gölbaşı", "Kahta", "Samsat", "Sincik", "Tut"],
-                "Ankara": ["Altındağ", "Ayaş", "Bala", "Beypazarı", "Çamlıdere", "Çankaya", "Çubuk", "Etimesgut", "Haymana", "Kalecik", "Keçiören", "Kızılcahamam", "Mamak", "Nallıhan", "Polatlı", "Şereflikoçhisar", "Sincan", "Yenimahalle"],
-                "İstanbul": ["Adalar", "Bağcılar", "Bahçelievler", "Bakırköy", "Beşiktaş", "Beykoz", "Beyoğlu", "Büyükçekmece", "Çatalca", "Eminönü", "Esenler", "Eyüp", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sarıyer", "Silivri", "Şile", "Şişli", "Sultanbeyli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"],
-                "İzmir": ["Aliağa", "Balçova", "Bayındır", "Bergama", "Beydağ", "Bornova", "Buca", "Çeşme", "Dikili", "Foça", "Güzelbahçe", "Karaburun", "Karşıyaka", "Kınık", "Kiraz", "Konak", "Menderes", "Menemen", "Narlıdere", "Ödemiş", "Seferihisar", "Selçuk", "Tire", "Torbalı", "Urla"],
-                "Afyonkarahisar": ["Başmakçı", "Bolvadin", "Çay", "Çobanlar", "Dinar", "Emirdağ", "İhsaniye", "Kızılören", "Merkez", "Sandıklı", "Sincanlı", "Suhut", "Sultandağı"],
-                "Ağrı": ["Diyadin", "Doğubeyazıt", "Merkez", "Patnos", "Tutak"],
-                "Aksaray": ["Eskil", "Gülağaç", "Güzelyurt", "Merkez"],
-                "Amasya": ["Göynücek", "Gümüşhacıköy", "Merkez", "Merzifon", "Suluova", "Taşova"],
-                "Antalya": ["Akseki", "Alanya", "Elmalı", "Finike", "Gazipaşa", "İbradi", "Kale", "Kaş", "Korkuteli", "Kumluca", "Manavgat", "Merkez", "Serik"],
-                "Ardahan": ["Çıldır", "Göle", "Merkez"],
-                "Artvin": ["Ardanuç", "Arhavi", "Hopa", "Merkez", "Murgül", "Şavşat", "Yusufeli"],
-                "Aydın": ["Bozdoğan", "Buharkent", "Çine", "Germencik", "İncirliova", "Karacasu", "Karpuzlu", "Koçarlı", "Köşk", "Kuşadası", "Kuyucak", "Merkez", "Nazilli", "Söke", "Sultanhisar", "Yenihisar", "Yenipazar"],
-                "Balıkesir": ["Ayvalık", "Balya", "Bandırma", "Bigadiç", "Burhaniye", "Dursunbey", "Edremit", "Erdek", "Gömeç", "Gönen", "Havran", "İvrindi", "Kepsut", "Manyas", "Merkez", "Savaştepe", "Sındırgı", "Susurluk"],
-                "Bartın": ["Amasra", "Merkez", "Ulus"],
-                "Batman": ["Hasankeyf", "Merkez"],
-                "Bayburt": ["Aydıntepe", "Demirözü", "Merkez"],
-                "Bilecik": ["Bozüyük", "Gölpazarı", "Merkez", "Osmaneli", "Pazaryeri", "Söğüt"],
-                "Bingöl": ["Adaklı", "Genç", "Karlıova", "Kiğı", "Merkez", "Solhan", "Yayladere", "Yedisu"],
-                "Bitlis": ["Adilcevaz", "Ahlat", "Güroymak", "Merkez", "Mutki", "Tatvan"],
-                "Bolu": ["Dörtdivan", "Gerede", "Göynük", "Mengen", "Merkez", "Mudurnu", "Yeniçağa"],
-                "Burdur": ["Ağlasun", "Bucak", "Çavdır", "Gölhisar", "Karamanlı", "Merkez", "Tefenni", "Yeşilova"],
-                "Bursa": ["Gemlik", "Gürsu", "İnegöl", "İznik", "Karacabey", "Keleş", "Kestel", "Mudanya", "Mustafakemalpaşa", "Nilüfer", "Orhaneli", "Orhangazi", "Osmangazi", "Yenişehir", "Yıldırım"],
-                "Çanakkale": ["Ayvacık", "Bayramiç", "Biga", "Bozcaada", "Çan", "Eceabat", "Ezine", "Gölbaşı", "Gökçeada", "Lapseki", "Merkez", "Yenice"],
-                "Çankırı": ["Atkaracalar", "Bayramören", "Çerkeş", "Eldivan", "Ilgaz", "Kurşunlu", "Merkez", "Orta", "Şabanözü", "Yapraklı"],
-                "Çorum": ["Alaca", "Boğazkale", "Iskilip", "Kargı", "Mecitözü", "Merkez", "Oğuzlar", "Osmancık", "Sungurlu", "Uğurludağ"],
-                "Denizli": ["Acıpayam", "Babadağ", "Buldan", "Çal", "Çardak", "Çivril", "Güney", "Holaz", "Kale", "Merkez", "Sarayköy", "Tavas"],
-                "Diyarbakır": ["Çermik", "Eğil", "Ergani", "Hani", "Hazro", "Kocaköy", "Lice", "Merkez", "Silvan"],
-                "Düzce": ["Akçakoca", "Çilimli", "Merkez", "Yığılca"],
-                "Edirne": ["Enez", "Havsa", "İpsala", "Keşan", "Lalapaşa", "Meriç", "Merkez", "Uzunköprü"],
-                "Elazığ": ["Ağın", "Arıcak", "Baskil", "Karakoçan", "Keban", "Kovancılar", "Maden", "Merkez", "Palu", "Sivrice"],
-                "Erzincan": ["Çayırlı", "Ilıç", "Kemah", "Kemaliye", "Merkez", "Refahiye", "Tercan", "Üzümlü"],
-                "Erzurum": ["Aşkale", "Hınıs", "Horasan", "Ilıca", "İspir", "Narman", "Oltu", "Olur", "Pasinler", "Tortum"],
-                "Eskişehir": ["Alpu", "Beylikova", "Çifteler", "Günyüzü", "Han", "İnönü", "Mahmudiye", "Merkez", "Mihalıççık", "Seyitgazi", "Sivrihisar"],
-                "Gaziantep": ["Araban", "Islahiye", "Nizip", "Nurdağı", "Oğuzeli", "Şahinbey", "Şehitkamil", "Yavuzeli"],
-                "Giresun": ["Alucra", "Bulancak", "Dereli", "Espiye", "Eynesil", "Görele", "Keşap", "Merkez", "Şebinkarahisar", "Tirebolu"],
-                "Gümüşhane": ["Kelkit", "Köse", "Merkez", "Şiran"],
-                "Hakkâri": ["Çukurca", "Merkez", "Şemdinli", "Yüksekova"],
-                "Hatay": ["Altınözü", "Belen", "Dörtyol", "Erzin", "İskenderun", "Kırıkhan", "Kumlu", "Merkez", "Reyhanlı", "Samandağı", "Yayladağı"],
-                "Iğdır": ["Aralık", "Karakoyunlu", "Merkez", "Tuzluca"],
-                "Isparta": ["Aksu", "Atabey", "Eğirdir", "Gelendost", "Gönen", "Keçiborlu", "Merkez", "Şarkikaraağaç", "Senirkent", "Sütçüler", "Uluborlu", "Yalvaç"],
-                "Kahramanmaraş": ["Afşin", "Andırın", "Çağlayancerit", "Elbistan", "Göksun", "Merkez", "Pazarcık"],
-                "Karabük": ["Eskipazar", "Merkez", "Safranbolu"],
-                "Karaman": ["Ayrancı", "Başyayla", "Ermenek", "Merkez"],
-                "Kars": ["Kağızman", "Merkez", "Sarıkamış"],
-                "Kastamonu": ["Abana", "Araç", "Bozkurt", "Çatalzeytin", "Cide", "Daday", "Devrekani", "Hanönü", "İhsangazi", "İnebolu", "Küre", "Merkez", "Taşköprü", "Tosya"],
-                "Kayseri": ["Akkışla", "Bünyan", "Develi", "Felahiye", "Hacılar", "İncesu", "Kocasinan", "Melikgazi", "Özvatan", "Pınarbaşı", "Talas", "Tomarza", "Yahyalı", "Yeşilhisar"],
-                "Kilis": ["Elbeyli", "Merkez", "Musabeyli", "Polateli"],
-                "Kırıkkale": ["Karakeçili", "Keskin", "Merkez", "Sulakyurt"],
-                "Kırklareli": ["Babaeski", "Lüleburgaz", "Merkez", "Pehlivanköy", "Pınarhisar", "Vize"],
-                "Kırşehir": ["Akpınar", "Çiçekdağı", "Kaman", "Merkez", "Mucur"],
-                "Kocaeli": ["Derince", "Gebze", "Gölcük", "Kandıra", "Karamürsel", "Merkez"],
-                "Konya": ["Akören", "Akşehir", "Altınekin", "Beyşehir", "Bozkır", "Çeltik", "Cihanbeyli", "Çumra", "Derbent", "Doğanhisar", "Emirgazi", "Ereğli", "Hadım", "Hüyük", "Ilgın", "Kadınhanı", "Karapınar", "Karatay", "Meram", "Sarayönü", "Selçuklu", "Seydişehir", "Taşkent", "Yunak"],
-                "Kütahya": ["Altıntaş", "Domaniç", "Dumlupınar", "Emet", "Gediz", "Merkez", "Pazarlar", "Simav", "Tavşanlı"],
-                "Malatya": ["Akçadağ", "Arapgir", "Arguvan", "Battalgazi", "Darende", "Doğanşehir", "Hekimhan", "Merkez", "Pütürge", "Yazıhan", "Yeşilyurt"],
-                "Manisa": ["Ahmetli", "Akhisar", "Alaşehir", "Demirci", "Gölmarmara", "Gördes", "Kırkağaç", "Kula", "Merkez", "Salihli", "Saruhanlı", "Soma", "Turgutlu"],
-                "Mardin": ["Derik", "Kızıltepe", "Mazıdağı", "Merkez", "Midyat", "Nusaybin", "Ömerli", "Savur"],
-                "Mersin": ["Anamur", "Bozyazı", "Çamlıyayla", "Erdemli", "Gülnar", "Merkez", "Mut", "Silifke", "Tarsus"],
-                "Muğla": ["Bodrum", "Datça", "Fethiye", "Kavaklıdere", "Köyceğiz", "Marmaris", "Merkez", "Milas", "Ortaca", "Ula", "Yatağan"],
-                "Muş": ["Bulanık", "Korkut", "Malazgirt", "Merkez"],
-                "Nevşehir": ["Avanos", "Derinkuyu", "Gülşehir", "Hacıbektaş", "Kozaklı", "Merkez", "Ürgüp"],
-                "Niğde": ["Altunhisar", "Bor", "Çamardı", "Çiftlik", "Ulukışla"],
-                "Ordu": ["Akkuş", "Fatsa", "Gölköy", "Kabadüz", "Merkez", "Mesudiye", "Perşembe", "Ulubey", "Ünye"],
-                "Osmaniye": ["Bahçe", "Kadirli", "Merkez"],
-                "Rize": ["Ardeşen", "Çayeli", "Fındıklı", "Merkez", "Pazar"],
-                "Sakarya": ["Akyazı", "Geyve", "Hendek", "Karasu", "Kaynarca", "Merkez", "Sapanca", "Taraklı"],
-                "Samsun": ["Alaçam", "Bafra", "Çarşamba", "Havza", "Kavak", "Ladik", "Merkez", "Salıpazarı", "Tekkeköprü"],
-                "Şanlıurfa": ["Akçakale", "Birecik", "Bozova", "Halfeti", "Harran", "Hilvan", "Merkez", "Siverek", "Suruç", "Viranşehir"],
-                "Siirt": ["Aydınlar", "Baykan", "Eruh", "Kurtalan", "Merkez"],
-                "Sinop": ["Ayancık", "Boyabat", "Durağan", "Erfelek", "Gerze", "Merkez"],
-                "Şırnak": ["Cizre", "İdil", "Merkez", "Silopi"],
-                "Sivas": ["Altınyayla", "Divriği", "Doğanşar", "Gemerek", "Hafik", "Kangal", "Merkez", "Şarkışla", "Suşehri", "Yıldızeli", "Zara"],
-                "Tekirdağ": ["Çerkezköy", "Çorlu", "Hayrabolu", "Malkara", "Marmaraereğlisi", "Merkez", "Muratlı", "Saray", "Şarköy"],
-                "Tokat": ["Almus", "Erbaa", "Merkez", "Niksar", "Pazar", "Reşadiye", "Sulusaray", "Turhal", "Zile"],
-                "Trabzon": ["Akçaabat", "Araklı", "Arsin", "Beşikdüzü", "Çarşıbaşı", "Çaykara", "Dernekpazarı", "Maçka", "Merkez", "Of", "Sürmene", "Tonya", "Vakfıkebir", "Yomra"],
-                "Tunceli": ["Çemişgezek", "Hozat", "Mazgirt", "Merkez", "Nazımiye", "Pertek"],
-                "Uşak": ["Banaz", "Eşme", "Merkez", "Sivaslı", "Ulubey"],
-                "Van": ["Başkale", "Çaldıran", "Çatak", "Erciş", "Gevaş", "Gürpınar", "Merkez", "Muradiye", "Özalp"],
-                "Yalova": ["Altınova", "Armutlu", "Merkez"],
-                "Yozgat": ["Boğazlıyan", "Çandır", "Çayıralan", "Merkez", "Sarıkaya", "Şefaatli", "Sorgun", "Yenifakılı", "Yerköy"],
-                "Zonguldak": ["Alaplı", "Çaycuma", "Devrek", "Ereğli", "Merkez"]
-            };
-
-            const selectedCity = this.value;
-            const districtSelect = document.getElementById('district');
-
-            // İlçe seçeneklerini temizle
-            districtSelect.innerHTML = '<option value="">İlçe Seçiniz</option>';
-
-            // Seçilen şehre göre ilçeleri ekle
-            if (selectedCity && districts[selectedCity]) {
-                districts[selectedCity].forEach(function (district) {
-                    const option = document.createElement('option');
-                    option.value = district;
-                    option.textContent = district;
-                    districtSelect.appendChild(option);
-                });
-            }
-        });
-    </script>
-
-    <!-- Sayfa yüklendiğinde en üste scroll -->
-    <script>
-        window.onload = function() {
-            window.scrollTo(0, 0);
-        };
-    </script>
-
-    <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
-        let hasError = false;
-        
-        // Tüm required alanları kontrol et
-        this.querySelectorAll('[required]').forEach(element => {
-            const formGroup = element.closest('.form-group');
-            const errorMessage = formGroup.querySelector('.error-message');
-            
-            if (!element.value) {
-                e.preventDefault();
-                hasError = true;
-                formGroup.classList.add('has-error');
-                if (errorMessage) {
-                    errorMessage.style.display = 'block';
-                }
-            } else {
-                formGroup.classList.remove('has-error');
-                if (errorMessage) {
-                    errorMessage.style.display = 'none';
-                }
-            }
-        });
-        
-        if (hasError) {
-            // Sayfayı ilk hata mesajına kaydır
-            const firstError = document.querySelector('.has-error');
-            if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            
-            alert('Lütfen zorunlu alanları doldurunuz (kırmızı yıldız * ile işaretli alanlar)');
-        }
-    });
-
-    // Input alanları değiştiğinde hata durumunu temizle
-    document.querySelectorAll('[required]').forEach(element => {
-        element.addEventListener('input', function() {
-            const formGroup = this.closest('.form-group');
-            const errorMessage = formGroup.querySelector('.error-message');
-            
-            if (this.value) {
-                formGroup.classList.remove('has-error');
-                if (errorMessage) {
-                    errorMessage.style.display = 'none';
-                }
-            }
-        });
-    });
-    </script>
+<script src="./assets/js/districts.js" defer></script>
+<script src="./assets/js/main.js" defer></script>
 </body>
 </html>

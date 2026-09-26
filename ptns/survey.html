@@ -1,312 +1,136 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seçim Formu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            padding: 20px;
-        }
-        .text-center mb-4 {
-          align-content: justify;
-        }
-
-        .sentence {
-            cursor: pointer;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            background-color: #ffffff;
-            transition: all 0.3s;
-        }
-
-        .sentence:hover {
-            background-color: #e9ecef;
-        }
-
-        .selected {
-          background-color: #28a745 !important;
-          color: #fff;
-        }
-        .statement {
-        cursor: pointer;
-        padding: 15px;
-        border-radius: 7px;
-        margin-bottom: 10px;
-        transition: all 0.3s;
-        background-color: #ffffff;
-        }
-          .logo {
-            width: 190px;
-            height: auto;
-            z-index: 10;
-          }
-          .modal {
-            display: none; /* İlk başta görünmez */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Sayfa arkasını karartır */
-            z-index: 1000; /* Üstte görünmesini sağlar */
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            text-align: justify;
-        }
-
-        .modal-content button {
-            display: block;
-            margin: 20px auto 0;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .modal-content button:hover {
-            background-color: #0056b3;
-        }
-
-        h1, h2 {
-            color: #0d6efd;
-        }
-        h3 {
-          color: darkred;
-        }
-        textarea {
-               width: calc(100% - 22px);
-      padding: 10px;
-       margin-top: 5px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-    resize: vertical;
-     min-height: 100px;
-        }
-        
-    </style>
-    <script>
-        function redirectToThankYou() {
-            window.scrollTo(0, 0);
-            setTimeout(() => {
-                window.location.href = 'ptns/tesekkur.html';
-            }, 100);
-        }
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sınıf İçi Diyalog | Araştırma Anketi</title>
+<link rel="icon" href="./assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
 </head>
+
 <body>
-    <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
-    
-    <!-- İlk sayfa açıklaması -->
-    <div class="container mb-4">
-        <h1 class="text-center mb-4">SINIF İÇİ DİYALOG (SENARYO)</h1>
-        <p class="lead" style="text-align: justify;">
-            Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, <strong>öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir?</strong> Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız. <strong>Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.</strong>
-        </p>
-    </div>
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <img class="nav__logo" src="./assets/img/logo.png" alt="ODTÜ" width="630" height="250">
+    <p class="nav__title">Fizik Eğitiminde Öğretmen Fark Etme Becerisi<br>Araştırma Anketi</p>
+  </div>
+</header>
+<ol class="steps" aria-label="Anket adımları">
+  <li class="steps__item is-done">Onam</li>
+  <li class="steps__item is-done">Katılımcı bilgileri</li>
+  <li class="steps__item is-current" aria-current="step">Senaryo</li>
+  <li class="steps__item">Tamamlandı</li>
+</ol>
 
-    <!-- Seçim formu -->
-    <div id="selectionForm">
-        <div class="sentences-container mb-4">
-            <p class="statement">Öğretmen: Bugünkü dersimize ısı ve sıcaklık ünitesi ile ilgili bugüne kadar öğrendiklerimiz hakkında konuşarak başlayacağız. Ünitedeki temel kavramlarımızı ele alalım. Isı ve sıcaklık nedir? Açıklamak isteyen var mı?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Isı cisimlerin sahip olduğu enerjidir, sıcaklık ise o enerjinin göstergesidir ve bunu termometre ile ölçeriz.</p>
-            <p class="statement">Öğretmen: Peki sence termometre sıcaklığı nasıl ölçüyor?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Ortamın enerjisini ölçerek sıcaklığını gösteriyor.</p>
-            <p class="statement">Öğretmen: Bir örnekle açıklayabilir misin?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Tabii hocam. Mesela bir bardağın içindeki suya termometreyi koyarsak termometre suyun sıcaklığını gösterir.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Peki bu verilen örnekte bardağın ve suyun sıcaklıkları farklı mı olur?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Bunu kesin söyleyemeyiz bence bardağın neyden yapıldığına göre değişir. Bardak metalden yapılmışsa sudan daha soğuktur; plastik bardak ise sudan daha sıcaktır.</p>
-            <p class="statement">Öğretmen: Niye böyle düşündün? Sen ısı ve sıcaklığı nasıl tanımlıyorsun?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Hocam bence sıcaklık bir nesneye dokunduğumuzda hissettiğimiz şeydir, ısı ise bir cismin sahip olduğu ve belli şartlarda aktarabildiği bir şeydir. Mesela sandalyenin oturduğumuz kumaş kısmına dokununca sıcak hissederiz, ayak kısmı ise demirdendir ve soğuk hissederiz. Yani oturma kısmının ısısı sandalyenin ayaklarından fazladır.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Isı ve sıcaklık aynı şey işte sadece birimleri farklı. Her ikisini de bir şeyin ne kadar sıcak ya da soğuk olduğunu anlatmak için kullanıyoruz.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Birimleri farklı olan şeyler nasıl aynı olabilir? Ben hala ısının enerji, sıcaklığın ise o enerjinin bir göstergesi olduğunu düşünüyorum.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Isıyı konuşurken biz maddeler arası enerji geçişinden bahsetmiştik. Hatırladığım kadarıyla enerji geçişi gibi bir şeydi yani.</p>
-            <p class="statement">Öğretmen: Peki ısıyı böyle tanımlıyorsan sıcaklığı nasıl tanımlarsın?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Bence sıcaklık maddenin ortalama kinetik enerjisinin göstergesidir.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Hocam ısı işe mi benziyor yani? İkisi de enerji aktarımı sonuçta.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğretmen: Aynı şekilde düşünen var mı? Sizce benzetebilir miyiz?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Evet bence de ısıyı iş gibi düşünebiliriz hocam çünkü iş yaparken de enerji transfer ediyoruz aslında.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Nasıl ya ben anlayamadım iş yapmış olmak için bir kuvvete ihtiyaç yok mu? Kim iş yapmış oluyor?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Bu durumda sıcak cisimlerin taneciklerinin kinetik enerjisi daha fazla olduğu için daha hızlı hareket ediyor. Temas noktasında soğuk cisimlerin taneciklerine çarparak onları da hızlandırıyor böylece, enerji aktarımı gerçekleşiyor yani.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Ben kinetik enerji açıklamasını tam anlayamadım. Mesela elimdeki kalemi sallarsam kinetik enerjisi arttığı için sıcaklığı da mı artacak?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Bu durumda artar tabii.</p>
-            <p class="statement">Öğretmen: Neden artacağını düşünüyorsun açıklar mısın?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Çünkü sıcaklığa kinetik enerjinin bir göstergesi diyorsak herhangi bir cisim hareket ettiğinde kinetik enerjisi artmış olur yani böylelikle sıcaklığı da artmış olacak.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Ben hiçbir cismin hareket edince sıcaklığının arttığını görmedim.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Zaten sıcaklığın artışını küçük hızlarda hissedemeyiz ancak çok çok hızlı olması lazım mesela göktaşları ve roketler gibi durumlarda hissedilir şekilde görebiliriz.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 5: O kadar hızlı olması şart mı? Biz hızlı hareket ettiğimizde de sıcaklığımız artıyor ki terliyoruz.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Benim aklıma yatmadı açıkçası. Mesela nehirler de akıyor yani hareket ediyor fakat onların sıcaklığı artmıyor. Bu durumda onların kaynaması lazımdı. Şu an biraz aklım karıştı…</p>
-            <p class="sentence">…(bir süre sessizlik olur)</p>
-            <p class="sentence">Hareket edince sıcaklığı artıyorsa, yani sıcaklık harekete bağlıysa, hareket olmadığında o cismin sıcaklığının sıfır olması gerekmez mi?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Yok bence sadece görünür şekilde hareket etmesi önemli olmuyordur. Cismin içinde atomlar ve moleküller var onlar hala hareket ediyor, hatta aralarında bağlar falan var o yüzden sıfır olmaz.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Bence de olmuyor fakat böyle düşünen arkadaşlar için sıfır derece ne anlama geliyor o zaman?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Mutlak sıfır dediğimiz durumdur.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Ne oluyor o durumda yani?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Ben mutlak sıfırı her şeyin donduğu nokta olarak biliyorum.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Ama her şey 0 santigrat derecede donmuyor ki...</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Ya o sıfır o sıfır değildi ki zaten. Mutlak sıfır başka bir dereceden sıfır oluyordu -200 küsür bir santigrat dereceydi sanki orda her şey donuyordu.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 5: Evet mutlak sıfır demek sıfır derece demek değil. Mutlak sıfır dediğimiz durumda her şey donar. Atomlar, moleküller hatta elektronlar bile donar. Hiçbir hareket olmaz. Hiç enerjisi kalmaz. Kalsa zaten sıcaklığı olurdu.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Yani cismin mutlak sıfırda bütün enerjisi sıfır mı oluyor demek istedin?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 5: Evet.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 4: Ama bahsettiğimiz sadece öyle bir hareket değil ki bağlar falan var onların da enerjisi var...</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Evet ya zaten bunların hepsinin toplamına iç enerji diyoruz geçen hafta öyle konuşmuştuk. Ben iç enerjiyi de mekanik enerjiye benzetiyorum, bu şekilde aklımda tutuyorum. İkisinde de potansiyel ve kinetik enerjinin toplamından bahsediyoruz.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 1: Peki mutlak sıfır dediğimiz durumda ısı transferi de mi olmuyor?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Olmaz tabii sıcaklık yok enerji yok transfer edilecek bir şey yok.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğretmen: Peki transferden bahsetmişken bu hangi durumda ve nasıl oluyordu arkadaşlar?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 2: Sıcaklığı yüksek olan maddeden sıcaklığı düşük olan maddeye doğru ısı akışı olur.</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Bence burada sıcaklık yerine iç enerji desek daha doğru olur.</p>
-            <p class="statement">Öğretmen: Ne demek istediğini biraz daha açıklar mısın?</p>
-            <p class="sentence" onclick="selectSentence(this)">Öğrenci 3: Sıcaklığı yüksekse iç enerjisi de yüksek olur ya o yüzden ısı transferi iç enerjisi yüksek olan maddeden iç enerjisi düşük olana doğru gerçekleşir demeliyiz.</p>
-            </div>
-        
-        <button id="submitButton" class="btn btn-primary mt-3">Seçimleri Gönder</button>
-    </div>
+<main class="band">
+  <div class="band__inner">
+    <p class="notice" id="missing-profile" hidden>
+      Katılımcı bilgileriniz bu tarayıcıda bulunamadı. Anketi baştan başlatmak için
+      <a class="link" href="index.html">onam sayfasına dönün</a>; yine de devam edebilirsiniz.
+    </p>
 
-    <!-- Detay formu -->
-    <form id="detailsForm" style="display: none;">
-        <div class="container mb-4">
-            <p class="lead" style="text-align: justify;">
-                <span style="color: #dc3545; font-weight: bold;">'Açıklama'</span> kutusuna seçiminizle ilgili öğrencilerin tartışılan kavramla ilgili kavramsal bilgi ve/veya akıl yürütmeleri hakkında neler ortaya koyduğunu düşündüğünüzü belirtmenizi, bunun sizin için ne ifade ettiğini yorumlamanızı istiyoruz. <span style="color: #dc3545; font-weight: bold;">'Yapılacaklar'</span> kutusuna ise, bu sınıftaki öğretmen siz olsaydınız (yukarıdaki yorumlarınız ışığında) ne/neler yapmaya karar verirdiniz ve ders işleyişinizle ilgili herhangi bir değişiklik düşünür müydünüz? (Aynı durum için birbirinden farklı kararlar alabileceğinizi/değişiklikler yapabileceğinizi düşünüyorsanız lütfen hepsini detaylı bir şekilde yazın.)
-            </p>
+    <!-- ========================= SELECT STEP ========================= -->
+    <section class="sheet" id="select-step">
+      <p class="eyebrow">Adım 3 &middot; Senaryo</p>
+      <h1 class="display display--lg">Sınıf İçi Diyalog</h1>
+      <p class="lead">
+        Aşağıdaki diyaloğu dikkatlice okuyunuz. Okuduğunuz diyalogda, <strong>öğrencilerin kavramsal bilgileri ve akıl yürütmelerinde önemli bulduğunuz için dikkatinizi çeken ifadeler nelerdir?</strong>
+        Lütfen dikkatinizi çeken ifadelerin bulunduğu satır üzerine tıklayarak seçiminizi yapınız.
+        <strong>Yanlış bir seçim yapmanız durumunda seçim yapılmış satır üzerine yeniden tıklayarak seçiminizi kaldırabilirsiniz. 1'den fazla seçim yapabilirsiniz.</strong>
+      </p>
+
+      <ol class="transcript" id="transcript">
+          <li class="line" data-text="Öğretmen: Bugünkü dersimize ısı ve sıcaklık ünitesi ile ilgili bugüne kadar öğrendiklerimiz hakkında konuşarak başlayacağız. Ünitedeki temel kavramlarımızı ele alalım. Isı ve sıcaklık nedir? Açıklamak isteyen var mı?">Öğretmen: Bugünkü dersimize ısı ve sıcaklık ünitesi ile ilgili bugüne kadar öğrendiklerimiz hakkında konuşarak başlayacağız. Ünitedeki temel kavramlarımızı ele alalım. Isı ve sıcaklık nedir? Açıklamak isteyen var mı?</li>
+          <li class="line" data-text="Öğrenci 1: Isı cisimlerin sahip olduğu enerjidir, sıcaklık ise o enerjinin göstergesidir ve bunu termometre ile ölçeriz." data-pick>Öğrenci 1: Isı cisimlerin sahip olduğu enerjidir, sıcaklık ise o enerjinin göstergesidir ve bunu termometre ile ölçeriz.</li>
+          <li class="line" data-text="Öğretmen: Peki sence termometre sıcaklığı nasıl ölçüyor?">Öğretmen: Peki sence termometre sıcaklığı nasıl ölçüyor?</li>
+          <li class="line" data-text="Öğrenci 1: Ortamın enerjisini ölçerek sıcaklığını gösteriyor." data-pick>Öğrenci 1: Ortamın enerjisini ölçerek sıcaklığını gösteriyor.</li>
+          <li class="line" data-text="Öğretmen: Bir örnekle açıklayabilir misin?">Öğretmen: Bir örnekle açıklayabilir misin?</li>
+          <li class="line" data-text="Öğrenci 1: Tabii hocam. Mesela bir bardağın içindeki suya termometreyi koyarsak termometre suyun sıcaklığını gösterir." data-pick>Öğrenci 1: Tabii hocam. Mesela bir bardağın içindeki suya termometreyi koyarsak termometre suyun sıcaklığını gösterir.</li>
+          <li class="line" data-text="Öğrenci 4: Peki bu verilen örnekte bardağın ve suyun sıcaklıkları farklı mı olur?" data-pick>Öğrenci 4: Peki bu verilen örnekte bardağın ve suyun sıcaklıkları farklı mı olur?</li>
+          <li class="line" data-text="Öğrenci 2: Bunu kesin söyleyemeyiz bence bardağın neyden yapıldığına göre değişir. Bardak metalden yapılmışsa sudan daha soğuktur; plastik bardak ise sudan daha sıcaktır." data-pick>Öğrenci 2: Bunu kesin söyleyemeyiz bence bardağın neyden yapıldığına göre değişir. Bardak metalden yapılmışsa sudan daha soğuktur; plastik bardak ise sudan daha sıcaktır.</li>
+          <li class="line" data-text="Öğretmen: Niye böyle düşündün? Sen ısı ve sıcaklığı nasıl tanımlıyorsun?">Öğretmen: Niye böyle düşündün? Sen ısı ve sıcaklığı nasıl tanımlıyorsun?</li>
+          <li class="line" data-text="Öğrenci 2: Hocam bence sıcaklık bir nesneye dokunduğumuzda hissettiğimiz şeydir, ısı ise bir cismin sahip olduğu ve belli şartlarda aktarabildiği bir şeydir. Mesela sandalyenin oturduğumuz kumaş kısmına dokununca sıcak hissederiz, ayak kısmı ise demirdendir ve soğuk hissederiz. Yani oturma kısmının ısısı sandalyenin ayaklarından fazladır." data-pick>Öğrenci 2: Hocam bence sıcaklık bir nesneye dokunduğumuzda hissettiğimiz şeydir, ısı ise bir cismin sahip olduğu ve belli şartlarda aktarabildiği bir şeydir. Mesela sandalyenin oturduğumuz kumaş kısmına dokununca sıcak hissederiz, ayak kısmı ise demirdendir ve soğuk hissederiz. Yani oturma kısmının ısısı sandalyenin ayaklarından fazladır.</li>
+          <li class="line" data-text="Öğrenci 3: Isı ve sıcaklık aynı şey işte sadece birimleri farklı. Her ikisini de bir şeyin ne kadar sıcak ya da soğuk olduğunu anlatmak için kullanıyoruz." data-pick>Öğrenci 3: Isı ve sıcaklık aynı şey işte sadece birimleri farklı. Her ikisini de bir şeyin ne kadar sıcak ya da soğuk olduğunu anlatmak için kullanıyoruz.</li>
+          <li class="line" data-text="Öğrenci 1: Birimleri farklı olan şeyler nasıl aynı olabilir? Ben hala ısının enerji, sıcaklığın ise o enerjinin bir göstergesi olduğunu düşünüyorum." data-pick>Öğrenci 1: Birimleri farklı olan şeyler nasıl aynı olabilir? Ben hala ısının enerji, sıcaklığın ise o enerjinin bir göstergesi olduğunu düşünüyorum.</li>
+          <li class="line" data-text="Öğrenci 4: Isıyı konuşurken biz maddeler arası enerji geçişinden bahsetmiştik. Hatırladığım kadarıyla enerji geçişi gibi bir şeydi yani." data-pick>Öğrenci 4: Isıyı konuşurken biz maddeler arası enerji geçişinden bahsetmiştik. Hatırladığım kadarıyla enerji geçişi gibi bir şeydi yani.</li>
+          <li class="line" data-text="Öğretmen: Peki ısıyı böyle tanımlıyorsan sıcaklığı nasıl tanımlarsın?">Öğretmen: Peki ısıyı böyle tanımlıyorsan sıcaklığı nasıl tanımlarsın?</li>
+          <li class="line" data-text="Öğrenci 4: Bence sıcaklık maddenin ortalama kinetik enerjisinin göstergesidir." data-pick>Öğrenci 4: Bence sıcaklık maddenin ortalama kinetik enerjisinin göstergesidir.</li>
+          <li class="line" data-text="Öğrenci 1: Hocam ısı işe mi benziyor yani? İkisi de enerji aktarımı sonuçta." data-pick>Öğrenci 1: Hocam ısı işe mi benziyor yani? İkisi de enerji aktarımı sonuçta.</li>
+          <li class="line" data-text="Öğretmen: Aynı şekilde düşünen var mı? Sizce benzetebilir miyiz?" data-pick>Öğretmen: Aynı şekilde düşünen var mı? Sizce benzetebilir miyiz?</li>
+          <li class="line" data-text="Öğrenci 4: Evet bence de ısıyı iş gibi düşünebiliriz hocam çünkü iş yaparken de enerji transfer ediyoruz aslında." data-pick>Öğrenci 4: Evet bence de ısıyı iş gibi düşünebiliriz hocam çünkü iş yaparken de enerji transfer ediyoruz aslında.</li>
+          <li class="line" data-text="Öğrenci 3: Nasıl ya ben anlayamadım iş yapmış olmak için bir kuvvete ihtiyaç yok mu? Kim iş yapmış oluyor?" data-pick>Öğrenci 3: Nasıl ya ben anlayamadım iş yapmış olmak için bir kuvvete ihtiyaç yok mu? Kim iş yapmış oluyor?</li>
+          <li class="line" data-text="Öğrenci 4: Bu durumda sıcak cisimlerin taneciklerinin kinetik enerjisi daha fazla olduğu için daha hızlı hareket ediyor. Temas noktasında soğuk cisimlerin taneciklerine çarparak onları da hızlandırıyor böylece, enerji aktarımı gerçekleşiyor yani." data-pick>Öğrenci 4: Bu durumda sıcak cisimlerin taneciklerinin kinetik enerjisi daha fazla olduğu için daha hızlı hareket ediyor. Temas noktasında soğuk cisimlerin taneciklerine çarparak onları da hızlandırıyor böylece, enerji aktarımı gerçekleşiyor yani.</li>
+          <li class="line" data-text="Öğrenci 3: Ben kinetik enerji açıklamasını tam anlayamadım. Mesela elimdeki kalemi sallarsam kinetik enerjisi arttığı için sıcaklığı da mı artacak?" data-pick>Öğrenci 3: Ben kinetik enerji açıklamasını tam anlayamadım. Mesela elimdeki kalemi sallarsam kinetik enerjisi arttığı için sıcaklığı da mı artacak?</li>
+          <li class="line" data-text="Öğrenci 2: Bu durumda artar tabii." data-pick>Öğrenci 2: Bu durumda artar tabii.</li>
+          <li class="line" data-text="Öğretmen: Neden artacağını düşünüyorsun açıklar mısın?">Öğretmen: Neden artacağını düşünüyorsun açıklar mısın?</li>
+          <li class="line" data-text="Öğrenci 2: Çünkü sıcaklığa kinetik enerjinin bir göstergesi diyorsak herhangi bir cisim hareket ettiğinde kinetik enerjisi artmış olur yani böylelikle sıcaklığı da artmış olacak." data-pick>Öğrenci 2: Çünkü sıcaklığa kinetik enerjinin bir göstergesi diyorsak herhangi bir cisim hareket ettiğinde kinetik enerjisi artmış olur yani böylelikle sıcaklığı da artmış olacak.</li>
+          <li class="line" data-text="Öğrenci 3: Ben hiçbir cismin hareket edince sıcaklığının arttığını görmedim." data-pick>Öğrenci 3: Ben hiçbir cismin hareket edince sıcaklığının arttığını görmedim.</li>
+          <li class="line" data-text="Öğrenci 2: Zaten sıcaklığın artışını küçük hızlarda hissedemeyiz ancak çok çok hızlı olması lazım mesela göktaşları ve roketler gibi durumlarda hissedilir şekilde görebiliriz." data-pick>Öğrenci 2: Zaten sıcaklığın artışını küçük hızlarda hissedemeyiz ancak çok çok hızlı olması lazım mesela göktaşları ve roketler gibi durumlarda hissedilir şekilde görebiliriz.</li>
+          <li class="line" data-text="Öğrenci 5: O kadar hızlı olması şart mı? Biz hızlı hareket ettiğimizde de sıcaklığımız artıyor ki terliyoruz." data-pick>Öğrenci 5: O kadar hızlı olması şart mı? Biz hızlı hareket ettiğimizde de sıcaklığımız artıyor ki terliyoruz.</li>
+          <li class="line" data-text="Öğrenci 3: Benim aklıma yatmadı açıkçası. Mesela nehirler de akıyor yani hareket ediyor fakat onların sıcaklığı artmıyor. Bu durumda onların kaynaması lazımdı. Şu an biraz aklım karıştı…" data-pick>Öğrenci 3: Benim aklıma yatmadı açıkçası. Mesela nehirler de akıyor yani hareket ediyor fakat onların sıcaklığı artmıyor. Bu durumda onların kaynaması lazımdı. Şu an biraz aklım karıştı…</li>
+          <li class="line" data-text="…(bir süre sessizlik olur)">…(bir süre sessizlik olur)</li>
+          <li class="line" data-text="Hareket edince sıcaklığı artıyorsa, yani sıcaklık harekete bağlıysa, hareket olmadığında o cismin sıcaklığının sıfır olması gerekmez mi?">Hareket edince sıcaklığı artıyorsa, yani sıcaklık harekete bağlıysa, hareket olmadığında o cismin sıcaklığının sıfır olması gerekmez mi?</li>
+          <li class="line" data-text="Öğrenci 4: Yok bence sadece görünür şekilde hareket etmesi önemli olmuyordur. Cismin içinde atomlar ve moleküller var onlar hala hareket ediyor, hatta aralarında bağlar falan var o yüzden sıfır olmaz." data-pick>Öğrenci 4: Yok bence sadece görünür şekilde hareket etmesi önemli olmuyordur. Cismin içinde atomlar ve moleküller var onlar hala hareket ediyor, hatta aralarında bağlar falan var o yüzden sıfır olmaz.</li>
+          <li class="line" data-text="Öğrenci 3: Bence de olmuyor fakat böyle düşünen arkadaşlar için sıfır derece ne anlama geliyor o zaman?" data-pick>Öğrenci 3: Bence de olmuyor fakat böyle düşünen arkadaşlar için sıfır derece ne anlama geliyor o zaman?</li>
+          <li class="line" data-text="Öğrenci 1: Mutlak sıfır dediğimiz durumdur." data-pick>Öğrenci 1: Mutlak sıfır dediğimiz durumdur.</li>
+          <li class="line" data-text="Öğrenci 3: Ne oluyor o durumda yani?" data-pick>Öğrenci 3: Ne oluyor o durumda yani?</li>
+          <li class="line" data-text="Öğrenci 1: Ben mutlak sıfırı her şeyin donduğu nokta olarak biliyorum." data-pick>Öğrenci 1: Ben mutlak sıfırı her şeyin donduğu nokta olarak biliyorum.</li>
+          <li class="line" data-text="Öğrenci 3: Ama her şey 0 santigrat derecede donmuyor ki..." data-pick>Öğrenci 3: Ama her şey 0 santigrat derecede donmuyor ki...</li>
+          <li class="line" data-text="Öğrenci 4: Ya o sıfır o sıfır değildi ki zaten. Mutlak sıfır başka bir dereceden sıfır oluyordu -200 küsür bir santigrat dereceydi sanki orda her şey donuyordu." data-pick>Öğrenci 4: Ya o sıfır o sıfır değildi ki zaten. Mutlak sıfır başka bir dereceden sıfır oluyordu -200 küsür bir santigrat dereceydi sanki orda her şey donuyordu.</li>
+          <li class="line" data-text="Öğrenci 5: Evet mutlak sıfır demek sıfır derece demek değil. Mutlak sıfır dediğimiz durumda her şey donar. Atomlar, moleküller hatta elektronlar bile donar. Hiçbir hareket olmaz. Hiç enerjisi kalmaz. Kalsa zaten sıcaklığı olurdu." data-pick>Öğrenci 5: Evet mutlak sıfır demek sıfır derece demek değil. Mutlak sıfır dediğimiz durumda her şey donar. Atomlar, moleküller hatta elektronlar bile donar. Hiçbir hareket olmaz. Hiç enerjisi kalmaz. Kalsa zaten sıcaklığı olurdu.</li>
+          <li class="line" data-text="Öğrenci 4: Yani cismin mutlak sıfırda bütün enerjisi sıfır mı oluyor demek istedin?" data-pick>Öğrenci 4: Yani cismin mutlak sıfırda bütün enerjisi sıfır mı oluyor demek istedin?</li>
+          <li class="line" data-text="Öğrenci 5: Evet." data-pick>Öğrenci 5: Evet.</li>
+          <li class="line" data-text="Öğrenci 4: Ama bahsettiğimiz sadece öyle bir hareket değil ki bağlar falan var onların da enerjisi var..." data-pick>Öğrenci 4: Ama bahsettiğimiz sadece öyle bir hareket değil ki bağlar falan var onların da enerjisi var...</li>
+          <li class="line" data-text="Öğrenci 2: Evet ya zaten bunların hepsinin toplamına iç enerji diyoruz geçen hafta öyle konuşmuştuk. Ben iç enerjiyi de mekanik enerjiye benzetiyorum, bu şekilde aklımda tutuyorum. İkisinde de potansiyel ve kinetik enerjinin toplamından bahsediyoruz." data-pick>Öğrenci 2: Evet ya zaten bunların hepsinin toplamına iç enerji diyoruz geçen hafta öyle konuşmuştuk. Ben iç enerjiyi de mekanik enerjiye benzetiyorum, bu şekilde aklımda tutuyorum. İkisinde de potansiyel ve kinetik enerjinin toplamından bahsediyoruz.</li>
+          <li class="line" data-text="Öğrenci 1: Peki mutlak sıfır dediğimiz durumda ısı transferi de mi olmuyor?" data-pick>Öğrenci 1: Peki mutlak sıfır dediğimiz durumda ısı transferi de mi olmuyor?</li>
+          <li class="line" data-text="Öğrenci 3: Olmaz tabii sıcaklık yok enerji yok transfer edilecek bir şey yok." data-pick>Öğrenci 3: Olmaz tabii sıcaklık yok enerji yok transfer edilecek bir şey yok.</li>
+          <li class="line" data-text="Öğretmen: Peki transferden bahsetmişken bu hangi durumda ve nasıl oluyordu arkadaşlar?" data-pick>Öğretmen: Peki transferden bahsetmişken bu hangi durumda ve nasıl oluyordu arkadaşlar?</li>
+          <li class="line" data-text="Öğrenci 2: Sıcaklığı yüksek olan maddeden sıcaklığı düşük olan maddeye doğru ısı akışı olur." data-pick>Öğrenci 2: Sıcaklığı yüksek olan maddeden sıcaklığı düşük olan maddeye doğru ısı akışı olur.</li>
+          <li class="line" data-text="Öğrenci 3: Bence burada sıcaklık yerine iç enerji desek daha doğru olur." data-pick>Öğrenci 3: Bence burada sıcaklık yerine iç enerji desek daha doğru olur.</li>
+          <li class="line" data-text="Öğretmen: Ne demek istediğini biraz daha açıklar mısın?">Öğretmen: Ne demek istediğini biraz daha açıklar mısın?</li>
+          <li class="line" data-text="Öğrenci 3: Sıcaklığı yüksekse iç enerjisi de yüksek olur ya o yüzden ısı transferi iç enerjisi yüksek olan maddeden iç enerjisi düşük olana doğru gerçekleşir demeliyiz." data-pick>Öğrenci 3: Sıcaklığı yüksekse iç enerjisi de yüksek olur ya o yüzden ısı transferi iç enerjisi yüksek olan maddeden iç enerjisi düşük olana doğru gerçekleşir demeliyiz.</li>
+      </ol>
+
+      <div class="tally">
+        <p class="tally__count" id="tally-count" aria-live="polite">Henüz seçim yapılmadı</p>
+        <button class="btn" type="button" id="to-details" disabled>Seçimleri gönder &rarr;</button>
+      </div>
+    </section>
+
+    <!-- ========================= DETAIL STEP ========================= -->
+    <section id="detail-step" hidden>
+      <form class="form" id="detailsForm" novalidate>
+        <div class="sheet">
+          <p class="eyebrow">Adım 3 &middot; Yorumlarınız</p>
+          <h1 class="display display--lg">Seçimlerinizi açıklayın</h1>
+          <p class="lead">
+            <span class="term">&lsquo;Açıklama&rsquo;</span> kutusuna seçiminizle ilgili öğrencilerin tartışılan kavramla ilgili kavramsal bilgi ve/veya akıl yürütmeleri hakkında neler ortaya koyduğunu düşündüğünüzü belirtmenizi, bunun sizin için ne ifade ettiğini yorumlamanızı istiyoruz.
+            <span class="term">&lsquo;Yapılacaklar&rsquo;</span> kutusuna ise, bu sınıftaki öğretmen siz olsaydınız (yukarıdaki yorumlarınız ışığında) ne/neler yapmaya karar verirdiniz ve ders işleyişinizle ilgili herhangi bir değişiklik düşünür müydünüz? (Aynı durum için birbirinden farklı kararlar alabileceğinizi/değişiklikler yapabileceğinizi düşünüyorsanız lütfen hepsini detaylı bir şekilde yazın.)
+          </p>
         </div>
-        <div id="selectedSentences"></div>
-        <button type="submit" class="btn btn-primary">Gönder</button>
-    </form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let selectedCount = 0;
+        <div class="form" id="details"></div>
 
-        // Sayfa yüklendiğinde URL parametrelerini kontrol et
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            console.log('URL Parametreleri:', Object.fromEntries(urlParams));
-        });
+        <p class="notice notice--error" id="send-status" hidden>Yanıtlar gönderilemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.</p>
 
-        function selectSentence(element) {
-            if (element.classList.contains('selected')) {
-                element.classList.remove('selected');
-                selectedCount--;
-            } else {
-                element.classList.add('selected');
-                selectedCount++;
-            }
-        }
+        <div class="actions">
+          <button class="btn btn--ghost" type="button" id="back-to-select">&larr; Seçimlere dön</button>
+          <button class="btn btn--success" type="submit" id="send-button">Yanıtları gönder</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
 
-        // Seçimleri gönderme butonu için event listener
-        document.getElementById('submitButton').addEventListener('click', function() {
-            const selectedSentences = document.querySelectorAll('.sentences-container .sentence.selected');
-            
-            if (selectedSentences.length === 0) {
-                alert('Lütfen en az bir cümle seçiniz.');
-                return;
-            }
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <p class="footer__inner">ODTÜ Eğitim Fakültesi &middot; Matematik ve Fen Bilimleri Eğitimi Bölümü &middot; <span data-year>2026</span></p>
+</footer>
 
-            document.getElementById('selectionForm').style.display = 'none';
-            
-            const detailsForm = document.getElementById('detailsForm');
-            const selectedSentencesDiv = document.getElementById('selectedSentences');
-            selectedSentencesDiv.innerHTML = '';
-
-            selectedSentences.forEach((sentence, index) => {
-                const div = document.createElement('div');
-                div.className = 'sentence-block mb-4';
-                div.innerHTML = `
-                    <h3>Seçim ${index + 1}</h3>
-                    <p style="background-color:#FAECC6; font-style:italic; padding: 10px; border-radius: 5px;">${sentence.textContent}</p>
-                    <div class="form-group">
-                        <label><span style="color:#C45F0E;">Açıklama:</span></label>
-                        <textarea class="form-control" name="explanation${index}" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label><span style="color:#C45F0E;">Yapılacaklar:</span></label>
-                        <textarea class="form-control" name="actions${index}" rows="3" required></textarea>
-                    </div>
-                `;
-                selectedSentencesDiv.appendChild(div);
-            });
-
-            detailsForm.style.display = 'block';
-            this.style.display = 'none';
-            
-            // Seçimlerden sonra sayfayı en üste kaydır
-            window.scrollTo(0, 0);
-        });
-
-        // Form gönderme işlemi
-        document.getElementById('detailsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Form1 verilerini localStorage'dan al
-            const form1Data = JSON.parse(localStorage.getItem('form1Data') || '{}');
-            
-            // Gönüllülük bilgilerini localStorage'dan al
-            const volunteerInfo = JSON.parse(localStorage.getItem('volunteerInfo') || '{}');
-
-            // Seçilen cümleleri ve açıklamaları topla
-            const selections = [];
-            document.querySelectorAll('.sentence-block').forEach((block, index) => {
-                selections.push({
-                    sentence: block.querySelector('p').textContent,
-                    explanation: block.querySelector('textarea[name^="explanation"]').value,
-                    actions: block.querySelector('textarea[name^="actions"]').value
-                });
-            });
-
-            // Tüm verileri birleştir
-            const postData = {
-                ...form1Data,
-                isVolunteer: volunteerInfo.isVolunteer || '',
-                contactEmail: volunteerInfo.email || '',
-                selections: selections
-            };
-
-            // Google Apps Script URL - güncel URL'yi kullan
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbymB8ADdqBwKkUCOm4F_lq9URs1NogGNgG6MhA3Js5OCc_YwkGo9GxH-Un5CGHF6MG83A/exec';
-
-            // Verileri gönder
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(postData)
-            })
-            .then(response => {
-                console.log('Gönderim başarılı:', response);
-                // Tüm localStorage verilerini temizle
-                localStorage.removeItem('form1Data');
-                localStorage.removeItem('volunteerInfo');
-                alert('Form başarıyla gönderildi!');
-                window.location.href = 'tesekkur.html';
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-                alert('Form gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
-            });
-        });
-
-        // Sayfa yüklendiğinde en üste scroll
-        window.onload = function() {
-            window.scrollTo(0, 0);
-        };
-    </script>
+<script src="./assets/js/main.js" defer></script>
 </body>
 </html>

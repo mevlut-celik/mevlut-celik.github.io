@@ -1,350 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Büşra Nur & Mevlüt | Düğün Davetiyesi</title>
-    <meta
-      name="description"
-      content="Büşra Nur ve Mevlüt'ün düğün davetiyesi. Tarih, konum ve program bilgileri."
-    />
-    <style>
-      :root {
-        --bg: #fffaf7;
-        --card: #ffffffcc;
-        --rose: #b85c70;
-        --green: #4f6f52;
-        --gold: #bc9c60;
-        --text: #3b2f2f;
-        --muted: #6d6464;
-        --shadow: 0 12px 30px rgba(82, 46, 54, 0.15);
-      }
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Büşra Nur &amp; Mevlüt | Düğün Davetiyesi</title>
+<meta name="description" content="Büşra Nur ve Mevlüt'ün düğün davetiyesi. Tarih, konum ve program bilgileri.">
+<meta property="og:title" content="Büşra Nur &amp; Mevlüt">
+<meta property="og:description" content="28 Haziran 2026 · Ankara — 5 Temmuz 2026 · Isparta">
+<meta property="og:image" content="./assets/img/davetiye-on.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
+</head>
 
-      * {
-        box-sizing: border-box;
-      }
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="sprig" viewBox="0 0 44 16">
+    <path d="M1 8 C 12 8, 26 8, 43 8" fill="none" stroke="currentColor" stroke-width="1"/>
+    <path d="M14 8 C 16 3, 20 2, 23 3 C 20 5, 17 7, 14 8 Z" fill="currentColor" opacity=".75"/>
+    <path d="M22 8 C 25 13, 29 14, 32 13 C 29 11, 26 9, 22 8 Z" fill="currentColor" opacity=".6"/>
+    <circle cx="6" cy="8" r="2.2" fill="#d2799b"/>
+  </symbol>
+</svg>
 
-      body {
-        margin: 0;
-        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at 10% 10%, #ffe7ef 0 18%, transparent 20%),
-          radial-gradient(circle at 90% 5%, #eaf7ed 0 16%, transparent 18%),
-          radial-gradient(circle at 20% 90%, #f7efe4 0 20%, transparent 22%),
-          var(--bg);
-      }
+<main class="page">
+  <article class="card">
 
-      .wrapper {
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 2rem 1rem;
-      }
+    <!-- ============================ HERO ============================ -->
+    <header class="hero">
+      <p class="eyebrow">Düğün Daveti</p>
+      <h1 class="script script--xl">
+        Büşra Nur
+        <span class="hero__and">ve</span>
+        Mevlüt
+      </h1>
+      <p class="lead">Sizleri aramızda görmekten<br>mutluluk duyarız.</p>
 
-      .invitation {
-        width: min(920px, 100%);
-        border-radius: 24px;
-        background: var(--card);
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(3px);
-        overflow: hidden;
-        border: 1px solid #f1dfe2;
-      }
+      <div class="parents" aria-label="Aileler">
+        <p class="parents__side">Emin Yüksel<br>Nuray Yüksel</p>
+        <span class="parents__bar" aria-hidden="true"></span>
+        <p class="parents__side parents__side--right">Osman Ali Çelik<br>Çiğdem Çelik</p>
+      </div>
 
-      .hero {
-        padding: 3rem 1.5rem 2.2rem;
-        text-align: center;
-        background: linear-gradient(180deg, #fff5f7 0%, #fff 70%);
-        border-bottom: 1px solid #f3e2df;
-      }
+      <p class="rule"><svg aria-hidden="true"><use href="#sprig"/></svg></p>
+      <p class="dates">28 Haziran 2026 &middot; 5 Temmuz 2026</p>
+    </header>
 
-      .label {
-        color: var(--gold);
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-      }
+    <!-- =========================== PROGRAM =========================== -->
+    <section class="band" aria-labelledby="program-title">
+      <div class="band__inner">
+        <h2 class="display display--md" id="program-title">Program</h2>
 
-      h1 {
-        margin: 0.8rem 0 0.2rem;
-        font-size: clamp(2rem, 5vw, 3.1rem);
-        line-height: 1.15;
-        font-family: "Georgia", "Times New Roman", serif;
-        color: var(--rose);
-      }
+        <div class="events">
+          <article class="event">
+            <p class="eyebrow">Düğün &middot; Ankara</p>
+            <p class="event__when">28 Haziran</p>
+            <p class="event__time">Pazar, 14:00</p>
+            <p class="event__note">Gelin alma: 13:00</p>
+            <p class="event__venue">Asr-ı Saadet Düğün Salonu</p>
+            <p class="event__address">Turgut Özal Mah. 20. Cd. 81/16<br>Yenimahalle / Ankara</p>
 
-      .subtitle {
-        margin: 0.25rem 0;
-        color: var(--muted);
-      }
-
-      .parents {
-        margin-top: 0.8rem;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--muted);
-      }
-
-      .venue {
-        font-weight: 600;
-        color: var(--text);
-      }
-
-      .note {
-        color: var(--rose);
-        font-size: 0.92rem;
-        font-weight: 600;
-      }
-
-      .content {
-        padding: 1.5rem;
-        display: grid;
-        gap: 1rem;
-      }
-
-      .grid {
-        display: grid;
-        gap: 1rem;
-      }
-
-      @media (min-width: 760px) {
-        .grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      .card {
-        background: #fff;
-        border: 1px solid #f3e8e8;
-        border-radius: 16px;
-        padding: 1rem;
-      }
-
-      .image-grid {
-        display: grid;
-        gap: 0.9rem;
-        grid-template-columns: 1fr;
-      }
-
-      @media (min-width: 600px) {
-        .image-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          align-items: start;
-        }
-      }
-
-      .invite-image {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 12px;
-        border: 1px solid #f0e0e0;
-        box-shadow: 0 8px 20px rgba(70, 45, 45, 0.12);
-      }
-
-      h2 {
-        margin: 0 0 0.5rem;
-        font-size: 1.1rem;
-        color: var(--green);
-      }
-
-      p {
-        margin: 0.35rem 0;
-        line-height: 1.55;
-      }
-
-      .countdown {
-        display: flex;
-        gap: 0.65rem;
-        flex-wrap: wrap;
-        margin-top: 0.8rem;
-      }
-
-      .box {
-        min-width: 76px;
-        text-align: center;
-        border: 1px solid #ecd7dd;
-        border-radius: 10px;
-        padding: 0.55rem 0.25rem;
-        background: #fff9fb;
-      }
-
-      .box strong {
-        display: block;
-        font-size: 1.2rem;
-        color: var(--rose);
-      }
-
-      .event-time {
-        color: var(--rose);
-        font-weight: 600;
-      }
-
-      .address {
-        color: var(--muted);
-      }
-
-      .actions {
-        margin-top: 0.8rem;
-        display: flex;
-        gap: 0.6rem;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        text-decoration: none;
-        border: 1px solid var(--gold);
-        color: #6f5322;
-        background: #fff7e7;
-        border-radius: 999px;
-        padding: 0.48rem 0.9rem;
-        font-weight: 600;
-        font-size: 0.92rem;
-      }
-
-      .btn:hover {
-        background: #fceccc;
-      }
-
-      footer {
-        padding: 1rem 1.5rem 1.4rem;
-        text-align: center;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-    </style>
-  </head>
-  <body>
-    <main class="wrapper">
-      <section class="invitation">
-        <header class="hero">
-          <div class="label">Düğün Daveti</div>
-          <h1>Büşra Nur &amp; Mevlüt</h1>
-          <p class="subtitle">Sizleri aramızda görmekten mutluluk duyarız.</p>
-          <p class="subtitle">28 Haziran 2026 · 5 Temmuz 2026</p>
-          <div class="parents">
-            <div>Emin Yüksel &nbsp;|&nbsp; Osman Ali Çelik</div>
-            <div>Nuray Yüksel &nbsp;|&nbsp; Çiğdem Çelik</div>
-          </div>
-        </header>
-
-        <div class="content">
-          <div class="card">
-            <h2>Davetiyemiz</h2>
-            <div class="image-grid">
-              <img
-                class="invite-image"
-                src="1.png"
-                alt="Büşra Nur ve Mevlüt düğün davetiyesi kapak görseli"
-              />
-              <img
-                class="invite-image"
-                src="2.png"
-                alt="Düğün davetiyesi detay görseli"
-              />
+            <div class="countdown" aria-live="polite"
+                 data-countdown="2026-06-28T14:00:00+03:00"
+                 data-live="Düğün vakti geldi! Hoş geldiniz."
+                 data-done="Düğünümüz 28 Haziran 2026'da gerçekleşti.">
+              <p class="countdown__cell"><span class="countdown__value" data-unit="days">0</span><span class="countdown__unit">Gün</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="hours">0</span><span class="countdown__unit">Saat</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="minutes">0</span><span class="countdown__unit">Dakika</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="seconds">0</span><span class="countdown__unit">Saniye</span></p>
             </div>
-          </div>
 
-          <div class="grid">
-            <article class="card">
-              <h2>Düğün — Ankara</h2>
-              <p class="event-time">28 Haziran 2026, Pazar — 14:00</p>
-              <p class="note">Gelin Alma: 13:00</p>
-              <p class="venue">Asr-ı Saadet Düğün Salonu</p>
-              <p class="address">
-                Turgut Özal Mah. 20. Cd. 81/16, Yenimahalle / Ankara
-              </p>
-              <div class="countdown" id="countdownWedding">
-                <div class="box"><strong id="wDays">0</strong>Gün</div>
-                <div class="box"><strong id="wHours">0</strong>Saat</div>
-                <div class="box"><strong id="wMinutes">0</strong>Dakika</div>
-                <div class="box"><strong id="wSeconds">0</strong>Saniye</div>
-              </div>
-              <div class="actions">
-                <a
-                  class="btn"
-                  target="_blank"
-                  rel="noopener"
-                  href="https://www.google.com/maps/search/?api=1&query=Asr-ı+Saadet+Düğün+Salonu,+Turgut+Özal+Mah.+20.+Cd.+81%2F16,+Yenimahalle,+Ankara"
-                  >Haritada Aç</a
-                >
-              </div>
-            </article>
+            <div class="event__actions">
+              <a class="btn" target="_blank" rel="noopener"
+                 href="https://www.google.com/maps/search/?api=1&amp;query=Asr-%C4%B1+Saadet+D%C3%BC%C4%9F%C3%BCn+Salonu,+Turgut+%C3%96zal+Mah.+20.+Cd.+81%2F16,+Yenimahalle,+Ankara">Haritada aç</a>
+            </div>
+          </article>
 
-            <article class="card">
-              <h2>Yemek — Isparta</h2>
-              <p class="event-time">5 Temmuz 2026, Pazar — 11:00 – 15:00</p>
-              <p class="address">
-                Keçeci Mahallesi 2320. Sokak No:13, Isparta / Merkez
-              </p>
-              <div class="countdown" id="countdownDinner">
-                <div class="box"><strong id="dDays">0</strong>Gün</div>
-                <div class="box"><strong id="dHours">0</strong>Saat</div>
-                <div class="box"><strong id="dMinutes">0</strong>Dakika</div>
-                <div class="box"><strong id="dSeconds">0</strong>Saniye</div>
-              </div>
-              <div class="actions">
-                <a
-                  class="btn"
-                  target="_blank"
-                  rel="noopener"
-                  href="https://www.google.com/maps/search/?api=1&query=Keçeci+Mahallesi+2320.+Sokak+No+13,+Isparta+Merkez"
-                  >Haritada Aç</a
-                >
-              </div>
-            </article>
-          </div>
+          <article class="event">
+            <p class="eyebrow">Yemek &middot; Isparta</p>
+            <p class="event__when">5 Temmuz</p>
+            <p class="event__time">Pazar, 11:00 – 15:00</p>
+            <p class="event__venue">Keçeci Mahallesi</p>
+            <p class="event__address">2320. Sokak No:13<br>Merkez / Isparta</p>
+
+            <div class="countdown" aria-live="polite"
+                 data-countdown="2026-07-05T11:00:00+03:00"
+                 data-live="Yemek vakti geldi! Afiyet olsun."
+                 data-done="Yemeğimiz 5 Temmuz 2026'da gerçekleşti.">
+              <p class="countdown__cell"><span class="countdown__value" data-unit="days">0</span><span class="countdown__unit">Gün</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="hours">0</span><span class="countdown__unit">Saat</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="minutes">0</span><span class="countdown__unit">Dakika</span></p>
+              <p class="countdown__cell"><span class="countdown__value" data-unit="seconds">0</span><span class="countdown__unit">Saniye</span></p>
+            </div>
+
+            <div class="event__actions">
+              <a class="btn" target="_blank" rel="noopener"
+                 href="https://www.google.com/maps/search/?api=1&amp;query=Ke%C3%A7eci+Mahallesi+2320.+Sokak+No+13,+Isparta+Merkez">Haritada aç</a>
+            </div>
+          </article>
         </div>
+      </div>
+    </section>
 
-        <footer>
-          Sevincimizi paylaştığınız için teşekkür ederiz.
-        </footer>
-      </section>
-    </main>
+    <!-- =========================== DAVETİYE =========================== -->
+    <section class="band" aria-labelledby="card-title">
+      <div class="band__inner">
+        <h2 class="display display--md" id="card-title">Davetiyemiz</h2>
+        <div class="gallery">
+          <img src="./assets/img/davetiye-on.jpg" width="1240" height="1748" loading="lazy"
+               alt="Davetiyenin ön yüzü: suluboya çiçek, Büşra Nur &amp; Mevlüt, 28 Haziran 2026 ve 5 Temmuz 2026">
+          <img src="./assets/img/davetiye-arka.jpg" width="1240" height="1748" loading="lazy"
+               alt="Davetiyenin iç yüzü: aileler, düğün ve yemek programı, adresler">
+        </div>
+        <a class="btn btn--rose" href="./assets/files/davetiye.pdf" download>Davetiyeyi PDF olarak indir</a>
+      </div>
+    </section>
 
-    <script>
-      const weddingDate = new Date("2026-06-28T14:00:00+03:00");
-      const dinnerDate = new Date("2026-07-05T11:00:00+03:00");
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="footer">
+      <p class="rule"><svg aria-hidden="true"><use href="#sprig"/></svg></p>
+      <p class="script script--md">Teşekkür ederiz</p>
+      <p class="footer__copy">Sevincimizi paylaştığınız için</p>
+    </footer>
+  </article>
+</main>
 
-      function setCountdown(prefix, containerId, targetDate, finishedText) {
-        const now = new Date();
-        const diff = targetDate - now;
-
-        if (diff <= 0) {
-          document.getElementById(containerId).innerHTML = `<p>${finishedText}</p>`;
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        document.getElementById(`${prefix}Days`).textContent = days;
-        document.getElementById(`${prefix}Hours`).textContent = hours;
-        document.getElementById(`${prefix}Minutes`).textContent = minutes;
-        document.getElementById(`${prefix}Seconds`).textContent = seconds;
-      }
-
-      function updateCountdowns() {
-        setCountdown(
-          "w",
-          "countdownWedding",
-          weddingDate,
-          "Düğün vakti geldi! Hoş geldiniz."
-        );
-        setCountdown(
-          "d",
-          "countdownDinner",
-          dinnerDate,
-          "Yemek vakti geldi! Afiyet olsun."
-        );
-      }
-
-      updateCountdowns();
-      setInterval(updateCountdowns, 1000);
-    </script>
-  </body>
-  </html>
+<script src="./assets/js/main.js" defer></script>
+</body>
+</html>

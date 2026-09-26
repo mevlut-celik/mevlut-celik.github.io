@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teşekkürler</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            scroll-behavior: smooth;
-            scroll-padding-top: 0;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            position: relative;
-            top: 0;
-        }
-        .thank-you-container {
-            text-align: center;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-        }
-        .logo {
-            width: 190px;
-            height: auto;
-            margin-bottom: 2rem;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teşekkürler | Araştırma Anketi</title>
+<link rel="icon" href="./assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
 </head>
-<body onload="window.scrollTo(0, 0)">
-    <div class="thank-you-container">
-        <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
-        <h1 class="mb-4">Teşekkür Ederiz!</h1>
-        <p class="mb-4">Katılımınız için teşekkür ederiz. Cevaplarınız başarıyla kaydedildi.</p>
-        <a href="index.html" class="btn btn-primary">Ana Sayfaya Dön</a>
-    </div>
+
+<body>
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <img class="nav__logo" src="./assets/img/logo.png" alt="ODTÜ" width="630" height="250">
+    <p class="nav__title">Fizik Eğitiminde Öğretmen Fark Etme Becerisi<br>Araştırma Anketi</p>
+  </div>
+</header>
+<ol class="steps" aria-label="Anket adımları">
+  <li class="steps__item is-done">Onam</li>
+  <li class="steps__item is-done">Katılımcı bilgileri</li>
+  <li class="steps__item is-done">Senaryo</li>
+  <li class="steps__item is-current" aria-current="step">Tamamlandı</li>
+</ol>
+
+<main class="band">
+  <div class="band__inner">
+    <section class="sheet done">
+      <p class="done__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+      <h1 class="display display--lg">Teşekkür ederiz!</h1>
+      <p class="lead">Katılımınız için teşekkür ederiz. Cevaplarınız başarıyla kaydedildi.</p>
+      <p><a class="btn btn--ghost" href="index.html">Ana sayfaya dön</a></p>
+    </section>
+  </div>
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <p class="footer__inner">ODTÜ Eğitim Fakültesi &middot; Matematik ve Fen Bilimleri Eğitimi Bölümü &middot; <span data-year>2026</span></p>
+</footer>
+
+<script src="./assets/js/main.js" defer></script>
 </body>
-</html> 
+</html>

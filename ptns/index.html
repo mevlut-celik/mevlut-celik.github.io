@@ -1,193 +1,97 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Araştırmaya Gönüllü Katılım Formu</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            padding: 20px;
-        }
-        .consent-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 20px;
-        }
-        .logo {
-    width: 190px;
-    height: auto;
-            margin-bottom: 20px;
-        }
-        .consent-text {
-            text-align: justify;
-            margin-bottom: 20px;
-        }
-        .signature-area {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #dee2e6;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Araştırmaya Gönüllü Katılım Formu</title>
+<link rel="icon" href="./assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
 </head>
+
 <body>
-    <div class="container">
-        <div class="text-center">
-            <img src="https://raw.githubusercontent.com/mevlut-celik/mevlut-celik.github.io/refs/heads/main/ptns/logo.png" alt="Logo" class="logo">
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <img class="nav__logo" src="./assets/img/logo.png" alt="ODTÜ" width="630" height="250">
+    <p class="nav__title">Fizik Eğitiminde Öğretmen Fark Etme Becerisi<br>Araştırma Anketi</p>
+  </div>
+</header>
+<ol class="steps" aria-label="Anket adımları">
+  <li class="steps__item is-current" aria-current="step">Onam</li>
+  <li class="steps__item">Katılımcı bilgileri</li>
+  <li class="steps__item">Senaryo</li>
+  <li class="steps__item">Tamamlandı</li>
+</ol>
+
+<main class="band">
+  <div class="band__inner">
+    <article class="sheet">
+      <p class="eyebrow">Adım 1 &middot; Onam</p>
+      <h1 class="display display--lg">Araştırmaya Gönüllü Katılım Formu</h1>
+
+      <div class="prose">
+        <p>Bu çalışma ODTÜ Eğitim Fakültesi, Matematik ve Fen Bilimleri Eğitimi Bölümü öğretim üyelerinden Doç. Dr. Ömer Faruk Özdemir danışmanlığında ve araştırmacı Simay Köksalan tarafından yürütülmektedir. Bu form araştırma koşulları hakkında bilgilendirmek için hazırlanmıştır.</p>
+
+        <h2>Çalışmanın Amacı Nedir?</h2>
+        <p>Çalışmanın amacı çeşitli seviyelerde fizik eğitiminde rol alan öğretmen adayları, öğretmen ve akademisyenlerin öğrencilerin kavramsal bilgi ve akıl yürütmeleri üzerine öğretmen fark etme becerisinin farklı kategorilerini ortaya çıkarmaktır.</p>
+
+        <h2>Bize Nasıl Yardımcı Olmanız İstenecek?</h2>
+        <p>Araştırma sınıf ortamı dışında yapılacaktır. Öğretmen adayları, öğretmenler ve akademisyenler çalışmaya katılımcı olarak davet edilecek, katılmak isteyenler yaklaşık 30 dakikalık anket uygulamasına katılacaklardır. Anket uygulaması tamamlandıktan sonra elde edilen verilerin açık ve yeterli olabilmesi için gerekli durumlarda katılımcıların da gönüllü olmasıyla anket cevapları üzerinden görüşmeler yapılacaktır.</p>
+
+        <h2>Katılımınızla ilgili bilmeniz gerekenler</h2>
+        <p>Bu çalışmaya katılmak tamamen gönüllülük esasına dayalıdır. Herhangi bir yaptırıma veya cezaya maruz kalmadan çalışmaya katılmayı reddedebilir veya çalışmayı bırakabilirsiniz.</p>
+        <p>Araştırmaya katılanlardan toplanan veriler tamamen gizli tutulacak, veriler ve kimlik bilgileri herhangi bir şekilde eşleştirilmeyecektir. Ayrıca toplanan verilere sadece araştırmacılar ulaşabilecektir. Bu araştırmanın sonuçları bilimsel ve profesyonel yayınlarda veya eğitim amaçlı kullanılacak, fakat katılımcıların kimliği gizli tutulacaktır.</p>
+
+        <h2>Riskler</h2>
+        <p>Çalışmamız kapsamında herhangi bir fiziksel veya psikolojik risk saptanmamıştır. Çalışmanın amacı katılımcıları doğrudan açıklanmıştır.</p>
+
+        <h2>Araştırmayla ilgili daha fazla bilgi almak isterseniz</h2>
+        <p>Çalışmayla ilgili soru ve yorumlarınızı araştırmacılara aşağıda belirtilen mail adreslerini kullanarak iletebilirsiniz:</p>
+        <p class="contact">
+          Doç. Dr. Ömer Faruk Özdemir &mdash; <a class="link" href="mailto:ozdemir@metu.edu.tr">ozdemir@metu.edu.tr</a><br>
+          Simay Köksalan &mdash; <a class="link" href="mailto:simay@metu.edu.tr">simay@metu.edu.tr</a> &middot; Tel: <a class="link" href="tel:+905439150789">0543 915 07 89</a>
+        </p>
+      </div>
+
+      <hr class="divider">
+
+      <form class="form" id="consent-form" novalidate>
+        <label class="check">
+          <input type="checkbox" id="consentCheck">
+          <span>Yukarıdaki bilgileri okudum ve bu çalışmaya tamamen gönüllü olarak katılıyorum.</span>
+        </label>
+
+        <fieldset class="field fieldset">
+          <legend class="label">Gerekli durumlarda görüşme yapmak için gönüllü müsünüz?</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" id="volunteerYes" name="volunteer" value="Evet"> Evet</label>
+            <label class="choice"><input type="radio" id="volunteerNo" name="volunteer" value="Hayır"> Hayır</label>
+          </div>
+        </fieldset>
+
+        <div class="field" id="emailField" hidden>
+          <label class="label" for="contactEmail">E-posta adresiniz</label>
+          <input class="input" type="email" id="contactEmail" placeholder="ornek@email.com" autocomplete="email">
+          <p class="hint">Görüşme için yalnızca bu adres kullanılacaktır.</p>
+          <p class="field__error" hidden></p>
         </div>
-        
-        <div class="consent-container">
-            <h2 class="text-center mb-4">ARAŞTIRMAYA GÖNÜLLÜ KATILIM FORMU</h2>
-            
-            <div class="consent-text">
-                <p>Bu çalışma ODTÜ Eğitim Fakültesi, Matematik ve Fen Bilimleri Eğitimi Bölümü öğretim üyelerinden Doç. Dr. Ömer Faruk Özdemir danışmanlığında ve araştırmacı Simay Köksalan tarafından yürütülmektedir. Bu form araştırma koşulları hakkında bilgilendirmek için hazırlanmıştır.</p>
-                
-                <h5>Çalışmanın Amacı Nedir?</h5>
-                <p>Çalışmanın amacı çeşitli seviyelerde fizik eğitiminde rol alan öğretmen adayları, öğretmen ve akademisyenlerin öğrencilerin kavramsal bilgi ve akıl yürütmeleri üzerine öğretmen fark etme becerisinin farklı kategorilerini ortaya çıkarmaktır.</p>
-                
-                <h5>Bize Nasıl Yardımcı Olmanız İstenecek?</h5>
-                <p>Araştırma sınıf ortamı dışında yapılacaktır. Öğretmen adayları, öğretmenler ve akademisyenler çalışmaya katılımcı olarak davet edilecek, katılmak isteyenler yaklaşık 30 dakikalık anket uygulamasına katılacaklardır. Anket uygulaması tamamlandıktan sonra elde edilen verilerin açık ve yeterli olabilmesi için gerekli durumlarda katılımcıların da gönüllü olmasıyla anket cevapları üzerinden görüşmeler yapılacaktır.</p>
-                
-                <h5>Katılımınızla ilgili bilmeniz gerekenler:</h5>
-                <p>Bu çalışmaya katılmak tamamen gönüllülük esasına dayalıdır. Herhangi bir yaptırıma veya cezaya maruz kalmadan çalışmaya katılmayı reddedebilir veya çalışmayı bırakabilirsiniz.</p>
-                <p>Araştırmaya katılanlardan toplanan veriler tamamen gizli tutulacak, veriler ve kimlik bilgileri herhangi bir şekilde eşleştirilmeyecektir. Ayrıca toplanan verilere sadece araştırmacılar ulaşabilecektir. Bu araştırmanın sonuçları bilimsel ve profesyonel yayınlarda veya eğitim amaçlı kullanılacak, fakat katılımcıların kimliği gizli tutulacaktır.</p>
-                
-                <h5>Riskler:</h5>
-                <p>Çalışmamız kapsamında herhangi bir fiziksel veya psikolojik risk saptanmamıştır. Çalışmanın amacı katılımcıları doğrudan açıklanmıştır.</p>
-                
-                <h5>Araştırmayla ilgili daha fazla bilgi almak isterseniz:</h5>
-                <p>Çalışmayla ilgili soru ve yorumlarınızı araştırmacılara aşağıda belirtilen mail adreslerini kullanarak iletebilirsiniz:</p>
-                <p>
-                    Doç. Dr. Ömer Faruk Özdemir (<a href="mailto:ozdemir@metu.edu.tr">ozdemir@metu.edu.tr</a>)<br>
-                    Simay Köksalan (<a href="mailto:simay@metu.edu.tr">simay@metu.edu.tr</a>) Tel: 0543 915 07 89
-                </p>
-            </div>
 
-            <div class="signature-area">
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="consentCheck" required>
-                    <label class="form-check-label" for="consentCheck">
-                        Yukarıdaki bilgileri okudum ve bu çalışmaya tamamen gönüllü olarak katılıyorum.
-                    </label>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label>Gerekli durumlarda görüşme yapmak için gönüllü müsünüz?</label>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="volunteerYes" name="volunteer" class="custom-control-input" value="Evet" onchange="toggleEmailField()">
-                        <label class="custom-control-label" for="volunteerYes">Evet</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="volunteerNo" name="volunteer" class="custom-control-input" value="Hayır" onchange="toggleEmailField()">
-                        <label class="custom-control-label" for="volunteerNo">Hayır</label>
-            </div>
-            </div>
-
-                <div class="form-group mb-3" id="emailField" style="display: none;">
-                    <label for="contactEmail">E-mail adresiniz:</label>
-                    <input type="email" class="form-control" id="contactEmail" placeholder="ornek@email.com">
-                    <small class="form-text text-muted">Lütfen geçerli bir e-mail adresi giriniz.</small>
-            </div>
-                
-                <div class="form-group">
-                    <label for="age">Yaşınız:</label>
-                    <input type="text" 
-                           class="form-control" 
-                           id="age" 
-                           name="age" 
-                           maxlength="2"
-                           pattern="[2-6][0-9]"
-                           oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,2)"
-                           onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                           required>
-                    <small class="form-text text-muted">Lütfen 20-65 yaş aralığında bir değer giriniz.</small>
-                </div>
-                
-                <div class="form-group">
-                    <label>Mesleki Deneyim Süreniz:</label>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="input-group mb-2">
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="experienceYears" 
-                                       name="experienceYears" 
-                                       maxlength="2"
-                                       pattern="[0-4][0-9]"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,2)"
-                                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                                       placeholder="Yıl"
-                                       required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Yıl</span>
-                                </div>
-                            </div>
-                            <small class="form-text text-muted">0-45 yıl arası</small>
-                        </div>
-                        <div class="col-6">
-                            <div class="input-group mb-2">
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="experienceMonths" 
-                                       name="experienceMonths" 
-                                       maxlength="2"
-                                       pattern="[0-9][0-9]"
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,2); if(this.value > 11) this.value = 11;"
-                                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
-                                       placeholder="Ay"
-                                       required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Ay</span>
-                                </div>
-                            </div>
-                            <small class="form-text text-muted">0-11 ay arası</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <button onclick="proceedToForm()" class="btn btn-primary" disabled id="proceedButton">
-                    Devam Et
-                </button>
-            </div>
+        <div class="actions actions--end">
+          <button class="btn" type="submit" id="proceedButton" disabled>Devam et &rarr;</button>
         </div>
-    </div>
+      </form>
+    </article>
+  </div>
+</main>
 
-    <script>
-        // Checkbox durumuna göre butonu aktif/pasif yap
-        document.getElementById('consentCheck').addEventListener('change', function() {
-            document.getElementById('proceedButton').disabled = !this.checked;
-        });
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <p class="footer__inner">ODTÜ Eğitim Fakültesi &middot; Matematik ve Fen Bilimleri Eğitimi Bölümü &middot; <span data-year>2026</span></p>
+</footer>
 
-        // Email alanını göster/gizle
-        function toggleEmailField() {
-            const emailField = document.getElementById('emailField');
-            const volunteerYes = document.getElementById('volunteerYes');
-            emailField.style.display = volunteerYes.checked ? 'block' : 'none';
-            
-            // Eğer "Hayır" seçilirse email alanını temizle
-            if (!volunteerYes.checked) {
-                document.getElementById('contactEmail').value = '';
-            }
-        }
-
-        // Devam et butonuna tıklandığında
-        function proceedToForm() {
-            if (document.getElementById('consentCheck').checked) {
-                // Görüşme ve email bilgilerini localStorage'a kaydet
-                const volunteerInfo = {
-                    isVolunteer: document.getElementById('volunteerYes').checked ? 'Evet' : 'Hayır',
-                    email: document.getElementById('volunteerYes').checked ? 
-                           document.getElementById('contactEmail').value : ''
-                };
-                localStorage.setItem('volunteerInfo', JSON.stringify(volunteerInfo));
-                
-                // Form sayfasına yönlendir
-                window.location.href = 'form.html';
-            }
-        }
-    </script>
+<script src="./assets/js/main.js" defer></script>
 </body>
 </html>
