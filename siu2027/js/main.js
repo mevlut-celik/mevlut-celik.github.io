@@ -2153,7 +2153,6 @@ function initSearchModal() {
     { url: 'katilim#konaklama', tr: ['Konaklama', 'Katılım › Konaklama'], en: ['Accommodation', 'Registration › Accommodation'], kw: 'konaklama otel oda accommodation hotel room' },
     { url: 'katilim#ulasim', tr: ['Ulaşım ve Kampüs Haritası', 'Katılım › Ulaşım'], en: ['Travel and Campus Map', 'Registration › Travel'], kw: 'ulaşım harita havalimanı otobüs kavacık güney kampüs travel map airport bus campus' },
     { url: 'komiteler', tr: ['Komiteler ve Kurullar', 'Komiteler'], en: ['Committees', 'Committees'], kw: 'komite kurul başkan eş başkan tpc committee chair co-chair' },
-    { url: 'onur-kurulu', tr: ['Onur Kurulu', 'Kurultay › Onur Kurulu'], en: ['Honorary Committee', 'Conference › Honorary Committee'], kw: 'onur kurulu honorary committee board' },
     { url: 'hakkinda', tr: ['Kurultay Hakkında', 'Kurultay › Hakkında'], en: ['About the Conference', 'Conference › About'], kw: 'hakkında hoş geldiniz kapsam medipol ev sahibi about welcome scope host' },
     { url: 'arsiv', tr: ['SİU Kurultay Arşivi (1993–2027)', 'Arşiv › Kurultay Kronolojisi'], en: ['SIU Conference Archive (1993–2027)', 'Archive › Chronology'], kw: 'arşiv tarihçe geçmiş kronoloji archive history chronology' },
     { url: 'iletisim', tr: ['İletişim ve Sekreterlik', 'İletişim › Adres ve E-posta'], en: ['Contact and Secretariat', 'Contact › Address and E-mail'], kw: 'iletişim sekreterlik e-posta telefon adres contact secretariat email phone address' },
