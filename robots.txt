@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mevlut-celik.github.io/sitemap.xml

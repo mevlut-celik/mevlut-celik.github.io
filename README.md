@@ -8,7 +8,7 @@ Three files carry the homepage; every subproject repeats the same layout.
 ```
 index.html            markup + content
 assets/css/main.css   design tokens, components, responsive rules
-assets/js/main.js     nav, active-section tracking, reveal-on-scroll
+assets/js/main.js     current year in the footer
 assets/files/         curriculum vitae (PDF)
 assets/img/           favicon
 .nojekyll             served as plain static files by GitHub Pages
@@ -16,10 +16,25 @@ assets/img/           favicon
 
 ## Design language
 
-A Swiss engineering dossier: warm white paper, a faint twelve-column grid
-drawn behind the page, very large tight Geist headlines, Geist Mono indices,
-hairline rules and a single signal colour — international orange `#ff4d00`.
-Sections are numbered `(01)…(05)` with a sticky label rail on the left.
+Plain and quiet: a dark page, one typeface (Inter), a single 720px reading
+column, hairline rules and muted secondary text. No imagery, grid overlays
+or animation — the content is the design.
+
+Stack logos in `assets/img/stack/` come from [Simple Icons](https://simpleicons.org)
+(CC0), recoloured to `#d4d4d8`; the Windows mark is a plain four-square glyph
+because Simple Icons no longer ships Microsoft logos. The trademarks belong to
+their owners. Company and school logos in `assets/img/orgs/` are shown as
+small white tiles beside each entry.
+
+## SEO
+
+- `<head>`: descriptive title and meta description, canonical URL, Open Graph
+  and Twitter card tags with `assets/img/og.png` (1200×630), apple-touch-icon.
+- JSON-LD `Person` + `WebSite` structured data (name variants, job, employer,
+  alma mater, location, GitHub / LinkedIn / YouTube profiles).
+- `robots.txt`, `sitemap.xml` (homepage, mescid, simulation, waves) and a
+  root `404.html`. Client, research and personal subprojects are left out of
+  the sitemap on purpose; `siu2027/` keeps its own robots and sitemap.
 
 ## Shared skeleton
 
@@ -50,7 +65,7 @@ own copy, so nothing is loaded across folders.
 
 | Folder | Character |
 |---|---|
-| `/` | Swiss engineering dossier — paper, visible grid, huge grotesk type, one orange signal |
+| `/` | Plain dark page — one typeface, one column, hairline rules |
 | `busra/` | Literary journal — warm paper, plum tulip, serif masthead, arched frame |
 | `davetiye/` | The printed invitation — beige paper, spaced serif caps, pink script names |
 | `mescid/` | The app's own brand — #0D0D0D and #CC0000, phone mock-up |

@@ -3,364 +3,245 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mevlüt Çelik — Frontend, Backend &amp; Platform Development</title>
-<meta name="description" content="Mevlüt Çelik — frontend and backend developer building platforms, dashboards and mobile applications, and running the operational processes around them at Freshdata, Ankara.">
-<meta name="keywords" content="Mevlüt Çelik, frontend developer, backend developer, dashboard development, platform development, mobile application, React, Python, operations, Ankara">
+<title>Mevlüt Çelik — Frontend &amp; Backend Developer in Ankara</title>
+<meta name="description" content="Mevlüt Çelik is a frontend and backend developer in Ankara. Operations Specialist at FRESHDATA, building web platforms, dashboards and mobile apps.">
+<meta name="keywords" content="Mevlüt Çelik, Mevlut Celik, frontend developer, backend developer, web developer Ankara, dashboard development, mobile application, React, Python, FRESHDATA, METU">
 <meta name="author" content="Mevlüt Çelik">
-<meta name="theme-color" content="#f4f3ef">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0f0f10">
+<meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://mevlut-celik.github.io/">
 
+<!-- Open Graph / social previews -->
 <meta property="og:type" content="profile">
-<meta property="og:title" content="Mevlüt Çelik">
-<meta property="og:description" content="Frontend and backend developer — platforms, dashboards, mobile applications and operational systems.">
+<meta property="og:site_name" content="Mevlüt Çelik">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:title" content="Mevlüt Çelik — Frontend &amp; Backend Developer">
+<meta property="og:description" content="Web platforms, dashboards and mobile apps — and the operations behind them. Operations Specialist at FRESHDATA, Ankara.">
 <meta property="og:url" content="https://mevlut-celik.github.io/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://mevlut-celik.github.io/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mevlüt Çelik — Frontend &amp; backend developer, Ankara">
+<meta property="profile:first_name" content="Mevlüt">
+<meta property="profile:last_name" content="Çelik">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mevlüt Çelik — Frontend &amp; Backend Developer">
+<meta name="twitter:description" content="Web platforms, dashboards and mobile apps — and the operations behind them.">
+<meta name="twitter:image" content="https://mevlut-celik.github.io/assets/img/og.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://mevlut-celik.github.io/#person",
+      "name": "Mevlüt Çelik",
+      "alternateName": ["Mevlut Celik", "Mevlüt Celik"],
+      "url": "https://mevlut-celik.github.io/",
+      "image": "https://mevlut-celik.github.io/assets/img/og.png",
+      "jobTitle": "Operations Specialist",
+      "description": "Frontend and backend developer building web platforms, dashboards and mobile applications.",
+      "email": "mailto:dmevlutcelik@gmail.com",
+      "worksFor": { "@type": "Organization", "name": "FRESHDATA" },
+      "alumniOf": [
+        { "@type": "CollegeOrUniversity", "name": "Middle East Technical University", "url": "https://www.metu.edu.tr" }
+      ],
+      "address": { "@type": "PostalAddress", "addressLocality": "Ankara", "addressCountry": "TR" },
+      "knowsAbout": ["Frontend development", "Backend development", "Dashboard development", "Mobile application development", "JavaScript", "React", "Python", "Linux", "cPanel", "Plesk"],
+      "sameAs": [
+        "https://github.com/mevlut-celik",
+        "https://www.linkedin.com/in/dmevlutcelik",
+        "https://www.youtube.com/@dmevlutcelik"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mevlut-celik.github.io/#website",
+      "url": "https://mevlut-celik.github.io/",
+      "name": "Mevlüt Çelik",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://mevlut-celik.github.io/#person" }
+    }
+  ]
+}
+</script>
 
 <link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 
 <body>
-<a class="skip-link" href="#about">Skip to content</a>
-<div class="columns" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<a class="skip-link" href="#work">Skip to content</a>
 
-<!-- ============================== NAV ============================== -->
-<header class="nav" id="nav">
-  <div class="wrap nav__inner">
-    <a class="nav__brand" href="#top">Mevlüt Çelik</a>
-    <p class="nav__status mono">Ankara, TR &middot; <span data-clock>--:--</span></p>
-    <button class="nav__toggle" id="nav-toggle" type="button" aria-controls="nav-menu" aria-expanded="false">Menu</button>
-    <nav class="nav__menu" id="nav-menu" aria-label="Primary">
-      <ul class="nav__list">
-        <li><a class="nav__link" href="#about">About</a></li>
-        <li><a class="nav__link" href="#work">Work</a></li>
-        <li><a class="nav__link" href="#experience">Experience</a></li>
-        <li><a class="nav__link" href="#stack">Stack</a></li>
-      </ul>
-      <a class="btn btn--sm" href="#contact">Get in touch <span class="btn__arrow" aria-hidden="true">↗</span></a>
-    </nav>
-  </div>
-</header>
+<main class="page">
 
-<main id="top">
-
-  <!-- ============================ HERO ============================ -->
-  <section class="wrap hero" aria-label="Introduction">
-    <div class="hero__meta mono">
-      <p>Portfolio &mdash; <span data-year>2026</span></p>
-      <p>Frontend / Backend / Platform</p>
-      <p>Operations Specialist, Freshdata</p>
-      <p>39.93° N, 32.86° E &middot; Ankara</p>
-    </div>
-
-    <h1 class="display display--xxl hero__title">
-      I build platforms, dashboards and mobile apps &mdash; and run the <span class="accent">operations</span> behind them.
-    </h1>
-
-    <div class="hero__foot">
-      <p class="hero__intro">
-        Mevlüt Çelik &mdash; developer based in Ankara. I work where the interface meets the process:
-        shipping the product, then keeping the workflow around it clean.
-      </p>
-      <dl class="hero__facts">
-        <div><dt class="mono">Now</dt><dd>Operations Specialist at Freshdata</dd></div>
-        <div><dt class="mono">Stack</dt><dd>JavaScript, React, Python, Linux</dd></div>
-        <div><dt class="mono">Before</dt><dd>ANNIE collaboration, Fermilab</dd></div>
-      </dl>
-      <div class="hero__actions">
-        <a class="btn" href="#work">Selected work <span class="btn__arrow" aria-hidden="true">↓</span></a>
-        <a class="btn btn--ghost" href="./assets/files/mevlut-celik-cv.pdf" target="_blank" rel="noopener">Download CV <span class="btn__arrow" aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================ TICKER ============================ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      <ul class="ticker__list"><li>Frontend interfaces</li><li>Backend &amp; integration</li><li>Dashboards</li><li>Mobile applications</li><li>Operational processes</li><li>Data &amp; analysis</li><li>JavaScript</li><li>React</li><li>Python</li><li>C++</li><li>Linux</li></ul>
-      <ul class="ticker__list"><li>Frontend interfaces</li><li>Backend &amp; integration</li><li>Dashboards</li><li>Mobile applications</li><li>Operational processes</li><li>Data &amp; analysis</li><li>JavaScript</li><li>React</li><li>Python</li><li>C++</li><li>Linux</li></ul>
-    </div>
-  </div>
-
-  <!-- ============================ ABOUT ============================ -->
-  <section class="band" id="about" aria-labelledby="about-title">
-    <div class="wrap band__inner">
-      <header class="band__rail">
-        <p class="mono band__index">(01)</p>
-        <h2 class="mono" id="about-title">About</h2>
-      </header>
-      <div class="band__body">
-        <p class="lead" data-reveal>
-          My work sits between the interface and the process behind it. <em>Frontend, backend,
-          dashboards and mobile apps on one side &mdash; the planning, integration and support that
-          decide whether any of it survives real users on the other.</em>
-        </p>
-        <dl class="specs" data-reveal>
-          <div class="specs__row"><dt class="mono">Current role</dt><dd>Operations Specialist, Freshdata &mdash; Ankara</dd></div>
-          <div class="specs__row"><dt class="mono">Working on</dt><dd>Integrated system workflows, web &amp; mobile interfaces, support for deployed solutions</dd></div>
-          <div class="specs__row"><dt class="mono">Interested in</dt><dd>Platform &amp; dashboard development, system integration, operational tooling</dd></div>
-          <div class="specs__row"><dt class="mono">Based in</dt><dd>Ankara, Turkey</dd></div>
-        </dl>
-
-        <div class="services">
-          <article class="service" data-reveal>
-            <p class="mono">001</p>
-            <h3 class="display display--md">Frontend interfaces</h3>
-            <p>Responsive, accessible interfaces in HTML5, CSS and JavaScript, with React where an application needs real state.</p>
-          </article>
-          <article class="service" data-reveal>
-            <p class="mono">002</p>
-            <h3 class="display display--md">Backend &amp; integration</h3>
-            <p>Services, APIs and integration layers that connect systems which were never designed to talk to each other.</p>
-          </article>
-          <article class="service" data-reveal>
-            <p class="mono">003</p>
-            <h3 class="display display--md">Dashboards &amp; data</h3>
-            <p>Operational dashboards and reporting surfaces that turn raw process data into something a team can act on.</p>
-          </article>
-          <article class="service" data-reveal>
-            <p class="mono">004</p>
-            <h3 class="display display--md">Mobile applications</h3>
-            <p>Mobile-first products and companion apps, from the first screen through release and post-launch support.</p>
-          </article>
-          <article class="service" data-reveal>
-            <p class="mono">005</p>
-            <h3 class="display display--md">Operational processes</h3>
-            <p>Workflow design, deployment support and the small automations that remove repeated manual work.</p>
-          </article>
-          <article class="service" data-reveal>
-            <p class="mono">006</p>
-            <h3 class="display display--md">Data &amp; analysis</h3>
-            <p>Large datasets with Python and NumPy &mdash; a habit from a particle physics collaboration, now pointed at product metrics.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ============================= HEAD ============================= -->
+  <header class="head">
+    <h1 class="head__name">Mevlüt Çelik</h1>
+    <p class="head__role">Operations Specialist at FRESHDATA &middot; Ankara</p>
+    <p class="lead">
+      I build <strong>web platforms, dashboards and mobile applications</strong>, and run the
+      operational processes that keep them working in production. Before that I spent two years
+      in the ANNIE collaboration at Fermilab, building the research group's web tools.
+    </p>
+    <ul class="links">
+      <li><a class="btn" href="mailto:dmevlutcelik@gmail.com">Email</a></li>
+      <li><a class="btn" href="https://github.com/mevlut-celik" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a class="btn" href="https://www.linkedin.com/in/dmevlutcelik" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a class="btn" href="./assets/files/mevlut-celik-cv.pdf" target="_blank" rel="noopener">CV ↗</a></li>
+    </ul>
+  </header>
 
   <!-- ============================= WORK ============================= -->
   <section class="band" id="work" aria-labelledby="work-title">
-    <div class="wrap band__inner">
-      <header class="band__rail">
-        <p class="mono band__index">(02)</p>
-        <h2 class="mono" id="work-title">Selected work</h2>
-        <p class="mono">2020 &mdash; <span data-year>2026</span></p>
-      </header>
-      <div class="band__body">
-        <h3 class="display display--xl" data-reveal>Things I designed, built and shipped.</h3>
-
-        <ol class="work">
-          <li>
-            <a class="work__row" href="./mescid/">
-              <span class="mono">01</span>
-              <span><span class="work__title">ODTÜ Mescid</span><span class="work__text">Android app for the METU campus: prayer times, qibla, campus map, Quran reader and notifications &mdash; plus its landing page.</span></span>
-              <span class="mono work__kind">Mobile application</span>
-              <span class="mono work__year">2026</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="work__row" href="./parlar-kariyer/">
-              <span class="mono">02</span>
-              <span><span class="work__title">Parlar Kariyer</span><span class="work__text">Recruitment page with a validated application form, CV upload and a PHP backend that emails each application and falls back to file storage.</span></span>
-              <span class="mono work__kind">Platform &amp; backend</span>
-              <span class="mono work__year">2026</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="work__row" href="./ptns/">
-              <span class="mono">03</span>
-              <span><span class="work__title">PTNS Research Suite</span><span class="work__text">End-to-end survey system for a METU study: consent flow, multi-step questionnaire, admin dashboard and a Google Apps Script backend.</span></span>
-              <span class="mono work__kind">Data &amp; dashboard</span>
-              <span class="mono work__year">2024</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <div class="work__row work__row--static">
-              <span class="mono">04</span>
-              <span><span class="work__title">ÖGEM METU</span><span class="work__text">Website for the university's student development and counselling centre, built in HTML5 and CSS during a research internship.</span></span>
-              <span class="mono work__kind">Institutional site</span>
-              <span class="mono work__year">2025</span>
-              <span class="work__arrow" aria-hidden="true">&mdash;</span>
-            </div>
-          </li>
-          <li>
-            <div class="work__row work__row--static">
-              <span class="mono">05</span>
-              <span><span class="work__title">Neutrino Database</span><span class="work__text">Web application for browsing and querying a research dataset: searchable records, structured views and a maintainable data layer.</span></span>
-              <span class="mono work__kind">Database application</span>
-              <span class="mono work__year">2022&ndash;23</span>
-              <span class="work__arrow" aria-hidden="true">&mdash;</span>
-            </div>
-          </li>
-          <li>
-            <div class="work__row work__row--static">
-              <span class="mono">06</span>
-              <span><span class="work__title">ENRG Website</span><span class="work__text">Dynamic website for the Erciyes Neutrino Research Group &mdash; frontend, content structure and server administration on Plesk.</span></span>
-              <span class="mono work__kind">Web platform</span>
-              <span class="mono work__year">2022&ndash;23</span>
-              <span class="work__arrow" aria-hidden="true">&mdash;</span>
-            </div>
-          </li>
-          <li>
-            <a class="work__row" href="./simulation/">
-              <span class="mono">07</span>
-              <span><span class="work__title">Magnetic Force Lab</span><span class="work__text">Browser physics lab: real-time canvas, a draggable conductor, live F = I·L·B·sin θ readout and Excel export of measurements.</span></span>
-              <span class="mono work__kind">Interactive web app</span>
-              <span class="mono work__year">2024</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="work__row" href="./busra/">
-              <span class="mono">08</span>
-              <span><span class="work__title">Editorial Blog</span><span class="work__text">Lightweight publishing site with post templates, an editor-facing admin view and a fully static, dependency-free frontend.</span></span>
-              <span class="mono work__kind">Content platform</span>
-              <span class="mono work__year">2026</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="work__row" href="https://github.com/mevlut-celik" target="_blank" rel="noopener">
-              <span class="mono">09</span>
-              <span><span class="work__title">More on GitHub</span><span class="work__text">Source for this site and the projects above, plus smaller experiments in JavaScript, Python and C++.</span></span>
-              <span class="mono work__kind">Open source</span>
-              <span class="mono work__year">&mdash;</span>
-              <span class="work__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-        </ol>
-      </div>
-    </div>
+    <h2 class="eyebrow band__title" id="work-title">Work</h2>
+    <ol class="rows">
+      <li class="row">
+        <p class="row__meta">2026</p>
+        <div class="row__body">
+          <h3 class="row__title"><a href="./mescid/">ODTÜ Mescid <span class="arrow">↗</span></a></h3>
+            <p class="row__text">Android app for the METU campus: prayer times, qibla, campus map, Quran reader and notifications.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2026</p>
+        <div class="row__body">
+          <h3 class="row__title"><a href="./parlar-kariyer/">Parlar Kariyer <span class="arrow">↗</span></a></h3>
+            <p class="row__text">Recruitment page with a validated application form, CV upload and a PHP backend that emails each application.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2026</p>
+        <div class="row__body">
+          <h3 class="row__title"><a href="./busra/">Editorial Blog <span class="arrow">↗</span></a></h3>
+            <p class="row__text">Lightweight publishing site with post templates, an admin view and a static, dependency-free frontend.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2025</p>
+        <div class="row__body">
+          <h3 class="row__title">ÖGEM METU</h3>
+            <p class="row__text">Website for the university's student development and counselling centre, built during a research internship.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2024</p>
+        <div class="row__body">
+          <h3 class="row__title"><a href="./ptns/">PTNS Research Suite <span class="arrow">↗</span></a></h3>
+            <p class="row__text">Survey system for a METU study: consent flow, multi-step questionnaire, admin dashboard and a Google Apps Script backend.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2024</p>
+        <div class="row__body">
+          <h3 class="row__title"><a href="./simulation/">Magnetic Force Lab <span class="arrow">↗</span></a></h3>
+            <p class="row__text">Browser physics lab with a real-time canvas, a draggable conductor and Excel export of measurements.</p>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">2022 &ndash; 23</p>
+        <div class="row__body">
+          <h3 class="row__title">ENRG Website &amp; Neutrino Database</h3>
+            <p class="row__text">The Erciyes Neutrino Research Group's dynamic website and a web application for querying its dataset, hosted on Plesk.</p>
+        </div>
+      </li>
+    </ol>
   </section>
 
   <!-- ========================== EXPERIENCE ========================== -->
   <section class="band" id="experience" aria-labelledby="experience-title">
-    <div class="wrap band__inner">
-      <header class="band__rail">
-        <p class="mono band__index">(03)</p>
-        <h2 class="mono" id="experience-title">Experience</h2>
-      </header>
-      <div class="band__body">
-        <ol class="timeline">
-          <li class="job" data-reveal>
-            <p class="mono">Aug 2025 &mdash; Now</p>
-            <div class="job__main">
-              <h3 class="display display--lg">Operations Specialist</h3>
-              <p class="job__org">Freshdata &middot; Full time</p>
-              <p class="job__text">Operational planning and coordination of technical processes across the company. I work on integrated system workflows, provide technical support for deployed solutions and develop the web and mobile applications around them &mdash; HTML-based interfaces, NTN-related work and system-level integration in real industrial environments.</p>
-            </div>
-            <p class="mono job__where">Ankara, TR</p>
-          </li>
-          <li class="job" data-reveal>
-            <p class="mono">Mar &mdash; Jun 2025</p>
-            <div class="job__main">
-              <h3 class="display display--lg">Research Intern, Web Development</h3>
-              <p class="job__org">Middle East Technical University &middot; ÖGEM &middot; Part time</p>
-              <p class="job__text">Developed the website of ÖGEM, the university's student development and counselling centre &mdash; frontend build in HTML5 and CSS, from layout through to deployment.</p>
-            </div>
-            <p class="mono job__where">Ankara, TR</p>
-          </li>
-          <li class="job" data-reveal>
-            <p class="mono">Jul 2021 &mdash; Aug 2023</p>
-            <div class="job__main">
-              <h3 class="display display--lg">Web Developer &amp; Undergraduate Researcher</h3>
-              <p class="job__org">Erciyes Neutrino Research Group &middot; Fermilab</p>
-              <p class="job__text">Built and maintained the research group's dynamic website and its neutrino database web application (Dr. Emrah Tıraş's group), including server administration through Plesk. In parallel I worked inside the <a class="link" href="https://annie.fnal.gov/" target="_blank" rel="noopener">ANNIE</a> collaboration at Fermi National Accelerator Laboratory, monitoring experiment data and taking remote shifts to verify the data flow.</p>
-            </div>
-            <p class="mono job__where">Kayseri, TR / Remote</p>
-          </li>
-          <li class="job" data-reveal>
-            <p class="mono">May &mdash; Sep 2020</p>
-            <div class="job__main">
-              <h3 class="display display--lg">Image Processing Crew Member</h3>
-              <p class="job__org">HUMA Drone Team</p>
-              <p class="job__text">Computer vision pipeline for the team's competition drone: image processing and machine learning for autonomous target detection and tracking, on Linux.</p>
-            </div>
-            <p class="mono job__where">Ankara, TR</p>
-          </li>
-        </ol>
-      </div>
-    </div>
+    <h2 class="eyebrow band__title" id="experience-title">Experience</h2>
+    <ol class="rows">
+      <li class="row">
+        <p class="row__meta">Aug 2025 &ndash; now</p>
+        <div class="row__body org">
+          <span class="org__mark"><img class="org__logo" src="./assets/img/orgs/freshdata.png" alt="FRESHDATA" width="32" height="32" loading="lazy"></span>
+          <div>
+            <h3 class="row__title">Operations Specialist &middot; <span class="muted">FRESHDATA</span></h3>
+            <p class="row__text">Operational planning and coordination of technical processes; integrated system workflows, support for deployed solutions, and the web and mobile applications around them.</p>
+          </div>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">Mar &ndash; Jun 2025</p>
+        <div class="row__body org">
+          <span class="org__mark"><img class="org__logo" src="./assets/img/orgs/metu.png" alt="Middle East Technical University" width="32" height="32" loading="lazy"></span>
+          <div>
+            <h3 class="row__title">Research Intern, Web Development &middot; <span class="muted">METU</span></h3>
+            <p class="row__text">Built the website of ÖGEM, the university's student development and counselling centre.</p>
+          </div>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">Jul 2021 &ndash; Aug 2023</p>
+        <div class="row__body org">
+          <span class="org__mark"><img class="org__logo" src="./assets/img/orgs/erciyes.png" alt="Erciyes University" width="32" height="32" loading="lazy"><img class="org__badge" src="./assets/img/orgs/fermilab.png" alt="Fermilab" width="16" height="16" loading="lazy"></span>
+          <div>
+            <h3 class="row__title">Web Developer &amp; Undergraduate Researcher &middot; <span class="muted">ENRG / Fermilab</span></h3>
+            <p class="row__text">Built and maintained the research group's website and neutrino database app. In the <a class="link" href="https://annie.fnal.gov/" target="_blank" rel="noopener">ANNIE</a> collaboration, monitored experiment data and took remote shifts on the data flow.</p>
+          </div>
+        </div>
+      </li>
+      <li class="row">
+        <p class="row__meta">May &ndash; Sep 2020</p>
+        <div class="row__body org">
+          <span class="org__mark"><span class="org__logo org__logo--text" role="img" aria-label="HUMA Drone Team">H</span></span>
+          <div>
+            <h3 class="row__title">Image Processing Crew Member &middot; <span class="muted">HUMA Drone Team</span></h3>
+            <p class="row__text">Image processing and machine learning for autonomous target detection and tracking.</p>
+          </div>
+        </div>
+      </li>
+    </ol>
   </section>
 
   <!-- ============================ STACK ============================ -->
   <section class="band" id="stack" aria-labelledby="stack-title">
-    <div class="wrap band__inner">
-      <header class="band__rail">
-        <p class="mono band__index">(04)</p>
-        <h2 class="mono" id="stack-title">Stack &amp; credentials</h2>
-      </header>
-      <div class="band__body">
-        <table class="table" data-reveal>
-          <tbody>
-            <tr><th scope="row">Frontend</th><td>JavaScript, React, HTML5, CSS</td></tr>
-            <tr><th scope="row">Backend &amp; data</th><td>Python, NumPy, C++, ROOT, machine learning</td></tr>
-            <tr><th scope="row">Platform &amp; ops</th><td>Linux, macOS, Windows, Plesk, Git &amp; GitHub Pages</td></tr>
-            <tr><th scope="row">Security</th><td>Cyber security fundamentals &mdash; TryHackMe Pre Security</td></tr>
-            <tr><th scope="row">Tools</th><td>IntelliJ IDEA, Replit, HubSpot, Gamma, Adobe Premiere Pro</td></tr>
-            <tr><th scope="row">Languages</th><td>Turkish (native), English (professional), Arabic (limited working)</td></tr>
-          </tbody>
-        </table>
-
-        <div class="split">
-          <div data-reveal>
-            <h3 class="display display--md">Certifications</h3>
-            <table class="table">
-              <tbody>
-                <tr><th scope="row">Jul 2026</th><td>Pre Security Certificate &mdash; TryHackMe<br><span class="mono">ID THM-HDJ7H9P7T4 &middot; valid to Jul 2029</span></td></tr>
-                <tr><th scope="row">Aug 2025</th><td>Bilgi Sistemlerine Giriş &mdash; BTK Akademi<br><span class="mono">ID K1hOOyVo4</span></td></tr>
-                <tr><th scope="row">Oct 2023</th><td><a class="link" href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=5ca57c12-5f18-4531-8d47-016d307c0be7" target="_blank" rel="noopener">MATLAB Onramp</a> &mdash; MathWorks</td></tr>
-                <tr><th scope="row">Jul 2023</th><td><a class="link" href="https://courses.edx.org/certificates/2f4ca70f3cb940afa77140b9eca9d831" target="_blank" rel="noopener">Intro to Web Development with HTML5, CSS3 &amp; JavaScript</a> &mdash; IBM</td></tr>
-                <tr><th scope="row">May 2023</th><td><a class="link" href="https://www.btkakademi.gov.tr/portal/certificate/validate?certificateId=VP1cJZmqpq" target="_blank" rel="noopener">İşletim Sistemlerine Giriş</a> &mdash; BTK Akademi</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div data-reveal>
-            <h3 class="display display--md">Education</h3>
-            <table class="table">
-              <tbody>
-                <tr><th scope="row">2021 &mdash; 2026</th><td>Middle East Technical University &mdash; B.Sc.<br><span class="mono">Ankara &middot; GPA 3.01</span></td></tr>
-                <tr><th scope="row">2020</th><td>Princeton University &mdash; Online Summer School</td></tr>
-                <tr><th scope="row">2014 &mdash; 2018</th><td>Isparta Gönen High School of Science<br><span class="mono">Graduated with distinction</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h2 class="eyebrow band__title" id="stack-title">Stack</h2>
+    <ul class="rows">
+      <li class="row"><p class="row__meta">Frontend</p><ul class="chips"><li class="chip"><img src="./assets/img/stack/javascript.svg" alt="" width="16" height="16">JavaScript</li><li class="chip"><img src="./assets/img/stack/react.svg" alt="" width="16" height="16">React</li><li class="chip"><img src="./assets/img/stack/html5.svg" alt="" width="16" height="16">HTML5</li><li class="chip"><img src="./assets/img/stack/css.svg" alt="" width="16" height="16">CSS</li></ul></li>
+      <li class="row"><p class="row__meta">Backend &amp; data</p><ul class="chips"><li class="chip"><img src="./assets/img/stack/python.svg" alt="" width="16" height="16">Python</li><li class="chip"><img src="./assets/img/stack/numpy.svg" alt="" width="16" height="16">NumPy</li><li class="chip"><img src="./assets/img/stack/cplusplus.svg" alt="" width="16" height="16">C++</li><li class="chip"><img src="./assets/img/stack/root.svg" alt="" width="16" height="16">ROOT</li><li class="chip"><span class="chip__dot" aria-hidden="true"></span>Machine learning</li></ul></li>
+      <li class="row"><p class="row__meta">Platform</p><ul class="chips"><li class="chip"><img src="./assets/img/stack/linux.svg" alt="" width="16" height="16">Linux</li><li class="chip"><img src="./assets/img/stack/apple.svg" alt="" width="16" height="16">macOS</li><li class="chip"><img src="./assets/img/stack/windows.svg" alt="" width="16" height="16">Windows</li><li class="chip chip--wordmark"><img src="./assets/img/stack/cpanel.svg" alt="cPanel" width="58" height="13"></li><li class="chip chip--wordmark"><img src="./assets/img/stack/plesk.svg" alt="Plesk" width="34" height="14"></li><li class="chip"><img src="./assets/img/stack/git.svg" alt="" width="16" height="16">Git</li></ul></li>
+      <li class="row"><p class="row__meta">Languages</p><p>Turkish, English (professional), Arabic (limited)</p></li>
+    </ul>
   </section>
 
-  <!-- =========================== CONTACT =========================== -->
-  <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="wrap">
-      <p class="mono">(05) &mdash; Contact</p>
-      <h2 class="display display--xl" id="contact-title">Let's build something<br>that keeps working.</h2>
-      <a class="contact__mail" href="mailto:dmevlutcelik@gmail.com">dmevlutcelik@gmail.com</a>
-      <dl class="contact__grid">
-        <div><dt class="mono">Phone</dt><dd><a class="link" href="tel:+905354703422">+90 535 470 3422</a></dd></div>
-        <div><dt class="mono">GitHub</dt><dd><a class="link" href="https://github.com/mevlut-celik" target="_blank" rel="noopener">mevlut-celik</a></dd></div>
-        <div><dt class="mono">LinkedIn</dt><dd><a class="link" href="https://www.linkedin.com/in/dmevlutcelik" target="_blank" rel="noopener">dmevlutcelik</a></dd></div>
-        <div><dt class="mono">Local time</dt><dd>Ankara, <span data-clock>--:--</span></dd></div>
-      </dl>
-      <a class="btn" href="./assets/files/mevlut-celik-cv.pdf" target="_blank" rel="noopener">Download CV <span class="btn__arrow" aria-hidden="true">↗</span></a>
-    </div>
+  <!-- ======================== CERTIFICATIONS ======================== -->
+  <section class="band" id="certifications" aria-labelledby="cert-title">
+    <h2 class="eyebrow band__title" id="cert-title">Certifications</h2>
+    <ul class="rows">
+      <li class="row"><p class="row__meta">Jul 2026</p><p>Pre Security Certificate &middot; <span class="muted">TryHackMe</span></p></li>
+      <li class="row"><p class="row__meta">Aug 2025</p><p>Bilgi Sistemlerine Giriş &middot; <span class="muted">BTK Akademi</span></p></li>
+      <li class="row"><p class="row__meta">Oct 2023</p><p><a class="link" href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=5ca57c12-5f18-4531-8d47-016d307c0be7" target="_blank" rel="noopener">MATLAB Onramp</a> &middot; <span class="muted">MathWorks</span></p></li>
+      <li class="row"><p class="row__meta">Jul 2023</p><p><a class="link" href="https://courses.edx.org/certificates/2f4ca70f3cb940afa77140b9eca9d831" target="_blank" rel="noopener">Intro to Web Development with HTML5, CSS3 &amp; JavaScript</a> &middot; <span class="muted">IBM</span></p></li>
+      <li class="row"><p class="row__meta">May 2023</p><p><a class="link" href="https://www.btkakademi.gov.tr/portal/certificate/validate?certificateId=VP1cJZmqpq" target="_blank" rel="noopener">İşletim Sistemlerine Giriş</a> &middot; <span class="muted">BTK Akademi</span></p></li>
+    </ul>
   </section>
-</main>
 
-<!-- ============================= FOOTER ============================= -->
-<footer class="footer">
-  <div class="wrap footer__inner">
+  <!-- =========================== EDUCATION =========================== -->
+  <section class="band" id="education" aria-labelledby="education-title">
+    <h2 class="eyebrow band__title" id="education-title">Education</h2>
+    <ul class="rows">
+      <li class="row"><p class="row__meta">2021 &ndash; 2026</p><div class="org"><span class="org__mark"><img class="org__logo" src="./assets/img/orgs/metu.png" alt="Middle East Technical University" width="32" height="32" loading="lazy"></span><p>Middle East Technical University &middot; <span class="muted">B.Sc.</span></p></div></li>
+      <li class="row"><p class="row__meta">2020</p><div class="org"><span class="org__mark"><img class="org__logo" src="./assets/img/orgs/princeton.png" alt="Princeton University" width="32" height="32" loading="lazy"></span><p>Princeton University &middot; <span class="muted">Online Summer School</span></p></div></li>
+      <li class="row"><p class="row__meta">2014 &ndash; 2018</p><div class="org"><span class="org__mark"><img class="org__logo" src="./assets/img/orgs/gonen-fen-lisesi.png" alt="Isparta Gönen High School of Science" width="32" height="32" loading="lazy"></span><p>Isparta Gönen High School of Science</p></div></li>
+    </ul>
+  </section>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <p><a class="link" href="mailto:dmevlutcelik@gmail.com">dmevlutcelik@gmail.com</a> &middot; <a class="link" href="tel:+905354703422">+90 535 470 3422</a></p>
     <p>&copy; <span data-year>2026</span> Mevlüt Çelik</p>
-    <p>Built from scratch &mdash; no theme, no framework</p>
-    <p><a href="#top">Back to top ↑</a></p>
-  </div>
-</footer>
+  </footer>
+</main>
 
 <script src="./assets/js/main.js" defer></script>
 </body>
