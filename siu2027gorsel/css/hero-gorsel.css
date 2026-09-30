@@ -8,8 +8,10 @@
    kırpımda 100vw). Metin gökyüzünde durur; bina çatısı metnin hemen altında başlar.
    ========================================================================== */
 
-.hero__photo { display: block; }
+.hero__photo { display: block; position: relative; }
 .hero__photo img { display: block; width: 100%; height: auto; }
+/* Yıldız parıltısı: fotoğraftaki gerçek yıldızların üstünde, yalnız aydınlatır (screen) */
+.hero__stars { position: absolute; left: 0; top: 0; pointer-events: none; mix-blend-mode: screen; }
 
 /* Fotoğraf başına ayarlar
    --f      metnin bitmesi gereken yükseklik: çatı/kule tepesi, fotoğraf yüksekliğine oran
@@ -104,11 +106,17 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
   background: linear-gradient(to bottom, rgb(4 14 36 / var(--scrim)) 0, rgb(4 14 36 / var(--scrim)) 30%, rgb(4 14 36 / 0) 62%);
 }
 :is(.hero--a, .hero--b) .hero__title,
 :is(.hero--a, .hero--b) .hero__text,
-:is(.hero--a, .hero--b) .hero__facts { position: relative; z-index: 1; }
+:is(.hero--a, .hero--b) .hero__facts { position: relative; z-index: 2; }
+/* Parıltı katmanı fotoğrafla aynı üst geçişi kullanır */
+:is(.hero--a, .hero--b) .hero__stars {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+}
 
 /* ==========================================================================
    A · Gökyüzü — metin yıldızlı gökte, bina altta; künye sağ sütunda
@@ -245,7 +253,8 @@
 }
 /* Görsel alta yaslı ve tam genişlikte; sahne uzarsa üstü gökyüzü rengine erir */
 .hero--e .hero__photo { position: absolute; left: 0; right: 0; bottom: 0; will-change: transform; }
-.hero--e .hero__photo img {
+.hero--e .hero__photo img,
+.hero--e .hero__stars {
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
 }
@@ -369,7 +378,7 @@
 
 /* Baskı: fotoğraf yok, metin koyu */
 @media print {
-  .hero__photo, .gorsel-bar { display: none !important; }
+  .hero__photo, .hero__stars, .gorsel-bar { display: none !important; }
   .hero__stage, .hero__panel, .hero__dates { background: none !important; }
   .hero__title, .hero__facts .facts__val, .hero__desc { color: var(--navy) !important; }
   .hero__when, .hero__when-date, .hero-dates__label, .hero-dates__date, .hero-dates__status { color: var(--ink) !important; }

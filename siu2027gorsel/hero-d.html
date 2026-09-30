@@ -29,7 +29,7 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi -->
   <link rel="stylesheet" href="css/style.css?v=127">
-  <link rel="stylesheet" href="css/hero-gorsel.css?v=3">
+  <link rel="stylesheet" href="css/hero-gorsel.css?v=4">
 
   <!-- Favicon / Touch Icon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -925,6 +925,109 @@
       if (n !== '1') a.setAttribute('href', a.getAttribute('href') + '?foto=' + n);
       if (n === f) a.setAttribute('aria-current', 'true');
     });
+
+    /* Yıldız parıltısı: fotoğraftaki gerçek yıldızları bulur (yalnız çatı çizgisinin üstünde,
+       parlak ve nokta biçimli pikseller), üstlerinde yumuşak bir parıltı çizer.
+       Hareket azaltma tercihinde çalışmaz; hero görünmezken ve sekme gizliyken durur. */
+    (function () {
+      var pic = document.querySelector('.hero__photo');
+      if (!pic || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var img = pic.querySelector('img'), hero = document.querySelector('.hero');
+      var cv = document.createElement('canvas');
+      cv.className = 'hero__stars';
+      cv.setAttribute('aria-hidden', 'true');
+      pic.appendChild(cv);
+      var ctx = cv.getContext('2d'), stars = [], box = null, raf = 0, visible = true, dpr = 1;
+      var sprite = document.createElement('canvas');
+      sprite.width = sprite.height = 32;
+      var sg = sprite.getContext('2d'), gr = sg.createRadialGradient(16, 16, 0, 16, 16, 16);
+      gr.addColorStop(0, 'rgba(255,255,255,1)');
+      gr.addColorStop(0.22, 'rgba(225,238,255,0.6)');
+      gr.addColorStop(1, 'rgba(200,220,255,0)');
+      sg.fillStyle = gr;
+      sg.fillRect(0, 0, 32, 32);
+
+      function roof() {
+        var cs = getComputedStyle(hero), v = '--f';
+        if (hero.classList.contains('hero--e')) v = window.matchMedia('(max-width: 47.99em)').matches ? '--e-fm' : '--e-f';
+        return parseFloat(cs.getPropertyValue(v)) || 0.45;
+      }
+      function detect() {
+        var iw = img.naturalWidth, ih = img.naturalHeight, W = 640, H = Math.round(W * ih / iw);
+        var c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        var g = c.getContext('2d'), d;
+        g.drawImage(img, 0, 0, W, H);
+        try { d = g.getImageData(0, 0, W, H).data; } catch (err) { return []; }
+        var L = new Float32Array(W * H), i, x, y, found = [];
+        for (i = 0; i < W * H; i++) L[i] = 0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2];
+        var maxY = Math.floor(H * (roof() - 0.03));
+        /* Eşik gökyüzünün kendi parlaklığına göre: ortanca + 45 (sönük gökte de yıldız bulunur) */
+        var sample = [];
+        for (i = 0; i < maxY * W; i += 97) sample.push(L[i]);
+        sample.sort(function (a, b) { return a - b; });
+        var thr = Math.max(85, (sample[sample.length >> 1] || 40) + 45);
+        for (y = 3; y < maxY; y++) for (x = 3; x < W - 3; x++) {
+          var k = y * W + x, l = L[k];
+          if (l < thr) continue;
+          if (L[k - 1] > l || L[k + 1] > l || L[k - W] > l || L[k + W] > l ||
+              L[k - W - 1] > l || L[k - W + 1] > l || L[k + W - 1] > l || L[k + W + 1] > l) continue;
+          if (l - (L[k - 3 * W] + L[k + 3 * W] + L[k - 3] + L[k + 3]) / 4 < 30) continue;
+          found.push({ u: x / W, v: y / H, l: l, x: x, y: y });
+        }
+        found.sort(function (a, b) { return b.l - a.l; });
+        var keep = [], max = window.innerWidth < 768 ? 60 : 120;
+        for (i = 0; i < found.length && keep.length < max; i++) {
+          var f = found[i], near = false;
+          for (var j = 0; j < keep.length; j++) if (Math.abs(keep[j].x - f.x) < 7 && Math.abs(keep[j].y - f.y) < 7) { near = true; break; }
+          if (!near) keep.push(f);
+        }
+        return keep.map(function (f) {
+          return { u: f.u, v: f.v, a: 0.45 + 0.55 * Math.min(1, (f.l - thr) / (255 - thr)),
+                   p: Math.random() * 6.283, w: 0.5 + Math.random() * 1.3, r: 0.8 + Math.random() * 0.5 };
+        });
+      }
+      function layout() {
+        var pr = pic.getBoundingClientRect(), ir = img.getBoundingClientRect(), cs = getComputedStyle(img);
+        var iw = img.naturalWidth, ih = img.naturalHeight;
+        var sc = cs.objectFit === 'cover' ? Math.max(ir.width / iw, ir.height / ih) : ir.width / iw;
+        var pos = cs.objectPosition.split(' '), px = parseFloat(pos[0]) / 100, py = parseFloat(pos[1] || '50') / 100;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        cv.style.width = pr.width + 'px';
+        cv.style.height = pr.height + 'px';
+        cv.width = Math.round(pr.width * dpr);
+        cv.height = Math.round(pr.height * dpr);
+        box = { x: ir.left - pr.left + (ir.width - iw * sc) * px, y: ir.top - pr.top + (ir.height - ih * sc) * py, w: iw * sc, h: ih * sc };
+      }
+      function frame(t) {
+        raf = 0;
+        if (!visible || document.hidden) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        var sec = t / 1000;
+        for (var i = 0; i < stars.length; i++) {
+          var st = stars[i], k = Math.sin(sec * st.w + st.p);
+          if (k <= 0.05) continue;
+          var size = (2 + 2.6 * k) * st.r;
+          ctx.globalAlpha = st.a * k * k * k;
+          ctx.drawImage(sprite, box.x + st.u * box.w - size, box.y + st.v * box.h - size, size * 2, size * 2);
+        }
+        ctx.globalAlpha = 1;
+        raf = requestAnimationFrame(frame);
+      }
+      function start() { if (!raf && visible && !document.hidden && stars.length) raf = requestAnimationFrame(frame); }
+      function init() {
+        if (!img.naturalWidth) return;
+        stars = detect();
+        layout();
+        start();
+      }
+      if (img.complete) init();
+      img.addEventListener('load', init);
+      if ('ResizeObserver' in window) new ResizeObserver(function () { if (stars.length) layout(); }).observe(pic);
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; start(); }).observe(pic);
+      document.addEventListener('visibilitychange', start);
+    })();
 
     /* E: açıklayıcı alt metin (dile göre) ve hafif parallax (hareket azaltma tercihine uyar) */
     var e = document.querySelector('.hero--e .hero__photo');
