@@ -29,7 +29,7 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi -->
   <link rel="stylesheet" href="css/style.css?v=127">
-  <link rel="stylesheet" href="css/hero-gorsel.css?v=2">
+  <link rel="stylesheet" href="css/hero-gorsel.css?v=3">
 
   <!-- Favicon / Touch Icon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -264,32 +264,57 @@
          ========================================== -->
     <!-- ==========================================
          HERO — görsel deneme E · Tam ekran
-         (HubSpot hero image: tam ekran görsel, ortada metin, 16:9 / 9:16 ayrı kırpım, tek eylem)
+         (HubSpot hero image: tam ekran görsel, ortada metin, 16:9 / 9:16 ayrı kırpım, tek eylem; altta önemli tarihler)
          ========================================== -->
     <section class="hero hero--e" aria-labelledby="hero-title">
       <div class="hero__stage">
-        <picture class="hero__photo">
-          <source media="(max-width: 47.99em)" type="image/webp" srcset="assets/hero-medipol-gece-916-720.webp 720w, assets/hero-medipol-gece-916-1080.webp 1080w" sizes="100vw">
-          <source media="(max-width: 47.99em)" srcset="assets/hero-medipol-gece-916-1080.jpg 1080w" sizes="100vw">
-          <source type="image/webp" srcset="assets/hero-medipol-gece-169-1280.webp 1280w, assets/hero-medipol-gece-169-1920.webp 1920w, assets/hero-medipol-gece-169-2560.webp 2560w" sizes="100vw">
-          <img src="assets/hero-medipol-gece-169-1920.jpg" width="1920" height="1080" alt="İstanbul Medipol Üniversitesi yerleşkesi, gece" fetchpriority="high" decoding="async">
-        </picture>
-        <div class="wrap hero__inner">
-          <p class="hero__meta"><span data-i18n="keyDateVal">4–7 Temmuz 2027</span><span class="hero__meta-sep" aria-hidden="true">·</span><span data-i18n="heroVenueVal">İstanbul Medipol Üniversitesi</span></p>
-          <h1 class="hero__title" id="hero-title" data-i18n-html="heroMainTitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı — <span class="cyan-word">SİU 2027</span></h1>
-          <p class="visually-hidden" data-i18n="heroBadge">35. KURULTAY • RESMÎ BAŞVURU MERKEZİ</p>
-          <p class="hero__desc" data-i18n="heroDesc">Türkiye'nin sinyal işleme, kablosuz haberleşme, bilgisayarlı görü ve yapay zekâ alanındaki en köklü bilimsel buluşması.</p>
-          <div class="hero__actions">
-            <a href="yazarlar#cfp" class="btn hero__cta">
-              <span data-i18n="btnCfp">Bildiri Çağrısı (CFP)</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </a>
-            <a href="#kulvarlar" class="hero__more"><span data-i18n="btnTracks">Bildiri Konuları / Kulvarlar</span></a>
+        <div class="hero__scene">
+          <picture class="hero__photo">
+            <source media="(max-width: 47.99em)" type="image/webp" srcset="assets/hero-medipol-gece-916-720.webp 720w, assets/hero-medipol-gece-916-1080.webp 1080w" sizes="100vw">
+            <source media="(max-width: 47.99em)" srcset="assets/hero-medipol-gece-916-1080.jpg 1080w" sizes="100vw">
+            <source type="image/webp" srcset="assets/hero-medipol-gece-169-1280.webp 1280w, assets/hero-medipol-gece-169-1920.webp 1920w, assets/hero-medipol-gece-169-2560.webp 2560w" sizes="100vw">
+            <img src="assets/hero-medipol-gece-169-1920.jpg" width="1920" height="1080" alt="İstanbul Medipol Üniversitesi yerleşkesi, gece" fetchpriority="high" decoding="async">
+          </picture>
+          <div class="wrap hero__inner">
+            <h1 class="hero__title" id="hero-title" data-i18n-html="heroMainTitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı — <span class="cyan-word">SİU 2027</span></h1>
+            <p class="hero__when"><span class="hero__when-date" data-i18n="keyDateVal">4–7 Temmuz 2027</span><span class="hero__when-sep" aria-hidden="true">·</span><span data-i18n="heroVenueVal">İstanbul Medipol Üniversitesi</span></p>
+            <p class="visually-hidden" data-i18n="heroBadge">35. KURULTAY • RESMÎ BAŞVURU MERKEZİ</p>
+            <p class="hero__desc" data-i18n="heroDesc">Türkiye'nin sinyal işleme, kablosuz haberleşme, bilgisayarlı görü ve yapay zekâ alanındaki en köklü bilimsel buluşması.</p>
+            <div class="hero__actions">
+              <a href="yazarlar#cfp" class="btn hero__cta">
+                <span data-i18n="btnCfp">Bildiri Çağrısı (CFP)</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+              <a href="#kulvarlar" class="hero__more"><span data-i18n="btnTracks">Bildiri Konuları / Kulvarlar</span></a>
+            </div>
           </div>
-          <dl class="hero__deadline">
-            <dt data-i18n="keyDeadlineTitle">Bildiri Son Tarihi</dt>
-            <dd data-i18n="keyDeadlineVal">1 Şubat 2027</dd>
-          </dl>
+        </div>
+        <div class="hero__dates">
+          <div class="wrap">
+            <p class="visually-hidden" id="hero-dates-title" data-i18n="importantDatesTitle">Önemli Tarihler</p>
+            <ol class="hero-dates" aria-labelledby="hero-dates-title">
+              <li class="hero-dates__item hero-dates__item--next">
+                <span class="hero-dates__label" data-i18n="dr01Name">Özel Oturum Düzenleme Daveti</span>
+                <span class="hero-dates__date" data-i18n="dr01Due">16 Kasım 2026</span><span class="hero-dates__status" data-i18n="dr01Status">Aktif Çağrı</span>
+              </li>
+              <li class="hero-dates__item">
+                <span class="hero-dates__label" data-i18n="dr05Name">Bildirilerin Gönderilmesi</span>
+                <span class="hero-dates__date" data-i18n="dr05Due">1 Şubat 2027</span>
+              </li>
+              <li class="hero-dates__item">
+                <span class="hero-dates__label" data-i18n="dr06Name">Sonuçların Açıklanması</span>
+                <span class="hero-dates__date" data-i18n="dr06Due">30 Nisan 2027</span>
+              </li>
+              <li class="hero-dates__item">
+                <span class="hero-dates__label" data-i18n="dr07Name">Baskıya Hazır Bildirilerin Gönderilmesi</span>
+                <span class="hero-dates__date" data-i18n="dr07Due">24 Mayıs 2027</span>
+              </li>
+              <li class="hero-dates__item hero-dates__item--event">
+                <span class="hero-dates__label" data-i18n="dr08Name">Kurultay Tarihleri</span>
+                <span class="hero-dates__date" data-i18n="dr08Due">4–7 Temmuz 2027</span>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
 
