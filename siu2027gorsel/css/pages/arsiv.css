@@ -1,0 +1,66 @@
+/* Arşiv — 35 satırlık kronoloji tablosu */
+.archive-search { margin-bottom: var(--space-4); max-width: 34rem; }
+.archive-table th.num, .archive-table td.num { width: 4.5ch; white-space: nowrap; }
+.archive-table td.archive-year { width: 6ch; font-weight: 600; color: var(--navy); }
+.archive-table__host { min-width: 18ch; }
+.archive-table__note { color: var(--ink-3); font-size: var(--step--1); }
+.archive-table__row--current > * { background: var(--paper-2); font-weight: 600; }
+@media (max-width: 48em) { .archive-table__note { display: none; } }
+
+/* Tek bölümlü sayfa: numara sütunu yok, başlık sola hizalanır */
+.section--unnumbered .section__head { grid-template-columns: minmax(0, 1fr); }
+.section--unnumbered .section__head h2,
+.section--unnumbered .section__head > .link-more { grid-column: 1; }
+
+/* Tarihçe haritası ------------------------------------------------------- */
+.archive-stats { margin-bottom: var(--space-5); }
+@media (min-width: 40em) {
+  .archive-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .archive-stats > div { border-bottom: 1px solid var(--rule); }
+}
+.archive-stats .facts__val { font-size: var(--step-2); }
+
+.year-scrubber { margin-top: var(--space-4); }
+.year-scrubber__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.year-scrubber__btn {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--rule-2);
+  background: var(--paper);
+  color: var(--navy);
+  font-size: var(--step-1);
+  line-height: 1;
+  cursor: pointer;
+}
+.year-scrubber__btn:hover { border-color: var(--navy); }
+.year-scrubber input[type="range"] {
+  flex: 1 1 14rem;
+  min-width: 10rem;
+  accent-color: var(--navy);
+  height: 2.75rem;
+}
+.year-scrubber__readout {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule);
+  font-size: var(--step-0);
+  color: var(--navy);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-height: 1.6em;
+}
+
+/* Haritada seçili yılın tablo satırı */
+.archive-table tbody tr { cursor: pointer; }
+.archive-table tbody tr.is-active > * { background: var(--paper-2); box-shadow: inset 2px 0 0 var(--cyan); }
+
+@media print {
+  #harita, .year-scrubber { display: none !important; }
+  .archive-table tbody tr { cursor: auto; }
+}
