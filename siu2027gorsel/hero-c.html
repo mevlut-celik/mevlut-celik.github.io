@@ -29,7 +29,7 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi -->
   <link rel="stylesheet" href="css/style.css?v=127">
-  <link rel="stylesheet" href="css/hero-gorsel.css?v=1">
+  <link rel="stylesheet" href="css/hero-gorsel.css?v=2">
 
   <!-- Favicon / Touch Icon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -891,6 +891,7 @@
     <a href="hero-b" data-hero="b">B<em class="gorsel-bar__ad"> · Simetri</em></a>
     <a href="hero-c" data-hero="c" aria-current="page">C<em class="gorsel-bar__ad"> · Panel</em></a>
     <a href="hero-d" data-hero="d">D<em class="gorsel-bar__ad"> · Şerit</em></a>
+    <a href="hero-e" data-hero="e">E<em class="gorsel-bar__ad"> · Tam ekran</em></a>
     <i class="gorsel-bar__sep" aria-hidden="true"></i>
     <span>Foto</span>
     <a href="hero-c" data-foto="1">1</a>
@@ -918,6 +919,30 @@
       if (n !== '1') a.setAttribute('href', a.getAttribute('href') + '?foto=' + n);
       if (n === f) a.setAttribute('aria-current', 'true');
     });
+
+    /* E: açıklayıcı alt metin (dile göre) ve hafif parallax (hareket azaltma tercihine uyar) */
+    var e = document.querySelector('.hero--e .hero__photo');
+    if (!e) return;
+    var img = e.querySelector('img');
+    var ALT = {
+      '1': ['İstanbul Medipol Üniversitesi yerleşkesi, gece', 'Istanbul Medipol University campus at night'],
+      '2': ['İstanbul Medipol Üniversitesi yerleşkesi, alacakaranlıkta', 'Istanbul Medipol University campus at dusk'],
+      '3': ['İstanbul Medipol Üniversitesi binası, gece', 'Istanbul Medipol University building at night']
+    };
+    function setAlt() { img.alt = ALT[f][document.documentElement.lang === 'en' ? 1 : 0]; }
+    setAlt();
+    new MutationObserver(setAlt).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var busy = false;
+    window.addEventListener('scroll', function () {
+      if (busy) return;
+      busy = true;
+      requestAnimationFrame(function () {
+        var y = Math.min(window.scrollY, window.innerHeight);
+        e.style.transform = 'translate3d(0,' + (y * 0.18).toFixed(1) + 'px,0)';
+        busy = false;
+      });
+    }, { passive: true });
   })();
   </script>
 </body>

@@ -24,7 +24,7 @@
 .hero.foto-3 { --hero-sky: #3F3564; --f: 0.19; --keep: 0.92; --band: 22%; --c-pos: 50% 45%; --scrim: 0; }
 
 /* --- A, B, C ortak: fotoğraf / koyu zemin üstünde metin ------------------ */
-.hero--a, .hero--b, .hero--c {
+.hero--a, .hero--b, .hero--c, .hero--e {
   --hero-sky: #2E2D37;                /* fotoğrafın gökyüzü tonu; görsel yüklenirken zemin */
   --on-photo: #FFFFFF;
   --on-photo-2: rgba(255, 255, 255, 0.84);
@@ -33,9 +33,9 @@
   --on-photo-accent: #5CC8F2;         /* koyu zeminde turkuaz: #2E2D37 üstünde 7:1 */
   padding-top: 0;
 }
-:is(.hero--a, .hero--b, .hero--c) .hero__title { color: var(--on-photo); white-space: normal; }
-:is(.hero--a, .hero--b, .hero--c) .hero__title .cyan-word { color: var(--on-photo-accent); }
-:is(.hero--a, .hero--b, .hero--c) .hero__desc {
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__title { color: var(--on-photo); white-space: normal; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__title .cyan-word { color: var(--on-photo-accent); }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__desc {
   margin-top: var(--space-4);
   max-width: 44ch;
   font-size: var(--step-1);
@@ -44,35 +44,35 @@
 }
 
 /* Tek birincil eylem (beyaz, en yüksek karşıtlık) + sakin ikincil eylem (çerçeve) */
-:is(.hero--a, .hero--b, .hero--c) .hero__actions {
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
-:is(.hero--a, .hero--b, .hero--c) .hero__cta {
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__cta {
   min-height: 3rem;
   padding-inline: 1.5rem;
   background: #fff;
   border-color: #fff;
   color: var(--navy);
 }
-:is(.hero--a, .hero--b, .hero--c) .hero__cta:hover { background: var(--cyan-tint); border-color: var(--cyan-tint); color: var(--navy); }
-:is(.hero--a, .hero--b, .hero--c) .hero__cta--alt { background: transparent; border-color: rgba(255, 255, 255, 0.6); color: #fff; }
-:is(.hero--a, .hero--b, .hero--c) .hero__cta--alt:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; color: #fff; }
-:is(.hero--a, .hero--b, .hero--c) :focus-visible { outline-color: #fff; }
-:is(.hero--a, .hero--b, .hero--c) .hero__cta:focus-visible { outline-offset: 3px; box-shadow: none; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__cta:hover { background: var(--cyan-tint); border-color: var(--cyan-tint); color: var(--navy); }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__cta--alt { background: transparent; border-color: rgba(255, 255, 255, 0.6); color: #fff; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__cta--alt:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; color: #fff; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) :focus-visible { outline-color: #fff; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__cta:focus-visible { outline-offset: 3px; box-shadow: none; }
 
 /* Üçüncül yollar: düğme değil, metin bağlantısı */
-:is(.hero--a, .hero--b, .hero--c) .hero__links { margin-top: var(--space-5); padding-top: 0; border-top: 0; }
-:is(.hero--a, .hero--b, .hero--c) .hero__links li + li::before { color: var(--on-photo-3); }
-:is(.hero--a, .hero--b, .hero--c) .hero__links a {
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__links { margin-top: var(--space-5); padding-top: 0; border-top: 0; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__links li + li::before { color: var(--on-photo-3); }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__links a {
   color: var(--on-photo);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.4);
   text-underline-offset: 0.2em;
 }
-:is(.hero--a, .hero--b, .hero--c) .hero__links a:hover { text-decoration-color: currentColor; }
+:is(.hero--a, .hero--b, .hero--c, .hero--e) .hero__links a:hover { text-decoration-color: currentColor; }
 
 /* Künye koyu zeminde (A, C): kutu yok, yalnız ince çizgiler */
 :is(.hero--a, .hero--c) .hero__facts { background: none; border: 0; }
@@ -226,6 +226,88 @@
   .hero--d .hero__band img { aspect-ratio: auto; height: clamp(16rem, 30vw, 30rem); }
 }
 
+/* ==========================================================================
+   E · Tam ekran — HubSpot "hero image" ilkeleri: görsel ekranı kaplar, metin
+   ortada ve güvenli alanda; masaüstü 16:9, telefon 9:16 ayrı kırpım (art direction);
+   tek birincil eylem, ikincil yol metin bağlantısı; künye kartı yerine tek satır
+   ========================================================================== */
+/* Çatı tepesi, kırpımın yüksekliğine oran: --e-f 16:9 masaüstü, --e-fm 9:16 telefon */
+.hero--e { --e-f: 0.52; --e-fm: 0.48; }
+.hero--e.foto-2 { --e-f: 0.30; --e-fm: 0.25; }
+.hero--e.foto-3 { --e-f: 0.24; --e-fm: 0.24; }
+
+.hero--e .hero__stage {
+  position: relative;
+  display: flex;
+  min-height: calc(100svh - 9.5rem);
+  overflow: hidden;
+  background: var(--hero-sky);
+}
+/* Görsel alta yaslı ve tam genişlikte; sahne uzarsa üstü gökyüzü rengine erir */
+.hero--e .hero__photo { position: absolute; left: 0; right: 0; bottom: 0; will-change: transform; }
+.hero--e .hero__photo img {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+}
+/* Görsel filtresi: metnin arkasını koyulaştırır, metne uygulanmaz */
+.hero--e .hero__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgb(4 14 36 / calc(var(--scrim) + 0.35)) 0,
+    rgb(4 14 36 / calc(var(--scrim) + 0.15)) 40%,
+    rgb(4 14 36 / 0) 68%);
+}
+/* Metin ortada; alt boşluk binanın görünen kısmı kadar (9:16 → yükseklik 177.8vw) */
+.hero--e .hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: var(--space-7);
+  padding-bottom: calc((1 - var(--e-fm)) * 177.78vw + var(--space-6));
+  text-align: center;
+}
+.hero--e .hero__meta { font-size: var(--step--1); font-weight: 600; color: var(--on-photo-2); }
+.hero--e .hero__meta-sep { margin-inline: 0.6em; color: var(--on-photo-3); }
+.hero--e .hero__title { margin-top: var(--space-3); max-width: 19ch; font-size: clamp(2rem, 1.2rem + 3vw, 3.4rem); line-height: 1.08; }
+.hero--e .hero__desc { margin-inline: auto; max-width: 40ch; }
+.hero--e .hero__actions { justify-content: center; align-items: center; gap: var(--space-4) var(--space-6); }
+.hero--e .hero__more {
+  font-weight: 600;
+  color: var(--on-photo);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.45);
+  text-underline-offset: 0.25em;
+}
+.hero--e .hero__more:hover { text-decoration-color: currentColor; }
+.hero--e .hero__deadline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.5em;
+  margin-top: var(--space-5);
+  font-size: var(--step--1);
+  color: var(--on-photo-3);
+}
+.hero--e .hero__deadline dd { font-weight: 600; color: var(--on-photo-accent); }
+
+@media (min-width: 48em) {
+  .hero--e .hero__inner {
+    padding-top: var(--space-8);
+    padding-bottom: calc((1 - var(--e-f)) * 56.25vw + var(--space-7));
+  }
+  .hero--e .hero__title { max-width: 21em; font-size: clamp(2.4rem, 1rem + 2.4vw, 3.4rem); }
+  .hero--e .hero__desc { max-width: 52ch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero--e .hero__photo { transform: none !important; }
+}
+
 /* Baskı: fotoğraf yok, metin koyu */
 @media print {
   .hero__photo, .gorsel-bar { display: none !important; }
@@ -261,5 +343,5 @@
 .gorsel-bar a:hover { background: rgba(255, 255, 255, 0.12); }
 .gorsel-bar a[aria-current] { background: #fff; color: #111; font-weight: 600; }
 .gorsel-bar__ad { font-style: normal; }
-@media (max-width: 40em) { .gorsel-bar__ad { display: none; } }
+@media (max-width: 40em) { .gorsel-bar__ad, .gorsel-bar span { display: none; } }
 .gorsel-bar a:focus-visible { outline: 2px solid #5CC8F2; outline-offset: 1px; }
