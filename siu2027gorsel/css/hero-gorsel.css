@@ -1,0 +1,265 @@
+/* ==========================================================================
+   SİU 2027 görsel denemeleri — fotoğraflı hero sürümleri (A–D)
+   Yalnız hero-a…hero-d sayfalarında, style.css'ten sonra yüklenir.
+   Fotoğraflar: Medipol görsel arşivi (assets/hero-medipol-*), ?foto=1…3 ile seçilir.
+   Sinyal izi (.hero__wave, style.css 14.11) hiçbir sürümde değişmez.
+
+   Geometri: fotoğraflar 3:2 → tam genişlikte yükseklik 66.7vw (telefonda kare
+   kırpımda 100vw). Metin gökyüzünde durur; bina çatısı metnin hemen altında başlar.
+   ========================================================================== */
+
+.hero__photo { display: block; }
+.hero__photo img { display: block; width: 100%; height: auto; }
+
+/* Fotoğraf başına ayarlar
+   --f      metnin bitmesi gereken yükseklik: çatı/kule tepesi, fotoğraf yüksekliğine oran
+   --keep   alttan kırpımda tutulan oran (yol şeridi kesilir)
+   --band   D şeridinde dikey odak; --c-pos C panelinde odak
+   --scrim  üst karartma: açık gökyüzünde beyaz metnin karşıtlığı için */
+.hero { --f: 0.48; --keep: 0.885; --band: 76%; --c-pos: 50% 62%; --scrim: 0; }
+/* 1 · Gece, yıldızlar (A16A0040) — varsayılan */
+/* 2 · Alacakaranlık, yol izleri (A16A0833) */
+.hero.foto-2 { --hero-sky: #1B4585; --f: 0.25; --keep: 0.86; --band: 36%; --c-pos: 50% 42%; --scrim: 0.55; }
+/* 3 · Gece, kuzey cephesi (A16A0195) */
+.hero.foto-3 { --hero-sky: #3F3564; --f: 0.19; --keep: 0.92; --band: 22%; --c-pos: 50% 45%; --scrim: 0; }
+
+/* --- A, B, C ortak: fotoğraf / koyu zemin üstünde metin ------------------ */
+.hero--a, .hero--b, .hero--c {
+  --hero-sky: #2E2D37;                /* fotoğrafın gökyüzü tonu; görsel yüklenirken zemin */
+  --on-photo: #FFFFFF;
+  --on-photo-2: rgba(255, 255, 255, 0.84);
+  --on-photo-3: rgba(255, 255, 255, 0.68);
+  --on-photo-rule: rgba(255, 255, 255, 0.24);
+  --on-photo-accent: #5CC8F2;         /* koyu zeminde turkuaz: #2E2D37 üstünde 7:1 */
+  padding-top: 0;
+}
+:is(.hero--a, .hero--b, .hero--c) .hero__title { color: var(--on-photo); white-space: normal; }
+:is(.hero--a, .hero--b, .hero--c) .hero__title .cyan-word { color: var(--on-photo-accent); }
+:is(.hero--a, .hero--b, .hero--c) .hero__desc {
+  margin-top: var(--space-4);
+  max-width: 44ch;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--on-photo-2);
+}
+
+/* Tek birincil eylem (beyaz, en yüksek karşıtlık) + sakin ikincil eylem (çerçeve) */
+:is(.hero--a, .hero--b, .hero--c) .hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+:is(.hero--a, .hero--b, .hero--c) .hero__cta {
+  min-height: 3rem;
+  padding-inline: 1.5rem;
+  background: #fff;
+  border-color: #fff;
+  color: var(--navy);
+}
+:is(.hero--a, .hero--b, .hero--c) .hero__cta:hover { background: var(--cyan-tint); border-color: var(--cyan-tint); color: var(--navy); }
+:is(.hero--a, .hero--b, .hero--c) .hero__cta--alt { background: transparent; border-color: rgba(255, 255, 255, 0.6); color: #fff; }
+:is(.hero--a, .hero--b, .hero--c) .hero__cta--alt:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; color: #fff; }
+:is(.hero--a, .hero--b, .hero--c) :focus-visible { outline-color: #fff; }
+:is(.hero--a, .hero--b, .hero--c) .hero__cta:focus-visible { outline-offset: 3px; box-shadow: none; }
+
+/* Üçüncül yollar: düğme değil, metin bağlantısı */
+:is(.hero--a, .hero--b, .hero--c) .hero__links { margin-top: var(--space-5); padding-top: 0; border-top: 0; }
+:is(.hero--a, .hero--b, .hero--c) .hero__links li + li::before { color: var(--on-photo-3); }
+:is(.hero--a, .hero--b, .hero--c) .hero__links a {
+  color: var(--on-photo);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-underline-offset: 0.2em;
+}
+:is(.hero--a, .hero--b, .hero--c) .hero__links a:hover { text-decoration-color: currentColor; }
+
+/* Künye koyu zeminde (A, C): kutu yok, yalnız ince çizgiler */
+:is(.hero--a, .hero--c) .hero__facts { background: none; border: 0; }
+:is(.hero--a, .hero--c) .hero__facts > div,
+:is(.hero--a, .hero--c) .hero__facts > div:first-child { padding: var(--space-3) 0; border-top: 1px solid var(--on-photo-rule); }
+:is(.hero--a, .hero--c) .hero__facts > div:last-child { border-bottom: 1px solid var(--on-photo-rule); }
+:is(.hero--a, .hero--c) .hero__facts dt { color: var(--on-photo-3); }
+:is(.hero--a, .hero--c) .hero__facts .facts__val { color: var(--on-photo); }
+:is(.hero--a, .hero--c) .hero__facts .facts__sub { color: var(--on-photo-3); }
+:is(.hero--a, .hero--c) .hero__facts--deadline { background: none; }
+:is(.hero--a, .hero--c) .hero__facts--deadline .facts__val { color: var(--on-photo-accent); }
+
+/* A ve B: fotoğraf tam genişlik, üst kenarı gökyüzü rengine erir; yol şeridi kırpılır */
+:is(.hero--a, .hero--b) .hero__stage { position: relative; overflow-x: clip; }
+:is(.hero--a, .hero--b) .hero__photo {
+  margin-inline: calc(50% - 50vw);
+  aspect-ratio: 3 / calc(2 * var(--keep));
+  overflow: hidden;
+}
+:is(.hero--a, .hero--b) .hero__photo img {
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+}
+:is(.hero--a, .hero--b) .hero__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgb(4 14 36 / var(--scrim)) 0, rgb(4 14 36 / var(--scrim)) 30%, rgb(4 14 36 / 0) 62%);
+}
+:is(.hero--a, .hero--b) .hero__title,
+:is(.hero--a, .hero--b) .hero__text,
+:is(.hero--a, .hero--b) .hero__facts { position: relative; z-index: 1; }
+
+/* ==========================================================================
+   A · Gökyüzü — metin yıldızlı gökte, bina altta; künye sağ sütunda
+   ========================================================================== */
+.hero--a .hero__stage { background: var(--hero-sky); }
+.hero--a .hero__inner { gap: var(--space-5); padding-block: var(--space-7) 0; }
+.hero--a .hero__title { font-size: var(--step-4); max-width: 20ch; }
+.hero--a .hero__photo { margin-top: calc(var(--space-5) - var(--f) * 66.667vw); }
+.hero--a .hero__facts { margin-top: calc(var(--space-6) * -1); padding-bottom: var(--space-6); }
+
+@media (min-width: 48em) {
+  .hero--a .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .hero--a .hero__title { max-width: 22ch; font-size: var(--step-5); }
+  .hero--a .hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-5); }
+  .hero--a .hero__facts > div:last-child { border-bottom: 0; }
+}
+@media (min-width: 64em) {
+  .hero--a .hero__inner {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    grid-template-areas: "title title" "text facts" "photo photo";
+    column-gap: var(--space-8);
+    row-gap: var(--space-6);
+    padding-top: var(--space-8);
+  }
+  .hero--a .hero__title { grid-area: title; max-width: 20em; font-size: clamp(2.5rem, 1.1rem + 2.2vw, 3.3rem); }
+  .hero--a .hero__text { grid-area: text; }
+  .hero--a .hero__facts { grid-area: facts; grid-template-columns: minmax(0, 1fr); margin-top: 0; padding-bottom: 0; }
+  .hero--a .hero__facts > div:last-child { border-bottom: 1px solid var(--on-photo-rule); }
+  /* Metin sol yarıda, kule ortada: fotoğraf metnin arkasına biraz daha girebilir */
+  .hero--a .hero__photo { grid-area: photo; margin-top: calc(var(--space-3) - var(--f) * 66.667vw); }
+}
+
+/* ==========================================================================
+   B · Simetri — metin kapının ekseninde; künye fotoğrafın alt kenarına oturan şerit
+   ========================================================================== */
+.hero--b .hero__stage { background: var(--hero-sky); }
+.hero--b .hero__inner { justify-items: center; gap: 0; padding-top: var(--space-7); text-align: center; }
+.hero--b .hero__title { font-size: var(--step-4); max-width: 17ch; }
+.hero--b .hero__desc { margin-inline: auto; }
+.hero--b .hero__actions,
+.hero--b .hero__links { justify-content: center; }
+.hero--b .hero__photo { justify-self: stretch; margin-top: calc(var(--space-5) - var(--f) * 66.667vw); }
+.hero--b .hero__facts {
+  width: min(100%, 60rem);
+  margin-top: calc(var(--space-6) * -1);
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0, 26, 44, 0.08);
+}
+
+@media (min-width: 48em) {
+  .hero--b .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .hero--b .hero__title { max-width: 20ch; font-size: clamp(2.5rem, 1.1rem + 2.2vw, 3.3rem); }
+  /* Künye şeridi fotoğrafın alt kenarına oturur: üstü fotoğrafta, altı beyaz zeminde */
+  .hero--b .hero__stage { margin-bottom: calc(var(--space-7) + var(--space-4)); }
+  .hero--b .hero__facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: calc(var(--space-8) * -1);
+    margin-bottom: calc(var(--space-7) * -1);
+  }
+  .hero--b .hero__facts > div,
+  .hero--b .hero__facts > div:first-child { border-top: 0; border-bottom: 0; }
+  .hero--b .hero__facts > div + div { border-left: 1px solid var(--rule); }
+}
+
+/* A ve B telefonda: kare kırpım, bina ortada ve 1,5 kat büyük */
+@media (max-width: 47.99em) {
+  :is(.hero--a, .hero--b) .hero__photo { aspect-ratio: 1 / 1; margin-top: calc(var(--space-5) - var(--f) * 100vw); }
+}
+
+/* ==========================================================================
+   C · Panel — solda lacivert metin paneli, sağda fotoğraf (metin fotoğrafa binmez)
+   ========================================================================== */
+.hero--c .hero__stage { display: grid; background: var(--navy-deep); }
+.hero--c .hero__panel { padding: var(--space-7) var(--gutter); }
+.hero--c .hero__title { font-size: var(--step-4); max-width: 18ch; }
+.hero--c .hero__facts { margin-top: var(--space-7); }
+.hero--c .hero__photo img { aspect-ratio: 3 / 2; object-fit: cover; }
+
+@media (min-width: 48em) {
+  /* Künye satırları: etiket solda, değer sağda (sitenin genel .facts düzeni) */
+  .hero--c .hero__facts > div { grid-template-columns: 9.5rem minmax(0, 1fr); align-items: baseline; }
+}
+@media (min-width: 64em) {
+  .hero--c .hero__stage {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    min-height: clamp(36rem, calc(100svh - 9.5rem), 46rem);
+  }
+  .hero--c .hero__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: var(--space-8);
+    padding-left: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter)));
+    padding-right: var(--space-8);
+  }
+  .hero--c .hero__title { max-width: 18ch; font-size: clamp(2.2rem, 0.9rem + 2vw, 2.9rem); }
+  .hero--c .hero__facts { margin-top: var(--space-6); }
+  .hero--c .hero__photo { position: relative; }
+  .hero--c .hero__photo img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+    object-position: var(--c-pos);
+  }
+}
+
+/* ==========================================================================
+   D · Şerit — mevcut içerik aynen; fotoğraf sinyalin hemen üstünde geniş bant
+   ========================================================================== */
+.hero--d .hero__band { margin-top: var(--space-7); }
+.hero--d .hero__band img { aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% var(--band); }
+@media (min-width: 48em) {
+  .hero--d .hero__band { margin-top: var(--space-8); }
+  .hero--d .hero__band img { aspect-ratio: auto; height: clamp(16rem, 30vw, 30rem); }
+}
+
+/* Baskı: fotoğraf yok, metin koyu */
+@media print {
+  .hero__photo, .gorsel-bar { display: none !important; }
+  .hero__stage, .hero__panel { background: none !important; }
+  .hero__title, .hero__facts .facts__val, .hero__desc { color: var(--navy) !important; }
+}
+
+/* ==========================================================================
+   İnceleme çubuğu — yalnız deneme sayfalarında; yayına girmez
+   ========================================================================== */
+.gorsel-bar {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(100vw - 2rem);
+  padding: 4px;
+  overflow-x: auto;
+  transform: translateX(-50%);
+  background: #111;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.gorsel-bar span { padding: 0 8px 0 6px; color: rgba(255, 255, 255, 0.55); }
+.gorsel-bar .gorsel-bar__sep { width: 1px; height: 18px; margin-inline: 6px; padding: 0; background: rgba(255, 255, 255, 0.2); }
+.gorsel-bar a { padding: 7px 10px; border-radius: 4px; color: #fff; text-decoration: none; }
+.gorsel-bar a:hover { background: rgba(255, 255, 255, 0.12); }
+.gorsel-bar a[aria-current] { background: #fff; color: #111; font-weight: 600; }
+.gorsel-bar__ad { font-style: normal; }
+@media (max-width: 40em) { .gorsel-bar__ad { display: none; } }
+.gorsel-bar a:focus-visible { outline: 2px solid #5CC8F2; outline-offset: 1px; }
