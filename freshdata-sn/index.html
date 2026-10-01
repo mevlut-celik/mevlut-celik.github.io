@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRESHDATA S/N Üreteci</title>
+<meta name="description" content="LoRaWAN DevEUI'sinden FRESHDATA Relay ve Extender cihazlarının seri numarasını üreten tarayıcı aracı.">
+<meta name="theme-color" content="#f2f0ec">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="./assets/img/freshdata.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <span class="nav__brand"><img src="./assets/img/freshdata.png" alt="" width="18" height="18">FRESHDATA / sn-ureteci</span>
+    <a class="nav__link" href="../">Mevlüt Çelik</a>
+  </div>
+</header>
+
+<main class="band">
+  <div class="band__inner">
+    <div class="intro">
+      <p class="eyebrow">Operasyon aracı</p>
+      <h1 class="display display--lg">S/N Üreteci</h1>
+      <p class="lead">Relay ve Extender cihazlarının seri numarasını LoRaWAN DevEUI'sinden üretir. Hesap tamamen tarayıcıda yapılır; girilen veri hiçbir yere gönderilmez.</p>
+    </div>
+
+    <!-- ============================ BENCH ============================ -->
+    <section class="bench" aria-label="Seri numarası üret">
+      <form class="form" id="sn-form" novalidate>
+        <fieldset class="field">
+          <legend class="field__label">Cihaz</legend>
+          <div class="segment">
+            <label class="segment__option">
+              <input type="radio" name="product" value="Relay" checked>
+              <span>Relay <small>RLY</small></span>
+            </label>
+            <label class="segment__option">
+              <input type="radio" name="product" value="Extender">
+              <span>Extender <small>EXT</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <div class="field__head">
+            <label class="field__label" for="deveui">DevEUI</label>
+            <span class="field__count" id="deveui-count" aria-hidden="true">0 / 16</span>
+          </div>
+          <input class="input" id="deveui" name="deveui" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                 placeholder="00:16:C0:01:F0:08:60:69" aria-describedby="deveui-hint deveui-error">
+          <p class="field__hint" id="deveui-hint">16 hex karakter; <code>:</code> <code>-</code> ve boşluk yok sayılır. <button class="link-btn" type="button" data-example>Örneği dene</button></p>
+          <p class="field__error" id="deveui-error" hidden></p>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn--primary" type="submit">S/N Oluştur</button>
+          <button class="btn" type="button" data-clear>Temizle</button>
+        </div>
+      </form>
+
+      <div class="liner">
+        <section class="label" id="label" aria-label="Cihaz etiketi">
+          <div class="label__head">
+            <span class="label__brand"><img src="./assets/img/freshdata.png" alt="" width="22" height="22">FRESHDATA</span>
+            <span class="label__product" id="label-product">RELAY</span>
+          </div>
+          <div class="label__body">
+            <p class="label__key" id="sn-title">S/N</p>
+            <output class="label__sn is-empty" id="sn" for="deveui" aria-labelledby="sn-title">RLY-·············</output>
+            <dl class="label__meta">
+              <dt>DevEUI</dt>
+              <dd id="label-deveui">—</dd>
+            </dl>
+          </div>
+          <div class="label__foot">
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+            <button class="btn btn--copy" type="button" data-copy disabled>Kopyala</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============================ STEPS ============================ -->
+    <section class="steps" aria-labelledby="steps-title">
+      <div class="steps__head">
+        <h2 class="eyebrow" id="steps-title">Nasıl hesaplanır</h2>
+        <p class="steps__source" id="steps-source">Örnek DevEUI: 00:16:C0:01:F0:08:60:69</p>
+      </div>
+      <ol class="steps__list">
+        <li class="step">
+          <span class="step__num">01</span>
+          <h3 class="step__title">Temizle</h3>
+          <p>Ayraçlar silinir, harfler büyütülür. Geriye tam 16 hex karakter kalmalı.</p>
+          <code class="step__out" data-step="hex">0016C001F0086069</code>
+        </li>
+        <li class="step">
+          <span class="step__num">02</span>
+          <h3 class="step__title">Base32'ye çevir</h3>
+          <p>64 bitlik sayı Crockford Base32 alfabesiyle yazılır (I, L, O, U yok) ve soldan sıfırla 13 haneye tamamlanır.</p>
+          <code class="step__out" data-step="base32">005P007R0GR39</code>
+        </li>
+        <li class="step">
+          <span class="step__num">03</span>
+          <h3 class="step__title">Önek ekle</h3>
+          <p>Relay için <b>RLY</b>, Extender için <b>EXT</b> öneki tire ile başa eklenir.</p>
+          <code class="step__out" data-step="sn">RLY-005P007R0GR39</code>
+        </li>
+      </ol>
+    </section>
+
+    <footer class="credit">
+      <p>Masaüstü sürümü: <a class="link" href="./downloads/freshdata_sn_gui.py" download>freshdata_sn_gui.py</a> &mdash; aynı hesabı yapan Python ve Tkinter uygulaması; <code>python3 freshdata_sn_gui.py</code> ile çalışır.</p>
+      <p>FRESHDATA operasyonları için hazırlandı &middot; <a class="link" href="../">Mevlüt Çelik</a></p>
+    </footer>
+  </div>
+</main>
+
+<script src="./assets/js/main.js" defer></script>
+</body>
+</html>

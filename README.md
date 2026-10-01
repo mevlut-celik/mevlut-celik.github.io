@@ -68,6 +68,7 @@ own copy, so nothing is loaded across folders.
 | `/` | Plain dark page — one typeface, one column, hairline rules |
 | `busra/` | Literary journal — warm paper, plum tulip, serif masthead, arched frame |
 | `davetiye/` | The printed invitation — beige paper, spaced serif caps, pink script names |
+| `freshdata-sn/` | Provisioning bench — workshop grey, FRESHDATA orange, the S/N printed as a device label |
 | `mescid/` | The app's own brand — #0D0D0D and #CC0000, phone mock-up |
 | `parlar-kariyer/` | Institutional job notice — foundation navy, numbered sections, sticky summary |
 | `ptns/` | University research instrument — quiet paper, METU red signals, step rail |
