@@ -362,7 +362,7 @@ function toolProps(body, tool) {
     case "cross":
     case "dot":
       body.append(colorGroup("Renk", COLORS, o.color, (c) => te((x) => { x.color = c || "#111111"; })));
-      body.append(group("Boyut", row("Boyut", numberCtl(o.size || 18, 6, 72, 1, (v) => te((x) => { x.size = v; }))))));
+      body.append(group("Boyut", row("Boyut", numberCtl(o.size || 18, 6, 72, 1, (v) => te((x) => { x.size = v; })))));
       break;
     case "note":
       body.append(colorGroup("Renk", ["#f5c518", "#ff8a65", "#7ad18c", "#6fb7ff", "#c792ea"], o.color, (c) => te((x) => { x.color = c || "#f5c518"; }), { custom: false }));
