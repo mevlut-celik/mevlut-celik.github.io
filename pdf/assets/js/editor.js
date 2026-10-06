@@ -13,7 +13,7 @@
 
 import { E, DEFAULTS, STAMPS } from "./ed.js";
 import * as store from "./store.js";
-import { pdfjs, pdflib, openPdf, fontBytes, forge } from "./libs.js";
+import { pdfjs, pdflib, openPdf, fontBytes, forge, closePdf } from "./libs.js";
 import * as W from "./pdfwork.js";
 import { $, $$, h, icon, toast, confirmDialog, promptDialog, menu, closeMenu, busy, pickFiles } from "./ui.js";
 import { uid, clamp, debounce, formatDate, downloadBytes, safeFileName, rgbToHex } from "./util.js";
@@ -352,7 +352,7 @@ function setupObserver() {
 
 /* ================================ Zoom ================================== */
 function fitWidthScale() {
-  const avail = dom.stage.clientWidth - 64;
+  const avail = dom.stage.clientWidth - 76;
   const maxW = Math.max(...E.state.pages.map((p) => pageGeom(p).w), 100);
   return avail / maxW;
 }
@@ -1362,12 +1362,17 @@ function lineAt(lines, x, y) {
 
 function fontGuess(pv, ln) {
   let name = "";
-  try { const f = pv.g.pp.commonObjs.get(ln.fontName); name = (f && (f.name || f.loadedName)) || ""; } catch (e) { /* not loaded */ }
-  const n = name.toLowerCase();
-  const fam = /courier|mono|consol|menlo/.test(n) || ln.family === "monospace" ? "mono"
-    : /times|serif|georgia|garamond|cambria|minion|book|roman/.test(n.replace("sans-serif", "")) && !/sans/.test(n) ? "serif"
-      : ln.family === "serif" && !/sans|arial|helvet|calibri|verdana/.test(n) ? "serif" : "sans";
-  return { font: fam, bold: /bold|black|heavy|semibold|demi/.test(n), italic: /italic|oblique/.test(n) };
+  try { const f = pv.g.pp.commonObjs.get(ln.fontName); name = (f && f.name) || ""; } catch (e) { /* not loaded */ }
+  // drop the subset tag ("ABCDEF+") and match on what is left
+  const n = name.toLowerCase().replace(/^[a-z]{6}\+/, "");
+  const mono = /courier|mono|consol|menlo|cmtt|sftt|lmmono|inconsol|typewriter/.test(n) || (!n && ln.family === "monospace");
+  const sans = /sans|arial|helvet|calibri|verdana|tahoma|segoe|roboto|inter\b|lato|nimbussan|lmss|cmss|sfss|futura|gill|frutiger|myriad|aptos|carlito|arimo/.test(n);
+  const serif = !sans && (/times|roman|serif|georgia|garamond|cambria|minion|book|palatino|baskerv|caslon|^cm[rbs]|^cmti|^cmu|^lmr|^sf(rm|bx|ti|sl|sc)|^ec[rbs]|nimbusrom|termes|libertin|charter|utopia|century|tinos|caladea|gelasio/.test(n) || (!n && ln.family === "serif"));
+  return {
+    font: mono ? "mono" : serif ? "serif" : "sans",
+    bold: /bold|black|heavy|semibold|demi|cmbx|sfbx|ecbx|bx\d|-bd\b|,bold/.test(n),
+    italic: /italic|oblique|cmti|cmsl|sfti|sfsl|ecti|-it\b|,italic/.test(n),
+  };
 }
 
 function sampleColors(pv, ln) {
@@ -2308,7 +2313,7 @@ async function exportPng() {
     await page.render({ canvas: c, viewport: vp, background: "#ffffff" }).promise;
     const blob = await new Promise((r) => c.toBlob(r, "image/png"));
     downloadBytes(new Uint8Array(await blob.arrayBuffer()), safeFileName(`${E.doc.name} - sayfa ${idx + 1}`, "png"), "image/png");
-    pdf.destroy();
+    closePdf(pdf);
   } catch (err) {
     toast("Görüntü oluşturulamadı: " + (err.message || err), "error");
   } finally {
@@ -2573,7 +2578,7 @@ async function loadDoc(docId) {
   const version = currentVersion(doc);
   let state = await store.getState(docId);
   if (state && state.base !== version.id) state = null;
-  for (const s of E.sources.values()) { try { s.pdf.destroy(); } catch (e) { /* gone */ } }
+  for (const s of E.sources.values()) { closePdf(s.pdf); }
   E.sources.clear();
   pdfPages.clear();
   textCache.clear();
@@ -2687,7 +2692,7 @@ export async function closeEditor() {
   E.views.clear();
   dom.pages.textContent = "";
   dom.thumbs.textContent = "";
-  for (const s of E.sources.values()) { try { s.pdf.destroy(); } catch (e) { /* gone */ } }
+  for (const s of E.sources.values()) { closePdf(s.pdf); }
   E.sources.clear();
   pdfPages.clear();
   textCache.clear();

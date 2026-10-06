@@ -315,7 +315,7 @@ async function downloadDoc(d) {
     const state = await store.getState(d.id);
     const ver = d.versions[d.versions.length - 1];
     const { isPristine, buildPdf } = await import("./pdfwork.js");
-    const { fontBytes, openPdf } = await import("./libs.js");
+    const { fontBytes, openPdf, closePdf } = await import("./libs.js");
     await pdflib();
     let bytes;
     if (!state || state.base !== ver.id || isPristine(state)) {
@@ -331,7 +331,7 @@ async function downloadDoc(d) {
         c.width = Math.round(vp.width);
         c.height = Math.round(vp.height);
         await pp.render({ canvas: c, viewport: vp, background: "#fff" }).promise;
-        pdf.destroy();
+        closePdf(pdf);
         return c;
       };
       bytes = await buildPdf({ state, loadSource: load, fontBytes, renderPage, options: {} });

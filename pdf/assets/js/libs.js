@@ -56,6 +56,7 @@ export async function openPdf(bytes, password) {
     iccUrl: vendor("pdfjs/iccs/"),
     enableXfa: false,
     isEvalSupported: false,
+    fontExtraProperties: true,
   });
   return task.promise;
 }
@@ -69,4 +70,12 @@ export function fontBytes(file) {
     }).then((b) => new Uint8Array(b)));
   }
   return fontBytesCache.get(file).then((b) => b.slice());
+}
+
+// pdf.js 6 destroys a document through its loading task.
+export function closePdf(pdf) {
+  try {
+    if (pdf && pdf.loadingTask) pdf.loadingTask.destroy();
+    else if (pdf && pdf.destroy) pdf.destroy();
+  } catch (e) { /* already gone */ }
 }

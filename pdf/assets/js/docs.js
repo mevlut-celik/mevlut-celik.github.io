@@ -6,7 +6,7 @@
    ========================================================================== */
 
 import * as store from "./store.js";
-import { openPdf, pdflib } from "./libs.js";
+import { openPdf, pdflib, closePdf } from "./libs.js";
 import { uid, baseName } from "./util.js";
 import { hasSignatures } from "./sign.js";
 
@@ -28,7 +28,7 @@ export async function thumbFromBytes(bytes) {
     const canvas = await renderThumb(pdf, 1, 260);
     return { thumb: canvas.toDataURL("image/jpeg", 0.78), pages: pdf.numPages };
   } finally {
-    pdf.destroy();
+    closePdf(pdf);
   }
 }
 
@@ -131,6 +131,6 @@ export async function rasterizePdf(bytes, password, onProgress) {
     out.setProducer("Mühür PDF (pdf-lib)");
     return out.save({ useObjectStreams: false });
   } finally {
-    pdf.destroy();
+    closePdf(pdf);
   }
 }

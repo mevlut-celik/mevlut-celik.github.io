@@ -167,6 +167,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ------------------------------- Typography ------------------------------ */
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body { overflow: hidden; font-feature-settings: "cv11", "ss01"; }
 
