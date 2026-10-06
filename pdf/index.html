@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mühür — PDF düzenleyici ve e-imza</title>
+<meta name="description" content="Tarayıcıda çalışan PDF düzenleyici: metin ekleme ve düzenleme, açıklamalar, form doldurma, sayfa düzeni, karartma ve dijital imza. Belgeler cihazınızda şifreli saklanır; sunucuya hiçbir şey gönderilmez.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f3f1ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16171a" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Allura&family=Caveat:wght@500&family=Dancing+Script:wght@600&family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="./assets/css/main.css">
+<script type="module" src="./assets/js/main.js"></script>
+</head>
+
+<body>
+<div class="app" id="app" data-view="boot">
+
+  <!-- ============================== BOOT ============================== -->
+  <section class="view view--boot" data-view-name="boot" aria-label="Yükleniyor">
+    <div class="boot">
+      <img src="./assets/img/favicon.svg" alt="" width="48" height="48">
+      <p class="boot__text">Mühür açılıyor…</p>
+    </div>
+  </section>
+
+  <!-- ============================== AUTH ============================== -->
+  <section class="view view--auth" data-view-name="auth" hidden>
+    <div class="auth">
+      <div class="auth__brand">
+        <a class="brand brand--light" href="./" aria-label="Mühür">
+          <img src="./assets/img/favicon.svg" alt="" width="30" height="30"><span>Mühür</span>
+        </a>
+        <div class="auth__pitch">
+          <p class="eyebrow eyebrow--light">PDF düzenleyici ve e-imza</p>
+          <h1 class="display display--light">Belgeyi aç, düzenle, imzala.<br>Hepsi tarayıcında.</h1>
+          <ul class="pitch">
+            <li><svg class="icon"><use href="./assets/img/icons.svg#i-text-cursor-input"/></svg><span><strong>Gerçek düzenleme</strong> Mevcut metni yerinde değiştir, metin, görsel, şekil ve not ekle, formları doldur.</span></li>
+            <li><svg class="icon"><use href="./assets/img/icons.svg#i-signature"/></svg><span><strong>Görsel ve dijital imza</strong> Çiz, yaz ya da yükle; PAdES uyumlu kriptografik imza ve imza doğrulama.</span></li>
+            <li><svg class="icon"><use href="./assets/img/icons.svg#i-layout-grid"/></svg><span><strong>Sayfa düzeni</strong> Birleştir, sırala, döndür, böl, karart, filigran ve sayfa numarası ekle.</span></li>
+            <li><svg class="icon"><use href="./assets/img/icons.svg#i-lock-keyhole"/></svg><span><strong>Sunucusuz ve şifreli</strong> Belgeler bu cihazda AES-256 ile şifrelenir; hiçbir dosya internete gönderilmez.</span></li>
+          </ul>
+        </div>
+        <p class="auth__foot">Mevlüt Çelik · <a href="../">mevlutcelik</a></p>
+      </div>
+
+      <div class="auth__panel">
+        <div class="auth__card">
+          <div class="segment" role="tablist" aria-label="Hesap">
+            <button class="segment__btn is-active" type="button" role="tab" aria-selected="true" data-auth-tab="signin">Giriş yap</button>
+            <button class="segment__btn" type="button" role="tab" aria-selected="false" data-auth-tab="signup">Hesap oluştur</button>
+          </div>
+
+          <p class="auth__notice" id="auth-notice" hidden></p>
+
+          <!-- sign in -->
+          <form class="form" id="form-signin" data-auth-pane="signin" novalidate>
+            <h2 class="title">Tekrar hoş geldin</h2>
+            <label class="field">
+              <span class="field__label">E-posta</span>
+              <input class="input" name="email" type="email" autocomplete="username" required>
+            </label>
+            <label class="field">
+              <span class="field__label">Şifre</span>
+              <span class="input-wrap">
+                <input class="input" name="password" type="password" autocomplete="current-password" required>
+                <button class="input-wrap__btn" type="button" data-reveal aria-label="Şifreyi göster"><svg class="icon"><use href="./assets/img/icons.svg#i-eye"/></svg></button>
+              </span>
+            </label>
+            <div class="form__row">
+              <label class="check"><input type="checkbox" name="remember"><span>Bu cihazda oturumu açık tut</span></label>
+              <button class="link" type="button" data-auth-tab="recover">Şifremi unuttum</button>
+            </div>
+            <p class="form__error" role="alert" hidden></p>
+            <button class="btn btn--primary btn--block" type="submit">Giriş yap</button>
+          </form>
+
+          <!-- sign up -->
+          <form class="form" id="form-signup" data-auth-pane="signup" novalidate hidden>
+            <h2 class="title">Hesabını oluştur</h2>
+            <label class="field">
+              <span class="field__label">Ad soyad</span>
+              <input class="input" name="name" type="text" autocomplete="name" required>
+              <span class="field__hint">İmzalarda ve yorumlarda bu ad görünür.</span>
+            </label>
+            <label class="field">
+              <span class="field__label">E-posta</span>
+              <input class="input" name="email" type="email" autocomplete="username" required>
+            </label>
+            <label class="field">
+              <span class="field__label">Şifre</span>
+              <span class="input-wrap">
+                <input class="input" name="password" type="password" autocomplete="new-password" minlength="8" required>
+                <button class="input-wrap__btn" type="button" data-reveal aria-label="Şifreyi göster"><svg class="icon"><use href="./assets/img/icons.svg#i-eye"/></svg></button>
+              </span>
+              <span class="meter" aria-hidden="true"><span class="meter__bar" id="pw-meter"></span></span>
+              <span class="field__hint" id="pw-hint">En az 8 karakter. Şifre belgelerini şifreleyen anahtarı korur.</span>
+            </label>
+            <label class="check"><input type="checkbox" name="remember"><span>Bu cihazda oturumu açık tut</span></label>
+            <p class="form__error" role="alert" hidden></p>
+            <button class="btn btn--primary btn--block" type="submit">Hesap oluştur</button>
+            <p class="fineprint">Hesabın yalnızca bu tarayıcıda yaşar. Şifreni unutursan belgelerine yalnızca kayıtta verilen kurtarma koduyla erişebilirsin.</p>
+          </form>
+
+          <!-- recover -->
+          <form class="form" id="form-recover" data-auth-pane="recover" novalidate hidden>
+            <h2 class="title">Kurtarma kodu ile giriş</h2>
+            <p class="muted">Hesabı oluştururken verilen 20 karakterlik kodu gir ve yeni bir şifre belirle.</p>
+            <label class="field">
+              <span class="field__label">E-posta</span>
+              <input class="input" name="email" type="email" autocomplete="username" required>
+            </label>
+            <label class="field">
+              <span class="field__label">Kurtarma kodu</span>
+              <input class="input input--mono" name="code" type="text" autocomplete="off" spellcheck="false" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" required>
+            </label>
+            <label class="field">
+              <span class="field__label">Yeni şifre</span>
+              <input class="input" name="password" type="password" autocomplete="new-password" minlength="8" required>
+            </label>
+            <p class="form__error" role="alert" hidden></p>
+            <button class="btn btn--primary btn--block" type="submit">Şifreyi yenile ve giriş yap</button>
+            <button class="link link--center" type="button" data-auth-tab="signin">Girişe dön</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= LIBRARY ============================ -->
+  <section class="view view--library" data-view-name="library" hidden>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand" href="./" aria-label="Mühür ana sayfa"><img src="./assets/img/favicon.svg" alt="" width="26" height="26"><span>Mühür</span></a>
+        <label class="search">
+          <svg class="icon"><use href="./assets/img/icons.svg#i-search"/></svg>
+          <input class="search__input" id="lib-search" type="search" placeholder="Belgelerde ara" aria-label="Belgelerde ara">
+        </label>
+        <div class="topbar__end">
+          <button class="avatar" type="button" data-account-menu aria-label="Hesap menüsü"><span data-user-initials>?</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="library" id="library">
+      <section class="drop" id="drop" aria-label="Belge yükle">
+        <div class="drop__art" aria-hidden="true">
+          <span class="drop__sheet"></span><span class="drop__sheet"></span><span class="drop__sheet"></span>
+        </div>
+        <div class="drop__copy">
+          <h1 class="display display--sm">Bir PDF bırak, başlayalım.</h1>
+          <p class="muted">PDF'leri ya da görselleri buraya sürükle. Görseller tek bir PDF'e dönüştürülür; birden fazla PDF'i aşağıdan seçip birleştirebilirsin.</p>
+        </div>
+        <div class="drop__actions">
+          <button class="btn btn--primary" type="button" data-pick="pdf"><svg class="icon"><use href="./assets/img/icons.svg#i-upload"/></svg>PDF yükle</button>
+          <button class="btn" type="button" data-pick="image"><svg class="icon"><use href="./assets/img/icons.svg#i-file-image"/></svg>Görselden PDF</button>
+          <button class="btn" type="button" data-new-blank><svg class="icon"><use href="./assets/img/icons.svg#i-file-plus"/></svg>Boş belge</button>
+        </div>
+      </section>
+
+      <div class="shelf">
+        <div class="shelf__head">
+          <h2 class="title">Belgelerim <span class="count" id="doc-count">0</span></h2>
+          <div class="shelf__bulk" id="bulk" hidden>
+            <span class="muted" id="bulk-count"></span>
+            <button class="btn btn--sm" type="button" data-bulk="merge"><svg class="icon"><use href="./assets/img/icons.svg#i-combine"/></svg>Birleştir</button>
+            <button class="btn btn--sm btn--danger-ghost" type="button" data-bulk="delete"><svg class="icon"><use href="./assets/img/icons.svg#i-trash-2"/></svg>Sil</button>
+            <button class="btn btn--sm btn--ghost" type="button" data-bulk="clear">Seçimi kaldır</button>
+          </div>
+        </div>
+        <ul class="grid" id="doc-grid" aria-label="Belgeler"></ul>
+        <div class="empty" id="doc-empty" hidden>
+          <svg class="icon icon--xl"><use href="./assets/img/icons.svg#i-folder-open"/></svg>
+          <p>Henüz belge yok. Yukarıdan bir PDF yükleyerek başla.</p>
+        </div>
+      </div>
+
+      <footer class="libfoot">
+        <span><svg class="icon"><use href="./assets/img/icons.svg#i-lock-keyhole"/></svg><span id="storage-line">Belgeler bu cihazda şifreli</span></span>
+        <button class="link" type="button" id="persist-btn" hidden>Kalıcı depolama iste</button>
+      </footer>
+    </main>
+  </section>
+
+  <!-- ============================== EDITOR ============================ -->
+  <section class="view view--editor" data-view-name="editor" hidden>
+    <header class="ebar">
+      <div class="ebar__left">
+        <button class="ibtn" type="button" data-action="back" data-tip="Belgelere dön"><svg class="icon"><use href="./assets/img/icons.svg#i-arrow-left"/></svg></button>
+        <button class="ibtn ibtn--pages" type="button" data-action="toggle-left" aria-label="Sayfalar"><svg class="icon"><use href="./assets/img/icons.svg#i-panel-left"/></svg></button>
+        <div class="ebar__doc">
+          <input class="ebar__name" id="doc-name" type="text" spellcheck="false" aria-label="Belge adı">
+          <span class="ebar__status" id="save-status" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="ebar__center">
+        <button class="ibtn" type="button" data-action="undo" data-tip="Geri al · Ctrl+Z" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-undo-2"/></svg></button>
+        <button class="ibtn" type="button" data-action="redo" data-tip="Yinele · Ctrl+Shift+Z" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-redo-2"/></svg></button>
+        <span class="sep" aria-hidden="true"></span>
+        <button class="ibtn" type="button" data-action="zoom-out" data-tip="Uzaklaştır · Ctrl+−"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-out"/></svg></button>
+        <button class="zoom" type="button" id="zoom-btn" data-tip="Yakınlaştırma">100%</button>
+        <button class="ibtn" type="button" data-action="zoom-in" data-tip="Yakınlaştır · Ctrl++"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-in"/></svg></button>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="pager">
+          <input class="pager__input" id="page-input" type="text" inputmode="numeric" aria-label="Sayfa">
+          <span class="pager__total" id="page-total">/ 0</span>
+        </span>
+      </div>
+
+      <div class="ebar__right">
+        <button class="ibtn" type="button" data-action="search" data-tip="Ara · Ctrl+F"><svg class="icon"><use href="./assets/img/icons.svg#i-search"/></svg></button>
+        <button class="ibtn ibtn--panel" type="button" data-action="toggle-right" data-tip="Paneli göster/gizle"><svg class="icon"><use href="./assets/img/icons.svg#i-panel-right"/></svg></button>
+        <button class="btn btn--seal" type="button" data-action="sign"><svg class="icon"><use href="./assets/img/icons.svg#i-file-pen-line"/></svg><span>İmzala</span></button>
+        <div class="split">
+          <button class="btn btn--primary split__main" type="button" data-action="download"><svg class="icon"><use href="./assets/img/icons.svg#i-download"/></svg><span>İndir</span></button>
+          <button class="btn btn--primary split__caret" type="button" data-action="download-menu" aria-label="İndirme seçenekleri"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+        </div>
+        <button class="avatar avatar--sm" type="button" data-account-menu aria-label="Hesap menüsü"><span data-user-initials>?</span></button>
+      </div>
+    </header>
+
+    <nav class="tools" id="tools" aria-label="Araçlar">
+      <div class="tools__scroll">
+        <div class="tools__group">
+          <button class="tool is-active" type="button" data-tool="select" data-tip="Seç · V"><svg class="icon"><use href="./assets/img/icons.svg#i-mouse-pointer-2"/></svg></button>
+          <button class="tool" type="button" data-tool="hand" data-tip="Kaydır · H"><svg class="icon"><use href="./assets/img/icons.svg#i-hand"/></svg></button>
+        </div>
+        <div class="tools__group">
+          <button class="tool tool--label" type="button" data-tool="text" data-tip="Metin ekle · T"><svg class="icon"><use href="./assets/img/icons.svg#i-type"/></svg><span>Metin ekle</span></button>
+          <button class="tool tool--label" type="button" data-tool="edittext" data-tip="Mevcut metni düzenle · E"><svg class="icon"><use href="./assets/img/icons.svg#i-text-cursor-input"/></svg><span>Metni düzenle</span></button>
+        </div>
+        <div class="tools__group">
+          <div class="tgroup" data-group="markup">
+            <button class="tool" type="button" data-tool="highlight" data-tip="Vurgula · U"><svg class="icon"><use href="./assets/img/icons.svg#i-highlighter"/></svg></button>
+            <button class="tgroup__caret" type="button" aria-label="İşaretleme araçları"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+          <div class="tgroup" data-group="draw">
+            <button class="tool" type="button" data-tool="pen" data-tip="Kalem · P"><svg class="icon"><use href="./assets/img/icons.svg#i-pen-line"/></svg></button>
+            <button class="tgroup__caret" type="button" aria-label="Çizim araçları"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+          <div class="tgroup" data-group="shape">
+            <button class="tool" type="button" data-tool="rect" data-tip="Dikdörtgen · R"><svg class="icon"><use href="./assets/img/icons.svg#i-square"/></svg></button>
+            <button class="tgroup__caret" type="button" aria-label="Şekiller"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+        <div class="tools__group">
+          <button class="tool" type="button" data-tool="note" data-tip="Yapışkan not · N"><svg class="icon"><use href="./assets/img/icons.svg#i-message-square-text"/></svg></button>
+          <button class="tool" type="button" data-tool="image" data-tip="Görsel ekle · I"><svg class="icon"><use href="./assets/img/icons.svg#i-image"/></svg></button>
+          <div class="tgroup" data-group="stamp">
+            <button class="tool" type="button" data-tool="stamp" data-tip="Damga"><svg class="icon"><use href="./assets/img/icons.svg#i-stamp"/></svg></button>
+            <button class="tgroup__caret" type="button" aria-label="Damgalar"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+          <div class="tgroup" data-group="mark">
+            <button class="tool" type="button" data-tool="check" data-tip="Onay işareti · K"><svg class="icon"><use href="./assets/img/icons.svg#i-check"/></svg></button>
+            <button class="tgroup__caret" type="button" aria-label="İşaretler"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+          <button class="tool" type="button" data-tool="date" data-tip="Tarih ekle · D"><svg class="icon"><use href="./assets/img/icons.svg#i-calendar"/></svg></button>
+        </div>
+        <div class="tools__group">
+          <button class="tool" type="button" data-tool="whiteout" data-tip="Beyaz kutu · W"><svg class="icon"><use href="./assets/img/icons.svg#i-eraser"/></svg></button>
+          <button class="tool" type="button" data-tool="redact" data-tip="Karartma (kalıcı) · X"><svg class="icon"><use href="./assets/img/icons.svg#i-eye-off"/></svg></button>
+        </div>
+        <div class="tools__group">
+          <div class="tgroup tgroup--wide" data-group="signature">
+            <button class="tool tool--label tool--sign" type="button" data-tool="signature" data-tip="İmza ekle · S"><svg class="icon"><use href="./assets/img/icons.svg#i-signature"/></svg><span>İmza</span></button>
+            <button class="tgroup__caret" type="button" aria-label="İmzalarım"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+        <div class="tools__group tools__group--end">
+          <button class="tool tool--label" type="button" data-action="organizer" data-tip="Sayfaları düzenle"><svg class="icon"><use href="./assets/img/icons.svg#i-layout-grid"/></svg><span>Sayfa düzeni</span></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="workspace" id="workspace">
+      <!-- left: pages -->
+      <aside class="side side--left" id="side-left" aria-label="Sayfalar">
+        <div class="side__head">
+          <span class="side__title">Sayfalar</span>
+          <div class="side__tools">
+            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-left" data-tip="Sola döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-ccw"/></svg></button>
+            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-right" data-tip="Sağa döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-cw"/></svg></button>
+            <button class="ibtn ibtn--sm" type="button" data-pages="menu" data-tip="Sayfa işlemleri"><svg class="icon"><use href="./assets/img/icons.svg#i-ellipsis"/></svg></button>
+          </div>
+        </div>
+        <ol class="thumbs" id="thumbs" aria-label="Sayfa küçük resimleri"></ol>
+        <div class="side__foot">
+          <button class="btn btn--sm btn--ghost" type="button" data-pages="insert-blank"><svg class="icon"><use href="./assets/img/icons.svg#i-file-plus"/></svg>Boş sayfa</button>
+          <button class="btn btn--sm btn--ghost" type="button" data-pages="insert-pdf"><svg class="icon"><use href="./assets/img/icons.svg#i-files"/></svg>PDF ekle</button>
+        </div>
+      </aside>
+
+      <!-- centre: the stage -->
+      <main class="stage" id="stage">
+        <div class="banner" id="sig-banner" hidden></div>
+        <div class="hintbar" id="hintbar" hidden></div>
+        <div class="pages" id="pages"></div>
+        <div class="organizer" id="organizer" hidden>
+          <div class="organizer__head">
+            <div>
+              <h2 class="title">Sayfa düzeni</h2>
+              <p class="muted">Sürükleyerek sırala. Ctrl/⌘ ile çoklu seç, Shift ile aralık seç.</p>
+            </div>
+            <div class="organizer__actions">
+              <button class="btn btn--sm" type="button" data-pages="rotate-left"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-ccw"/></svg>Sola</button>
+              <button class="btn btn--sm" type="button" data-pages="rotate-right"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-cw"/></svg>Sağa</button>
+              <button class="btn btn--sm" type="button" data-pages="duplicate"><svg class="icon"><use href="./assets/img/icons.svg#i-copy"/></svg>Çoğalt</button>
+              <button class="btn btn--sm" type="button" data-pages="extract"><svg class="icon"><use href="./assets/img/icons.svg#i-file-output"/></svg>Ayıkla</button>
+              <button class="btn btn--sm" type="button" data-pages="split"><svg class="icon"><use href="./assets/img/icons.svg#i-scissors"/></svg>Böl</button>
+              <button class="btn btn--sm btn--danger-ghost" type="button" data-pages="delete"><svg class="icon"><use href="./assets/img/icons.svg#i-trash-2"/></svg>Sil</button>
+              <button class="btn btn--sm btn--primary" type="button" data-action="organizer">Bitti</button>
+            </div>
+          </div>
+          <ol class="thumbs thumbs--grid" id="grid-thumbs" aria-label="Sayfalar"></ol>
+        </div>
+      </main>
+
+      <!-- right: inspector -->
+      <aside class="side side--right" id="side-right" aria-label="Paneller">
+        <div class="tabs" role="tablist">
+          <button class="tabs__btn is-active" type="button" role="tab" data-panel="props">Özellikler</button>
+          <button class="tabs__btn" type="button" role="tab" data-panel="comments">Yorumlar <span class="count" id="comment-count" hidden></span></button>
+          <button class="tabs__btn" type="button" role="tab" data-panel="signatures">İmzalar <span class="count" id="sig-count" hidden></span></button>
+          <button class="tabs__btn" type="button" role="tab" data-panel="document">Belge</button>
+        </div>
+        <div class="panel" data-panel-body="props" id="panel-props"></div>
+        <div class="panel" data-panel-body="comments" id="panel-comments" hidden></div>
+        <div class="panel" data-panel-body="signatures" id="panel-signatures" hidden></div>
+        <div class="panel" data-panel-body="document" id="panel-document" hidden></div>
+      </aside>
+    </div>
+
+    <div class="findbar" id="findbar" hidden>
+      <svg class="icon"><use href="./assets/img/icons.svg#i-search"/></svg>
+      <input class="findbar__input" id="find-input" type="search" placeholder="Belgede ara" aria-label="Belgede ara">
+      <span class="findbar__count" id="find-count"></span>
+      <button class="ibtn ibtn--sm" type="button" data-find="prev" aria-label="Önceki"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-up"/></svg></button>
+      <button class="ibtn ibtn--sm" type="button" data-find="next" aria-label="Sonraki"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
+      <button class="ibtn ibtn--sm" type="button" data-find="close" aria-label="Kapat"><svg class="icon"><use href="./assets/img/icons.svg#i-x"/></svg></button>
+    </div>
+  </section>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<input type="file" id="file-pdf" accept="application/pdf,.pdf" multiple hidden>
+<input type="file" id="file-image" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+<input type="file" id="file-any" hidden>
+
+<noscript><p class="noscript">Mühür'ü kullanmak için JavaScript'i etkinleştirin.</p></noscript>
+</body>
+</html>
