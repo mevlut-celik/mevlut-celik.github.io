@@ -312,31 +312,7 @@ function docMenu(anchor, d) {
 async function downloadDoc(d) {
   const b = busy("PDF hazırlanıyor…");
   try {
-    const state = await store.getState(d.id);
-    const ver = d.versions[d.versions.length - 1];
-    const { isPristine, buildPdf } = await import("./pdfwork.js");
-    const { fontBytes, openPdf, closePdf } = await import("./libs.js");
-    await pdflib();
-    let bytes;
-    if (!state || state.base !== ver.id || isPristine(state)) {
-      bytes = await store.getBlob(ver.blob);
-    } else {
-      const cache = new Map();
-      const load = async (src) => { if (!cache.has(src)) cache.set(src, await store.getBlob(state.sources[src])); return cache.get(src).slice(); };
-      const renderPage = async (entry, scale) => {
-        const pdf = await openPdf(await load(entry.src));
-        const pp = await pdf.getPage(entry.index + 1);
-        const vp = pp.getViewport({ scale, rotation: ((pp.rotate + (entry.rotate || 0)) % 360 + 360) % 360 });
-        const c = document.createElement("canvas");
-        c.width = Math.round(vp.width);
-        c.height = Math.round(vp.height);
-        await pp.render({ canvas: c, viewport: vp, background: "#fff" }).promise;
-        closePdf(pdf);
-        return c;
-      };
-      bytes = await buildPdf({ state, loadSource: load, fontBytes, renderPage, options: {} });
-    }
-    downloadBytes(bytes, safeFileName(d.name, "pdf"));
+    downloadBytes(await docs.renderedBytes(d), safeFileName(d.name, "pdf"));
   } catch (err) {
     toast("İndirilemedi: " + (err.message || err), "error");
   } finally {
@@ -478,8 +454,11 @@ async function mergeDocs(list) {
   const b = busy("Belgeler birleştiriliyor…");
   try {
     await pdflib();
-    const bytes = await mergePdfs(await Promise.all(order.map((d) => docs.currentBytes(d))));
-    const d = await docs.createDoc(`${order[0].name} + ${order.length - 1} belge`, bytes);
+    const parts = [];
+    for (const d of order) parts.push(await docs.renderedBytes(d));
+    const bytes = await mergePdfs(parts);
+    // signatures of the parts do not survive a merge; do not badge it as signed
+    const d = await docs.createDoc(`${order[0].name} + ${order.length - 1} belge`, bytes, { meta: { signed: false } });
     app.selected.clear();
     b.done();
     toast("Belgeler birleştirildi.", "ok");

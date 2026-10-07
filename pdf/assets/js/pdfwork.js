@@ -15,6 +15,7 @@
    ========================================================================== */
 
 import { hexToRgb, base64ToBytes, sha256Hex, formatDateTime, tzLabel } from "./util.js";
+import { stripTextInRects } from "./textstrip.js";
 
 const lib = () => globalThis.PDFLib;
 
@@ -158,7 +159,7 @@ export function isPristine(state) {
 
 /* ============================== Build PDF =============================== */
 // ctx: { state, loadSource(srcId) -> bytes, fontBytes(file) -> bytes,
-//        renderPage(page, scale) -> canvas, options }
+//        renderBytes(pdfBytes, pageIndex, scale) -> canvas, options }
 export async function buildPdf(ctx) {
   const P = lib();
   const { state } = ctx;
@@ -238,20 +239,30 @@ export async function buildPdf(ctx) {
   for (const list of itemsByPage.values()) list.sort((a, b) => layerRank(a) - layerRank(b));
 
   const total = finalPages.length;
+  const redactPages = [];
   for (let i = 0; i < finalPages.length; i++) {
-    let { page, entry } = finalPages[i];
+    const { page, entry } = finalPages[i];
     const items = itemsByPage.get(entry.id) || [];
 
     const redactions = items.filter((it) => it.type === "redact");
-    if (redactions.length && ctx.renderPage) {
-      page = await rasterizeWithRedactions(base, i, page, entry, redactions, ctx.renderPage);
-      finalPages[i].page = page;
-    }
+    if (redactions.length) redactPages.push({ index: i, rects: redactions, notes: items.filter((it) => it.type === "note") });
 
     const box = page.getCropBox();
     const rotation = page.getRotation().angle;
     const toPdf = displayToPdf(box, rotation);
     const [dw, dh] = displaySize(box.width, box.height, rotation);
+
+    // edited lines: take the original text out of the page, not just cover it
+    const edited = items.filter((it) => it.type === "text" && it.cover && it.origin === "edit");
+    if (edited.length) {
+      const rects = edited.map(({ cover: c }) => {
+        const [ax, ay] = apply(toPdf, c.x, c.y);
+        const [bx, by] = apply(toPdf, c.x + c.w, c.y + c.h);
+        return { x0: Math.min(ax, bx), y0: Math.min(ay, by), x1: Math.max(ax, bx), y1: Math.max(ay, by) };
+      });
+      try { stripTextInRects(base, page, rects); } catch (e) { console.warn("Orijinal metin çıkarılamadı; örtü ile gizlendi.", e); }
+    }
+
     const painter = new Painter(base, page, toPdf);
 
     // covers under everything, then objects in their stacking order
@@ -275,7 +286,57 @@ export async function buildPdf(ctx) {
   base.setCreator("Mühür PDF");
   base.setModificationDate(new Date());
 
-  return base.save({ useObjectStreams: false });
+  const bytes = await base.save({ useObjectStreams: false });
+  if (!redactPages.length) return bytes;
+  if (!ctx.renderBytes) throw new Error("Karartma için sayfa görüntüleyici gerekli.");
+  return applyRedactions(bytes, redactPages, ctx.renderBytes, opts.notes !== false);
+}
+
+// Second pass: each page with redactions is rendered from the finished
+// file (form values, objects and all), painted black where asked, and
+// replaced by that image — so nothing under a redaction survives.
+async function applyRedactions(bytes, pages, renderBytes, keepNotes) {
+  const P = lib();
+  const doc = await P.PDFDocument.load(bytes, { updateMetadata: false });
+  const scale = 2.5; // ~180 dpi
+  for (const rp of pages) {
+    const canvas = await renderBytes(bytes, rp.index, scale);
+    const c2d = canvas.getContext("2d");
+    c2d.fillStyle = "#000";
+    for (const r of rp.rects) c2d.fillRect(r.x * scale, r.y * scale, r.w * scale, r.h * scale);
+    const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.9));
+    const jpg = await doc.embedJpg(new Uint8Array(await blob.arrayBuffer()));
+    const w = canvas.width / scale;
+    const h = canvas.height / scale;
+    const old = doc.getPage(rp.index);
+    dropFieldsOn(doc, old);
+    doc.removePage(rp.index);
+    const fresh = doc.insertPage(rp.index, [w, h]);
+    fresh.drawImage(jpg, { x: 0, y: 0, width: w, height: h });
+    if (keepNotes) for (const n of rp.notes) addNote(doc, fresh, displayToPdf({ x: 0, y: 0, width: w, height: h }, 0), n);
+  }
+  return doc.save({ useObjectStreams: false });
+}
+
+function dropFieldsOn(doc, page) {
+  const P = lib();
+  const annots = page.node.lookup(P.PDFName.of("Annots"));
+  if (!(annots instanceof P.PDFArray) || !annots.size()) return;
+  const refs = new Set(annots.asArray().map((r) => r.toString()));
+  let form;
+  try { form = doc.getForm(); } catch (e) { return; }
+  for (const field of form.getFields()) {
+    try {
+      const widgets = field.acroField.getWidgets();
+      const onPage = widgets.some((wd) => {
+        const p = wd.P();
+        if (p && p.toString() === page.ref.toString()) return true;
+        const ref = doc.context.getObjectRef(wd.dict);
+        return ref && refs.has(ref.toString());
+      });
+      if (onPage) form.removeField(field);
+    } catch (e) { /* leave the field */ }
+  }
 }
 
 async function fillForm(doc, entries, sans, flatten) {
@@ -303,24 +364,6 @@ async function fillForm(doc, entries, sans, flatten) {
   if (flatten) {
     try { form.flatten({ updateFieldAppearances: false }); } catch (e) { /* leave the form live */ }
   }
-}
-
-// Replace a page by an image of itself with the redacted areas painted
-// black: whatever was under them is gone from the file, not just covered.
-async function rasterizeWithRedactions(doc, index, page, entry, redactions, renderPage) {
-  const scale = 2.5; // ~180 dpi
-  const canvas = await renderPage(entry, scale);
-  const c2d = canvas.getContext("2d");
-  c2d.fillStyle = "#000";
-  for (const r of redactions) c2d.fillRect(r.x * scale, r.y * scale, r.w * scale, r.h * scale);
-  const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.9));
-  const jpg = await doc.embedJpg(new Uint8Array(await blob.arrayBuffer()));
-  const w = canvas.width / scale;
-  const h = canvas.height / scale;
-  doc.removePage(index);
-  const fresh = doc.insertPage(index, [w, h]);
-  fresh.drawImage(jpg, { x: 0, y: 0, width: w, height: h });
-  return fresh;
 }
 
 /* ================================ Painter =============================== */

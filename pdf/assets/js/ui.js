@@ -68,6 +68,7 @@ export function toast(message, type, opts) {
 /* -------------------------------- Dialogs ------------------------------- */
 // Returns { el, body, close(value), result: Promise }.
 export function dialog({ title, sub, body, actions, size, dismissable = true, onOpen, className }) {
+  closeMenu();
   const el = h("dialog.dialog", { class: "dialog" + (size ? " dialog--" + size : "") + (className ? " " + className : "") });
   const head = h("div.dialog__head");
   const titles = h("div.dialog__titles", {}, h("h2.dialog__title", { text: title || "" }), sub ? h("p.dialog__sub", { html: sub }) : null);

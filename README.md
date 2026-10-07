@@ -71,6 +71,7 @@ own copy, so nothing is loaded across folders.
 | `freshdata-sn/` | Provisioning bench — workshop grey, FRESHDATA orange, the S/N printed as a device label |
 | `mescid/` | The app's own brand — #0D0D0D and #CC0000, phone mock-up |
 | `parlar-kariyer/` | Institutional job notice — foundation navy, numbered sections, sticky summary |
+| `pdf/` | Signing desk — warm grey desk under white pages, ink-blue tools, wax-seal red for signing |
 | `ptns/` | University research instrument — quiet paper, METU red signals, step rail |
 | `simulation/` | Lab notebook — graph paper, blueprint ink, red pen for the force |
 | `waves/` | Bench oscilloscope — phosphor screen, instrument keys |
@@ -78,6 +79,17 @@ own copy, so nothing is loaded across folders.
 `siu2027/` is maintained separately and is not part of this skeleton.
 `siu2027gorsel/` is an independent copy of it for visual experiments; the
 siu2027 publish script never touches it.
+
+`pdf/` (Mühür) is an application rather than a page, so its `main.js` is an
+ES module that boots the same way and imports its neighbours: `store.js`
+(accounts, AES-GCM, IndexedDB), `docs.js`, `editor.js` with `ed.js`,
+`panels.js` and `sigui.js`, `pdfwork.js` (state → PDF), `textstrip.js`
+(removes edited text from content streams) and `sign.js` (PAdES signing and
+verification). Its Reset block and `$`/`$$` helpers are the shared ones.
+Third-party code is vendored under `pdf/assets/vendor/` and loaded on first
+use: pdf.js 6 (Apache-2.0), pdf-lib and @pdf-lib/fontkit (MIT), node-forge
+(BSD); fonts are Liberation Sans/Serif/Mono (OFL) and icons Lucide (ISC),
+each with its licence file next to it. Nothing is sent to a server.
 
 ## Local preview
 

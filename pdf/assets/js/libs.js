@@ -24,8 +24,8 @@ function script(src) {
 let pdfjsPromise = null;
 export function pdfjs() {
   if (!pdfjsPromise) {
-    pdfjsPromise = import(vendor("pdfjs/pdf.min.mjs")).then((m) => {
-      m.GlobalWorkerOptions.workerSrc = vendor("pdfjs/pdf.worker.min.mjs");
+    pdfjsPromise = import(vendor("pdfjs/pdf.min.js")).then((m) => {
+      m.GlobalWorkerOptions.workerSrc = vendor("pdfjs/pdf.worker.min.js");
       return m;
     });
   }

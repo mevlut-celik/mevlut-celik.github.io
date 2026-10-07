@@ -489,6 +489,7 @@ kbd {
   display: flex;
   align-items: center;
   flex: 0 1 380px;
+  min-width: 0;
   height: 36px;
   padding: 0 10px;
   border: 1px solid var(--hairline-2);
@@ -641,13 +642,16 @@ kbd {
   grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
   gap: var(--space-lg) var(--space-md);
 }
-.card { position: relative; display: grid; gap: 10px; }
+.card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
 .card__thumb {
   position: relative;
   display: grid;
   place-items: center;
+  width: 100%;
+  min-width: 0;
   aspect-ratio: 0.78;
   padding: 14px;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   border: 1px solid var(--hairline);
   border-radius: var(--radius-md);
   background: var(--surface-3);
@@ -656,7 +660,7 @@ kbd {
   transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.2s var(--ease);
 }
 .card__thumb:hover { border-color: var(--ink-faint); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.card__thumb img { max-height: 100%; width: auto; box-shadow: var(--shadow-page); background: #fff; }
+.card__thumb img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; box-shadow: var(--shadow-page); background: #fff; }
 .card__thumb--empty::before { content: ""; width: 60%; aspect-ratio: 0.72; background: #fff; box-shadow: var(--shadow-page); }
 .card__badges { position: absolute; left: 8px; top: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
 .badge {
@@ -1451,7 +1455,7 @@ select.fw { appearance: auto; }
   border-radius: var(--radius-md);
   background: #fff;
   color: #111;
-  font-size: 30px;
+  font-size: 25px;
   line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
@@ -1555,7 +1559,8 @@ select.fw { appearance: auto; }
 
 @media (max-width: 760px) {
   :root { --bar-h: 52px; --side-l: 0px; }
-  .workspace { grid-template-columns: minmax(0, 1fr); }
+  .workspace,
+  .workspace.no-right { grid-template-columns: minmax(0, 1fr); }
   .workspace .side--left { display: none; }
   .workspace.show-left .side--left {
     display: flex;
@@ -1575,6 +1580,8 @@ select.fw { appearance: auto; }
   .ibtn--pages { display: inline-grid; }
   .pages { padding: 16px 16px 80px; }
   .topbar__inner { padding: 0 var(--space-md); gap: var(--space-sm); }
+  .topbar .brand span { display: none; }
+  .search { flex: 1 1 auto; }
   .library { padding: var(--space-lg) var(--space-md) var(--space-xl); }
   .drop { padding: var(--space-lg); }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }

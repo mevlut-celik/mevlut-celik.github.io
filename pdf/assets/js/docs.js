@@ -6,7 +6,8 @@
    ========================================================================== */
 
 import * as store from "./store.js";
-import { openPdf, pdflib, closePdf } from "./libs.js";
+import { openPdf, pdflib, closePdf, fontBytes } from "./libs.js";
+import { isPristine, buildPdf } from "./pdfwork.js";
 import { uid, baseName } from "./util.js";
 import { hasSignatures } from "./sign.js";
 
@@ -18,7 +19,7 @@ export async function renderThumb(pdf, pageNumber, width, rotate) {
   const canvas = document.createElement("canvas");
   canvas.width = Math.ceil(vp.width);
   canvas.height = Math.ceil(vp.height);
-  await page.render({ canvas, viewport: vp, background: "#ffffff" }).promise;
+  await page.render({ canvas, viewport: vp, intent: "print", background: "#ffffff" }).promise;
   return canvas;
 }
 
@@ -58,6 +59,36 @@ export function currentVersion(doc) {
 
 export async function currentBytes(doc) {
   return store.getBlob(currentVersion(doc).blob);
+}
+
+export async function renderPageOf(pdfBytes, index, scale) {
+  const pdf = await openPdf(pdfBytes);
+  try {
+    const pp = await pdf.getPage(index + 1);
+    const vp = pp.getViewport({ scale });
+    const c = document.createElement("canvas");
+    c.width = Math.round(vp.width);
+    c.height = Math.round(vp.height);
+    await pp.render({ canvas: c, viewport: vp, intent: "print", background: "#fff" }).promise;
+    return c;
+  } finally {
+    closePdf(pdf);
+  }
+}
+
+// The document as it would be downloaded: the current version with the
+// saved edit layer applied (or the version itself when nothing changed).
+export async function renderedBytes(doc) {
+  await pdflib();
+  const ver = currentVersion(doc);
+  const state = await store.getState(doc.id);
+  if (!state || state.base !== ver.id || isPristine(state)) return store.getBlob(ver.blob);
+  const cache = new Map();
+  const load = async (src) => {
+    if (!cache.has(src)) cache.set(src, await store.getBlob(state.sources[src]));
+    return cache.get(src).slice();
+  };
+  return buildPdf({ state, loadSource: load, fontBytes, renderBytes: renderPageOf, options: {} });
 }
 
 export async function addVersion(doc, bytes, label, { signed } = {}) {
@@ -121,7 +152,7 @@ export async function rasterizePdf(bytes, password, onProgress) {
       const canvas = document.createElement("canvas");
       canvas.width = Math.ceil(vp.width);
       canvas.height = Math.ceil(vp.height);
-      await page.render({ canvas, viewport: vp, background: "#ffffff" }).promise;
+      await page.render({ canvas, viewport: vp, intent: "print", background: "#ffffff" }).promise;
       const blob = await new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.9));
       const img = await out.embedJpg(new Uint8Array(await blob.arrayBuffer()));
       const p = out.addPage([vp1.width, vp1.height]);

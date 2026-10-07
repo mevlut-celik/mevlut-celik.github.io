@@ -444,6 +444,8 @@ function scrollToPage(pageId, y) {
   updatePager();
 }
 E.scrollToPage = scrollToPage;
+E.deleteSelection = () => deleteSelection();
+E.duplicateSelection = () => duplicateSelection();
 E.pageIndex = (id) => E.state.pages.findIndex((p) => p.id === id);
 E.item = itemById;
 
@@ -1309,43 +1311,61 @@ function finishEdit() {
 }
 
 /* -------------------------- edit existing text -------------------------- */
+// Text lines of a page in display space. Runs are grouped by direction
+// (0/90/180/270° on screen), merged in a frame where they read left to
+// right, then mapped back: x/top/w/h is the on-screen box, `local` the
+// box in the reading frame and `angle` the clockwise rotation.
 async function pageLines(pv) {
   if (lineCache.has(pv.id)) return lineCache.get(pv.id);
   if (!pv.entry.src) { lineCache.set(pv.id, []); return []; }
   const tc = await textContent(pv.entry);
   const vp = pv.g.pp.getViewport({ scale: 1, rotation: pv.g.rot });
-  const runs = [];
+  const unit = Math.hypot(vp.transform[0], vp.transform[1]);
+  const buckets = new Map();
   for (const item of tc.items) {
     if (!item.str || !item.str.trim() || !item.transform) continue;
-    const m = lib.Util.transform(vp.transform, item.transform);
-    const angle = Math.atan2(m[1], m[0]);
-    if (Math.abs(angle) > 0.02) continue;
+    const m = W.multiply(vp.transform, item.transform);
+    const deg = (Math.atan2(m[1], m[0]) * 180) / Math.PI;
+    const angle = norm(Math.round(deg / 90) * 90);
+    if (Math.abs(norm(deg) - angle) > 1.5 && Math.abs(norm(deg) - angle) < 358.5) continue;
     const size = Math.hypot(m[2], m[3]);
     if (size < 1) continue;
     const st = tc.styles[item.fontName] || {};
     const asc = st.ascent || 0.8;
     const desc = st.descent || -0.2;
-    const width = item.width * Math.hypot(vp.transform[0], vp.transform[1]);
-    runs.push({ x: m[4], baseline: m[5], size, w: width, top: m[5] - size * asc, h: size * (asc - desc), str: item.str, fontName: item.fontName, family: st.fontFamily || "sans-serif" });
+    const [lx, lb] = rotPoint(m[4], m[5], 0, 0, -angle);
+    const run = { x: lx, baseline: lb, size, w: item.width * unit, top: lb - size * asc, h: size * (asc - desc), str: item.str, fontName: item.fontName, family: st.fontFamily || "sans-serif" };
+    if (!buckets.has(angle)) buckets.set(angle, []);
+    buckets.get(angle).push(run);
   }
-  runs.sort((a, b) => (Math.abs(a.baseline - b.baseline) < Math.min(a.size, b.size) * 0.3 ? a.x - b.x : a.baseline - b.baseline));
   const lines = [];
-  for (const r of runs) {
-    const ln = lines[lines.length - 1];
-    if (ln && Math.abs(ln.baseline - r.baseline) < Math.min(ln.size, r.size) * 0.35 && r.x >= ln.x + ln.w - r.size * 0.6 &&
-      r.x - (ln.x + ln.w) < r.size * 1.4 && Math.abs(ln.size - r.size) / ln.size < 0.3) {
-      const gap = r.x - (ln.x + ln.w);
-      if (gap > r.size * 0.15 && !/\s$/.test(ln.text) && !/^\s/.test(r.str)) ln.text += " ";
-      ln.text += r.str;
-      const right = Math.max(ln.x + ln.w, r.x + r.w);
-      ln.top = Math.min(ln.top, r.top);
-      ln.h = Math.max(ln.top + ln.h, r.top + r.h) - ln.top;
-      ln.w = right - ln.x;
-    } else {
-      lines.push({ ...r, text: r.str });
+  for (const [angle, runs] of buckets) {
+    runs.sort((a, b) => (Math.abs(a.baseline - b.baseline) < Math.min(a.size, b.size) * 0.3 ? a.x - b.x : a.baseline - b.baseline));
+    const merged = [];
+    for (const r of runs) {
+      const ln = merged[merged.length - 1];
+      if (ln && Math.abs(ln.baseline - r.baseline) < Math.min(ln.size, r.size) * 0.35 && r.x >= ln.x + ln.w - r.size * 0.6 &&
+        r.x - (ln.x + ln.w) < r.size * 1.4 && Math.abs(ln.size - r.size) / ln.size < 0.3) {
+        const gap = r.x - (ln.x + ln.w);
+        if (gap > r.size * 0.15 && !/\s$/.test(ln.text) && !/^\s/.test(r.str)) ln.text += " ";
+        ln.text += r.str;
+        const right = Math.max(ln.x + ln.w, r.x + r.w);
+        const bottom = Math.max(ln.top + ln.h, r.top + r.h);
+        ln.top = Math.min(ln.top, r.top);
+        ln.h = bottom - ln.top;
+        ln.w = right - ln.x;
+      } else {
+        merged.push({ ...r, text: r.str });
+      }
+    }
+    for (const ln of merged) {
+      ln.text = ln.text.replace(/\s+/g, " ").trim();
+      const local = { x: ln.x, top: ln.top, w: ln.w, h: ln.h, baseline: ln.baseline };
+      const corners = [[ln.x, ln.top], [ln.x + ln.w, ln.top], [ln.x, ln.top + ln.h], [ln.x + ln.w, ln.top + ln.h]].map(([x, y]) => rotPoint(x, y, 0, 0, angle));
+      const xs = corners.map((c) => c[0]), ys = corners.map((c) => c[1]);
+      lines.push({ ...ln, angle, local, x: Math.min(...xs), top: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) });
     }
   }
-  for (const ln of lines) ln.text = ln.text.replace(/\s+/g, " ").trim();
   lineCache.set(pv.id, lines);
   return lines;
 }
@@ -1420,13 +1440,21 @@ async function editTextAt(pv, pt, e) {
   const col = sampleColors(pv, ln);
   const size = Math.round(ln.size * 100) / 100;
   await loadFonts([[fg.font, fg.bold, fg.italic]]);
+  const L = ln.local;
   const it = {
     id: uid("i"), type: "text", page: pv.id, origin: "edit",
-    x: ln.x - PAD, y: ln.baseline - W.baselineInLine(fg.font) * size - PAD, w: 10, h: 10, autoW: true,
+    x: L.x - PAD, y: L.baseline - W.baselineInLine(fg.font) * size - PAD, w: 10, h: 10, autoW: true,
     text: ln.text, font: fg.font, size, color: col.ink, bold: fg.bold, italic: fg.italic, align: "left", bg: null,
     cover: { x: ln.x - 1, y: ln.top - 1, w: ln.w + 2, h: ln.h + 2, color: col.bg },
   };
   measureTextItem(it);
+  if (ln.angle) {
+    // the box was laid out in the reading frame; turn it onto the page
+    const [cx, cy] = rotPoint(it.x + it.w / 2, it.y + it.h / 2, 0, 0, ln.angle);
+    it.x = cx - it.w / 2;
+    it.y = cy - it.h / 2;
+    it.rotation = ln.angle;
+  }
   const before = snapshot();
   E.state.items.push(it);
   E.selection = it.id;
@@ -1902,7 +1930,7 @@ async function extractPages({ split } = {}) {
       b.set(`Belge hazırlanıyor ${gi + 1}/${groups.length}`);
       const ids = new Set(group.map((p) => p.id));
       const sub = { ...E.state, pages: group, items: E.state.items.filter((it) => ids.has(it.page)), mainPageCount: -1 };
-      const bytes = await W.buildPdf({ state: sub, loadSource: async (s) => E.sources.get(s).bytes.slice(), fontBytes, renderPage: renderForExport, options: {} });
+      const bytes = await W.buildPdf({ state: sub, loadSource: async (s) => E.sources.get(s).bytes.slice(), fontBytes, renderBytes: renderForExport, options: {} });
       const nums = group.map((p) => E.pageIndex(p.id) + 1);
       const label = nums.length === 1 ? `s. ${nums[0]}` : `s. ${nums[0]}–${nums[nums.length - 1]}`;
       last = await createDoc(`${E.doc.name} (${label})`, bytes);
@@ -2025,6 +2053,7 @@ function onThumbClick(e) {
     E.pageSel = new Set([id]);
     lastThumbClick = id;
     if (dom.organizer.hidden) scrollToPage(id);
+    dom.workspace.classList.remove("show-left");
   }
   $$(".thumb").forEach((t) => t.classList.toggle("is-selected", E.pageSel.has(t.dataset.pageId)));
 }
@@ -2101,7 +2130,8 @@ async function renderForms(pv) {
   for (const a of annots) {
     if (a.annotationType !== 20 || !a.fieldName || a.hidden) continue;
     if (a.fieldType === "Sig" || a.pushButton) continue;
-    const [x1, y1, x2, y2] = vp.convertToViewportRectangle(a.rect);
+    const [x1, y1] = vpPoint(vp, a.rect[0], a.rect[1]);
+    const [x2, y2] = vpPoint(vp, a.rect[2], a.rect[3]);
     const x = Math.min(x1, x2), y = Math.min(y1, y2), w = Math.abs(x2 - x1), hh = Math.abs(y2 - y1);
     const style = { left: P(x), top: P(y), width: P(w), height: P(hh) };
     const name = a.fieldName;
@@ -2157,6 +2187,11 @@ async function renderForms(pv) {
   }
 }
 
+function vpPoint(vp, x, y) {
+  const t = vp.transform;
+  return [t[0] * x + t[2] * y + t[4], t[1] * x + t[3] * y + t[5]];
+}
+
 function syncField(name, origin) {
   const v = E.state.forms[name];
   for (const pv of E.views.values()) {
@@ -2207,7 +2242,10 @@ const runFind = debounce(async () => {
       let at = hay.indexOf(needle);
       while (at >= 0) {
         const len = Math.max(1, hay.length);
-        find.hits.push({ pageId: entry.id, x: ln.x + (ln.w * at) / len, y: ln.top, w: (ln.w * needle.length) / len, h: ln.h });
+        const L = ln.local;
+        const a = rotPoint(L.x + (L.w * at) / len, L.top, 0, 0, ln.angle);
+        const b = rotPoint(L.x + (L.w * (at + needle.length)) / len, L.top + L.h, 0, 0, ln.angle);
+        find.hits.push({ pageId: entry.id, x: Math.min(a[0], b[0]), y: Math.min(a[1], b[1]), w: Math.abs(b[0] - a[0]), h: Math.abs(b[1] - a[1]) });
         at = hay.indexOf(needle, at + needle.length);
       }
     }
@@ -2232,23 +2270,19 @@ function stepFind(dir) {
 }
 
 /* =============================== Export ================================= */
-async function renderForExport(entry, scale) {
-  const canvas = document.createElement("canvas");
-  if (!entry.src) {
-    const g = pageGeom(entry);
-    canvas.width = Math.round(g.w * scale);
-    canvas.height = Math.round(g.h * scale);
-    const c = canvas.getContext("2d");
-    c.fillStyle = "#fff";
-    c.fillRect(0, 0, canvas.width, canvas.height);
+async function renderForExport(bytes, index, scale) {
+  const pdf = await openPdf(bytes);
+  try {
+    const pp = await pdf.getPage(index + 1);
+    const vp = pp.getViewport({ scale });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(vp.width);
+    canvas.height = Math.round(vp.height);
+    await pp.render({ canvas, viewport: vp, intent: "print", annotationMode: lib.AnnotationMode.ENABLE, background: "#ffffff" }).promise;
     return canvas;
+  } finally {
+    closePdf(pdf);
   }
-  const pp = await ensurePdfPage(entry);
-  const vp = pp.getViewport({ scale, rotation: norm(pp.rotate + (entry.rotate || 0)) });
-  canvas.width = Math.round(vp.width);
-  canvas.height = Math.round(vp.height);
-  await pp.render({ canvas, viewport: vp, annotationMode: lib.AnnotationMode.ENABLE, background: "#ffffff" }).promise;
-  return canvas;
 }
 
 async function buildBytes({ flattenForms = false, audit = null, force = false } = {}) {
@@ -2259,7 +2293,7 @@ async function buildBytes({ flattenForms = false, audit = null, force = false } 
     state: E.state,
     loadSource: async (s) => E.sources.get(s).bytes.slice(),
     fontBytes,
-    renderPage: renderForExport,
+    renderBytes: renderForExport,
     options: { flattenForms, audit },
   });
 }
@@ -2310,7 +2344,7 @@ async function exportPng() {
     const c = document.createElement("canvas");
     c.width = Math.round(vp.width);
     c.height = Math.round(vp.height);
-    await page.render({ canvas: c, viewport: vp, background: "#ffffff" }).promise;
+    await page.render({ canvas: c, viewport: vp, intent: "print", background: "#ffffff" }).promise;
     const blob = await new Promise((r) => c.toBlob(r, "image/png"));
     downloadBytes(new Uint8Array(await blob.arrayBuffer()), safeFileName(`${E.doc.name} - sayfa ${idx + 1}`, "png"), "image/png");
     closePdf(pdf);
@@ -2642,15 +2676,17 @@ export async function openEditor(docId, { user, onClose }) {
   dom.pages.textContent = "";
   E.views.clear();
   await setTool("select");
-  requestAnimationFrame(() => {
-    E.scale = Math.min(fitWidthScale(), PT_PX * 1.5);
-    syncPages();
-    setZoom(E.scale);
-    dom.stage.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    buildThumbs();
-  });
+  // the view is already shown, so its size can be read right away
+  E.scale = Math.min(fitWidthScale(), PT_PX * 1.5);
+  syncPages();
+  setZoom(E.scale);
+  dom.stage.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  buildThumbs();
   panels.refresh();
-  panels.showPanel("props");
+  panels.showPanel("props", false);
+  // on narrow screens the inspector floats over the page; start with it closed
+  dom.workspace.classList.toggle("no-right", window.matchMedia("(max-width: 980px)").matches);
+  dom.workspace.classList.remove("show-left");
   verifyCurrent();
 }
 

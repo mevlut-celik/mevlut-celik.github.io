@@ -21,9 +21,9 @@ export function init() {
   });
 }
 
-export function showPanel(name) {
+export function showPanel(name, reveal = true) {
   current = name;
-  $("#workspace").classList.remove("no-right");
+  if (reveal) $("#workspace").classList.remove("no-right");
   $$(".side--right .tabs__btn").forEach((b) => b.classList.toggle("is-active", b.dataset.panel === name));
   $$(".side--right [data-panel-body]").forEach((p) => { p.hidden = p.dataset.panelBody !== name; });
   render(name);
@@ -298,8 +298,8 @@ function itemProps(body, it) {
   body.append(group("Düzen", h("div.pactions", {},
     h("button.btn.btn--sm", { type: "button", html: icon("arrow-up") + "Öne getir", onclick: () => reorder(it, 1) }),
     h("button.btn.btn--sm", { type: "button", html: icon("arrow-down") + "Arkaya gönder", onclick: () => reorder(it, -1) }),
-    h("button.btn.btn--sm", { type: "button", html: icon("copy") + "Çoğalt", onclick: () => { const ev = new KeyboardEvent("keydown", { key: "d", ctrlKey: true, bubbles: true }); document.dispatchEvent(ev); } }),
-    h("button.btn.btn--sm.btn--danger-ghost", { type: "button", html: icon("trash-2") + "Sil", onclick: () => { const ev = new KeyboardEvent("keydown", { key: "Delete", bubbles: true }); document.dispatchEvent(ev); } }))));
+    h("button.btn.btn--sm", { type: "button", html: icon("copy") + "Çoğalt", onclick: () => E.duplicateSelection() }),
+    h("button.btn.btn--sm.btn--danger-ghost", { type: "button", html: icon("trash-2") + "Sil", onclick: () => E.deleteSelection() }))));
 }
 
 function reorder(it, dir) {
