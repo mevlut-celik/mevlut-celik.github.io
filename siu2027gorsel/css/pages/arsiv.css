@@ -59,7 +59,8 @@
 
 /* Haritada seçili yılın tablo satırı */
 .archive-table tbody tr { cursor: pointer; }
-.archive-table tbody tr.is-active > * { background: var(--paper-2); box-shadow: inset 2px 0 0 var(--cyan); }
+.archive-table tbody tr.is-active > * { background: var(--ot-accent-soft); }
+.archive-table tbody tr.is-active > :first-child { box-shadow: inset 3px 0 0 var(--cyan); }
 
 @media print {
   #harita, .year-scrubber { display: none !important; }

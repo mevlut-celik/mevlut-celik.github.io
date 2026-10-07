@@ -29,7 +29,6 @@
 .hero-eyebrow span { margin-inline: .375rem; opacity: .6; }
 .hero-title { margin: -.875rem 0 0; max-width: 36rem; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; color: #fff; }
 .hero-title span { display: block; margin-top: .25rem; color: var(--hero-accent); }
-.hero-lead { margin: 0; max-width: 34rem; font-size: 1.125rem; line-height: 1.6; color: var(--hero-text); }
 .hero-cta { display: grid; gap: 1rem; margin-top: .5rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 .hero .btn { min-height: 3rem; padding-inline: 1.25rem; border-color: rgba(255, 255, 255, .7); color: #fff; }
@@ -193,7 +192,7 @@
   font-size: .875rem; font-weight: 600; color: var(--ot-ink); transition: border-color var(--dur);
 }
 .kv-index a:hover { border-color: var(--ot-ink); }
-.kv-index a span { min-width: 1.75rem; padding: .0625rem .4rem; border-radius: 999px; background: var(--ot-surface); color: var(--ot-muted); font-size: .75rem; text-align: center; font-variant-numeric: tabular-nums; }
+.kv-index a > span:last-child { min-width: 1.75rem; padding: .0625rem .4rem; border-radius: 999px; background: var(--ot-surface); color: var(--ot-muted); font-size: .75rem; text-align: center; font-variant-numeric: tabular-nums; }
 
 .kv-list { display: grid; gap: 1rem; }
 /* Gri zemin, sağdaki eş başkanlar kartının tam ortasında biter */
@@ -346,7 +345,6 @@
   .hero { display: block; background: none; color: #000; }
   .hero-text { padding: 1rem 0; }
   .hero-title, .hero-title span, .hero-eyebrow { color: #000; }
-  .hero-lead { color: #333; }
   .kv-track::before { background: none; border: 1px solid #999; }
   .kv-chairs { box-shadow: none; }
   .ot-item { break-inside: avoid; }

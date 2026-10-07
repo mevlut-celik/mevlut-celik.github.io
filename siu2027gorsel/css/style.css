@@ -662,14 +662,18 @@ p { max-width: var(--measure); }
   border-bottom: 1px solid var(--ot-line);
 }
 .search-modal-header svg { width: 1.125rem; height: 1.125rem; color: var(--ot-muted); flex: none; }
-.search-modal-input {
+.search-modal-header .search-modal-input {
   flex: 1;
   min-width: 0;
+  min-height: 0;
+  padding: 0;
   font: inherit;
   font-size: 1.0625rem;
   color: var(--ot-ink);
   border: 0;
+  border-radius: 0;
   outline: 0;
+  box-shadow: none;
   background: transparent;
 }
 .search-modal-input::placeholder { color: var(--ot-muted); }

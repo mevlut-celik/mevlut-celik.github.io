@@ -260,8 +260,10 @@ function initSideNav() {
       .map(a => { const h = a.getAttribute('href') || ''; return { a, el: h.charAt(0) === '#' ? document.getElementById(h.slice(1)) : null }; })
       .filter(x => x.el);
     if (nav.classList.contains('ot-nav')) {
-      groups.push({ list: collect(':scope > ul > li > a'), fallback: true });
-      groups.push({ list: collect('.ot-subnav a'), fallback: false });
+      const top = { list: collect(':scope > ul > li > a'), fallback: true };
+      groups.push(top);
+      // Alt bağlantılar yalnız üst bölümleri (Konular) o an işaretliyken işaretlenir
+      groups.push({ list: collect('.ot-subnav a'), fallback: false, parent: top });
     } else {
       groups.push({ list: collect('a'), fallback: false });
     }
@@ -276,7 +278,12 @@ function initSideNav() {
   function update() {
     queued = false;
     groups.forEach(g => {
-      const cur = current(g.list) || (g.fallback ? g.list[0] : null);
+      let cur = current(g.list) || (g.fallback ? g.list[0] : null);
+      if (g.parent) {
+        const p = g.parent.cur;
+        if (!p || !p.a.parentElement.querySelector('.ot-subnav')) cur = null;
+      }
+      g.cur = cur;
       g.list.forEach(x => { if (x === cur) x.a.setAttribute('aria-current', 'true'); else x.a.removeAttribute('aria-current'); });
     });
   }
@@ -1165,7 +1172,6 @@ const i18nDictionary = {
     // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
     hm001: "35. Kurultay <span aria-hidden=\"true\">·</span> 4–7 Temmuz 2027 <span aria-hidden=\"true\">·</span> İstanbul",
     hm002: "Sinyal İşleme ve İletişim Uygulamaları Kurultayı <span>SİU 2027</span>",
-    hm003: "Türkiye'nin sinyal işleme, kablosuz haberleşme, bilgisayarlı görü ve yapay zekâ alanındaki en köklü bilimsel buluşması.",
     hm004: "Bildiri son tarihi <strong>1 Şubat 2027</strong>",
     hm005: "Tüm önemli tarihler",
     hm006: "İstanbul Medipol Üniversitesi, Kavacık Güney Kampüsü",
@@ -2098,7 +2104,6 @@ const i18nDictionary = {
     // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
     hm001: "35th Conference <span aria-hidden=\"true\">·</span> July 4–7, 2027 <span aria-hidden=\"true\">·</span> Istanbul",
     hm002: "Signal Processing and Communications Applications Conference <span>SIU 2027</span>",
-    hm003: "Türkiye's most established scientific meeting on signal processing, wireless communications, computer vision and artificial intelligence.",
     hm004: "Paper submission deadline <strong>February 1, 2027</strong>",
     hm005: "All important dates",
     hm006: "Istanbul Medipol University, Kavacık South Campus",
