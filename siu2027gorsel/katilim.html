@@ -25,9 +25,10 @@
   <meta name="twitter:image" content="https://siu2027.medipol.edu.tr/assets/og-siu2027.jpg">
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
-  <link rel="stylesheet" href="css/style.css?v=127">
-  <link rel="stylesheet" href="css/pages/katilim.css?v=127">
-  <link rel="stylesheet" href="assets/leaflet/leaflet.css?v=127">
+  <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=200">
+  <link rel="stylesheet" href="css/pages/katilim.css?v=200">
+  <link rel="stylesheet" href="assets/leaflet/leaflet.css?v=200">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
@@ -57,14 +58,14 @@
     <div class="masthead__brand">
       <div class="wrap">
         <a href="./" class="brand" aria-label="SİU 2027 Ana Sayfa">
-          <img src="assets/siu-2027-logo.png" alt="SİU 2027 Resmî Logosu" class="brand__logo" width="1024" height="1024" decoding="async">
+          <img src="assets/siu-2027-logo-white.png" alt="SİU 2027 Resmî Logosu" class="brand__logo" width="1024" height="1024" decoding="async">
           <span class="brand__text">
             <span class="brand__name">SİU 2027</span>
             <span class="brand__sub" data-i18n="brandSubtitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı</span>
           </span>
         </a>
         <a href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" class="brand__host" title="İstanbul Medipol Üniversitesi">
-          <img src="assets/medipol-logo.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async">
+          <img src="assets/medipol-logo-white.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" decoding="async">
         </a>
         <button type="button" class="nav-toggle mobile-toggle" aria-label="Menüyü Aç" aria-controls="mobileDrawer">
           <span class="nav-toggle__bars" aria-hidden="true"></span>
@@ -377,24 +378,21 @@
 
   </main>
 
-<!-- ALTBİLGİ:BAŞ — footer + arama modalı + mobil çekmece. Diğer sayfalar BİREBİR kopyalar;
+  <!-- ALTBİLGİ:BAŞ — footer + arama modalı + mobil çekmece. Diğer sayfalar BİREBİR kopyalar;
        yalnızca çekmecedeki aktif bağlantının class="active" + aria-current="page" değişir. -->
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-grid">
-        <div>
-          <div class="footer-brand">
+        <div class="footer-brand">
+          <div class="footer-logos">
             <img src="assets/siu-2027-logo-white.png" alt="SİU 2027 Logo" width="1024" height="1024" loading="lazy" decoding="async">
-            <span class="footer-brand__name">SİU 2027</span>
-          </div>
-          <div class="footer-host">
-            <img src="assets/medipol-logo-white.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async">
+            <span class="footer-logos__host"><img src="assets/medipol-logo-white.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async"></span>
           </div>
           <p class="footer-about" data-i18n="footerAbout">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı, 4–7 Temmuz 2027 tarihlerinde İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü'nde düzenlenecektir.</p>
         </div>
 
-        <nav aria-label="Hızlı Erişim">
-          <h2 class="footer-heading" data-i18n="footerQuickLinks">Hızlı Erişim</h2>
+        <nav aria-labelledby="ft-hizli">
+          <h2 class="footer-heading" id="ft-hizli" data-i18n="footerQuickLinks">Hızlı Erişim</h2>
           <ul class="footer-links">
             <li><a href="yazarlar#cfp" data-i18n="ft001">Bildiri Çağrısı (CFP)</a></li>
             <li><a href="yazarlar#kulvarlar" data-i18n="ft001a">Konular ve Kulvarlar</a></li>
@@ -404,8 +402,8 @@
           </ul>
         </nav>
 
-        <nav aria-label="Kurumsal">
-          <h2 class="footer-heading" data-i18n="footerInstitutional">Kurumsal</h2>
+        <nav aria-labelledby="ft-kurumsal">
+          <h2 class="footer-heading" id="ft-kurumsal" data-i18n="footerInstitutional">Kurumsal</h2>
           <ul class="footer-links">
             <li><a href="komiteler#baskanlar" data-i18n="ft007">Kurultay Eş Başkanları</a></li>
             <li><a href="komiteler#duzenleme" data-i18n="ft008">Düzenleme Kurulu</a></li>
@@ -415,22 +413,23 @@
           </ul>
         </nav>
 
-        <div class="footer-address">
+        <div>
           <h2 class="footer-heading" data-i18n="footerSecretariat">Kurultay Sekreterliği</h2>
-          <address>
-            <dl class="footer-contact">
-              <dt data-i18n="ft012">Adres</dt>
-              <dd data-i18n="ft015">İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü, Göztepe Mah. Atatürk Cad. No: 40/16, 34815 Beykoz / İstanbul</dd>
-              <dt data-i18n="ft013">E-posta</dt>
-              <dd><a href="mailto:siu2027@medipol.edu.tr">siu2027@medipol.edu.tr</a></dd>
-              <dt data-i18n="ft014">Telefon</dt>
-              <dd>+90 (216) 681 51 00</dd>
-            </dl>
+          <address class="footer-contact">
+            <p data-i18n="ft015">İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü, Göztepe Mah. Atatürk Cad. No: 40/16, 34815 Beykoz / İstanbul</p>
+            <a href="mailto:siu2027@medipol.edu.tr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              siu2027@medipol.edu.tr
+            </a>
+            <a href="tel:+902166815100">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+              +90 (216) 681 51 00
+            </a>
           </address>
         </div>
       </div>
 
-      <p class="footer-cmt" data-i18n="cmt002">The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.</p>
+      <p class="footer-cmt" lang="en" data-i18n="cmt002">The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.</p>
 
       <div class="footer-bottom">
         <p class="footer-copy" data-i18n="ft016">© 2027 Sinyal İşleme ve İletişim Uygulamaları Kurultayı (SİU 2027). Tüm hakları saklıdır.</p>
@@ -463,7 +462,7 @@
        ========================================== -->
   <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobil Menü">
     <div class="mobile-drawer-header">
-      <img src="assets/siu-2027-logo.png" alt="SİU 2027" class="brand__logo" width="1024" height="1024" loading="lazy" decoding="async">
+      <img src="assets/siu-2027-logo-white.png" alt="SİU 2027" class="brand__logo" width="1024" height="1024" loading="lazy" decoding="async">
       <span class="brand__name">SİU 2027</span>
       <button type="button" class="mobile-drawer-close" aria-label="Menüyü Kapat">&times;</button>
     </div>
@@ -528,7 +527,7 @@
 
   <!-- ALTBİLGİ:SON -->
   <!-- Kampüs haritası: Leaflet + OpenStreetMap -->
-  <script src="assets/leaflet/leaflet.js?v=127" defer></script>
+  <script src="assets/leaflet/leaflet.js?v=200" defer></script>
   <script defer>
     window.addEventListener('load', function () {
       if (typeof L === 'undefined') return;
@@ -568,6 +567,6 @@
       );
     });
   </script>
-  <script src="js/main.js?v=127"></script>
+  <script src="js/main.js?v=200"></script>
 </body>
 </html>

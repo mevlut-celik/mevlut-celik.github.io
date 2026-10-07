@@ -31,7 +31,8 @@
   flex: none;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid var(--rule-2);
+  border: 1.5px solid var(--rule-2);
+  border-radius: var(--radius);
   background: var(--paper);
   color: var(--navy);
   font-size: var(--step-1);

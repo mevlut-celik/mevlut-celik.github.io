@@ -13,9 +13,9 @@
 }
 .page-head__facts { align-self: start; }
 .page-head__facts > div { grid-template-columns: minmax(0, 1fr); }
-.page-head__facts > div:first-child { border-top: 2px solid var(--navy); }
+.page-head__facts > div:first-child { border-top: 1px solid var(--hero-line); }
 .page-head__facts .facts__val { font-size: var(--step-1); }
-.page-head__facts--deadline .facts__val { color: var(--cyan-text); }
+.page-head__facts--deadline .facts__val { color: var(--hero-accent); }
 
 @media (min-width: 48em) {
   .page-head--facts { padding-block: var(--space-8) var(--space-7); }

@@ -14,9 +14,9 @@
   .jump {
     display: block;
     margin-bottom: var(--space-6);
-    padding-block: var(--space-3);
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--ot-surface);
     font-size: var(--step--1);
   }
   .jump__title {
@@ -33,7 +33,7 @@
 
 /* 2. Kayıt kademeleri: karşılaştırma kartları.
    Kart burada meşru — kullanıcı dört seçenek arasında seçim yapıyor.
-   Gradient/gölge/yuvarlak köşe yok; ayrım üst çizgi ve hairline kenarla kurulur. */
+   Yeni dil: 10px köşe, ince kenar; öne çıkan kademe koyu çerçeve + hafif gölge. */
 /* Sütun sayısı viewport'a değil KARTIN KAPSAYICISINA göre belirlenir:
    ana kolon yan sütunla paylaşıldığı için 1366px'te bile 4 kart sığmaz. */
 .col-main { container-type: inline-size; }
@@ -56,13 +56,12 @@
   flex-direction: column;
   padding: var(--space-5) var(--space-4) var(--space-4);
   background: var(--paper);
-  border: 1px solid var(--rule-2);
-  border-top: 3px solid var(--rule-2);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
 }
 .tier--featured {
-  border-color: var(--navy);
-  border-top-color: var(--navy);
-  background: var(--paper-2);
+  border: 1.5px solid var(--navy);
+  box-shadow: var(--ot-shadow);
 }
 
 /* Başlık+açıklama iki satıra taşabildiği için (özellikle EN) yükseklik sabitlenir;

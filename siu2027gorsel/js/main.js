@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSignalCanvas();
   initCountdown();
   initLangSwitcher();
+  initTopicSort();
+  initTimeline();
+  initHomeCountdown();
+  initSideNav();
   initProgramFilters();
   initArchiveSearch();
   initArchiveMap();
@@ -143,6 +147,142 @@ function initCountdown() {
 
   update();
   setInterval(update, 1000);
+}
+
+/* ==========================================================================
+   2b. Ana sayfa v2: zaman çizelgesi durumları, geri sayım, kenar çubuğu,
+       konu listelerinin A–Z sıralaması (dile göre)
+   ========================================================================== */
+function currentLangCode() { return document.documentElement.lang === 'en' ? 'en' : 'tr'; }
+function i18nText(key) {
+  const d = i18nDictionary[currentLangCode()] || i18nDictionary.tr;
+  return (d && d[key]) || i18nDictionary.tr[key] || '';
+}
+
+/* Konu listeleri o anki dilin alfabesiyle A–Z (Türkçe: ç, ğ, ı, ö, ş, ü doğru yerde) */
+function initTopicSort() {
+  const lists = document.querySelectorAll('.kv-topics, .track__topics');
+  if (!lists.length) return;
+  function sortAll() {
+    const lang = currentLangCode();
+    lists.forEach(ul => {
+      [...ul.children]
+        .sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim(), lang, { sensitivity: 'base', numeric: true }))
+        .forEach(li => ul.appendChild(li));
+    });
+  }
+  sortAll();
+  document.addEventListener('siu:lang', sortAll);
+}
+
+/* Önemli tarihler: durum çipi ve "sıradaki" işareti data-date'ten hesaplanır */
+function initTimeline() {
+  const items = [...document.querySelectorAll('.ot-item')];
+  if (!items.length) return;
+  const DAY = 864e5, SOON = 14;
+  const parse = s => { const p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); };
+
+  function render() {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let next = null;
+    items.forEach(li => {
+      const start = parse(li.dataset.date);
+      const end = li.dataset.end ? parse(li.dataset.end) : start;
+      const days = Math.round((start - today) / DAY);
+      const isEvent = li.dataset.kind === 'event';
+      const chip = li.querySelector('.ot-chip');
+      const state = today > end ? 'past' : (today >= start ? 'live' : 'upcoming');
+      li.dataset.state = state;
+      li.removeAttribute('data-next');
+      if (state !== 'past' && !next) { next = li; li.setAttribute('data-next', ''); }
+
+      let kind = '', label = i18nText('hm050');
+      if (isEvent) {
+        if (state === 'past') { kind = 'done'; label = i18nText('hm057'); }
+        else if (state === 'live') { kind = 'live'; label = i18nText('hm056'); }
+        else { kind = 'event'; label = i18nText('hm055'); }
+      } else if (state === 'past') {
+        kind = 'done'; label = i18nText('hm054');
+      } else if (days === 0) {
+        kind = 'soon'; label = i18nText('hm053');
+      } else if (days <= SOON) {
+        kind = 'soon'; label = i18nText(days === 1 ? 'hm058' : 'hm052').replace('{n}', days);
+      } else if (li.dataset.open === 'true') {
+        kind = 'open'; label = i18nText('hm051');
+      }
+      if (!chip) return;
+      chip.textContent = label;
+      if (kind) chip.dataset.kind = kind; else chip.removeAttribute('data-kind');
+    });
+  }
+  render();
+  document.addEventListener('siu:lang', render);
+}
+
+/* Kenar çubuğu geri sayımı (.ot-countdown data-start / data-end) */
+function initHomeCountdown() {
+  const box = document.querySelector('.ot-countdown');
+  if (!box) return;
+  const start = Date.parse(box.dataset.start), end = Date.parse(box.dataset.end);
+  const grid = box.querySelector('.ot-cd-grid'), status = box.querySelector('.ot-cd-status');
+  const title = box.querySelector('.ot-cd-title');
+  const cells = {};
+  ['d', 'h', 'm', 's'].forEach(u => { cells[u] = box.querySelector('[data-unit="' + u + '"]'); });
+  const pad = n => (n < 10 ? '0' : '') + n;
+  let timer = null;
+  function tick() {
+    const now = Date.now();
+    if (now >= start) {
+      grid.hidden = true; status.hidden = false;
+      status.textContent = i18nText(now < end ? 'hm092' : 'hm093');
+      title.textContent = i18nText('hm043');
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
+    const s = Math.floor((start - now) / 1000);
+    cells.d.textContent = Math.floor(s / 86400);
+    cells.h.textContent = pad(Math.floor(s % 86400 / 3600));
+    cells.m.textContent = pad(Math.floor(s % 3600 / 60));
+    cells.s.textContent = pad(s % 60);
+  }
+  tick();
+  if (Date.now() < start) timer = setInterval(tick, 1000);
+  document.addEventListener('siu:lang', tick);
+}
+
+/* Kenar çubuğunda bulunulan bölümü işaretle (ana sayfa + iç sayfa içindekiler) */
+function initSideNav() {
+  const navs = document.querySelectorAll('.ot-nav, .side__block--toc');
+  if (!navs.length) return;
+  const groups = [];
+  navs.forEach(nav => {
+    const collect = sel => [...nav.querySelectorAll(sel)]
+      .map(a => { const h = a.getAttribute('href') || ''; return { a, el: h.charAt(0) === '#' ? document.getElementById(h.slice(1)) : null }; })
+      .filter(x => x.el);
+    if (nav.classList.contains('ot-nav')) {
+      groups.push({ list: collect(':scope > ul > li > a'), fallback: true });
+      groups.push({ list: collect('.ot-subnav a'), fallback: false });
+    } else {
+      groups.push({ list: collect('a'), fallback: false });
+    }
+  });
+  function current(list) {
+    const line = window.innerHeight * 0.3;
+    let cur = null;
+    list.forEach(x => { if (x.el.getBoundingClientRect().top <= line) cur = x; });
+    return cur;
+  }
+  let queued = false;
+  function update() {
+    queued = false;
+    groups.forEach(g => {
+      const cur = current(g.list) || (g.fallback ? g.list[0] : null);
+      g.list.forEach(x => { if (x === cur) x.a.setAttribute('aria-current', 'true'); else x.a.removeAttribute('aria-current'); });
+    });
+  }
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 }
 
 /* ==========================================================================
@@ -1022,6 +1162,65 @@ const i18nDictionary = {
     ft021: "Aramayı kapat",
     ft022: "Menüyü kapat",
     ft023: "Menüyü aç",
+    // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
+    hm001: "35. Kurultay <span aria-hidden=\"true\">·</span> 4–7 Temmuz 2027 <span aria-hidden=\"true\">·</span> İstanbul",
+    hm002: "Sinyal İşleme ve İletişim Uygulamaları Kurultayı <span>SİU 2027</span>",
+    hm003: "Türkiye'nin sinyal işleme, kablosuz haberleşme, bilgisayarlı görü ve yapay zekâ alanındaki en köklü bilimsel buluşması.",
+    hm004: "Bildiri son tarihi <strong>1 Şubat 2027</strong>",
+    hm005: "Tüm önemli tarihler",
+    hm006: "İstanbul Medipol Üniversitesi, Kavacık Güney Kampüsü",
+    hm010: "Son tarihler belirtilen günün sonuna (23:59, TSİ) kadar geçerlidir.",
+    hm011: "Tüm tarihleri takvime ekle",
+    hm020: "16 Kasım",
+    hm021: "30 Kasım",
+    hm022: "1 Şubat",
+    hm023: "30 Nisan",
+    hm024: "24 Mayıs",
+    hm025: "4–7 Temmuz",
+    hm030: "Özel oturum ve eğitim semineri önerileri",
+    hm031: "Öneriler Kurultay Sekreterliğine iletilir.",
+    hm032: "Özel oturum çağrısı",
+    hm033: "Eğitim semineri (tutorial) çağrısı",
+    hm034: "Öneri kabullerinin bildirilmesi",
+    hm035: "Özel oturum ve eğitim semineri sonuçları öneri sahiplerine iletilir.",
+    hm036: "Bildiri gönderimi",
+    hm037: "Ana son tarih",
+    hm038: "Bildiri formatı",
+    hm039: "Kulvarlar",
+    hm040: "Kabul sonuçlarının açıklanması",
+    hm041: "Baskıya hazır bildirilerin gönderimi",
+    hm042: "IEEE yayın ve telif süreci <em>Yakında duyurulacak</em>",
+    hm043: "Kurultay",
+    hm044: "İstanbul Medipol Üniversitesi, Kavacık Güney Yerleşkesi",
+    hm045: "Google Takvim",
+    hm050: "Planlandı",
+    hm051: "Çağrı açık",
+    hm052: "Son {n} gün",
+    hm053: "Bugün son gün",
+    hm054: "Tamamlandı",
+    hm055: "Etkinlik",
+    hm056: "Devam ediyor",
+    hm057: "Sona erdi",
+    hm058: "Son {n} gün",
+    hm060: "konu",
+    hm061: "Kulvar eş başkanları",
+    hm062: "Yazarlar İçin sayfasına git",
+    hm064: "Yakında duyurulacak",
+    hm070: "Duyurular",
+    hm071: "Özel oturum",
+    hm072: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Öneri dosyaları en geç 16 Kasım 2026 tarihine kadar <a class=\"an-mail\" href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a> adresine iletilmelidir; kabul edilen oturumlar 30 Kasım 2026 tarihine kadar bildirilecektir.",
+    hm073: "<span>Son tarih: <strong>16 Kasım 2026</strong></span><span>Sonuç: <strong>30 Kasım 2026</strong></span>",
+    hm074: "Devamını oku",
+    hm075: "Öğrenci destek",
+    hm080: "Düzenleyenler ve Sponsorlar",
+    hm081: "Ev sahibi ve düzenleyen kuruluşlar",
+    hm082: "Teknik sponsorluk",
+    hm083: "Sponsorluk",
+    hm084: "SİU 2027'de kuruluşunuzla yer alın",
+    hm090: "Kurultaya kalan süre",
+    hm091: "Açılış oturumu: <strong>4 Temmuz 2027</strong><br>Saat yakında duyurulacak.",
+    hm092: "Kurultay devam ediyor",
+    hm093: "Kurultay sona erdi",
   },
   en: {
     ar001: "Conference Chronology (1993 – 2027)",
@@ -1896,6 +2095,65 @@ const i18nDictionary = {
     ft021: "Close search",
     ft022: "Close menu",
     ft023: "Open menu",
+    // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
+    hm001: "35th Conference <span aria-hidden=\"true\">·</span> July 4–7, 2027 <span aria-hidden=\"true\">·</span> Istanbul",
+    hm002: "Signal Processing and Communications Applications Conference <span>SIU 2027</span>",
+    hm003: "Türkiye's most established scientific meeting on signal processing, wireless communications, computer vision and artificial intelligence.",
+    hm004: "Paper submission deadline <strong>February 1, 2027</strong>",
+    hm005: "All important dates",
+    hm006: "Istanbul Medipol University, Kavacık South Campus",
+    hm010: "Deadlines are valid until the end of the stated day (23:59, Türkiye time, UTC+3).",
+    hm011: "Add all dates to your calendar",
+    hm020: "November 16",
+    hm021: "November 30",
+    hm022: "February 1",
+    hm023: "April 30",
+    hm024: "May 24",
+    hm025: "July 4–7",
+    hm030: "Special session and tutorial proposals",
+    hm031: "Proposals are sent to the Conference Secretariat.",
+    hm032: "Call for special sessions",
+    hm033: "Call for tutorials",
+    hm034: "Notification of proposal acceptance",
+    hm035: "Special session and tutorial decisions are sent to the proposers.",
+    hm036: "Paper submission",
+    hm037: "Main deadline",
+    hm038: "Paper format",
+    hm039: "Tracks",
+    hm040: "Notification of acceptance",
+    hm041: "Camera-ready paper submission",
+    hm042: "IEEE publication and copyright process <em>Coming soon</em>",
+    hm043: "Conference",
+    hm044: "Istanbul Medipol University, Kavacık South Campus",
+    hm045: "Google Calendar",
+    hm050: "Scheduled",
+    hm051: "Call open",
+    hm052: "{n} days left",
+    hm053: "Last day today",
+    hm054: "Completed",
+    hm055: "Event",
+    hm056: "In progress",
+    hm057: "Ended",
+    hm058: "{n} day left",
+    hm060: "topics",
+    hm061: "Track co-chairs",
+    hm062: "Go to the For Authors page",
+    hm064: "Coming soon",
+    hm070: "Announcements",
+    hm071: "Special session",
+    hm072: "Special sessions on current and specialised research topics will be organised at SIU 2027. Proposals must be sent to <a class=\"an-mail\" href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a> by November 16, 2026; accepted sessions will be notified by November 30, 2026.",
+    hm073: "<span>Deadline: <strong>November 16, 2026</strong></span><span>Notification: <strong>November 30, 2026</strong></span>",
+    hm074: "Read more",
+    hm075: "Student support",
+    hm080: "Organisers and Sponsors",
+    hm081: "Host and organising institutions",
+    hm082: "Technical sponsorship",
+    hm083: "Sponsorship",
+    hm084: "Take part in SIU 2027 with your organisation",
+    hm090: "Time until the conference",
+    hm091: "Opening session: <strong>July 4, 2027</strong><br>Time to be announced.",
+    hm092: "The conference is in progress",
+    hm093: "The conference has ended",
   }
 };
 
@@ -1957,6 +2215,9 @@ function initLangSwitcher() {
         input.placeholder = i18nDictionary[lang].searchPlaceholder;
       }
     });
+
+    // Dile bağlı JS bileşenleri (zaman çizelgesi çipleri, geri sayım, sıralı listeler) dinler
+    document.dispatchEvent(new CustomEvent('siu:lang', { detail: { lang } }));
   }
 
   // Event listener bağlama (hem mevcut hem sonradan eklenen butonlar için)
