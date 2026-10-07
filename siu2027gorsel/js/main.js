@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegistrationForm();
   initSearchModal();
   initMobileMenu();
+  initHeader();
   initCommitteeBios();
 });
 
@@ -1225,6 +1226,11 @@ const i18nDictionary = {
     hm091: "Açılış oturumu: <strong>4 Temmuz 2027</strong><br>Saat yakında duyurulacak.",
     hm092: "Kurultay devam ediyor",
     hm093: "Kurultay sona erdi",
+    // Başlık (menü yapısı v2, 7 Eki 2026)
+    hd001: "Yazarlar İçin Bildiri Gönderimi",
+    hd002: "4–7 Temmuz 2027 · İstanbul",
+    hd003: "Ara",
+    hd004: "Menü",
   },
   en: {
     ar001: "Conference Chronology (1993 – 2027)",
@@ -2155,6 +2161,11 @@ const i18nDictionary = {
     hm091: "Opening session: <strong>July 4, 2027</strong><br>Time to be announced.",
     hm092: "The conference is in progress",
     hm093: "The conference has ended",
+    // Header (menu structure v2, 7 Oct 2026)
+    hd001: "Authors & Submission",
+    hd002: "July 4–7, 2027 · Istanbul",
+    hd003: "Search",
+    hd004: "Menu",
   }
 };
 
@@ -2535,6 +2546,51 @@ function initMobileMenu() {
         closeDrawer();
       }
     }
+  });
+}
+
+/* ==========================================================================
+   Başlık (.hd): alt menüler tıklamayla açılır, dar ekranda menü düğmesi,
+   dışarı tıklama / Esc kapatır; Mac'te kısayol ipucu ⌘ K
+   ========================================================================== */
+function initHeader() {
+  const hd = document.querySelector('.hd');
+  if (!hd) return;
+  const kbd = hd.querySelector('.hd-kbd');
+  if (kbd && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) kbd.textContent = '⌘ K';
+  const triggers = [...hd.querySelectorAll('.hd-trigger')];
+  function closeAll(except) {
+    triggers.forEach(t => {
+      if (t === except) return;
+      t.setAttribute('aria-expanded', 'false');
+      t.parentNode.classList.remove('is-open');
+    });
+  }
+  triggers.forEach(t => {
+    t.addEventListener('click', () => {
+      const open = t.getAttribute('aria-expanded') !== 'true';
+      closeAll(t);
+      t.setAttribute('aria-expanded', String(open));
+      t.parentNode.classList.toggle('is-open', open);
+    });
+  });
+  const toggle = hd.querySelector('.hd-toggle');
+  function setMenu(open) {
+    if (!toggle) return;
+    hd.classList.toggle('is-menu-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  if (toggle) toggle.addEventListener('click', () => setMenu(!hd.classList.contains('is-menu-open')));
+  document.addEventListener('click', e => { if (!hd.contains(e.target)) { closeAll(); setMenu(false); } });
+  hd.addEventListener('click', e => {
+    if (e.target.closest('.hd-sub a, .hd-link')) { closeAll(); setMenu(false); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = hd.querySelector('.hd-item.is-open > .hd-trigger');
+    closeAll();
+    if (hd.classList.contains('is-menu-open')) { setMenu(false); toggle.focus(); }
+    else if (open) open.focus();
   });
 }
 
