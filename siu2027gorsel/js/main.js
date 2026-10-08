@@ -1231,6 +1231,10 @@ const i18nDictionary = {
     hd002: "4–7 Temmuz 2027 · İstanbul",
     hd003: "Ara",
     hd004: "Menü",
+    hm085: "İstanbul Medipol Üniversitesi",
+    hm086: "Kavacık Güney Yerleşkesi",
+    ft024: "İstanbul Medipol<br>Üniversitesi",
+    hd005: "Hoş geldiniz mesajı, kapsam ve kurultay yeri",
   },
   en: {
     ar001: "Conference Chronology (1993 – 2027)",
@@ -2166,6 +2170,10 @@ const i18nDictionary = {
     hd002: "July 4–7, 2027 · Istanbul",
     hd003: "Search",
     hd004: "Menu",
+    hm085: "Istanbul Medipol University",
+    hm086: "Kavacık South Campus",
+    ft024: "Istanbul Medipol<br>University",
+    hd005: "Welcome message, scope and venue",
   }
 };
 

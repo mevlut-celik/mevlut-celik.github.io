@@ -10,9 +10,10 @@
    bağlantılar mobilde tek satırlık ayraçlı bir liste olarak sunulur.
    Sözlük metinlerindeki "•" ayraç görevi görür. ---------------------------- */
 .jump { display: none; }
+/* Dar ekranda yan sütundaki içindekiler artık içeriğin üstünde görünüyor; bu liste tekrar olur → kapalı */
 @media (max-width: 63.99em) {
   .jump {
-    display: block;
+    display: none;
     margin-bottom: var(--space-6);
     padding: var(--space-4);
     border-radius: var(--radius-md);

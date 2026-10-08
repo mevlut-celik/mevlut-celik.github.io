@@ -28,8 +28,8 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=202">
-  <link rel="stylesheet" href="css/pages/index.css?v=202">
+  <link rel="stylesheet" href="css/style.css?v=204">
+  <link rel="stylesheet" href="css/pages/index.css?v=204">
 
   <!-- Favicon / Touch Icon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -117,9 +117,8 @@
             <li class="hd-item">
               <button class="hd-trigger" type="button" aria-expanded="false" aria-controls="hd-sub-kurultay"><span data-i18n="navAbout">Kurultay Hakkında</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
               <ul class="hd-sub" id="hd-sub-kurultay">
-                <li><a href="hakkinda#hosgeldiniz"><span class="hd-sub-title" data-i18n="navAboutMsg">Hoş Geldiniz Mesajı</span><span class="hd-sub-desc" data-i18n="descAboutMsg">Kurultay başkanlarının daveti</span></a></li>
+                <li><a href="hakkinda"><span class="hd-sub-title" data-i18n="hakkindaPageTitle">Kurultay Hakkında</span><span class="hd-sub-desc" data-i18n="hd005">Hoş geldiniz mesajı, kapsam ve kurultay yeri</span></a></li>
                 <li><a href="komiteler"><span class="hd-sub-title" data-i18n="navCommittees">Düzenleme Kurulu</span><span class="hd-sub-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span></a></li>
-                <li><a href="hakkinda#ev-sahibi"><span class="hd-sub-title" data-i18n="navAboutHost">Kurultay Yeri</span><span class="hd-sub-desc" data-i18n="descAboutHost">İstanbul Medipol Üniversitesi</span></a></li>
                 <li><a href="arsiv"><span class="hd-sub-title" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span><span class="hd-sub-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span></a></li>
               </ul>
             </li>
@@ -482,14 +481,6 @@
           </footer>
         </section>
 
-        <!-- DAVETLİ KONUŞMACILAR (TBA) -->
-        <section id="konusmacilar" aria-labelledby="konusmacilar-title">
-          <header class="ot-intro">
-            <h2 class="ot-title" id="konusmacilar-title" data-i18n="keynotesTitle">Davetli Konuşmacılar</h2>
-          </header>
-          <p class="ot-pending ot-pending--solo"><em data-i18n="hm064">Yakında duyurulacak</em></p>
-        </section>
-
         <!-- DUYURULAR -->
         <section class="an" id="duyurular" aria-labelledby="duyurular-title">
           <header class="ot-intro">
@@ -525,12 +516,7 @@
             <div class="org-row">
               <dt data-i18n="hm081">Ev sahibi ve düzenleyen kuruluşlar</dt>
               <dd>
-                <a class="org-logo" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener">
-                  <picture>
-                    <source media="(prefers-color-scheme: dark)" srcset="assets/medipol-logo-white.png">
-                    <img src="assets/medipol-logo.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async">
-                  </picture>
-                </a>
+                <span class="org-logo"><span data-i18n="hm085">İstanbul Medipol Üniversitesi</span><small data-i18n="hm086">Kavacık Güney Yerleşkesi</small></span>
               </dd>
             </div>
             <div class="org-row">
@@ -579,7 +565,7 @@
                 <li><a href="#kulvar-ddi" data-i18n="track6Title">Doğal Dil İşleme</a></li>
               </ul>
             </li>
-            <li><a href="#konusmacilar" data-i18n="keynotesTitle">Davetli Konuşmacılar</a></li>
+            <li><a href="program#konusmacilar" data-i18n="keynotesTitle">Davetli Konuşmacılar</a></li>
             <li><a href="#duyurular" data-i18n="hm070">Duyurular</a></li>
           </ul>
         </nav>
@@ -609,8 +595,8 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logos">
-            <img src="assets/siu-2027-logo-white.png" alt="SİU 2027 Logo" width="1024" height="1024" loading="lazy" decoding="async">
-            <span class="footer-logos__host"><img src="assets/medipol-logo-white.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async"></span>
+            <span class="footer-wordmark">SİU 2027</span>
+            <span class="footer-logos__host" data-i18n-html="ft024">İstanbul Medipol<br>Üniversitesi</span>
           </div>
           <p class="footer-about" data-i18n="footerAbout">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı, 4–7 Temmuz 2027 tarihlerinde İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü'nde düzenlenecektir.</p>
         </div>
@@ -685,6 +671,6 @@
   <!-- ALTBİLGİ:SON -->
 
   <!-- JavaScript (dokunulmaz) -->
-  <script src="js/main.js?v=202"></script>
+  <script src="js/main.js?v=204"></script>
 </body>
 </html>

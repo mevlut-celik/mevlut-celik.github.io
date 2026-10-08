@@ -528,8 +528,9 @@ p { max-width: var(--measure); }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-7);
-  padding-block: var(--space-8) var(--space-9);
+  padding-block: var(--space-8) 7rem;
 }
+@media (max-width: 37.5em) { .body-grid { padding-bottom: 5rem; } }
 /* Kaynak sırası: önce içerik, sonra <aside>; yerleşim ızgarayla */
 @media (min-width: 68.8125em) {
   .body-grid { grid-template-columns: minmax(0, 1fr) var(--side-w); column-gap: var(--col-gap); }
@@ -550,6 +551,9 @@ p { max-width: var(--measure); }
 .side { display: grid; gap: 1.75rem; align-content: start; font-size: var(--step--1); }
 .side__block { padding: 1.25rem; border-radius: var(--radius-md); background: var(--ot-surface); }
 .side__block--toc { padding: 0; background: none; border-radius: 0; }
+/* Yüzey kutusundaki künye: kutunun kendisi sınır olduğu için ilk/son çizgi yok */
+.side__block .facts > div:first-child { border-top: 0; padding-top: 0; }
+.side__block .facts > div:last-child { border-bottom: 0; padding-bottom: 0; }
 .side__title {
   font-size: var(--step--1);
   font-weight: 700;
@@ -581,10 +585,10 @@ p { max-width: var(--measure); }
 .quick-links a::before { content: "→"; margin-right: .45rem; color: var(--ot-muted); }
 .quick-links a:hover { color: var(--ot-link); }
 
-/* Dar ekran: yan sütun alta iner, gezinme listesi gizlenir */
+/* Dar ekran: yan sütun (sayfa içi gezinme, geri sayım, künye) içeriğin ÜSTÜNE çıkar */
 @media (max-width: 68.75em) {
-  .side { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-5); }
-  .side__block--toc { display: none; }
+  .col-side { order: -1; }
+  .side { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-5); align-items: start; }
 }
 
 /* 7. Bölüm başlıkları ---------------------------------------------------- */
@@ -971,6 +975,8 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
   font-size: var(--step--1);
   line-height: 1.55;
 }
+/* Alt bilgi içerikten geniş: 82rem */
+.site-footer .wrap { max-width: calc(82rem + 2 * var(--gutter)); }
 .site-footer a { color: var(--ft-text); text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 
@@ -985,9 +991,8 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 
 .footer-brand { display: grid; gap: 1.25rem; align-content: start; }
 .footer-logos { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; }
-.footer-logos img { display: block; height: 3rem; width: auto; }
-.footer-logos__host { padding-left: 1.5rem; border-left: 1px solid var(--ft-line); }
-.footer-logos__host img { height: 2.5rem; }
+.footer-wordmark { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; line-height: 1; color: #fff; }
+.footer-logos__host { padding-left: 1.5rem; border-left: 1px solid var(--ft-line); font-size: var(--step--2); font-weight: 600; line-height: 1.3; color: var(--ft-muted); }
 .footer-about { max-width: 24rem; color: var(--ft-muted); }
 
 .footer-heading { margin-bottom: var(--space-4); font-size: var(--step--1); font-weight: 700; color: #fff; }

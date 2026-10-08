@@ -5,7 +5,6 @@
      2  Ana kolon ritmi
      3  Önemli tarihler: dikey zaman çizelgesi (tarih | iz | içerik | durum)
      4  Konular ve kulvarlar: gri kutu + eş başkanlar kartı
-     5  Davetli konuşmacılar (TBA)
      6  Duyurular: iki kart
      7  Düzenleyenler ve sponsorlar + sponsorluk çağrısı
      8  Kenar çubuğu: gezinme + geri sayım
@@ -241,9 +240,6 @@
   .kv-topics { columns: 1; }
 }
 
-/* 5. Davetli konuşmacılar ------------------------------------------------ */
-.sp-box { padding: 1.25rem 1.5rem; border: 1px dashed var(--ot-line-2); border-radius: 10px; }
-
 /* 6. Duyurular ----------------------------------------------------------- */
 .an-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
 .an-card {
@@ -268,7 +264,8 @@
   padding-block: 1.25rem; border-top: 1px solid var(--ot-line);
 }
 .org-row dt { font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ot-muted); }
-.org-logo img { display: block; height: 3.5rem; width: auto; max-width: 100%; }
+.org-logo { display: inline-flex; flex-direction: column; font-size: 1.0625rem; font-weight: 700; line-height: 1.25; color: var(--ot-ink); }
+.org-logo small { font-size: var(--step--2); font-weight: 500; color: var(--ot-muted); }
 
 /* Sponsorluk çağrısı: sayfadaki tek koyu blok, renkler temayla birlikte tersine döner */
 .org-cta {
@@ -333,7 +330,7 @@
 .ot-cd-meta { margin: 1rem 0 0; padding-top: .875rem; border-top: 1px solid var(--ot-line); font-size: .875rem; line-height: 1.5; color: var(--ot-muted); }
 .ot-cd-meta strong { color: var(--ot-ink); font-weight: 600; }
 
-/* Kenar çubuğu alta iner: alt bağlantılar gizlenir, kulvar dizini görünür */
+/* Dar ekran: kenar çubuğu içeriğin üstüne çıkar (style.css); alt bağlantılar gizlenir, kulvar dizini görünür */
 @media (max-width: 68.75em) {
   .ot-side { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 2rem; align-items: start; }
   .ot-subnav { display: none; }
