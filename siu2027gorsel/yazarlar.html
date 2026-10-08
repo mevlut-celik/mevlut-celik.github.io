@@ -26,8 +26,8 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=204">
-  <link rel="stylesheet" href="css/pages/yazarlar.css?v=204">
+  <link rel="stylesheet" href="css/style.css?v=205">
+  <link rel="stylesheet" href="css/pages/yazarlar.css?v=205">
 
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -117,189 +117,218 @@
             <h2 id="kulvarlar-title" data-i18n="yz024">Konular ve Araştırma Kulvarları</h2>
             <p class="visually-hidden" data-i18n="yz023">RESMÎ KULVARLAR</p>
           </div>
-          <ol class="section__body tracks">
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum1">KULVAR 1</p>
-                <h3 class="track__title" data-i18n="track1Title">İletişim ve Ağlar</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Berna Özbek, <span data-i18n="affIyte">İzmir Yüksek Teknoloji Enstitüsü</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Elif Tuğçe Ceran Arslan, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Gökhan M. Güvensen, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Özlem Tuğfe Demir, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+          <div class="section__body">
+            <nav class="kv-index" aria-label="Kulvarlar">
+              <ul>
+                <li><a href="#kulvar-iletisim"><span class="kv-index__name" data-i18n="track1Title">İletişim ve Ağlar</span> <span>29</span></a></li>
+                <li><a href="#kulvar-goruntu"><span class="kv-index__name" data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</span> <span>8</span></a></li>
+                <li><a href="#kulvar-sinyal"><span class="kv-index__name" data-i18n="track3Title">Sinyal İşleme ve Robotik</span> <span>15</span></a></li>
+                <li><a href="#kulvar-ml"><span class="kv-index__name" data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</span> <span>12</span></a></li>
+                <li><a href="#kulvar-biyomedikal"><span class="kv-index__name" data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</span> <span>10</span></a></li>
+                <li><a href="#kulvar-ddi"><span class="kv-index__name" data-i18n="track6Title">Doğal Dil İşleme</span> <span>6</span></a></li>
+              </ul>
+            </nav>
+            <div class="kv-list">
+              <article class="kv-track" id="kulvar-iletisim" aria-labelledby="kulvar-iletisim-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-iletisim-ad" data-i18n="track1Title">İletişim ve Ağlar</h3>
+                    <span class="kv-count">29 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person">Prof. Dr. Berna Özbek</span><span class="kv-org" data-i18n="affIyte">İzmir Yüksek Teknoloji Enstitüsü</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Elif Tuğçe Ceran Arslan</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Gökhan M. Güvensen</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Özlem Tuğfe Demir</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix011">6G ve Ötesi Teknolojiler</li>
+                    <li data-i18n="ix065">Ağ Güvenliği ve Mahremiyet</li>
+                    <li data-i18n="ix073">Akıllı Yansıtıcı Yüzeyler Aracılığı ile İletişim</li>
+                    <li data-i18n="ix008">Bilgi Teorisi ve Kodlama</li>
+                    <li data-i18n="ix059">Bilgi Yaşı ve Değeri</li>
+                    <li data-i18n="ix051">Bütünleşik Algılama ve İletişim</li>
+                    <li data-i18n="ix056">Dijital İkiz Çözümleri</li>
+                    <li data-i18n="ix054">Enerji Hasadı ve Düşük Güçlü İletişim</li>
+                    <li data-i18n="ix061">Enerji Verimli ve Yeşil Ağlar</li>
+                    <li data-i18n="ix066">Fiziksel Katman Güvenliği</li>
+                    <li data-i18n="ix062">Holografik Yüzeyler ve MIMO</li>
+                    <li data-i18n="ix009">İletişim Teorisi ve Uygulamaları</li>
+                    <li data-i18n="ix055">İletişim ve Ağlarda Güvenlik ve Gizlilik</li>
+                    <li data-i18n="ix070">İnsansız Hava Araçları ve Karasal Olmayan İletişim</li>
+                    <li data-i18n="ix060">İşbirlikli İletişim ve Ağlar</li>
+                    <li data-i18n="ix010">Kablosuz İletişim ve Ağlar</li>
+                    <li data-i18n="ix058">Kuantum İletişim</li>
+                    <li data-i18n="ix064">Milimetre Dalgalar ve Terahertz İletişim</li>
+                    <li data-i18n="ix057">Moleküler ve Nano İletişim</li>
+                    <li data-i18n="ix012">Nesnelerin İnterneti (IoT)</li>
+                    <li data-i18n="ix053">Optik İletişim ve Ağlar</li>
+                    <li data-i18n="ix067">Özkaynak Tahsisi</li>
+                    <li data-i18n="ix069">Semantik ve Hedef Odaklı İletişim</li>
+                    <li data-i18n="ix050">Siber-Fiziksel Sistemler</li>
+                    <li data-i18n="ix013">Taşıtsal İletişim</li>
+                    <li data-i18n="ix071">Telsiz Güç ve Bilgi Transferi</li>
+                    <li data-i18n="ix063">Uç Bilişim, Uç Zekâsı ve Sis Ağları</li>
+                    <li data-i18n="ix052">Uydu ve Derin Uzay İletişimi</li>
+                    <li data-i18n="ix068">Yazılım Tabanlı Ağlar, Ağ Fonksiyonlarını Sanallaştırma</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix011">6G ve Ötesi Teknolojiler</li>
-                <li data-i18n="ix065">Ağ Güvenliği ve Mahremiyet</li>
-                <li data-i18n="ix073">Akıllı Yansıtıcı Yüzeyler Aracılığı ile İletişim</li>
-                <li data-i18n="ix008">Bilgi Teorisi ve Kodlama</li>
-                <li data-i18n="ix059">Bilgi Yaşı ve Değeri</li>
-                <li data-i18n="ix051">Bütünleşik Algılama ve İletişim</li>
-                <li data-i18n="ix056">Dijital İkiz Çözümleri</li>
-                <li data-i18n="ix054">Enerji Hasadı ve Düşük Güçlü İletişim</li>
-                <li data-i18n="ix061">Enerji Verimli ve Yeşil Ağlar</li>
-                <li data-i18n="ix066">Fiziksel Katman Güvenliği</li>
-                <li data-i18n="ix062">Holografik Yüzeyler ve MIMO</li>
-                <li data-i18n="ix009">İletişim Teorisi ve Uygulamaları</li>
-                <li data-i18n="ix055">İletişim ve Ağlarda Güvenlik ve Gizlilik</li>
-                <li data-i18n="ix070">İnsansız Hava Araçları ve Karasal Olmayan İletişim</li>
-                <li data-i18n="ix060">İşbirlikli İletişim ve Ağlar</li>
-                <li data-i18n="ix010">Kablosuz İletişim ve Ağlar</li>
-                <li data-i18n="ix058">Kuantum İletişim</li>
-                <li data-i18n="ix064">Milimetre Dalgalar ve Terahertz İletişim</li>
-                <li data-i18n="ix057">Moleküler ve Nano İletişim</li>
-                <li data-i18n="ix012">Nesnelerin İnterneti (IoT)</li>
-                <li data-i18n="ix053">Optik İletişim ve Ağlar</li>
-                <li data-i18n="ix067">Özkaynak Tahsisi</li>
-                <li data-i18n="ix069">Semantik ve Hedef Odaklı İletişim</li>
-                <li data-i18n="ix050">Siber-Fiziksel Sistemler</li>
-                <li data-i18n="ix013">Taşıtsal İletişim</li>
-                <li data-i18n="ix071">Telsiz Güç ve Bilgi Transferi</li>
-                <li data-i18n="ix063">Uç Bilişim, Uç Zekâsı ve Sis Ağları</li>
-                <li data-i18n="ix052">Uydu ve Derin Uzay İletişimi</li>
-                <li data-i18n="ix068">Yazılım Tabanlı Ağlar, Ağ Fonksiyonlarını Sanallaştırma</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum2">KULVAR 2</p>
-                <h3 class="track__title" data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Ramazan Gökberk Cinbiş, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Yakup Genç, <span data-i18n="affGtu">Gebze Teknik Üniversitesi</span></li>
+              </article>
+
+              <article class="kv-track" id="kulvar-goruntu" aria-labelledby="kulvar-goruntu-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-goruntu-ad" data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</h3>
+                    <span class="kv-count">8 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Ramazan Gökberk Cinbiş</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Yakup Genç</span><span class="kv-org" data-i18n="affGtu">Gebze Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix075">3B Görüntü ve Hesaplamalı Fotoğrafçılık</li>
+                    <li data-i18n="ix019">Belge Analizi ve Anlama</li>
+                    <li data-i18n="ix016">Çok Kanallı ve Çok Kameralı İşleme</li>
+                    <li data-i18n="ix014">Görüntü ve Video İşleme</li>
+                    <li data-i18n="ix018">Görüntü ve Video Tabanlı Biyometrik</li>
+                    <li data-i18n="ix017">Görüntü/Video Kodlama ve Sıkıştırma</li>
+                    <li data-i18n="ix015">Obje Algılama ve Desen Tanıma</li>
+                    <li data-i18n="ix074">Uzaktan Algılama ve Coğrafi Analiz</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix075">3B Görüntü ve Hesaplamalı Fotoğrafçılık</li>
-                <li data-i18n="ix019">Belge Analizi ve Anlama</li>
-                <li data-i18n="ix016">Çok Kanallı ve Çok Kameralı İşleme</li>
-                <li data-i18n="ix014">Görüntü ve Video İşleme</li>
-                <li data-i18n="ix018">Görüntü ve Video Tabanlı Biyometrik</li>
-                <li data-i18n="ix017">Görüntü/Video Kodlama ve Sıkıştırma</li>
-                <li data-i18n="ix015">Obje Algılama ve Desen Tanıma</li>
-                <li data-i18n="ix074">Uzaktan Algılama ve Coğrafi Analiz</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum3">KULVAR 3</p>
-                <h3 class="track__title" data-i18n="track3Title">Sinyal İşleme ve Robotik</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Elif Vural, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Ertan Kazıklı, <span data-i18n="affEtu">TOBB ETÜ</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> İsmail Uyanık, <span data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Mert Kalfa, <span data-i18n="affSabanci">Sabancı Üniversitesi</span></li>
-                    <li>Prof. Dr. Ömer Nezih Gerek, <span data-i18n="affEstu">Eskişehir Teknik Üniversitesi</span></li>
+              </article>
+
+              <article class="kv-track" id="kulvar-sinyal" aria-labelledby="kulvar-sinyal-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-sinyal-ad" data-i18n="track3Title">Sinyal İşleme ve Robotik</h3>
+                    <span class="kv-count">15 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Elif Vural</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Ertan Kazıklı</span><span class="kv-org" data-i18n="affEtu">TOBB ETÜ</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> İsmail Uyanık</span><span class="kv-org" data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Mert Kalfa</span><span class="kv-org" data-i18n="affSabanci">Sabancı Üniversitesi</span></li>
+                      <li><span class="kv-person">Prof. Dr. Ömer Nezih Gerek</span><span class="kv-org" data-i18n="affEstu">Eskişehir Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix044">Deniz, Hava ve Kara Robotları</li>
+                    <li data-i18n="ix081">E-Sağlık Uygulamaları ve Destekleyici Teknolojiler</li>
+                    <li data-i18n="ix045">Endüstriyel Robotlar</li>
+                    <li data-i18n="ix079">Endüstriyel ve Otomotiv Uygulamaları</li>
+                    <li data-i18n="ix082">Finansal Sinyal İşleme</li>
+                    <li data-i18n="ix080">Gerçek Zamanlı Sinyal İşleme ve Gömülü Sistemler</li>
+                    <li data-i18n="ix078">İnsan-Bilgisayar Etkileşimi ve Davranış Analizi</li>
+                    <li data-i18n="ix046">İnsansı ve Sosyal Robotlar</li>
+                    <li data-i18n="ix021">İstatistiksel Sinyal İşleme</li>
+                    <li data-i18n="ix077">Otonom Sistemler için Sinyal İşleme</li>
+                    <li data-i18n="ix024">Radar Sinyal İşleme</li>
+                    <li data-i18n="ix083">Robotik ve Otomasyon</li>
+                    <li data-i18n="ix076">Siber Güvenlik Uygulamaları için Sinyal İşleme</li>
+                    <li data-i18n="ix020">Sinyal İşleme Teorisi</li>
+                    <li data-i18n="ix047">Sürü Robotları</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix044">Deniz, Hava ve Kara Robotları</li>
-                <li data-i18n="ix081">E-Sağlık Uygulamaları ve Destekleyici Teknolojiler</li>
-                <li data-i18n="ix045">Endüstriyel Robotlar</li>
-                <li data-i18n="ix079">Endüstriyel ve Otomotiv Uygulamaları</li>
-                <li data-i18n="ix082">Finansal Sinyal İşleme</li>
-                <li data-i18n="ix080">Gerçek Zamanlı Sinyal İşleme ve Gömülü Sistemler</li>
-                <li data-i18n="ix078">İnsan-Bilgisayar Etkileşimi ve Davranış Analizi</li>
-                <li data-i18n="ix046">İnsansı ve Sosyal Robotlar</li>
-                <li data-i18n="ix021">İstatistiksel Sinyal İşleme</li>
-                <li data-i18n="ix077">Otonom Sistemler için Sinyal İşleme</li>
-                <li data-i18n="ix024">Radar Sinyal İşleme</li>
-                <li data-i18n="ix083">Robotik ve Otomasyon</li>
-                <li data-i18n="ix076">Siber Güvenlik Uygulamaları için Sinyal İşleme</li>
-                <li data-i18n="ix020">Sinyal İşleme Teorisi</li>
-                <li data-i18n="ix047">Sürü Robotları</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum4">KULVAR 4</p>
-                <h3 class="track__title" data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Ayşegül Dündar, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Cem Tekin, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li>Prof. Dr. Tunca Doğan, <span data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Zafer Doğan, <span data-i18n="affKoc">Koç Üniversitesi</span></li>
+              </article>
+
+              <article class="kv-track" id="kulvar-ml" aria-labelledby="kulvar-ml-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-ml-ad" data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</h3>
+                    <span class="kv-count">12 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Ayşegül Dündar</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Cem Tekin</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      <li><span class="kv-person">Prof. Dr. Tunca Doğan</span><span class="kv-org" data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Zafer Doğan</span><span class="kv-org" data-i18n="affKoc">Koç Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix085">Açıklanabilir Yapay Zekâ ve Güvenilir Makine Öğrenmesi</li>
+                    <li data-i18n="ix087">Aktarmalı, Yarı-Gözetmenli ve Gözetimsiz Öğrenme</li>
+                    <li data-i18n="ix086">Çekişmeli Öğrenme ve Dayanıklı Yapay Zekâ</li>
+                    <li data-i18n="ix030">Çok Modlu Analiz</li>
+                    <li data-i18n="ix089">Denetimsiz ve Üretken Modeller</li>
+                    <li data-i18n="ix027">Derin Öğrenme</li>
+                    <li data-i18n="ix029">İletişim Sistemleri için Makine Öğrenmesi</li>
+                    <li data-i18n="ix084">İşaret/İmge İşleme Uygulamaları için Makine Öğrenmesi, Derin Öğrenme</li>
+                    <li data-i18n="ix026">Makine Öğrenmesi Kuramı</li>
+                    <li data-i18n="ix088">Makine Öğrenmesi Tekniklerinin Başarım Analizi</li>
+                    <li data-i18n="ix031">Pekiştirmeli Öğrenme</li>
+                    <li data-i18n="ix028">Sağlık Uygulamaları için Makine Öğrenmesi</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix085">Açıklanabilir Yapay Zekâ ve Güvenilir Makine Öğrenmesi</li>
-                <li data-i18n="ix087">Aktarmalı, Yarı-Gözetmenli ve Gözetimsiz Öğrenme</li>
-                <li data-i18n="ix086">Çekişmeli Öğrenme ve Dayanıklı Yapay Zekâ</li>
-                <li data-i18n="ix030">Çok Modlu Analiz</li>
-                <li data-i18n="ix089">Denetimsiz ve Üretken Modeller</li>
-                <li data-i18n="ix027">Derin Öğrenme</li>
-                <li data-i18n="ix029">İletişim Sistemleri için Makine Öğrenmesi</li>
-                <li data-i18n="ix084">İşaret/İmge İşleme Uygulamaları için Makine Öğrenmesi, Derin Öğrenme</li>
-                <li data-i18n="ix026">Makine Öğrenmesi Kuramı</li>
-                <li data-i18n="ix088">Makine Öğrenmesi Tekniklerinin Başarım Analizi</li>
-                <li data-i18n="ix031">Pekiştirmeli Öğrenme</li>
-                <li data-i18n="ix028">Sağlık Uygulamaları için Makine Öğrenmesi</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum5">KULVAR 5</p>
-                <h3 class="track__title" data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Aydın Akan, <span data-i18n="affIeu">İzmir Ekonomi Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> İmam Şamil Yetik, <span data-i18n="affEtu">TOBB ETÜ</span></li>
-                    <li>Prof. Dr. Mustafa Alper Selver, <span data-i18n="affDeu">Dokuz Eylül Üniversitesi</span></li>
-                    <li>Prof. Dr. Tolga Çukur, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Yeşim Serinağaoğlu Doğrusöz, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+              </article>
+
+              <article class="kv-track" id="kulvar-biyomedikal" aria-labelledby="kulvar-biyomedikal-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-biyomedikal-ad" data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</h3>
+                    <span class="kv-count">10 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person">Prof. Dr. Aydın Akan</span><span class="kv-org" data-i18n="affIeu">İzmir Ekonomi Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> İmam Şamil Yetik</span><span class="kv-org" data-i18n="affEtu">TOBB ETÜ</span></li>
+                      <li><span class="kv-person">Prof. Dr. Mustafa Alper Selver</span><span class="kv-org" data-i18n="affDeu">Dokuz Eylül Üniversitesi</span></li>
+                      <li><span class="kv-person">Prof. Dr. Tolga Çukur</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Yeşim Serinağaoğlu Doğrusöz</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix034">Biyoinformatik ve Genomik Sinyal İşleme</li>
+                    <li data-i18n="ix032">Biyomedikal Sinyal Analizi</li>
+                    <li data-i18n="ix036">Biyomedikal Veri Gizliliği ve Güvenliği</li>
+                    <li data-i18n="ix090">Biyometrik Sinyal İşleme</li>
+                    <li data-i18n="ix035">Giyilebilir Algılayıcılar ve E-Sağlık</li>
+                    <li data-i18n="ix093">Nöromühendislik ve Beyin Sinyali İşleme</li>
+                    <li data-i18n="ix037">Sağlık İzleme için Biyosinyal İşleme</li>
+                    <li data-i18n="ix092">Tele-Tıp ve Uzaktan Hasta Takibi</li>
+                    <li data-i18n="ix033">Tıbbi Görüntü Analizi ve Uygulamaları</li>
+                    <li data-i18n="ix091">Tıbbi Tanıda Yapay Zekâ Uygulamaları</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix034">Biyoinformatik ve Genomik Sinyal İşleme</li>
-                <li data-i18n="ix032">Biyomedikal Sinyal Analizi</li>
-                <li data-i18n="ix036">Biyomedikal Veri Gizliliği ve Güvenliği</li>
-                <li data-i18n="ix090">Biyometrik Sinyal İşleme</li>
-                <li data-i18n="ix035">Giyilebilir Algılayıcılar ve E-Sağlık</li>
-                <li data-i18n="ix093">Nöromühendislik ve Beyin Sinyali İşleme</li>
-                <li data-i18n="ix037">Sağlık İzleme için Biyosinyal İşleme</li>
-                <li data-i18n="ix092">Tele-Tıp ve Uzaktan Hasta Takibi</li>
-                <li data-i18n="ix033">Tıbbi Görüntü Analizi ve Uygulamaları</li>
-                <li data-i18n="ix091">Tıbbi Tanıda Yapay Zekâ Uygulamaları</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum6">KULVAR 6</p>
-                <h3 class="track__title" data-i18n="track6Title">Doğal Dil İşleme</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Çağrı Toraman, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li>Prof. Dr. Mehmet Fatih Amasyalı, <span data-i18n="affYtu">Yıldız Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Murat Can Ganiz, <span data-i18n="affMarmara">Marmara Üniversitesi</span></li>
+              </article>
+
+              <article class="kv-track" id="kulvar-ddi" aria-labelledby="kulvar-ddi-ad">
+                <div class="kv-body">
+                  <header class="kv-head">
+                    <h3 class="kv-name" id="kulvar-ddi-ad" data-i18n="track6Title">Doğal Dil İşleme</h3>
+                    <span class="kv-count">6 <span data-i18n="hm060">konu</span></span>
+                  </header>
+                  <div class="kv-chairs">
+                    <h4 class="kv-label" data-i18n="hm061">Kulvar eş başkanları</h4>
+                    <ul class="kv-people">
+                      <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Çağrı Toraman</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person">Prof. Dr. Mehmet Fatih Amasyalı</span><span class="kv-org" data-i18n="affYtu">Yıldız Teknik Üniversitesi</span></li>
+                      <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Murat Can Ganiz</span><span class="kv-org" data-i18n="affMarmara">Marmara Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <ul class="kv-topics">
+                    <li data-i18n="ix041">Bilgi Çıkarma ve Erişimi</li>
+                    <li data-i18n="ix038">Büyük Dil Modelleri ve Eğitim Stratejileri</li>
+                    <li data-i18n="ix042">Dil Teorileri ve Bilişsel Modeller</li>
+                    <li data-i18n="ix040">Diyalog ve Etkileşimli Sistemler</li>
+                    <li data-i18n="ix043">Tercüme ve Çoklu Dil İşleme</li>
+                    <li data-i18n="ix039">Yapay Zekâ ve Büyük Dil Modeli Ajanları</li>
                   </ul>
                 </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix041">Bilgi Çıkarma ve Erişimi</li>
-                <li data-i18n="ix038">Büyük Dil Modelleri ve Eğitim Stratejileri</li>
-                <li data-i18n="ix042">Dil Teorileri ve Bilişsel Modeller</li>
-                <li data-i18n="ix040">Diyalog ve Etkileşimli Sistemler</li>
-                <li data-i18n="ix043">Tercüme ve Çoklu Dil İşleme</li>
-                <li data-i18n="ix039">Yapay Zekâ ve Büyük Dil Modeli Ajanları</li>
-              </ul>
-            </li>
-          </ol>
+              </article>
+            </div>
+          </div>
         </section>
 
         <section class="section" id="sablonlar" aria-labelledby="sablonlar-title">
@@ -455,6 +484,6 @@
 
   <!-- ALTBİLGİ:SON -->
 
-  <script src="js/main.js?v=204"></script>
+  <script src="js/main.js?v=205"></script>
 </body>
 </html>
