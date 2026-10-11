@@ -7,12 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initSignalCanvas();
   initCountdown();
   initLangSwitcher();
+  initTopicSort();
+  initTimeline();
+  initHomeCountdown();
+  initSideNav();
   initProgramFilters();
   initArchiveSearch();
   initArchiveMap();
   initRegistrationForm();
   initSearchModal();
   initMobileMenu();
+  initHeader();
   initCommitteeBios();
 });
 
@@ -146,12 +151,155 @@ function initCountdown() {
 }
 
 /* ==========================================================================
+   2b. Ana sayfa v2: zaman çizelgesi durumları, geri sayım, kenar çubuğu,
+       konu listelerinin A–Z sıralaması (dile göre)
+   ========================================================================== */
+function currentLangCode() { return document.documentElement.lang === 'en' ? 'en' : 'tr'; }
+function i18nText(key) {
+  const d = i18nDictionary[currentLangCode()] || i18nDictionary.tr;
+  return (d && d[key]) || i18nDictionary.tr[key] || '';
+}
+
+/* Konu listeleri o anki dilin alfabesiyle A–Z (Türkçe: ç, ğ, ı, ö, ş, ü doğru yerde) */
+function initTopicSort() {
+  const lists = document.querySelectorAll('.kv-topics, .track__topics');
+  if (!lists.length) return;
+  function sortAll() {
+    const lang = currentLangCode();
+    lists.forEach(ul => {
+      [...ul.children]
+        .sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim(), lang, { sensitivity: 'base', numeric: true }))
+        .forEach(li => ul.appendChild(li));
+    });
+  }
+  sortAll();
+  document.addEventListener('siu:lang', sortAll);
+}
+
+/* Önemli tarihler: durum çipi ve "sıradaki" işareti data-date'ten hesaplanır */
+function initTimeline() {
+  const items = [...document.querySelectorAll('.ot-item')];
+  if (!items.length) return;
+  const DAY = 864e5, SOON = 14;
+  const parse = s => { const p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); };
+
+  function render() {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let next = null;
+    items.forEach(li => {
+      const start = parse(li.dataset.date);
+      const end = li.dataset.end ? parse(li.dataset.end) : start;
+      const days = Math.round((start - today) / DAY);
+      const isEvent = li.dataset.kind === 'event';
+      const chip = li.querySelector('.ot-chip');
+      const state = today > end ? 'past' : (today >= start ? 'live' : 'upcoming');
+      li.dataset.state = state;
+      li.removeAttribute('data-next');
+      if (state !== 'past' && !next) { next = li; li.setAttribute('data-next', ''); }
+
+      let kind = '', label = i18nText('hm050');
+      if (isEvent) {
+        if (state === 'past') { kind = 'done'; label = i18nText('hm057'); }
+        else if (state === 'live') { kind = 'live'; label = i18nText('hm056'); }
+        else { kind = 'event'; label = i18nText('hm055'); }
+      } else if (state === 'past') {
+        kind = 'done'; label = i18nText('hm054');
+      } else if (days === 0) {
+        kind = 'soon'; label = i18nText('hm053');
+      } else if (days <= SOON) {
+        kind = 'soon'; label = i18nText(days === 1 ? 'hm058' : 'hm052').replace('{n}', days);
+      } else if (li.dataset.open === 'true') {
+        kind = 'open'; label = i18nText('hm051');
+      }
+      if (!chip) return;
+      chip.textContent = label;
+      if (kind) chip.dataset.kind = kind; else chip.removeAttribute('data-kind');
+    });
+  }
+  render();
+  document.addEventListener('siu:lang', render);
+}
+
+/* Kenar çubuğu geri sayımı (.ot-countdown data-start / data-end) */
+function initHomeCountdown() {
+  const box = document.querySelector('.ot-countdown');
+  if (!box) return;
+  const start = Date.parse(box.dataset.start), end = Date.parse(box.dataset.end);
+  const grid = box.querySelector('.ot-cd-grid'), status = box.querySelector('.ot-cd-status');
+  const title = box.querySelector('.ot-cd-title');
+  const cells = {};
+  ['d', 'h', 'm', 's'].forEach(u => { cells[u] = box.querySelector('[data-unit="' + u + '"]'); });
+  const pad = n => (n < 10 ? '0' : '') + n;
+  let timer = null;
+  function tick() {
+    const now = Date.now();
+    if (now >= start) {
+      grid.hidden = true; status.hidden = false;
+      status.textContent = i18nText(now < end ? 'hm092' : 'hm093');
+      title.textContent = i18nText('hm043');
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
+    const s = Math.floor((start - now) / 1000);
+    cells.d.textContent = Math.floor(s / 86400);
+    cells.h.textContent = pad(Math.floor(s % 86400 / 3600));
+    cells.m.textContent = pad(Math.floor(s % 3600 / 60));
+    cells.s.textContent = pad(s % 60);
+  }
+  tick();
+  if (Date.now() < start) timer = setInterval(tick, 1000);
+  document.addEventListener('siu:lang', tick);
+}
+
+/* Kenar çubuğunda bulunulan bölümü işaretle (ana sayfa + iç sayfa içindekiler) */
+function initSideNav() {
+  const navs = document.querySelectorAll('.ot-nav, .side__block--toc');
+  if (!navs.length) return;
+  const groups = [];
+  navs.forEach(nav => {
+    const collect = sel => [...nav.querySelectorAll(sel)]
+      .map(a => { const h = a.getAttribute('href') || ''; return { a, el: h.charAt(0) === '#' ? document.getElementById(h.slice(1)) : null }; })
+      .filter(x => x.el);
+    if (nav.classList.contains('ot-nav')) {
+      const top = { list: collect(':scope > ul > li > a'), fallback: true };
+      groups.push(top);
+      // Alt bağlantılar yalnız üst bölümleri (Konular) o an işaretliyken işaretlenir
+      groups.push({ list: collect('.ot-subnav a'), fallback: false, parent: top });
+    } else {
+      groups.push({ list: collect('a'), fallback: false });
+    }
+  });
+  function current(list) {
+    const line = window.innerHeight * 0.3;
+    let cur = null;
+    list.forEach(x => { if (x.el.getBoundingClientRect().top <= line) cur = x; });
+    return cur;
+  }
+  let queued = false;
+  function update() {
+    queued = false;
+    groups.forEach(g => {
+      let cur = current(g.list) || (g.fallback ? g.list[0] : null);
+      if (g.parent) {
+        const p = g.parent.cur;
+        if (!p || !p.a.parentElement.querySelector('.ot-subnav')) cur = null;
+      }
+      g.cur = cur;
+      g.list.forEach(x => { if (x === cur) x.a.setAttribute('aria-current', 'true'); else x.a.removeAttribute('aria-current'); });
+    });
+  }
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
+/* ==========================================================================
    3. TR / EN Çift Dil Desteği (Menü, Başlıklar, Butonlar ve Sayfa İçerikleri)
    ========================================================================== */
 const i18nDictionary = {
   tr: {
     ar001: "Kurultay Kronolojisi (1993 – 2027)",
-    ar002: "SİU kurultaylarının yıl, sıra numarası, ev sahibi kurum ve düzenlendiği şehir bilgileri. Tabloda arama yaparak geçmiş kurultayları filtreleyebilirsiniz.",
+    ar002: "SİU kurultaylarının yıl, sıra numarası, ev sahibi kurum, düzenlendiği şehir ve kurultay başkanları bilgileri. Tabloda arama yaparak geçmiş kurultayları filtreleyebilirsiniz.",
     ar003: "Arşivde ara",
     ar004: "No",
     ar005: "Yıl",
@@ -212,7 +360,7 @@ const i18nDictionary = {
     ar087: "Doğu Akdeniz Üniversitesi",
     ar088: "Gazimağusa, KKTC",
     ar090: "İstanbul Üniversitesi",
-    ar091: "Beldibi, Antalya",
+    ar091: "Belek, Antalya",
     ar093: "Bilkent Üniversitesi",
     ar094: "Bilkent, Ankara",
     ar096: "Başkent Üniversitesi",
@@ -225,7 +373,7 @@ const i18nDictionary = {
     ar106: "Kapadokya, Nevşehir",
     ar108: "Bilkent Üniversitesi + Boğaziçi Üniversitesi",
     ar109: "Gökova, Muğla",
-    ar111: "Boğaziçi Üniversitesi",
+    ar111: "Boğaziçi Üniversitesi + Bilkent Üniversitesi",
     ar112: "Bebek, İstanbul",
     arsivKicker: "KURUMSAL BELLEK & BİLİMSEL ARŞİV",
     arsivPageDesc: "Boğaziçi Üniversitesi'nde başlayan 35 yıllık kurultay kronolojisi, ev sahibi kurumlar ve etkinlik yerleri.",
@@ -321,7 +469,7 @@ const i18nDictionary = {
     dr08Due: "4–7 Temmuz 2027",
     dr08Name: "Kurultay Tarihleri",
     dr08Status: "Etkinlik",
-    dt001: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Özel oturum düzenlemek isteyen araştırmacıların en geç <strong>16 Kasım 2026</strong> tarihine kadar aşağıdaki bilgileri içeren öneri dosyasını <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a> adresine iletmeleri gerekmektedir:",
+    dt001: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Özel oturum düzenlemek isteyen araştırmacıların en geç <strong>16 Kasım 2026</strong> tarihine kadar aşağıdaki bilgileri içeren öneri dosyasını <a href=\"mailto:siu2027ozeloturum@gmail.com\">siu2027ozeloturum@gmail.com</a> adresine iletmeleri gerekmektedir:",
     dt002: "<strong>Yazar Kaydı:</strong> Bildirinin programda kalması ve IEEE yayın sürecine girebilmesi için yazarlardan en az birinin <strong>24 Mayıs 2027</strong> tarihine kadar kurultay kaydını tamamlaması zorunludur.",
     dt003: "Kabul edilen özel oturumlar <strong>30 Kasım 2026</strong> tarihine kadar düzenleyicilere bildirilecektir.",
     dt004: "Oturum başlıkları, salonlar, saatler ve oturumlarda sunulacak bildiriler hakem değerlendirme süreci tamamlandıktan sonra (30 Nisan 2027 sonrası) yayımlanacaktır. Kurultayda bildiri kabul edilen kulvarlar için <a href=\"yazarlar#kulvarlar\">Konular ve Araştırma Kulvarları</a> sayfasına bakabilirsiniz.",
@@ -719,7 +867,7 @@ const i18nDictionary = {
     newsTitle4: "Öğrenci Destekleri",
     newsTag5: "ÖZEL OTURUM",
     newsTitle5: "Özel Oturum Çağrısı: Öneriler 16 Kasım 2026'ya Kadar",
-    newsDesc5: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Öneri dosyaları en geç 16 Kasım 2026 tarihine kadar siu2027@medipol.edu.tr adresine iletilmelidir; kabul edilen oturumlar 30 Kasım 2026 tarihine kadar bildirilecektir.",
+    newsDesc5: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Öneri dosyaları en geç 16 Kasım 2026 tarihine kadar siu2027ozeloturum@gmail.com adresine iletilmelidir; kabul edilen oturumlar 30 Kasım 2026 tarihine kadar bildirilecektir.",
     nf001: "HATA 404",
     nf002: "Aradığınız sayfa bulunamadı",
     nf003: "Bağlantı taşınmış, adı değişmiş veya adres yanlış yazılmış olabilir. Aşağıdaki başlıklardan devam edebilirsiniz.",
@@ -941,9 +1089,9 @@ const i18nDictionary = {
     yz063: "Resmî IEEE Word Şablonu ↗",
     yz064: "ÖZEL OTURUM ÇAĞRISI",
     yz065: "Özel Oturum (Special Session) Öneri Yönergesi",
-    yz067: "Özel oturum başlığı ve kapsam özeti (en fazla 1 sayfa)",
-    yz068: "Oturum düzenleyicilerinin (organizers) özgeçmişleri ve iletişim bilgileri",
-    yz069: "Oturuma davet edilmesi planlanan en az 5 adet taslak bildiri başlığı ve yazar listesi",
+    yz067: "Özel oturum başkan(lar)ı: ad ve soyad, çalıştığı kurum, görevi, e-posta adresi ve telefon numarası",
+    yz068: "Özel oturum başlığı",
+    yz069: "Özel oturumun kısa tanıtımı: konusu, kapsamı, bilimsel önemi ve kurultaya katkısı",
     yz070: "YAYIN VE TELİF SÜRECİ",
     yz071: "Baskıya Hazır Bildiri & IEEE Telif Devir Süreci",
     yz072: "Hakem değerlendirmesi sonucu kabul edilen bildirilerin <strong>IEEE Xplore Dijital Kütüphanesi'nde (IEEE Xplore Digital Library)</strong> yayınlanabilmesi için yazarların aşağıdaki adımları tamamlaması gerekmektedir:",
@@ -1022,10 +1170,170 @@ const i18nDictionary = {
     ft021: "Aramayı kapat",
     ft022: "Menüyü kapat",
     ft023: "Menüyü aç",
+    // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
+    hm001: "35. Kurultay <span aria-hidden=\"true\">·</span> 4–7 Temmuz 2027 <span aria-hidden=\"true\">·</span> İstanbul",
+    hm002: "Sinyal İşleme ve İletişim Uygulamaları Kurultayı <span>SİU 2027</span>",
+    hm004: "Bildiri son tarihi <strong>1 Şubat 2027</strong>",
+    hm005: "Tüm önemli tarihler",
+    hm006: "İstanbul Medipol Üniversitesi, Kavacık Güney Kampüsü",
+    hm010: "Son tarihler belirtilen günün sonuna (23:59, TSİ) kadar geçerlidir.",
+    hm011: "Tüm tarihleri takvime ekle",
+    hm020: "16 Kasım",
+    hm021: "30 Kasım",
+    hm022: "1 Şubat",
+    hm023: "30 Nisan",
+    hm024: "24 Mayıs",
+    hm025: "4–7 Temmuz",
+    hm030: "Özel oturum ve eğitim semineri önerileri",
+    hm032: "Özel oturum çağrısı",
+    hm033: "Eğitim semineri (tutorial) çağrısı",
+    hm034: "Öneri kabullerinin bildirilmesi",
+    hm036: "Bildiri gönderimi",
+    hm037: "Ana son tarih",
+    hm038: "Bildiri formatı",
+    hm039: "Kulvarlar",
+    hm040: "Kabul sonuçlarının açıklanması",
+    hm041: "Baskıya hazır bildirilerin gönderimi ve yazar kaydı",
+    hm042: "IEEE yayın ve telif süreci <em>Yakında duyurulacak</em>",
+    hm043: "Kurultay",
+    hm044: "İstanbul Medipol Üniversitesi, Kavacık Güney Yerleşkesi",
+    hm045: "Google Takvim",
+    hm050: "Planlandı",
+    hm051: "Çağrı açık",
+    hm052: "Son {n} gün",
+    hm053: "Bugün son gün",
+    hm054: "Tamamlandı",
+    hm055: "Etkinlik",
+    hm056: "Devam ediyor",
+    hm057: "Sona erdi",
+    hm058: "Son {n} gün",
+    hm060: "konu",
+    hm061: "Kulvar eş başkanları",
+    hm062: "Yazarlar İçin sayfasına git",
+    hm064: "Yakında duyurulacak",
+    hm070: "Duyurular",
+    hm071: "Özel oturum",
+    hm072: "SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Öneri dosyaları en geç 16 Kasım 2026 tarihine kadar <a class=\"an-mail\" href=\"mailto:siu2027ozeloturum@gmail.com\">siu2027ozeloturum@gmail.com</a> adresine iletilmelidir; kabul edilen oturumlar 30 Kasım 2026 tarihine kadar bildirilecektir.",
+    hm073: "<span>Son tarih: <strong>16 Kasım 2026</strong></span><span>Sonuç: <strong>30 Kasım 2026</strong></span>",
+    hm074: "Devamını oku",
+    hm075: "Öğrenci destek",
+    hm080: "Düzenleyenler ve Sponsorlar",
+    hm081: "Ev sahibi ve düzenleyen kuruluşlar",
+    hm082: "Teknik sponsorluk",
+    hm083: "Sponsorluk",
+    hm084: "SİU 2027'de kuruluşunuzla yer alın",
+    hm090: "Kurultaya kalan süre",
+    hm091: "Açılış oturumu: <strong>4 Temmuz 2027</strong><br>Saat yakında duyurulacak.",
+    hm092: "Kurultay devam ediyor",
+    hm093: "Kurultay sona erdi",
+    // Başlık (menü yapısı v2, 7 Eki 2026)
+    hd002: "4–7 Temmuz 2027 · İstanbul",
+    hd003: "Ara",
+    hd004: "Menü",
+    hm085: "İstanbul Medipol Üniversitesi",
+    hm086: "Kavacık Güney Yerleşkesi",
+    ft024: "İstanbul Medipol<br>Üniversitesi",
+    hd005: "Hoş geldiniz mesajı, kapsam ve kurultay yeri",
+    dk001: "Kurultay Başkanları",
+    dk002: "Özel Oturumlar Başkanları",
+    dk003: "Teknik Program Komitesi Başkanları",
+    dk004: "Eğitim Seminerleri Başkanları",
+    dk005: "Yayınlar Başkanı",
+    dk006: "Davetli Konuşmacılar ve Ödüller Başkanı",
+    dk007: "Endüstri İlişkileri ve Sponsorluklar Başkanları",
+    dk008: "Tanıtım ve Medya Başkanı",
+    dk009: "Sosyal Etkinlikler Başkanı",
+    dk010: "Kurullar ve üyeler",
+    affMedipol: "İstanbul Medipol Üniversitesi",
+    affBogazici: "Boğaziçi Üniversitesi",
+    affItu: "İstanbul Teknik Üniversitesi",
+    affIuc: "İstanbul Üniversitesi-Cerrahpaşa",
+    affMef: "MEF Üniversitesi",
+    navSponsorship: "Sponsorluk",
+    cfpKicker: "35. IEEE Sinyal İşleme ve İletişim Uygulamaları Kurultayı",
+    cfpPageDesc: "4–7 Temmuz 2027 · İstanbul Medipol Üniversitesi, Kavacık Güney Yerleşkesi, Beykoz, İstanbul",
+    cf010: "Özel Oturum ve Eğitim Semineri Önerileri Son Tarihi",
+    cf011: "Bildiri Gönderim Son Tarihi",
+    cf012: "Kabul Bildirimi",
+    cf013: "Baskıya Hazır Bildirilerin Gönderimi ve Yazar Kaydı Son Tarihi",
+    cf014: "Kurultay Tarihleri",
+    cf015: "16 Kasım 2026",
+    cf016: "30 Nisan 2027",
+    cf017: "24 Mayıs 2027",
+    cf018: "4–7 Temmuz 2027",
+    cf020: "Konular ve İlgi Alanları",
+    cf021: "Kurultay, aşağıdaki altı kulvarda ve sinyal işleme ile iletişimin kuramsal ve uygulamalı her alanında özgün bildirileri davet etmektedir.",
+    cf022: "Kulvar",
+    cf023: "Kulvar Başkanları",
+    cf030: "Gönderim Kuralları",
+    cf031: "<strong>Bildiri Formatı:</strong> Bildiriler en fazla dört sayfa uzunluğunda olmalıdır.",
+    cf032: "<strong>Dil:</strong> Bildiriler Türkçe olarak yazılmalıdır. Yazarlardan birinin anadilinin Türkçe olmaması durumunda İngilizce bildiriler değerlendirmeye alınacaktır.",
+    cf033: "<strong>Değerlendirme Süreci:</strong> Tüm gönderimler çift kör hakem değerlendirmesine tabi tutulacaktır. Yazarlar, bildirilerin anonimleştirildiğinden emin olmalıdır.",
+    cf034: "<strong>Yayın:</strong> Kabul edilen ve kurultayda sunulan bildirilerin IEEE Xplore Dijital Kütüphanesi'ne gönderilmesi planlanmaktadır.",
+    cf035: "Ayrıntılı gönderim talimatları, şablonlar ve yönergeler için aşağıdaki <a href=\"#yazar-kilavuzu\">Yazar Kılavuzu</a> bölümüne bakınız.",
+    cf040: "Bildiri çağrısını indirin",
+    yz069a: "Özel oturumun ilgili olduğu kulvarlar (kurultay kulvarlarından en fazla iki tanesi)",
+    yz069b: "Öneriler, aşağıdaki Özel Oturum Öneri Formu doldurularak iletilebilir.",
+    yz069c: "Özel Oturum Öneri Formu",
+    yz057b: "Şablonlarda yazar bilgileri gizlenmiştir. Değerlendirme çift kör olduğundan bildirinin ilk gönderilen hâlinde yazarların kimliğini açığa çıkaran hiçbir bilgi bulunmamalıdır; yazar ve kurum bilgileri kabulden sonra baskıya hazır sürüme eklenir.",
+    yz058a: "Word Şablonu",
+    yz058b: "LaTeX Şablonu",
+    yz058c: "Şablonlar Türkçedir; İngilizce bildirilerde aynı biçim kullanılır.",
+    ttlSponsorluk: "Sponsorluk | IEEE SİU 2027",
+    sponsorlukPageTitle: "Sponsorluk",
+    sponsorlukPageDesc: "SİU 2027'ye destek veren kuruluşlar, Türkiye'nin sinyal işleme ve iletişim alanındaki akademisyen, araştırmacı ve öğrencileriyle 4–7 Temmuz 2027'de İstanbul'da buluşur.",
+    sp001: "Sponsorluk iletişimi",
+    sp020: "Sponsorlara sunulan olanaklar",
+    sp021: "Sponsorlara sunulan olanaklar burada duyurulacaktır.",
+    sp040: "Nasıl sponsor olunur?",
+    sp041: "Sponsorluk ilginizi <a href=\"mailto:siu2027@medipol.edu.tr?subject=S%C4%B0U%202027%20Sponsorluk\">siu2027@medipol.edu.tr</a> adresine, konu satırına “SİU 2027 Sponsorluk” yazarak iletin; kuruluşunuzun adını ve iletişim kişisini belirtin.",
+    sp042: "Endüstri İlişkileri ve Sponsorluklar Başkanları sizinle iletişime geçecektir.",
+    sp050: "Destekçilerimiz",
+    sp051: "Sponsorlar",
+    sp060: "Endüstri İlişkileri ve Sponsorluklar Başkanları: Büşra Batği ve Burak Gökay (İstanbul Medipol Üniversitesi).",
+    sp061: "E-posta ile iletişime geçin",
+    sp062: "Bu sayfada",
+    yz069d: "Özel oturum bildiri çağrısı metni: duyuruda kullanılmak üzere oturum kapsamını ve önerilen konu başlıklarını açıklayan metin",
+    yz069e: "Öneriler; konunun kurultay kapsamıyla uyumu, güncelliği ve bilimsel önemi, oturumun kurultay katılımcılarına sağlayacağı katkı ve gerçekleştirilebilirliği gibi ölçütlerle değerlendirilecektir. Kabul edilen özel oturumlardaki bildiriler kurultay bildiri gönderim sistemi üzerinden alınacak ve genel bildiri değerlendirme sürecine tabi tutulacaktır; kabul edilen bildiriler ilgili özel oturumda gruplanarak programda yer alacaktır.",
+    affOzyegin: "Özyeğin Üniversitesi",
+    hd008: "Sponsor olma adımları ve iletişim",
+    ar008: "Kurultay Başkanları",
+    ar008a: "Kurultay başkanları; kurultayların arşivlenmiş web sitelerinden, IEEE Xplore'daki bildiri kitaplarından ve başkanların kendi özgeçmişlerinden derlenmiştir. Bu kaynaklarda başkanı belirtilmeyen kurultaylar “—” ile gösterilmiştir; bilgi ve düzeltmeler için <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a>.",
+    a11y001: "Ana içeriğe atla",
+    a11y002: "Ara",
+    a11y003: "Dil seçimi",
+    a11y004: "İstanbul Medipol Üniversitesi (ev sahibi)",
+    a11y005: "SİU 2027 ana sayfa",
+    a11y006: "Ana menü",
+    a11y007: "Site içi arama",
+    a11y008: "Aramayı kapat",
+    a11y010: "Bu sayfada",
+    a11y011: "Sayfa içi gezinme",
+    a11y012: "Sayfa içi gezinme ve geri sayım",
+    a11y013: "Sayfa içi gezinme ve künye",
+    a11y014: "Sayfa içi gezinme ve sekreterlik",
+    a11y015: "Sayfa içi gezinme ve program takvimi",
+    a11y016: "Kurultay künyesi",
+    a11y017: "Kulvarlar",
+    a11y018: "Kayıt hakkında",
+    a11y019: "Sayfa yolu",
+    a11y020: "Kapat",
+    a11y021: "Önceki kurultay",
+    a11y022: "Sonraki kurultay",
+    a11y023: "SİU kurultaylarının yıllara göre dağılımı",
+    a11y024: "Yıl, üniversite, şehir veya başkan ara (Örn: Boğaziçi, Medipol, Antalya, 2025, hibrit)...",
+    a11y025: "Kavacık Güney Yerleşkesi ve çevresindeki duraklar haritası",
+    a11y026: "SİU 2027 Resmî Logosu",
+    a11y027: "İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü kulesi, aşağıdan gündüz görünümü",
+    map001: "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> katkıcıları",
+    map002: "<strong>SİU 2027 Kurultay Alanı</strong><br>Kavacık Güney Yerleşkesi<br>Kongre ve Kültür Merkezi",
+    map003: "Otobüs durağı",
+    map004: "Kurultay",
+    a11y029: "Sekreterlik",
   },
   en: {
     ar001: "Conference Chronology (1993 – 2027)",
-    ar002: "The year, edition number, host institution and host city of each SIU conference. You can filter past conferences by searching the table.",
+    ar002: "The year, edition number, host institution, host city and general chairs of each SIU conference. You can filter past conferences by searching the table.",
     ar003: "Search the archive",
     ar004: "No.",
     ar005: "Year",
@@ -1086,7 +1394,7 @@ const i18nDictionary = {
     ar087: "Eastern Mediterranean University",
     ar088: "Famagusta, TRNC",
     ar090: "Istanbul University",
-    ar091: "Beldibi, Antalya",
+    ar091: "Belek, Antalya",
     ar093: "Bilkent University",
     ar094: "Bilkent, Ankara",
     ar096: "Başkent University",
@@ -1099,7 +1407,7 @@ const i18nDictionary = {
     ar106: "Cappadocia, Nevşehir",
     ar108: "Bilkent University + Boğaziçi University",
     ar109: "Gökova, Muğla",
-    ar111: "Boğaziçi University",
+    ar111: "Boğaziçi University + Bilkent University",
     ar112: "Bebek, İstanbul",
     arsivKicker: "INSTITUTIONAL MEMORY & SCIENTIFIC ARCHIVE",
     arsivPageDesc: "35-year conference chronology originating at Bogazici University, with host institutions and locations.",
@@ -1195,7 +1503,7 @@ const i18nDictionary = {
     dr08Due: "July 4–7, 2027",
     dr08Name: "Conference Dates",
     dr08Status: "Event",
-    dt001: "Special sessions on current and specialised research topics will be organised within SIU 2027. Researchers wishing to organise a special session should send a proposal containing the following information to <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a> by <strong>November 16, 2026</strong> at the latest:",
+    dt001: "Special sessions on current and specialised research topics will be organised within SIU 2027. Researchers wishing to organise a special session should send a proposal containing the following information to <a href=\"mailto:siu2027ozeloturum@gmail.com\">siu2027ozeloturum@gmail.com</a> by <strong>November 16, 2026</strong> at the latest:",
     dt002: "<strong>Author Registration:</strong> for the paper to remain in the programme and enter the IEEE publication process, at least one author must complete conference registration by <strong>May 24, 2027</strong>.",
     dt003: "Organisers will be notified of accepted special sessions by <strong>November 30, 2026</strong>.",
     dt004: "Session titles, halls, timings and the papers to be presented will be published once the peer review process is complete (after April 30, 2027). For the tracks in which papers are accepted, see the <a href=\"yazarlar#kulvarlar\">Topics and Research Tracks</a> page.",
@@ -1213,7 +1521,7 @@ const i18nDictionary = {
     footerSecretariat: "Conference Secretariat",
     hakkindaKicker: "INSTITUTIONAL & SCIENTIFIC OVERVIEW",
     hakkindaPageDesc: "Vision and scope of the 35th Signal Processing and Communications Applications Conference (SIU 2027), and its host Istanbul Medipol University.",
-    hakkindaPageTitle: "About Conference",
+    hakkindaPageTitle: "About the Conference",
     heroBadge: "35TH EDITION • OFFICIAL CONFERENCE PORTAL",
     heroDesc: "Turkey's premier scientific forum in signal processing, wireless communications, computer vision, and artificial intelligence.",
     heroVenueSub: "Kavacık South Campus",
@@ -1230,9 +1538,9 @@ const i18nDictionary = {
     hk009: "We are proud and delighted to host the <strong>35th Signal Processing and Communications Applications Conference (SIU 2027)</strong> on <strong>July 4–7, 2027</strong> at <strong>Istanbul Medipol University</strong>.",
     hk010: "The SIU tradition, which began at Boğaziçi University in 1993, continues in its thirty-fifth year as a lively scientific gathering that brings together hundreds of academics, early-career researchers and industry representatives from across Türkiye and abroad.",
     hk011: "We are pleased to invite you to the conference at our Kavacık Campus, next to the incomparable Bosphorus view of Istanbul, with world-class keynote speakers, tutorials and a high-quality technical programme.",
-    hk012: "On behalf of the SIU 2027 Organising Committee",
+    hk012: "On behalf of the SIU 2027 Organizing Committee",
     hk013: "Prof. Dr. Hüseyin Arslan & Prof. Dr. Elif Uysal",
-    hk014: "Conference Co-Chairs",
+    hk014: "General Co-Chairs",
     hk015: "MISSION AND OBJECTIVES",
     hk016: "Scope and Aims",
     hk017: "The core aim of the SIU Conference is to provide a national and international platform on which researchers working in signal processing, communication theory, computer vision, machine learning and control can present original work, share experience and strengthen university–industry collaboration. The conference topics are organised under <a href=\"./#kulvarlar\">6 tracks</a>.",
@@ -1317,7 +1625,7 @@ const i18nDictionary = {
     ix041: "Information Extraction and Retrieval",
     ix042: "Linguistic Theories and Cognitive Models",
     ix043: "Translation and Multi-Language Processing",
-    ix044: "Marine, Air and Land Robots",
+    ix044: "Marine, Air, and Land Robots",
     ix045: "Industrial Robots",
     ix046: "Humanoid and Social Robots",
     ix047: "Swarm Robots",
@@ -1350,7 +1658,7 @@ const i18nDictionary = {
     ix075: "3D Imaging and Computational Photography",
     ix076: "Signal Processing for Cybersecurity Applications",
     ix077: "Signal Processing for Autonomous Systems",
-    ix078: "Human-Computer Interaction and Behaviour Analysis",
+    ix078: "Human-Computer Interaction and Behavior Analysis",
     ix079: "Industrial and Automotive Applications",
     ix080: "Real-Time Signal Processing and Embedded Systems",
     ix081: "E-Health Applications and Assistive Technologies",
@@ -1363,7 +1671,7 @@ const i18nDictionary = {
     ix088: "Performance Analysis of ML Techniques",
     ix089: "Unsupervised and Generative Models",
     ix090: "Biometric Signal Processing",
-    ix091: "Applications of Artificial Intelligence for Medical Diagnosis",
+    ix091: "Applications of AI for Medical Diagnosis",
     ix092: "Telemedicine and Remote Patient Monitoring",
     ix093: "Neuroengineering and Brain Signal Processing",
     katilimKicker: "ATTENDEE GUIDE & REGISTRATION",
@@ -1379,10 +1687,10 @@ const i18nDictionary = {
     keynotesPendingNote: "Speakers will be announced <a href=\"program#konusmacilar\">here</a>.",
     keynotesPendingTitle: "Invited speakers have not been finalised yet.",
     keynotesTitle: "Keynote Speakers",
-    km001: "Conference Co-Chairs",
-    km002: "Conference Co-Chair",
-    km003: "Conference Co-Chair",
-    km004: "Technical Programme Committee Co-Chairs (TPC Co-Chairs)",
+    km001: "General Co-Chairs",
+    km002: "General Co-Chair",
+    km003: "General Co-Chair",
+    km004: "Technical Program Committee Co-Chairs (TPC Co-Chairs)",
     km005: "TPC Co-Chair",
     km006: "TPC Co-Chair",
     km007: "TPC Co-Chair",
@@ -1424,7 +1732,7 @@ const i18nDictionary = {
     kma20: "Middle East Technical University (METU)",
     kma21: "MEF University",
     komitelerKicker: "ORGANIZATION & SCIENTIFIC LEADERSHIP",
-    komitelerPageDesc: "SIU 2027 General Co-Chairs, Technical Program Committee Co-Chairs, Organising Committee and Honorary Board.",
+    komitelerPageDesc: "SIU 2027 General Co-Chairs, Technical Program Committee Co-Chairs, Organizing Committee and Honorary Board.",
     komitelerPageTitle: "Conference Committees",
     kt001: "Participation Menu",
     kt002: "• Registration and Fees",
@@ -1562,7 +1870,7 @@ const i18nDictionary = {
     navAboutMsg: "Welcome Message",
     navAboutScope: "Scope and Objectives",
     navArchive: "Archive",
-    navAuthors: "Authors",
+    navAuthors: "For Authors",
     navAuthorsCamera: "Camera-Ready & Copyright",
     navAuthorsCfp: "Call for Papers (CFP)",
     navAuthorsSpecial: "Call for Special Sessions",
@@ -1593,7 +1901,7 @@ const i18nDictionary = {
     newsTitle4: "Student Support",
     newsTag5: "SPECIAL SESSIONS",
     newsTitle5: "Call for Special Sessions: Proposals Due November 16, 2026",
-    newsDesc5: "Special sessions on current and specialised research topics will be organised at SIU 2027. Proposals must be sent to siu2027@medipol.edu.tr by November 16, 2026; accepted sessions will be notified by November 30, 2026.",
+    newsDesc5: "Special sessions on current and specialised research topics will be organised at SIU 2027. Proposals must be sent to siu2027ozeloturum@gmail.com by November 16, 2026; accepted sessions will be notified by November 30, 2026.",
     nf001: "ERROR 404",
     nf002: "The page you are looking for was not found",
     nf003: "The link may have moved, been renamed, or the address may be mistyped. You can continue from the sections below.",
@@ -1690,7 +1998,7 @@ const i18nDictionary = {
     ttlIletisim: "Contact and Conference Secretariat | IEEE SIU 2027",
     ttlIndex: "IEEE SIU 2027 | 35th Signal Processing and Communications Applications Conference",
     ttlKatilim: "Registration: Fees, Accommodation, Travel | IEEE SIU 2027",
-    ttlKomiteler: "Committees and Organising Committee | IEEE SIU 2027",
+    ttlKomiteler: "Committees and Organizing Committee | IEEE SIU 2027",
     ttlOnurKurulu: "Honorary Committee | IEEE SIU 2027",
     ttlKayit: "Registration Form | IEEE SIU 2027",
     ttlKvkk: "Personal Data Protection (KVKK) Notice | IEEE SIU 2027",
@@ -1815,9 +2123,9 @@ const i18nDictionary = {
     yz063: "Official IEEE Word Template ↗",
     yz064: "CALL FOR SPECIAL SESSIONS",
     yz065: "Special Session Proposal Guidelines",
-    yz067: "Special session title and a summary of its scope (maximum 1 page)",
-    yz068: "Biographies and contact details of the session organisers",
-    yz069: "At least 5 draft paper titles and their author lists planned to be invited to the session",
+    yz067: "Special session chair(s): name and surname, institution, position, e-mail address and phone number",
+    yz068: "Special session title",
+    yz069: "A short description of the special session: its topic, scope, scientific significance and contribution to the conference",
     yz070: "PUBLICATION AND COPYRIGHT PROCESS",
     yz071: "Camera-Ready Paper & IEEE Copyright Transfer",
     yz072: "For papers accepted after peer review to be published in the <strong>IEEE Xplore Digital Library</strong>, authors must complete the following steps:",
@@ -1878,9 +2186,9 @@ const i18nDictionary = {
     ft004: "Scientific Programme",
     ft005: "Registration Fees",
     ft006: "Undergraduate Project Competition",
-    ft007: "Conference Co-Chairs",
-    ft008: "Organising Committee",
-    ft009: "Technical Programme Committee",
+    ft007: "General Co-Chairs",
+    ft008: "Organizing Committee",
+    ft009: "Technical Program Committee",
     ft010: "Istanbul Medipol University",
     ft011: "1993–2027 Conference Archive",
     ft012: "Address",
@@ -1896,6 +2204,166 @@ const i18nDictionary = {
     ft021: "Close search",
     ft022: "Close menu",
     ft023: "Open menu",
+    // Ana sayfa v2 (yeni tasarım dili, 7 Eki 2026)
+    hm001: "35th Conference <span aria-hidden=\"true\">·</span> July 4–7, 2027 <span aria-hidden=\"true\">·</span> Istanbul",
+    hm002: "Signal Processing and Communications Applications Conference <span>SIU 2027</span>",
+    hm004: "Paper submission deadline <strong>February 1, 2027</strong>",
+    hm005: "All important dates",
+    hm006: "Istanbul Medipol University, Kavacık South Campus",
+    hm010: "Deadlines are valid until the end of the stated day (23:59, Türkiye time, UTC+3).",
+    hm011: "Add all dates to your calendar",
+    hm020: "November 16",
+    hm021: "November 30",
+    hm022: "February 1",
+    hm023: "April 30",
+    hm024: "May 24",
+    hm025: "July 4–7",
+    hm030: "Special session and tutorial proposals",
+    hm032: "Call for special sessions",
+    hm033: "Call for tutorials",
+    hm034: "Notification of proposal acceptance",
+    hm036: "Paper submission",
+    hm037: "Main deadline",
+    hm038: "Paper format",
+    hm039: "Tracks",
+    hm040: "Notification of acceptance",
+    hm041: "Camera-ready paper submission and author registration",
+    hm042: "IEEE publication and copyright process <em>Coming soon</em>",
+    hm043: "Conference",
+    hm044: "Istanbul Medipol University, Kavacık South Campus",
+    hm045: "Google Calendar",
+    hm050: "Scheduled",
+    hm051: "Call open",
+    hm052: "{n} days left",
+    hm053: "Last day today",
+    hm054: "Completed",
+    hm055: "Event",
+    hm056: "In progress",
+    hm057: "Ended",
+    hm058: "{n} day left",
+    hm060: "topics",
+    hm061: "Track co-chairs",
+    hm062: "Go to the For Authors page",
+    hm064: "Coming soon",
+    hm070: "Announcements",
+    hm071: "Special session",
+    hm072: "Special sessions on current and specialised research topics will be organised at SIU 2027. Proposals must be sent to <a class=\"an-mail\" href=\"mailto:siu2027ozeloturum@gmail.com\">siu2027ozeloturum@gmail.com</a> by November 16, 2026; accepted sessions will be notified by November 30, 2026.",
+    hm073: "<span>Deadline: <strong>November 16, 2026</strong></span><span>Notification: <strong>November 30, 2026</strong></span>",
+    hm074: "Read more",
+    hm075: "Student support",
+    hm080: "Organisers and Sponsors",
+    hm081: "Host and organising institutions",
+    hm082: "Technical sponsorship",
+    hm083: "Sponsorship",
+    hm084: "Take part in SIU 2027 with your organisation",
+    hm090: "Time until the conference",
+    hm091: "Opening session: <strong>July 4, 2027</strong><br>Time to be announced.",
+    hm092: "The conference is in progress",
+    hm093: "The conference has ended",
+    // Header (menu structure v2, 7 Oct 2026)
+    hd002: "July 4–7, 2027 · Istanbul",
+    hd003: "Search",
+    hd004: "Menu",
+    hm085: "Istanbul Medipol University",
+    hm086: "Kavacık South Campus",
+    ft024: "Istanbul Medipol<br>University",
+    hd005: "Welcome message, scope and venue",
+    dk001: "General Chairs",
+    dk002: "Special Sessions Chairs",
+    dk003: "Technical Program Chairs",
+    dk004: "Tutorials Chairs",
+    dk005: "Publications Chair",
+    dk006: "Invited Speakers and Awards Chair",
+    dk007: "Industry Relations and Sponsorship Chairs",
+    dk008: "Promotion and Media Chair",
+    dk009: "Social Events Chair",
+    dk010: "Committees and members",
+    affMedipol: "Istanbul Medipol University",
+    affBogazici: "Boğaziçi University",
+    affItu: "Istanbul Technical University",
+    affIuc: "Istanbul University-Cerrahpaşa",
+    affMef: "MEF University",
+    navSponsorship: "Sponsorship",
+    cfpKicker: "35th IEEE Conference on Signal Processing and Communications Applications",
+    cfpPageDesc: "July 4–7, 2027 · Istanbul Medipol University, Kavacık South Campus, Beykoz, Istanbul",
+    cf010: "Special Session and Tutorial Proposals Deadline",
+    cf011: "Paper Submission Deadline",
+    cf012: "Notification of Acceptance",
+    cf013: "Camera-Ready Paper Submission and Author Registration Deadline",
+    cf014: "Conference Dates",
+    cf015: "November 16, 2026",
+    cf016: "April 30, 2027",
+    cf017: "May 24, 2027",
+    cf018: "July 4–7, 2027",
+    cf020: "Tracks and Topics of Interest",
+    cf021: "The conference invites original papers in the following six tracks and in all theoretical and applied areas of signal processing and communications.",
+    cf022: "Track",
+    cf023: "Track Chairs",
+    cf030: "Submission Guidelines",
+    cf031: "<strong>Paper Format:</strong> The maximum length of a paper is four pages.",
+    cf032: "<strong>Language:</strong> Papers must be written in Turkish. If one of the authors is a non-native speaker of Turkish, papers written in English are considered for review.",
+    cf033: "<strong>Review Process:</strong> All submissions will be evaluated with a double-blind review policy. Authors must ensure that their papers are prepared anonymously.",
+    cf034: "<strong>Publication:</strong> Accepted and presented papers are planned to be submitted to the IEEE Xplore Digital Library.",
+    cf035: "For detailed submission instructions, templates, and guidelines, please refer to the <a href=\"#yazar-kilavuzu\">Author Guide</a> section below.",
+    cf040: "Download the call for papers",
+    yz069a: "The tracks the special session relates to (at most two of the conference tracks)",
+    yz069b: "Proposals can be submitted by filling in the Special Session Proposal Form below (in Turkish).",
+    yz069c: "Special Session Proposal Form",
+    yz057b: "Author information is hidden in the templates. Since the review is double-blind, the initially submitted paper must not contain any information revealing the identity of the authors; author names and affiliations are added to the camera-ready version after acceptance.",
+    yz058a: "Word Template",
+    yz058b: "LaTeX Template",
+    yz058c: "The templates are in Turkish; papers written in English use the same format.",
+    ttlSponsorluk: "Sponsorship | IEEE SIU 2027",
+    sponsorlukPageTitle: "Sponsorship",
+    sponsorlukPageDesc: "Organisations supporting SIU 2027 meet academics, researchers and students in signal processing and communications in Türkiye, on July 4–7, 2027 in Istanbul.",
+    sp001: "Sponsorship contact",
+    sp020: "What sponsors receive",
+    sp021: "The benefits offered to sponsors will be announced here.",
+    sp040: "How to become a sponsor",
+    sp041: "Send your interest to <a href=\"mailto:siu2027@medipol.edu.tr?subject=S%C4%B0U%202027%20Sponsorluk\">siu2027@medipol.edu.tr</a> with “SİU 2027 Sponsorluk” (SIU 2027 Sponsorship) in the subject line, stating your organisation and a contact person.",
+    sp042: "The Industry Relations and Sponsorship Chairs will get in touch with you.",
+    sp050: "Our supporters",
+    sp051: "Sponsors",
+    sp060: "Industry Relations and Sponsorship Chairs: Büşra Batği and Burak Gökay (Istanbul Medipol University).",
+    sp061: "Contact us by e-mail",
+    sp062: "On this page",
+    yz069d: "Special session call for papers: a text describing the session scope and suggested topics, to be used in the announcement",
+    yz069e: "Proposals will be evaluated on criteria such as the fit of the topic with the conference scope, its timeliness and scientific significance, the contribution of the session to conference participants, and its feasibility. Papers for accepted special sessions will be submitted through the conference paper submission system and will undergo the general review process; accepted papers will be grouped under the corresponding special session in the programme.",
+    affOzyegin: "Özyeğin University",
+    hd008: "How to become a sponsor and contact details",
+    ar008: "General Chairs",
+    ar008a: "General chairs are compiled from the archived conference websites, the proceedings in IEEE Xplore and the chairs' own CVs. Conferences whose chairs are not stated in these sources are shown as “—”; please send information and corrections to <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a>.",
+    a11y001: "Skip to main content",
+    a11y002: "Search",
+    a11y003: "Language selection",
+    a11y004: "Istanbul Medipol University (host)",
+    a11y005: "SIU 2027 home page",
+    a11y006: "Main menu",
+    a11y007: "Site search",
+    a11y008: "Close search",
+    a11y010: "On this page",
+    a11y011: "In-page navigation",
+    a11y012: "In-page navigation and countdown",
+    a11y013: "In-page navigation and conference details",
+    a11y014: "In-page navigation and secretariat",
+    a11y015: "In-page navigation and programme calendar",
+    a11y016: "Conference details",
+    a11y017: "Tracks",
+    a11y018: "About registration",
+    a11y019: "Breadcrumb",
+    a11y020: "Close",
+    a11y021: "Previous conference",
+    a11y022: "Next conference",
+    a11y023: "Distribution of SIU conferences by year",
+    a11y024: "Search by year, university, city or chair (e.g. Boğaziçi, Medipol, Antalya, 2025, hybrid)...",
+    a11y025: "Map of the Kavacık South Campus and nearby bus stops",
+    a11y026: "SIU 2027 official logo",
+    a11y027: "Istanbul Medipol University Kavacık South Campus tower, daytime view from below",
+    map001: "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+    map002: "<strong>SIU 2027 Conference Venue</strong><br>Kavacık South Campus<br>Congress and Culture Centre",
+    map003: "Bus stop",
+    map004: "Conference",
+    a11y029: "Secretariat",
   }
 };
 
@@ -1951,12 +2419,16 @@ function initLangSwitcher() {
       }
     });
 
-    // Input placeholder çevirisi
-    document.querySelectorAll('#globalSearchInput, [data-i18n-placeholder]').forEach(input => {
-      if (i18nDictionary[lang] && i18nDictionary[lang].searchPlaceholder) {
-        input.placeholder = i18nDictionary[lang].searchPlaceholder;
-      }
+    // Öznitelik çevirileri: ekran okuyucu etiketi, görsel açıklaması, arama kutusu ipucu
+    [['data-i18n-aria', 'aria-label'], ['data-i18n-alt', 'alt'], ['data-i18n-placeholder', 'placeholder']].forEach(([veri, oznitelik]) => {
+      document.querySelectorAll('[' + veri + ']').forEach(el => {
+        const v = i18nDictionary[lang] && i18nDictionary[lang][el.getAttribute(veri)];
+        if (v !== undefined) el.setAttribute(oznitelik, v);
+      });
     });
+
+    // Dile bağlı JS bileşenleri (zaman çizelgesi çipleri, geri sayım, sıralı listeler) dinler
+    document.dispatchEvent(new CustomEvent('siu:lang', { detail: { lang } }));
   }
 
   // Event listener bağlama (hem mevcut hem sonradan eklenen butonlar için)
@@ -2088,8 +2560,8 @@ function initSearchModal() {
       <div class="search-modal-box">
         <div class="search-modal-header">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." autocomplete="off">
-          <button type="button" class="search-modal-close" aria-label="Aramayı kapat">&times;</button>
+          <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+          <button type="button" class="search-modal-close" aria-label="Aramayı kapat" data-i18n-aria="a11y008">&times;</button>
         </div>
         <div class="search-modal-results" id="globalSearchResults">
           <p class="search-modal__hint">Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.</p>
@@ -2137,10 +2609,10 @@ function initSearchModal() {
 
   // Arama dizini: her kayıt iki dilde başlık/yol + eşleşme için anahtar kelimeler.
   const searchIndex = [
-    { url: 'yazarlar#cfp', tr: ['Bildiri Çağrısı (CFP)', 'Yazarlar İçin › Bildiri Çağrısı'], en: ['Call for Papers (CFP)', 'For Authors › Call for Papers'], kw: 'cfp bildiri çağrı gönderim cmt call papers paper submission' },
+    { url: 'yazarlar#cfp', tr: ['Bildiri Çağrısı (CFP)', 'Yazarlar İçin › Bildiri Çağrısı'], en: ['Call for Papers (CFP)', 'For Authors › Call for Papers'], kw: 'cfp bildiri çağrı gönderim cmt kulvar konu önemli tarih kural düzenleme kurulu pdf call papers paper submission track topic dates guidelines committee' },
     { url: 'yazarlar#kulvarlar', tr: ['Konular ve Araştırma Kulvarları', 'Yazarlar İçin › Kulvarlar'], en: ['Topics and Research Tracks', 'For Authors › Tracks'], kw: 'kulvar konu iletişim ağlar 6g görüntü bilgisayarlı görü sinyal robotik makine öğrenmesi yapay zeka biyomedikal doğal dil track topic communications vision robotics machine learning ai biomedical nlp' },
-    { url: 'yazarlar#sablonlar', tr: ['Bildiri Şablonları', 'Yazarlar İçin › Şablonlar'], en: ['Paper Templates', 'For Authors › Templates'], kw: 'şablon latex word format ieee template' },
-    { url: 'yazarlar#ozel-oturumlar', tr: ['Özel Oturum Çağrısı', 'Yazarlar İçin › Özel Oturumlar'], en: ['Call for Special Sessions', 'For Authors › Special Sessions'], kw: 'özel oturum öneri special session proposal' },
+    { url: 'yazarlar#sablonlar', tr: ['Bildiri Şablonları', 'Yazarlar İçin › Şablonlar'], en: ['Paper Templates', 'For Authors › Templates'], kw: 'şablon latex word docx zip format ieee template' },
+    { url: 'yazarlar#ozel-oturumlar', tr: ['Özel Oturum Çağrısı', 'Yazarlar İçin › Özel Oturumlar'], en: ['Call for Special Sessions', 'For Authors › Special Sessions'], kw: 'özel oturum öneri form special session proposal form' },
     { url: 'yazarlar#egitim-cagrisi', tr: ['Eğitim Semineri Çağrısı', 'Yazarlar İçin › Eğitim Semineri Çağrısı'], en: ['Call for Tutorials', 'For Authors › Call for Tutorials'], kw: 'tutorial seminer eğitim çağrı öneri call proposal' },
     { url: 'yazarlar#panel-cagrisi', tr: ['Panel Çağrısı', 'Yazarlar İçin › Panel Çağrısı'], en: ['Call for Panels', 'For Authors › Call for Panels'], kw: 'panel çağrı öneri panels call proposal' },
     { url: 'yazarlar#baskiya-hazir', tr: ['Baskıya Hazır Bildiri ve Telif', 'Yazarlar İçin › Baskıya Hazır'], en: ['Camera-Ready Paper and Copyright', 'For Authors › Camera-Ready'], kw: 'baskıya hazır telif ecf pdf express camera ready copyright' },
@@ -2155,6 +2627,7 @@ function initSearchModal() {
     { url: 'katilim#konaklama', tr: ['Konaklama', 'Katılım › Konaklama'], en: ['Accommodation', 'Registration › Accommodation'], kw: 'konaklama otel oda accommodation hotel room' },
     { url: 'katilim#ulasim', tr: ['Ulaşım ve Kampüs Haritası', 'Katılım › Ulaşım'], en: ['Travel and Campus Map', 'Registration › Travel'], kw: 'ulaşım harita havalimanı otobüs kavacık güney kampüs travel map airport bus campus' },
     { url: 'komiteler', tr: ['Komiteler ve Kurullar', 'Komiteler'], en: ['Committees', 'Committees'], kw: 'komite kurul başkan eş başkan tpc committee chair co-chair' },
+    { url: 'sponsorluk', tr: ['Sponsorluk', 'Kurultay › Sponsorluk'], en: ['Sponsorship', 'Conference › Sponsorship'], kw: 'sponsor sponsorluk destek destekçi stand sergi firma şirket sanayi sponsorship supporter exhibit booth company industry' },
     { url: 'hakkinda', tr: ['Kurultay Hakkında', 'Kurultay › Hakkında'], en: ['About the Conference', 'Conference › About'], kw: 'hakkında hoş geldiniz kapsam medipol ev sahibi about welcome scope host' },
     { url: 'arsiv', tr: ['SİU Kurultay Arşivi (1993–2027)', 'Arşiv › Kurultay Kronolojisi'], en: ['SIU Conference Archive (1993–2027)', 'Archive › Chronology'], kw: 'arşiv tarihçe geçmiş kronoloji archive history chronology' },
     { url: 'iletisim', tr: ['İletişim ve Sekreterlik', 'İletişim › Adres ve E-posta'], en: ['Contact and Secretariat', 'Contact › Address and E-mail'], kw: 'iletişim sekreterlik e-posta telefon adres contact secretariat email phone address' },
@@ -2173,7 +2646,7 @@ function initSearchModal() {
   const cssLink = document.querySelector('link[href*="css/style.css"]');
   const base = cssLink ? cssLink.getAttribute('href').split('css/style.css')[0] : '';
 
-  function currentLang() { return getStoredLang() === 'en' ? 'en' : 'tr'; }
+  function currentLang() { return currentLangCode(); }
   function t(key) {
     const dict = i18nDictionary[currentLang()] || i18nDictionary.tr;
     return dict[key] || i18nDictionary.tr[key] || '';
@@ -2277,6 +2750,51 @@ function initMobileMenu() {
 }
 
 /* ==========================================================================
+   Başlık (.hd): alt menüler tıklamayla açılır, dar ekranda menü düğmesi,
+   dışarı tıklama / Esc kapatır; Mac'te kısayol ipucu ⌘ K
+   ========================================================================== */
+function initHeader() {
+  const hd = document.querySelector('.hd');
+  if (!hd) return;
+  const kbd = hd.querySelector('.hd-kbd');
+  if (kbd && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) kbd.textContent = '⌘ K';
+  const triggers = [...hd.querySelectorAll('.hd-trigger')];
+  function closeAll(except) {
+    triggers.forEach(t => {
+      if (t === except) return;
+      t.setAttribute('aria-expanded', 'false');
+      t.parentNode.classList.remove('is-open');
+    });
+  }
+  triggers.forEach(t => {
+    t.addEventListener('click', () => {
+      const open = t.getAttribute('aria-expanded') !== 'true';
+      closeAll(t);
+      t.setAttribute('aria-expanded', String(open));
+      t.parentNode.classList.toggle('is-open', open);
+    });
+  });
+  const toggle = hd.querySelector('.hd-toggle');
+  function setMenu(open) {
+    if (!toggle) return;
+    hd.classList.toggle('is-menu-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  if (toggle) toggle.addEventListener('click', () => setMenu(!hd.classList.contains('is-menu-open')));
+  document.addEventListener('click', e => { if (!hd.contains(e.target)) { closeAll(); setMenu(false); } });
+  hd.addEventListener('click', e => {
+    if (e.target.closest('.hd-sub a, .hd-link')) { closeAll(); setMenu(false); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = hd.querySelector('.hd-item.is-open > .hd-trigger');
+    closeAll();
+    if (hd.classList.contains('is-menu-open')) { setMenu(false); toggle.focus(); }
+    else if (open) open.focus();
+  });
+}
+
+/* ==========================================================================
    9. Komite Üyesi Biyografileri (Modal)
    Not: Özetler kurumsal/açık kaynaklardan derlenmiştir; yayımdan önce
    ilgili kişilere teyit ettirilmelidir.
@@ -2346,7 +2864,7 @@ function initCommitteeBios() {
   };
 
   function lang() {
-    return getStoredLang() === 'en' ? 'en' : 'tr';
+    return currentLangCode();
   }
 
   function open(card) {
@@ -2424,6 +2942,7 @@ function initArchiveMap() {
       yil: parseInt(td[0].textContent.trim(), 10),
       kurum: td[1].textContent.trim(),
       sehir: td[2] ? td[2].textContent.trim() : '',
+      tr,
       lat: tr.dataset.lat ? parseFloat(tr.dataset.lat) : null,
       lon: tr.dataset.lon ? parseFloat(tr.dataset.lon) : null,
       online: tr.dataset.online === '1'
@@ -2441,10 +2960,13 @@ function initArchiveMap() {
   setText('statSehir', String(new Set(kayitlar.filter(k => k.lat !== null).map(anahtar)).size));
   setText('statKurum', String(new Set(kayitlar.map(k => k.kurum)).size));
 
+  const dil = () => currentLangCode();
+  const S = (k, y) => (i18nDictionary[dil()] && i18nDictionary[dil()][k]) || y || '';
+
   const harita = L.map(el, { scrollWheelZoom: false, keyboard: true }).setView([39.3, 33.5], 5);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  const katman = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> katkıcıları'
+    attribution: S('map001')
   }).addTo(harita);
 
   const NAVY = '#002B49', CYAN = '#00A3E0';
@@ -2469,8 +2991,6 @@ function initArchiveMap() {
   const prevBtn = document.getElementById('yearPrev');
   const nextBtn = document.getElementById('yearNext');
   const yillar = kayitlar.map(k => k.yil);
-  const dil = () => (getStoredLang() === 'en' ? 'en' : 'tr');
-  const S = (k, y) => (i18nDictionary[dil()] && i18nDictionary[dil()][k]) || y || '';
 
   let aktif = null;
   function goster(yil) {
@@ -2486,9 +3006,11 @@ function initArchiveMap() {
         harita.panTo([k.lat, k.lon], { animate: true, duration: 0.6 });
       }
     }
-    const parcalar = [k.yil + ' · ' + k.no + '. ' + S('arh009').replace(/s$/, ''), k.kurum];
+    const td = k.tr.querySelectorAll('td');
+    const etiket = dil() === 'en' ? S('map004') + ' #' + k.no : k.no + '. ' + S('map004');
+    const parcalar = [k.yil + ' · ' + etiket, td[1].textContent.trim()];
     if (k.online) parcalar.push(S('arh008'));
-    else if (k.sehir) parcalar.push(k.sehir);
+    else if (td[2]) parcalar.push(td[2].textContent.trim());
     readout.textContent = parcalar.join('  ·  ');
     if (range.value !== String(yil)) range.value = String(yil);
     aktif = yil;
@@ -2539,6 +3061,15 @@ function initArchiveMap() {
     goster(parseInt(tr.querySelectorAll('td')[0].textContent, 10));
   }));
 
+  // Dil değişince: atıf, okunan satır ve oynat düğmesi o dilde yenilenir
+  document.addEventListener('siu:lang', () => {
+    harita.attributionControl.removeAttribution(katman.options.attribution);
+    katman.options.attribution = S('map001');
+    harita.attributionControl.addAttribution(katman.options.attribution);
+    if (aktif !== null) goster(aktif);
+    playBtn.textContent = S(timer ? 'arh007' : 'arh006');
+  });
+
   goster(yillar[yillar.length - 1]);
   setTimeout(() => harita.invalidateSize(), 200);
 }
@@ -2561,7 +3092,7 @@ function initRegistrationForm() {
   const genelHata = document.getElementById('kayitHata');
   const gonder    = document.getElementById('kayitGonder');
   const faturaKut = document.getElementById('faturaAlanlari');
-  const dil = () => (getStoredLang() === 'en' ? 'en' : 'tr');
+  const dil = () => currentLangCode();
   const S = (k) => (i18nDictionary[dil()] && i18nDictionary[dil()][k]) || '';
 
   if (dilAlan) dilAlan.value = dil();

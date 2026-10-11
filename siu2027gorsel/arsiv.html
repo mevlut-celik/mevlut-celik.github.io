@@ -26,25 +26,25 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=205">
-  <link rel="stylesheet" href="css/pages/arsiv.css?v=205">
-  <link rel="stylesheet" href="assets/leaflet/leaflet.css?v=205">
+  <link rel="stylesheet" href="css/style.css?v=210">
+  <link rel="stylesheet" href="css/pages/arsiv.css?v=210">
+  <link rel="stylesheet" href="assets/leaflet/leaflet.css?v=210">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
 <body data-title-key="ttlArsiv">
 
-  <a class="skip-link" href="#icerik">Ana içeriğe atla</a>
+  <a class="skip-link" href="#icerik" data-i18n="a11y001">Ana içeriğe atla</a>
 
-  <!-- KABUK:BAŞ — ince bilgi çubuğu (kaydırınca kaybolur) + yapışkan ana çubuk (logo, menü).
+<!-- KABUK:BAŞ — ince bilgi çubuğu (kaydırınca kaybolur) + yapışkan ana çubuk (logo, menü).
        Diğer sayfalar BİREBİR kopyalar; yalnız aktif menü öğesi (aria-current / is-current) değişir. -->
   <header class="hd">
     <div class="hd-top">
       <div class="wrap">
         <p class="hd-tagline"><span class="hd-tagline-long"><span data-i18n="brandSubtitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı</span> · </span><span data-i18n="hd002">4–7 Temmuz 2027 · İstanbul</span></p>
         <div class="hd-util">
-          <button type="button" class="hd-search open-search-modal" aria-label="Arama yap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span data-i18n="hd003">Ara</span><kbd class="hd-kbd">Ctrl K</kbd></button>
-          <div class="hd-lang lang-switch" role="group" aria-label="Dil Seçimi">
+          <button type="button" class="hd-search open-search-modal" aria-label="Ara" data-i18n-aria="a11y002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span data-i18n="hd003">Ara</span><kbd class="hd-kbd">Ctrl K</kbd></button>
+          <div class="hd-lang lang-switch" role="group" aria-label="Dil seçimi" data-i18n-aria="a11y003">
             <button type="button" class="lang-btn lang-btn-tr active" lang="tr" aria-label="Türkçe">TR</button>
             <button type="button" class="lang-btn lang-btn-en" lang="en" aria-label="English">EN</button>
           </div>
@@ -53,10 +53,10 @@
     </div>
     <div class="hd-main">
       <div class="wrap">
-        <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)"></a>
+        <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)" data-i18n-aria="a11y004"></a>
         <span class="hd-divider" aria-hidden="true"></span>
-        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
-        <nav class="hd-nav" id="hd-nav" aria-label="Ana menü">
+        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa" data-i18n-aria="a11y005"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
+        <nav class="hd-nav" id="hd-nav" aria-label="Ana menü" data-i18n-aria="a11y006">
           <ul class="hd-menu-list">
             <li class="hd-item">
               <button class="hd-trigger is-current" type="button" aria-expanded="false" aria-controls="hd-sub-kurultay"><span data-i18n="navAbout">Kurultay Hakkında</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
@@ -64,11 +64,12 @@
                 <li><a href="hakkinda"><span class="hd-sub-title" data-i18n="hakkindaPageTitle">Kurultay Hakkında</span><span class="hd-sub-desc" data-i18n="hd005">Hoş geldiniz mesajı, kapsam ve kurultay yeri</span></a></li>
                 <li><a href="komiteler"><span class="hd-sub-title" data-i18n="navCommittees">Düzenleme Kurulu</span><span class="hd-sub-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span></a></li>
                 <li><a href="arsiv" aria-current="page"><span class="hd-sub-title" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span><span class="hd-sub-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span></a></li>
+                <li><a href="sponsorluk"><span class="hd-sub-title" data-i18n="navSponsorship">Sponsorluk</span><span class="hd-sub-desc" data-i18n="hd008">Sponsor olma adımları ve iletişim</span></a></li>
               </ul>
             </li>
-            <li class="hd-item"><a class="hd-link" href="yazarlar" data-i18n="hd001">Yazarlar İçin Bildiri Gönderimi</a></li>
+            <li class="hd-item"><a class="hd-link" href="yazarlar" data-i18n="navAuthors">Yazarlar İçin</a></li>
             <li class="hd-item"><a class="hd-link" href="program" data-i18n="navProgram">Program</a></li>
-            <li class="hd-item"><a class="hd-link" href="katilim" data-i18n="navRegistration">Katılım &amp; Kayıt</a></li>
+            <li class="hd-item"><a class="hd-link" href="katilim" data-i18n="navRegistration">Katılım & Kayıt</a></li>
             <li class="hd-item"><a class="hd-link" href="iletisim" data-i18n="navContact">İletişim</a></li>
           </ul>
         </nav>
@@ -116,16 +117,16 @@
             </div>
           </dl>
 
-          <div id="arsivHarita" class="map-frame map-frame--tall" role="application" aria-label="SİU kurultaylarının yıllara göre dağılımı"></div>
+          <div id="arsivHarita" class="map-frame map-frame--tall" role="application" aria-label="SİU kurultaylarının yıllara göre dağılımı" data-i18n-aria="a11y023"></div>
 
           <div class="year-scrubber">
             <div class="year-scrubber__controls">
-              <button type="button" class="year-scrubber__btn" id="yearPrev" aria-label="Önceki kurultay">
+              <button type="button" class="year-scrubber__btn" id="yearPrev" aria-label="Önceki kurultay" data-i18n-aria="a11y021">
                 <span aria-hidden="true">‹</span>
               </button>
               <label class="visually-hidden" for="yearRange" data-i18n="arh003">Yıl</label>
               <input type="range" id="yearRange" min="1993" max="2027" step="1" value="2027">
-              <button type="button" class="year-scrubber__btn" id="yearNext" aria-label="Sonraki kurultay">
+              <button type="button" class="year-scrubber__btn" id="yearNext" aria-label="Sonraki kurultay" data-i18n-aria="a11y022">
                 <span aria-hidden="true">›</span>
               </button>
               <button type="button" class="btn btn--small" id="yearPlay" data-i18n="arh006">Sırayla oynat</button>
@@ -140,12 +141,12 @@
           <div class="section__head">
             <h2 id="kronoloji-title" data-i18n="ar001">Kurultay Kronolojisi (1993 – 2027)</h2>
           </div>
-          <p class="section__lede" data-i18n="ar002">SİU kurultaylarının yıl, sıra numarası, ev sahibi kurum ve düzenlendiği şehir bilgileri. Tabloda arama yaparak geçmiş kurultayları filtreleyebilirsiniz.</p>
+          <p class="section__lede" data-i18n="ar002">SİU kurultaylarının yıl, sıra numarası, ev sahibi kurum, düzenlendiği şehir ve kurultay başkanları bilgileri. Tabloda arama yaparak geçmiş kurultayları filtreleyebilirsiniz.</p>
 
           <div class="search-field archive-search">
             <label class="visually-hidden" for="archiveSearchInput" data-i18n="ar003">Arşivde ara</label>
             <input type="search" id="archiveSearchInput" class="archive-input"
-                   placeholder="Yıl, üniversite veya şehir ara (Örn: Boğaziçi, Medipol, Antalya, 2025, hibrit)..."
+                   placeholder="Yıl, üniversite, şehir veya başkan ara (Örn: Boğaziçi, Medipol, Antalya, 2025, hibrit)..." data-i18n-placeholder="a11y024"
                    autocomplete="off" spellcheck="false">
           </div>
 
@@ -158,6 +159,7 @@
                   <th scope="col" class="num" data-i18n="ar005">Yıl</th>
                   <th scope="col" data-i18n="ar006">Ev Sahibi / Ortak Kurum</th>
                   <th scope="col" data-i18n="ar007">Şehir / Yer / Biçim</th>
+                  <th scope="col" data-i18n="ar008">Kurultay Başkanları</th>
                 </tr>
               </thead>
               <tbody>
@@ -166,214 +168,250 @@
               <td class="archive-year num">2027</td>
               <td class="archive-table__host" data-i18n="ar009">İstanbul Medipol Üniversitesi</td>
               <td data-i18n="ar010">Kavacık, İstanbul (Yüz Yüze)</td>
+              <td class="archive-table__chairs">Hüseyin Arslan, Elif Uysal</td>
             </tr>
             <tr data-lat="40.8162" data-lon="29.3034">
               <th scope="row" class="num">34</th>
               <td class="archive-year num">2026</td>
               <td class="archive-table__host" data-i18n="ar012">Piri Reis Üniversitesi</td>
               <td data-i18n="ar013">Tuzla, İstanbul</td>
+              <td class="archive-table__chairs">Nafiz Arıca, Onur Kaya</td>
             </tr>
             <tr data-lat="41.1744" data-lon="29.6125">
               <th scope="row" class="num">33</th>
               <td class="archive-year num">2025</td>
               <td class="archive-table__host" data-i18n="ar015">Işık Üniversitesi</td>
               <td data-i18n="ar016">Şile, İstanbul</td>
+              <td class="archive-table__chairs">Onur Kaya</td>
             </tr>
             <tr data-lat="36.9165" data-lon="34.8951">
               <th scope="row" class="num">32</th>
               <td class="archive-year num">2024</td>
               <td class="archive-table__host" data-i18n="ar018">Tarsus Üniversitesi</td>
               <td data-i18n="ar019">Tarsus / Mersin</td>
+              <td class="archive-table__chairs">Ali Özen</td>
             </tr>
             <tr data-lat="41.1157" data-lon="28.9986">
               <th scope="row" class="num">31</th>
               <td class="archive-year num">2023</td>
               <td class="archive-table__host" data-i18n="ar021">İstanbul Teknik Üniversitesi</td>
               <td data-i18n="ar022">Ayazağa, İstanbul</td>
+              <td class="archive-table__chairs">Tayfun Akgül</td>
             </tr>
             <tr data-lat="41.2457" data-lon="32.693">
               <th scope="row" class="num">30</th>
               <td class="archive-year num">2022</td>
               <td class="archive-table__host" data-i18n="ar024">Bahçeşehir Üniversitesi</td>
               <td data-i18n="ar025">Safranbolu (Hibrit Model)</td>
+              <td class="archive-table__chairs">Fatoş T. Yarman Vural, Nafiz Arıca</td>
             </tr>
             <tr data-online="1">
               <th scope="row" class="num">29</th>
               <td class="archive-year num">2021</td>
               <td class="archive-table__host" data-i18n="ar027">Bahçeşehir Üniversitesi</td>
               <td data-i18n="ar028">Çevrim İçi (Virtual)</td>
+              <td class="archive-table__chairs">Nafiz Arıca, Fatoş T. Yarman Vural</td>
             </tr>
             <tr data-online="1">
               <th scope="row" class="num">28</th>
               <td class="archive-year num">2020</td>
               <td class="archive-table__host" data-i18n="ar030">İstanbul Medipol Üniversitesi</td>
               <td data-i18n="ar031">Çevrim İçi (Pandemi Dönemi)</td>
+              <td class="archive-table__chairs">Hüseyin Arslan</td>
             </tr>
             <tr data-lat="39.4192" data-lon="37.1012">
               <th scope="row" class="num">27</th>
               <td class="archive-year num">2019</td>
               <td class="archive-table__host" data-i18n="ar033">Gebze Teknik Üniv. + Sivas Cumhuriyet Üniv.</td>
               <td data-i18n="ar034">Sivas</td>
+              <td class="archive-table__chairs">Yusuf Sinan Akgül, Köksal Hocaoğlu, Hidayet Takcı</td>
             </tr>
             <tr data-lat="38.4193" data-lon="27.1285">
               <th scope="row" class="num">26</th>
               <td class="archive-year num">2018</td>
               <td class="archive-table__host" data-i18n="ar036">İzmir Kâtip Çelebi Üniversitesi</td>
               <td data-i18n="ar037">İzmir</td>
+              <td class="archive-table__chairs">Aydın Akan, Yalçın İşler</td>
             </tr>
             <tr data-lat="36.8866" data-lon="30.703">
               <th scope="row" class="num">25</th>
               <td class="archive-year num">2017</td>
               <td class="archive-table__host" data-i18n="ar039">İstanbul Teknik Üniversitesi</td>
               <td data-i18n="ar040">Antalya</td>
+              <td class="archive-table__chairs">Lütfiye Durak Ata, Behçet Uğur Töreyin</td>
             </tr>
             <tr data-lat="41.2503" data-lon="31.839">
               <th scope="row" class="num">24</th>
               <td class="archive-year num">2016</td>
               <td class="archive-table__host" data-i18n="ar042">Bülent Ecevit Üniversitesi</td>
               <td data-i18n="ar043">Zonguldak</td>
+              <td class="archive-table__chairs">Ertan Öztürk</td>
             </tr>
             <tr data-lat="38.3487" data-lon="38.3191">
               <th scope="row" class="num">23</th>
               <td class="archive-year num">2015</td>
               <td class="archive-table__host" data-i18n="ar045">İnönü Üniversitesi</td>
               <td data-i18n="ar046">Malatya</td>
+              <td class="archive-table__chairs">A. Enis Çetin, Mehmet Emin Tağluk, Davut Hanbay</td>
             </tr>
             <tr data-lat="41.0055" data-lon="39.7301">
               <th scope="row" class="num">22</th>
               <td class="archive-year num">2014</td>
               <td class="archive-table__host" data-i18n="ar048">Karadeniz Teknik Üniversitesi</td>
               <td data-i18n="ar049">Trabzon</td>
+              <td class="archive-table__chairs">Temel Kayıkçıoğlu</td>
             </tr>
             <tr data-lat="35.3396" data-lon="33.3205">
               <th scope="row" class="num">21</th>
               <td class="archive-year num">2013</td>
               <td class="archive-table__host" data-i18n="ar051">Uluslararası Kıbrıs Üniversitesi</td>
               <td data-i18n="ar052">Girne, KKTC</td>
+              <td class="archive-table__chairs">Erbuğ Çelebi, Mehmet Toycan</td>
             </tr>
             <tr data-lat="36.6221" data-lon="29.1153">
               <th scope="row" class="num">20</th>
               <td class="archive-year num">2012</td>
               <td class="archive-table__host" data-i18n="ar054">Özyeğin Üniversitesi</td>
               <td data-i18n="ar055">Fethiye, Muğla</td>
+              <td class="archive-table__chairs">Tanju Erdem, Reha Civanlar</td>
             </tr>
             <tr data-lat="36.6014" data-lon="30.5639">
               <th scope="row" class="num">19</th>
               <td class="archive-year num">2011</td>
               <td class="archive-table__host" data-i18n="ar057">Hacettepe Üniversitesi</td>
               <td data-i18n="ar058">Kemer, Antalya</td>
+              <td class="archive-table__chairs">Mehmet Şafak</td>
             </tr>
             <tr data-lat="37.9162" data-lon="40.2364">
               <th scope="row" class="num">18</th>
               <td class="archive-year num">2010</td>
               <td class="archive-table__host" data-i18n="ar060">Dicle Üniversitesi</td>
               <td data-i18n="ar061">Diyarbakır</td>
+              <td class="archive-table__chairs">Mehmet Siraç Özerdem</td>
             </tr>
             <tr data-lat="36.8866" data-lon="30.703">
               <th scope="row" class="num">17</th>
               <td class="archive-year num">2009</td>
               <td class="archive-table__host" data-i18n="ar063">Kocaeli Üniversitesi</td>
               <td data-i18n="ar064">Antalya</td>
+              <td class="archive-table__chairs">Sarp Ertürk</td>
             </tr>
             <tr data-lat="37.3697" data-lon="27.2685">
               <th scope="row" class="num">16</th>
               <td class="archive-year num">2008</td>
               <td class="archive-table__host" data-i18n="ar066">Orta Doğu Teknik Üniversitesi (ODTÜ)</td>
               <td data-i18n="ar067">Didim, Aydın</td>
+              <td class="archive-table__chairs">Yasemin Yardımcı</td>
             </tr>
             <tr data-lat="39.7744" data-lon="30.5191">
               <th scope="row" class="num">15</th>
               <td class="archive-year num">2007</td>
               <td class="archive-table__host" data-i18n="ar069">Anadolu Üniversitesi</td>
               <td data-i18n="ar070">Eskişehir</td>
+              <td class="archive-table__chairs">Atalay Barkana</td>
             </tr>
             <tr data-lat="36.8633" data-lon="31.0578">
               <th scope="row" class="num">14</th>
               <td class="archive-year num">2006</td>
               <td class="archive-table__host" data-i18n="ar072">Sabancı Üniversitesi</td>
               <td data-i18n="ar073">Belek, Antalya</td>
+              <td class="archive-table__chairs">Aytül Erçil</td>
             </tr>
             <tr data-lat="38.7219" data-lon="35.4873">
               <th scope="row" class="num">13</th>
               <td class="archive-year num">2005</td>
               <td class="archive-table__host" data-i18n="ar075">Erciyes Üniversitesi</td>
               <td data-i18n="ar076">Kayseri</td>
+              <td class="archive-table__chairs">M. Emin Yüksel, Nurhan Karaboğa</td>
             </tr>
             <tr data-lat="37.8632" data-lon="27.2669">
               <th scope="row" class="num">12</th>
               <td class="archive-year num">2004</td>
               <td class="archive-table__host" data-i18n="ar078">İstanbul Teknik Üniversitesi</td>
               <td data-i18n="ar079">Kuşadası, Aydın</td>
+              <td class="archive-table__chairs">Bilge Günsel, Muhittin Gökmen</td>
             </tr>
             <tr data-lat="41.2334" data-lon="29.1109">
               <th scope="row" class="num">11</th>
               <td class="archive-year num">2003</td>
               <td class="archive-table__host" data-i18n="ar081">Koç Üniversitesi</td>
               <td data-i18n="ar082">Rumelifeneri, İstanbul</td>
+              <td class="archive-table__chairs">A. Murat Tekalp</td>
             </tr>
             <tr data-lat="37.7828" data-lon="29.0966">
               <th scope="row" class="num">10</th>
               <td class="archive-year num">2002</td>
               <td class="archive-table__host" data-i18n="ar084">Işık Üniversitesi</td>
               <td data-i18n="ar085">Pamukkale, Denizli</td>
+              <td class="archive-table__chairs">Erdal Panayırcı</td>
             </tr>
             <tr data-lat="35.1205" data-lon="33.9388">
               <th scope="row" class="num">9</th>
               <td class="archive-year num">2001</td>
               <td class="archive-table__host" data-i18n="ar087">Doğu Akdeniz Üniversitesi</td>
               <td data-i18n="ar088">Gazimağusa, KKTC</td>
+              <td class="archive-table__chairs">—</td>
             </tr>
-            <tr data-lat="36.7234" data-lon="30.561">
+            <tr data-lat="36.8633" data-lon="31.0578">
               <th scope="row" class="num">8</th>
               <td class="archive-year num">2000</td>
               <td class="archive-table__host" data-i18n="ar090">İstanbul Üniversitesi</td>
-              <td data-i18n="ar091">Beldibi, Antalya</td>
+              <td data-i18n="ar091">Belek, Antalya</td>
+              <td class="archive-table__chairs">Aydın Akan</td>
             </tr>
             <tr data-lat="39.9076" data-lon="32.7654">
               <th scope="row" class="num">7</th>
               <td class="archive-year num">1999</td>
               <td class="archive-table__host" data-i18n="ar093">Bilkent Üniversitesi</td>
               <td data-i18n="ar094">Bilkent, Ankara</td>
+              <td class="archive-table__chairs">Ezhan Karaşan</td>
             </tr>
             <tr data-lat="40.4701" data-lon="32.6529">
               <th scope="row" class="num">6</th>
               <td class="archive-year num">1998</td>
               <td class="archive-table__host" data-i18n="ar096">Başkent Üniversitesi</td>
               <td data-i18n="ar097">Kızılcahamam, Ankara</td>
+              <td class="archive-table__chairs">Buyurman Baykal</td>
             </tr>
             <tr data-lat="37.8632" data-lon="27.2669">
               <th scope="row" class="num">5</th>
               <td class="archive-year num">1997</td>
               <td class="archive-table__host" data-i18n="ar099">Boğaziçi Üniversitesi</td>
               <td data-i18n="ar100">Kuşadası, Aydın</td>
+              <td class="archive-table__chairs">Bülent Sankur</td>
             </tr>
             <tr data-lat="36.6014" data-lon="30.5639">
               <th scope="row" class="num">4</th>
               <td class="archive-year num">1996</td>
               <td class="archive-table__host" data-i18n="ar102">Orta Doğu Teknik Üniversitesi (ODTÜ)</td>
               <td data-i18n="ar103">Kemer, Antalya</td>
+              <td class="archive-table__chairs">—</td>
             </tr>
             <tr data-lat="38.5928" data-lon="34.9595">
               <th scope="row" class="num">3</th>
               <td class="archive-year num">1995</td>
               <td class="archive-table__host" data-i18n="ar105">İTÜ + TÜBİTAK MAM</td>
               <td data-i18n="ar106">Kapadokya, Nevşehir</td>
+              <td class="archive-table__chairs">Muhittin Gökmen</td>
             </tr>
             <tr data-lat="37.0556" data-lon="28.3651">
               <th scope="row" class="num">2</th>
               <td class="archive-year num">1994</td>
               <td class="archive-table__host" data-i18n="ar108">Bilkent Üniversitesi + Boğaziçi Üniversitesi</td>
               <td data-i18n="ar109">Gökova, Muğla</td>
+              <td class="archive-table__chairs">—</td>
             </tr>
             <tr data-lat="41.079" data-lon="29.044">
               <th scope="row" class="num">1</th>
               <td class="archive-year num">1993</td>
-              <td class="archive-table__host" data-i18n="ar111">Boğaziçi Üniversitesi</td>
+              <td class="archive-table__host" data-i18n="ar111">Boğaziçi Üniversitesi + Bilkent Üniversitesi</td>
               <td data-i18n="ar112">Bebek, İstanbul</td>
+              <td class="archive-table__chairs">Bülent Sankur</td>
             </tr>
               </tbody>
             </table>
           </div>
+          <p class="small muted archive-note" data-i18n-html="ar008a">Kurultay başkanları; kurultayların arşivlenmiş web sitelerinden, IEEE Xplore'daki bildiri kitaplarından ve başkanların kendi özgeçmişlerinden derlenmiştir. Bu kaynaklarda başkanı belirtilmeyen kurultaylar “—” ile gösterilmiştir; bilgi ve düzeltmeler için <a href="mailto:siu2027@medipol.edu.tr">siu2027@medipol.edu.tr</a>.</p>
         </section>
 
       </div>
@@ -381,7 +419,7 @@
 
   </main>
 
-  <!-- ALTBİLGİ:BAŞ — footer + arama modalı. Diğer sayfalar BİREBİR kopyalar;
+<!-- ALTBİLGİ:BAŞ — footer + arama modalı. Diğer sayfalar BİREBİR kopyalar;
        değişen bir şey yoktur. -->
   <footer class="site-footer">
     <div class="wrap">
@@ -413,6 +451,7 @@
             <li><a href="komiteler#tpc" data-i18n="ft009">Teknik Program Komitesi</a></li>
             <li><a href="hakkinda#ev-sahibi" data-i18n="ft010">İstanbul Medipol Üniversitesi</a></li>
             <li><a href="arsiv" data-i18n="ft011">1993–2027 Kurultay Arşivi</a></li>
+            <li><a href="sponsorluk" data-i18n="navSponsorship">Sponsorluk</a></li>
           </ul>
         </nav>
 
@@ -447,12 +486,12 @@
   <!-- ==========================================
        GLOBAL ARAMA MODALI (CTRL+K)
        ========================================== -->
-  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama">
+  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama" data-i18n-aria="a11y007">
     <div class="search-modal-box">
       <div class="search-modal-header">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." autocomplete="off">
-        <button type="button" class="search-modal-close" aria-label="Aramayı kapat">&times;</button>
+        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+        <button type="button" class="search-modal-close" aria-label="Aramayı kapat" data-i18n-aria="a11y008">&times;</button>
       </div>
       <div class="search-modal-results" id="globalSearchResults">
         <p class="search-modal__hint" data-i18n="ft020">Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.</p>
@@ -462,7 +501,7 @@
 
 
   <!-- ALTBİLGİ:SON -->
-  <script src="assets/leaflet/leaflet.js?v=205"></script>
-  <script src="js/main.js?v=205"></script>
+  <script src="assets/leaflet/leaflet.js?v=210"></script>
+  <script src="js/main.js?v=210"></script>
 </body>
 </html>

@@ -26,15 +26,15 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=205">
-  <link rel="stylesheet" href="css/pages/kvkk.css?v=205">
+  <link rel="stylesheet" href="css/style.css?v=210">
+  <link rel="stylesheet" href="css/pages/kvkk.css?v=210">
 
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
 <body data-title-key="ttlKvkk">
 
-  <a class="skip-link" href="#icerik">Ana içeriğe atla</a>
+  <a class="skip-link" href="#icerik" data-i18n="a11y001">Ana içeriğe atla</a>
 
   <!-- KABUK:BAŞ — ince bilgi çubuğu (kaydırınca kaybolur) + yapışkan ana çubuk (logo, menü).
        Diğer sayfalar BİREBİR kopyalar; yalnız aktif menü öğesi (aria-current / is-current) değişir. -->
@@ -43,8 +43,8 @@
       <div class="wrap">
         <p class="hd-tagline"><span class="hd-tagline-long"><span data-i18n="brandSubtitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı</span> · </span><span data-i18n="hd002">4–7 Temmuz 2027 · İstanbul</span></p>
         <div class="hd-util">
-          <button type="button" class="hd-search open-search-modal" aria-label="Arama yap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span data-i18n="hd003">Ara</span><kbd class="hd-kbd">Ctrl K</kbd></button>
-          <div class="hd-lang lang-switch" role="group" aria-label="Dil Seçimi">
+          <button type="button" class="hd-search open-search-modal" aria-label="Ara" data-i18n-aria="a11y002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span data-i18n="hd003">Ara</span><kbd class="hd-kbd">Ctrl K</kbd></button>
+          <div class="hd-lang lang-switch" role="group" aria-label="Dil seçimi" data-i18n-aria="a11y003">
             <button type="button" class="lang-btn lang-btn-tr active" lang="tr" aria-label="Türkçe">TR</button>
             <button type="button" class="lang-btn lang-btn-en" lang="en" aria-label="English">EN</button>
           </div>
@@ -53,10 +53,10 @@
     </div>
     <div class="hd-main">
       <div class="wrap">
-        <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)"></a>
+        <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)" data-i18n-aria="a11y004"></a>
         <span class="hd-divider" aria-hidden="true"></span>
-        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
-        <nav class="hd-nav" id="hd-nav" aria-label="Ana menü">
+        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa" data-i18n-aria="a11y005"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
+        <nav class="hd-nav" id="hd-nav" aria-label="Ana menü" data-i18n-aria="a11y006">
           <ul class="hd-menu-list">
             <li class="hd-item">
               <button class="hd-trigger" type="button" aria-expanded="false" aria-controls="hd-sub-kurultay"><span data-i18n="navAbout">Kurultay Hakkında</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
@@ -64,11 +64,12 @@
                 <li><a href="hakkinda"><span class="hd-sub-title" data-i18n="hakkindaPageTitle">Kurultay Hakkında</span><span class="hd-sub-desc" data-i18n="hd005">Hoş geldiniz mesajı, kapsam ve kurultay yeri</span></a></li>
                 <li><a href="komiteler"><span class="hd-sub-title" data-i18n="navCommittees">Düzenleme Kurulu</span><span class="hd-sub-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span></a></li>
                 <li><a href="arsiv"><span class="hd-sub-title" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span><span class="hd-sub-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span></a></li>
+                <li><a href="sponsorluk"><span class="hd-sub-title" data-i18n="navSponsorship">Sponsorluk</span><span class="hd-sub-desc" data-i18n="hd008">Sponsor olma adımları ve iletişim</span></a></li>
               </ul>
             </li>
-            <li class="hd-item"><a class="hd-link" href="yazarlar" data-i18n="hd001">Yazarlar İçin Bildiri Gönderimi</a></li>
+            <li class="hd-item"><a class="hd-link" href="yazarlar" data-i18n="navAuthors">Yazarlar İçin</a></li>
             <li class="hd-item"><a class="hd-link" href="program" data-i18n="navProgram">Program</a></li>
-            <li class="hd-item"><a class="hd-link" href="katilim" data-i18n="navRegistration">Katılım &amp; Kayıt</a></li>
+            <li class="hd-item"><a class="hd-link" href="katilim" data-i18n="navRegistration">Katılım & Kayıt</a></li>
             <li class="hd-item"><a class="hd-link" href="iletisim" data-i18n="navContact">İletişim</a></li>
           </ul>
         </nav>
@@ -160,8 +161,8 @@
         </article>
       </div>
 
-      <aside class="col-side side" aria-label="Sayfa içi gezinme">
-        <nav class="side__block" aria-label="Bu sayfada">
+      <aside class="col-side side" aria-label="Sayfa içi gezinme" data-i18n-aria="a11y011">
+        <nav class="side__block" aria-label="Bu sayfada" data-i18n-aria="a11y010">
           <ol class="toc toc--plain">
             <li><a href="#madde-1" data-i18n="kv003">1. Veri Sorumlusu</a></li>
             <li><a href="#madde-2" data-i18n="kv005">2. İşlenen Kişisel Veriler</a></li>
@@ -212,6 +213,7 @@
             <li><a href="komiteler#tpc" data-i18n="ft009">Teknik Program Komitesi</a></li>
             <li><a href="hakkinda#ev-sahibi" data-i18n="ft010">İstanbul Medipol Üniversitesi</a></li>
             <li><a href="arsiv" data-i18n="ft011">1993–2027 Kurultay Arşivi</a></li>
+            <li><a href="sponsorluk" data-i18n="navSponsorship">Sponsorluk</a></li>
           </ul>
         </nav>
 
@@ -246,12 +248,12 @@
   <!-- ==========================================
        GLOBAL ARAMA MODALI (CTRL+K)
        ========================================== -->
-  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama">
+  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama" data-i18n-aria="a11y007">
     <div class="search-modal-box">
       <div class="search-modal-header">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." autocomplete="off">
-        <button type="button" class="search-modal-close" aria-label="Aramayı kapat">&times;</button>
+        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+        <button type="button" class="search-modal-close" aria-label="Aramayı kapat" data-i18n-aria="a11y008">&times;</button>
       </div>
       <div class="search-modal-results" id="globalSearchResults">
         <p class="search-modal__hint" data-i18n="ft020">Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.</p>
@@ -262,6 +264,6 @@
 
   <!-- ALTBİLGİ:SON -->
 
-  <script src="js/main.js?v=205"></script>
+  <script src="js/main.js?v=210"></script>
 </body>
 </html>

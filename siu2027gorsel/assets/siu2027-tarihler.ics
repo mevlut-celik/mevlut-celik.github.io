@@ -12,8 +12,8 @@ DTSTART;VALUE=DATE:20261116
 DTEND;VALUE=DATE:20261117
 SUMMARY:SİU 2027 · Özel oturum düzenleme daveti — son tarih
 DESCRIPTION:Call for special session proposals — deadline\n\nhttps://siu2
- 027.medipol.edu.tr/yazarlar.html#ozel-oturumlar
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#ozel-oturumlar
+ 027.medipol.edu.tr/yazarlar#ozel-oturumlar
+URL:https://siu2027.medipol.edu.tr/yazarlar#ozel-oturumlar
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -29,8 +29,8 @@ DTSTART;VALUE=DATE:20261116
 DTEND;VALUE=DATE:20261117
 SUMMARY:SİU 2027 · Eğitim semineri düzenleme daveti — son tarih
 DESCRIPTION:Call for tutorial proposals — deadline\n\nhttps://siu2027.med
- ipol.edu.tr/program.html#seminerler
-URL:https://siu2027.medipol.edu.tr/program.html#seminerler
+ ipol.edu.tr/program#seminerler
+URL:https://siu2027.medipol.edu.tr/program#seminerler
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -46,8 +46,8 @@ DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
 SUMMARY:SİU 2027 · Özel oturum kabullerinin bildirilmesi
 DESCRIPTION:Notification of special session acceptance\n\nhttps://siu2027.m
- edipol.edu.tr/yazarlar.html#ozel-oturumlar
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#ozel-oturumlar
+ edipol.edu.tr/yazarlar#ozel-oturumlar
+URL:https://siu2027.medipol.edu.tr/yazarlar#ozel-oturumlar
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -63,8 +63,8 @@ DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
 SUMMARY:SİU 2027 · Eğitim semineri kabullerinin bildirilmesi
 DESCRIPTION:Notification of tutorial acceptance\n\nhttps://siu2027.medipol.
- edu.tr/program.html#seminerler
-URL:https://siu2027.medipol.edu.tr/program.html#seminerler
+ edu.tr/program#seminerler
+URL:https://siu2027.medipol.edu.tr/program#seminerler
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -80,8 +80,8 @@ DTSTART;VALUE=DATE:20270201
 DTEND;VALUE=DATE:20270202
 SUMMARY:SİU 2027 · Bildirilerin gönderilmesi — son tarih
 DESCRIPTION:Paper submission — deadline\n\nhttps://siu2027.medipol.edu.tr
- /yazarlar.html#cfp
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#cfp
+ /yazarlar#cfp
+URL:https://siu2027.medipol.edu.tr/yazarlar#cfp
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -97,8 +97,8 @@ DTSTART;VALUE=DATE:20270430
 DTEND;VALUE=DATE:20270501
 SUMMARY:SİU 2027 · Sonuçların açıklanması
 DESCRIPTION:Notification of acceptance\n\nhttps://siu2027.medipol.edu.tr/ya
- zarlar.html#cfp
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#cfp
+ zarlar#cfp
+URL:https://siu2027.medipol.edu.tr/yazarlar#cfp
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM
@@ -114,8 +114,8 @@ DTSTART;VALUE=DATE:20270524
 DTEND;VALUE=DATE:20270525
 SUMMARY:SİU 2027 · Baskıya hazır bildiri ve yazar kaydı — son tarih
 DESCRIPTION:Camera-ready paper & author registration\n\nhttps://siu2027.med
- ipol.edu.tr/yazarlar.html#baskiya-hazir
-URL:https://siu2027.medipol.edu.tr/yazarlar.html#baskiya-hazir
+ ipol.edu.tr/yazarlar#baskiya-hazir
+URL:https://siu2027.medipol.edu.tr/yazarlar#baskiya-hazir
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 BEGIN:VALARM

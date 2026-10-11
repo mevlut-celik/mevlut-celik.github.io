@@ -3,6 +3,8 @@
 .archive-table th.num, .archive-table td.num { width: 4.5ch; white-space: nowrap; }
 .archive-table td.archive-year { width: 6ch; font-weight: 600; color: var(--navy); }
 .archive-table__host { min-width: 18ch; }
+.archive-table__chairs { min-width: 22ch; }
+.archive-note { margin-top: var(--space-3); max-width: var(--measure); }
 .archive-table__note { color: var(--ink-3); font-size: var(--step--1); }
 .archive-table__row--current > * { background: var(--paper-2); font-weight: 600; }
 @media (max-width: 48em) { .archive-table__note { display: none; } }
@@ -31,7 +33,8 @@
   flex: none;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid var(--rule-2);
+  border: 1.5px solid var(--rule-2);
+  border-radius: var(--radius);
   background: var(--paper);
   color: var(--navy);
   font-size: var(--step-1);
@@ -58,7 +61,8 @@
 
 /* Haritada seçili yılın tablo satırı */
 .archive-table tbody tr { cursor: pointer; }
-.archive-table tbody tr.is-active > * { background: var(--paper-2); box-shadow: inset 2px 0 0 var(--cyan); }
+.archive-table tbody tr.is-active > * { background: var(--ot-accent-soft); }
+.archive-table tbody tr.is-active > :first-child { box-shadow: inset 3px 0 0 var(--cyan); }
 
 @media print {
   #harita, .year-scrubber { display: none !important; }

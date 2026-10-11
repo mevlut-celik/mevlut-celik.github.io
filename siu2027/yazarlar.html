@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yazarlar İçin: Bildiri Çağrısı ve Şablonlar | IEEE SİU 2027</title>
-  <meta name="description" content="IEEE SİU 2027 yazarlar için: bildiri çağrısı (CFP), 6 araştırma kulvarı, bildiri şablonları, özel oturum çağrısı ve baskıya hazır bildiri süreci.">
+  <meta name="description" content="IEEE SİU 2027 yazarlar için: bildiri çağrısı (CFP) — önemli tarihler, 6 kulvar ve konular, gönderim kuralları, düzenleme kurulu — ve yazar kılavuzu: şablonlar, özel oturum çağrısı, baskıya hazır bildiri süreci.">
 
   <link rel="canonical" href="https://siu2027.medipol.edu.tr/yazarlar">
 
@@ -25,177 +25,57 @@
   <meta name="twitter:image" content="https://siu2027.medipol.edu.tr/assets/og-siu2027.jpg">
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
-  <link rel="stylesheet" href="css/style.css?v=132">
-  <link rel="stylesheet" href="css/pages/yazarlar.css?v=132">
+  <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=210">
+  <link rel="stylesheet" href="css/pages/yazarlar.css?v=210">
 
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
 <body data-title-key="ttlYazarlar">
 
-  <a class="skip-link" href="#icerik">Ana içeriğe atla</a>
+  <a class="skip-link" href="#icerik" data-i18n="a11y001">Ana içeriğe atla</a>
 
-<!-- KABUK:BAŞ — üst şerit + marka + tek satır menü. Diğer 10 sayfa bu bloğu BİREBİR kopyalar;
-       yalnızca aktif menü bağlantısındaki class="active" + aria-current="page" değişir. -->
-  <header class="masthead">
-    <div class="masthead__top">
+<!-- KABUK:BAŞ — ince bilgi çubuğu (kaydırınca kaybolur) + yapışkan ana çubuk (logo, menü).
+       Diğer sayfalar BİREBİR kopyalar; yalnız aktif menü öğesi (aria-current / is-current) değişir. -->
+  <header class="hd">
+    <div class="hd-top">
       <div class="wrap">
-        <p class="masthead__date" data-i18n="topbarDate">4–7 Temmuz 2027 | İstanbul</p>
-        <div class="masthead__tools">
-          <button type="button" class="search-trigger open-search-modal" aria-label="Arama yap">
-            <span data-i18n="topbarSearchBtn">Arama</span>
-            <kbd>Ctrl+K</kbd>
-          </button>
-          <div class="lang-switch" role="group" aria-label="Dil Seçimi">
-            <button type="button" class="lang-btn lang-btn-tr active" aria-label="Türkçe">TR</button>
-            <button type="button" class="lang-btn lang-btn-en" aria-label="English">EN</button>
+        <p class="hd-tagline"><span class="hd-tagline-long"><span data-i18n="brandSubtitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı</span> · </span><span data-i18n="hd002">4–7 Temmuz 2027 · İstanbul</span></p>
+        <div class="hd-util">
+          <button type="button" class="hd-search open-search-modal" aria-label="Ara" data-i18n-aria="a11y002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span data-i18n="hd003">Ara</span><kbd class="hd-kbd">Ctrl K</kbd></button>
+          <div class="hd-lang lang-switch" role="group" aria-label="Dil seçimi" data-i18n-aria="a11y003">
+            <button type="button" class="lang-btn lang-btn-tr active" lang="tr" aria-label="Türkçe">TR</button>
+            <button type="button" class="lang-btn lang-btn-en" lang="en" aria-label="English">EN</button>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="masthead__brand">
+    <div class="hd-main">
       <div class="wrap">
-        <a href="./" class="brand" aria-label="SİU 2027 Ana Sayfa">
-          <img src="assets/siu-2027-logo.png" alt="SİU 2027 Resmî Logosu" class="brand__logo" width="1024" height="1024" decoding="async">
-          <span class="brand__text">
-            <span class="brand__name">SİU 2027</span>
-            <span class="brand__sub" data-i18n="brandSubtitle">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı</span>
-          </span>
-        </a>
-        <a href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" class="brand__host" title="İstanbul Medipol Üniversitesi">
-          <img src="assets/medipol-logo.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async">
-        </a>
-        <button type="button" class="nav-toggle mobile-toggle" aria-label="Menüyü Aç" aria-controls="mobileDrawer">
-          <span class="nav-toggle__bars" aria-hidden="true"></span>
-        </button>
+        <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)" data-i18n-aria="a11y004"></a>
+        <span class="hd-divider" aria-hidden="true"></span>
+        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa" data-i18n-aria="a11y005"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
+        <nav class="hd-nav" id="hd-nav" aria-label="Ana menü" data-i18n-aria="a11y006">
+          <ul class="hd-menu-list">
+            <li class="hd-item">
+              <button class="hd-trigger" type="button" aria-expanded="false" aria-controls="hd-sub-kurultay"><span data-i18n="navAbout">Kurultay Hakkında</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5l3-3"/></svg></button>
+              <ul class="hd-sub" id="hd-sub-kurultay">
+                <li><a href="hakkinda"><span class="hd-sub-title" data-i18n="hakkindaPageTitle">Kurultay Hakkında</span><span class="hd-sub-desc" data-i18n="hd005">Hoş geldiniz mesajı, kapsam ve kurultay yeri</span></a></li>
+                <li><a href="komiteler"><span class="hd-sub-title" data-i18n="navCommittees">Düzenleme Kurulu</span><span class="hd-sub-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span></a></li>
+                <li><a href="arsiv"><span class="hd-sub-title" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span><span class="hd-sub-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span></a></li>
+                <li><a href="sponsorluk"><span class="hd-sub-title" data-i18n="navSponsorship">Sponsorluk</span><span class="hd-sub-desc" data-i18n="hd008">Sponsor olma adımları ve iletişim</span></a></li>
+              </ul>
+            </li>
+            <li class="hd-item"><a class="hd-link" href="yazarlar" aria-current="page" data-i18n="navAuthors">Yazarlar İçin</a></li>
+            <li class="hd-item"><a class="hd-link" href="program" data-i18n="navProgram">Program</a></li>
+            <li class="hd-item"><a class="hd-link" href="katilim" data-i18n="navRegistration">Katılım & Kayıt</a></li>
+            <li class="hd-item"><a class="hd-link" href="iletisim" data-i18n="navContact">İletişim</a></li>
+          </ul>
+        </nav>
+        <button class="hd-toggle" type="button" aria-expanded="false" aria-controls="hd-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span data-i18n="hd004">Menü</span></button>
       </div>
     </div>
-
-    <nav class="site-nav" aria-label="Ana Menü">
-      <ul class="site-nav__list wrap">
-        <li class="site-nav__item">
-          <a href="./" class="site-nav__link"><span data-i18n="navHome">Ana Sayfa</span></a>
-        </li>
-
-        <li class="site-nav__item">
-          <a href="hakkinda" class="site-nav__link site-nav__link--menu"><span data-i18n="navAbout">Kurultay Hakkında</span></a>
-          <div class="site-nav__menu">
-            <a href="hakkinda#hosgeldiniz">
-              <span data-i18n="navAboutMsg">Hoş Geldiniz Mesajı</span>
-              <span class="menu-desc" data-i18n="descAboutMsg">Kurultay başkanlarının daveti</span>
-            </a>
-            <a href="hakkinda#kapsam">
-              <span data-i18n="navAboutScope">Kapsam ve Amaç</span>
-              <span class="menu-desc" data-i18n="descAboutScope">Bilimsel vizyon ve misyon</span>
-            </a>
-            <a href="komiteler">
-              <span data-i18n="navCommittees">Düzenleme Kurulu</span>
-              <span class="menu-desc" data-i18n="descAboutCommittee">Kurultay başkanları ve kurullar</span>
-            </a>
-            <a href="hakkinda#ev-sahibi">
-              <span data-i18n="navAboutHost">Kurultay Yeri</span>
-              <span class="menu-desc" data-i18n="descAboutHost">İstanbul Medipol Üniversitesi</span>
-            </a>
-            <a href="arsiv">
-              <span data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</span>
-              <span class="menu-desc" data-i18n="descAboutHistory">35 yıllık kurultay kronolojisi</span>
-            </a>
-          </div>
-        </li>
-
-        <li class="site-nav__item">
-          <a href="yazarlar" class="site-nav__link site-nav__link--menu active" aria-current="page"><span data-i18n="navAuthors">Yazarlar İçin</span></a>
-          <div class="site-nav__menu">
-            <a href="yazarlar#cfp">
-              <span data-i18n="navAuthorsCfp">Bildiri Çağrısı (CFP)</span>
-              <span class="menu-desc" data-i18n="descAuthorsCfp">Duyurulacaktır</span>
-            </a>
-            <a href="yazarlar#kulvarlar">
-              <span data-i18n="navAuthorsTracks">Konular ve Kulvarlar</span>
-              <span class="menu-desc" data-i18n="descAuthorsTracks">6 teknik araştırma kulvarı</span>
-            </a>
-            <a href="yazarlar#sablonlar">
-              <span data-i18n="navAuthorsTemplates">Bildiri Şablonları</span>
-              <span class="menu-desc" data-i18n="descAuthorsTemplates">Duyurulacaktır</span>
-            </a>
-            <a href="yazarlar#ozel-oturumlar">
-              <span data-i18n="navAuthorsSpecial">Özel Oturum Çağrısı</span>
-              <span class="menu-desc" data-i18n="descAuthorsSpecial">Özel oturum önerisi iletme</span>
-            </a>
-            <a href="yazarlar#egitim-cagrisi">
-              <span data-i18n="navAuthorsTutCall">Eğitim Semineri Çağrısı</span>
-              <span class="menu-desc" data-i18n="descAuthorsTutCall">Duyurulacaktır</span>
-            </a>
-            <a href="yazarlar#panel-cagrisi">
-              <span data-i18n="navAuthorsPanelCall">Panel Çağrısı</span>
-              <span class="menu-desc" data-i18n="descAuthorsPanelCall">Duyurulacaktır</span>
-            </a>
-            <a href="yazarlar#baskiya-hazir">
-              <span data-i18n="navAuthorsCamera">Baskıya Hazır Bildiri & Telif</span>
-              <span class="menu-desc" data-i18n="descAuthorsCamera">Duyurulacaktır</span>
-            </a>
-          </div>
-        </li>
-
-        <li class="site-nav__item">
-          <a href="program" class="site-nav__link site-nav__link--menu"><span data-i18n="navProgram">Program</span></a>
-          <div class="site-nav__menu">
-            <a href="program#genel-akis">
-              <span data-i18n="navProgramOverview">Bir Bakışta Program</span>
-              <span class="menu-desc" data-i18n="descProgramOverview">Duyurulacaktır</span>
-            </a>
-            <a href="program#bilimsel-program">
-              <span data-i18n="navProgramDetail">Ayrıntılı Bilimsel Program</span>
-              <span class="menu-desc" data-i18n="descProgramDetail">Duyurulacaktır</span>
-            </a>
-            <a href="program#konusmacilar">
-              <span data-i18n="navProgramSpeakers">Davetli Konuşmacılar (Keynotes)</span>
-              <span class="menu-desc" data-i18n="descProgramSpeakers">Duyurulacaktır</span>
-            </a>
-            <a href="program#seminerler">
-              <span data-i18n="navProgramTutorials">Eğitim Seminerleri</span>
-              <span class="menu-desc" data-i18n="descProgramTutorials">Gün ve saatler duyurulacaktır</span>
-            </a>
-            <a href="program#paneller">
-              <span data-i18n="navProgramPanels">Paneller</span>
-              <span class="menu-desc" data-i18n="descProgramPanels">Duyurulacaktır</span>
-            </a>
-            <a href="program#sosyal-program">
-              <span data-i18n="navProgramSocial">Sosyal Program & Gala</span>
-              <span class="menu-desc" data-i18n="descProgramSocial">Duyurulacaktır</span>
-            </a>
-          </div>
-        </li>
-
-        <li class="site-nav__item">
-          <a href="katilim" class="site-nav__link site-nav__link--menu"><span data-i18n="navRegistration">Katılım & Kayıt</span></a>
-          <div class="site-nav__menu">
-            <a href="katilim#kayit">
-              <span data-i18n="navRegistrationFees">Kayıt ve Ücretler</span>
-              <span class="menu-desc" data-i18n="descRegistrationFees">Kayıt kategorileri ve paketler</span>
-            </a>
-            <a href="katilim#konaklama">
-              <span data-i18n="navRegistrationAccom">Konaklama</span>
-              <span class="menu-desc" data-i18n="descRegistrationAccom">Kavacık çevresinde konaklama</span>
-            </a>
-            <a href="katilim#ulasim">
-              <span data-i18n="navRegistrationTravel">Ulaşım ve Kampüs Haritası</span>
-              <span class="menu-desc" data-i18n="descRegistrationTravel">Kampüs haritası ve toplu taşıma</span>
-            </a>
-          </div>
-        </li>
-        <li class="site-nav__item">
-          <a href="arsiv" class="site-nav__link"><span data-i18n="navArchive">Arşiv</span></a>
-        </li>
-        <li class="site-nav__item">
-          <a href="iletisim" class="site-nav__link"><span data-i18n="navContact">İletişim</span></a>
-        </li>
-        <li class="site-nav__item">
-          <a href="yazarlar#cfp" class="site-nav__link site-nav__link--submit"><span data-i18n="navQuickSubmit">Bildiri Gönderimi</span> <span class="arrow" aria-hidden="true">→</span></a>
-        </li>
-      </ul>
-    </nav>
   </header>
   <!-- KABUK:SON -->
 
@@ -225,277 +105,457 @@
 
       <div class="col-main">
 
-        <section class="section" id="cfp" aria-labelledby="cfp-title">
-          <div class="section__head">
-            <h2 id="cfp-title" data-i18n="yz010">Bildiri Çağrısı (Call for Papers)</h2>
-            <p class="visually-hidden" data-i18n="yz009">RESMÎ ÇAĞRI</p>
-          </div>
-          <p class="section__lede" data-i18n="yz011a">SİU 2027 bildiri çağrısının (CFP) Türkçe ve İngilizce sürümlerini aşağıdan indirebilirsiniz.</p>
-          <div class="download-list cfp-downloads">
-            <a class="btn btn--primary btn--download" href="assets/SIU_2027_CFP_TR.pdf" target="_blank" rel="noopener">
-              <span data-i18n="cfp001">Bildiri Çağrısı (PDF, Türkçe)</span>
-              <span class="btn__meta">PDF · A4</span>
-            </a>
-            <a class="btn btn--download" href="assets/SIU_2027_CFP_EN.pdf" target="_blank" rel="noopener">
-              <span data-i18n="cfp002">Call for Papers (PDF, English)</span>
-              <span class="btn__meta">PDF · A4</span>
-            </a>
-          </div>
-        </section>
+        <!-- KISIM 1 — BİLDİRİ ÇAĞRISI: CFP Word belgesinin (_tools/cfp/) web karşılığı. Belge ANA KAYNAKTIR;
+             belge değişince önce python3 _tools/cfp/cfp-esitle.py, sonra _tools/kulvarlar.json + kv_blok.py / dk_blok.py. -->
+        <section class="part" id="cfp" aria-labelledby="cfp-title">
+          <header class="part__head">
+            <h2 class="part__title" id="cfp-title" data-i18n="yz010">Bildiri Çağrısı (Call for Papers)</h2>
+            <p class="part__lede" data-i18n="cfpKicker">35. IEEE Sinyal İşleme ve İletişim Uygulamaları Kurultayı</p>
+            <p class="part__meta" data-i18n="cfpPageDesc">4–7 Temmuz 2027 · İstanbul Medipol Üniversitesi, Kavacık Güney Yerleşkesi, Beykoz, İstanbul</p>
+            <div class="download-list cfp-downloads">
+              <a class="btn btn--primary btn--download" href="assets/SIU_2027_CFP_TR.pdf" target="_blank" rel="noopener">
+                <span data-i18n="cfp001">Bildiri Çağrısı (PDF, Türkçe)</span>
+                <span class="btn__meta">PDF · A4</span>
+              </a>
+              <a class="btn btn--download" href="assets/SIU_2027_CFP_EN.pdf" target="_blank" rel="noopener">
+                <span data-i18n="cfp002">Call for Papers (PDF, English)</span>
+                <span class="btn__meta">PDF · A4</span>
+              </a>
+            </div>
+          </header>
 
-        <section class="section" id="kulvarlar" aria-labelledby="kulvarlar-title">
-          <div class="section__head">
-            <h2 id="kulvarlar-title" data-i18n="yz024">Konular ve Araştırma Kulvarları</h2>
-            <p class="visually-hidden" data-i18n="yz023">RESMÎ KULVARLAR</p>
-          </div>
-          <ol class="section__body tracks">
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum1">KULVAR 1</p>
-                <h3 class="track__title" data-i18n="track1Title">İletişim ve Ağlar</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Elif Tuğçe Ceran Arslan, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Özlem Tuğfe Demir, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Gökhan M. Güvensen, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li>Prof. Dr. Berna Özbek, <span data-i18n="affIyte">İzmir Yüksek Teknoloji Enstitüsü</span></li>
-                  </ul>
+          <section class="section" id="onemli-tarihler" aria-labelledby="onemli-tarihler-title">
+            <div class="section__head">
+              <h3 id="onemli-tarihler-title" data-i18n="importantDatesTitle">Önemli Tarihler</h3>
+            </div>
+            <dl class="cfp-dates">
+              <div class="cfp-date"><dt data-i18n="cf010">Özel Oturum ve Eğitim Semineri Önerileri Son Tarihi</dt><dd><time datetime="2026-11-16" data-i18n="cf015">16 Kasım 2026</time></dd></div>
+              <div class="cfp-date cfp-date--key"><dt data-i18n="cf011">Bildiri Gönderim Son Tarihi</dt><dd><time datetime="2027-02-01" data-i18n="dr05Due">1 Şubat 2027</time></dd></div>
+              <div class="cfp-date"><dt data-i18n="cf012">Kabul Bildirimi</dt><dd><time datetime="2027-04-30" data-i18n="cf016">30 Nisan 2027</time></dd></div>
+              <div class="cfp-date"><dt data-i18n="cf013">Baskıya Hazır Bildirilerin Gönderimi ve Yazar Kaydı Son Tarihi</dt><dd><time datetime="2027-05-24" data-i18n="cf017">24 Mayıs 2027</time></dd></div>
+              <div class="cfp-date"><dt data-i18n="cf014">Kurultay Tarihleri</dt><dd><time datetime="2027-07-04/2027-07-07" data-i18n="cf018">4–7 Temmuz 2027</time></dd></div>
+            </dl>
+            <p class="section__foot small"><a class="ot-link" href="./#tarihler" data-i18n="hm005">Tüm önemli tarihler</a></p>
+          </section>
+
+          <section class="section" id="kulvarlar" aria-labelledby="kulvarlar-title">
+            <div class="section__head">
+              <h3 id="kulvarlar-title" data-i18n="cf020">Konular ve İlgi Alanları</h3>
+            </div>
+            <p class="section__lede" data-i18n="cf021">Kurultay, aşağıdaki altı kulvarda ve sinyal işleme ile iletişimin kuramsal ve uygulamalı her alanında özgün bildirileri davet etmektedir.</p>
+            <div class="section__body">
+              <!-- KV:BAŞ — _tools/kv_blok.py üretir (kaynak _tools/kulvarlar.json); elle düzenlemeyin -->
+              <nav class="kv-index" aria-label="Kulvarlar" data-i18n-aria="a11y017">
+                <ul>
+                  <li><a href="#kulvar-iletisim"><span class="kv-index__name" data-i18n="track1Title">İletişim ve Ağlar</span> <span>29</span></a></li>
+                  <li><a href="#kulvar-goruntu"><span class="kv-index__name" data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</span> <span>8</span></a></li>
+                  <li><a href="#kulvar-sinyal"><span class="kv-index__name" data-i18n="track3Title">Sinyal İşleme ve Robotik</span> <span>15</span></a></li>
+                  <li><a href="#kulvar-ml"><span class="kv-index__name" data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</span> <span>12</span></a></li>
+                  <li><a href="#kulvar-biyomedikal"><span class="kv-index__name" data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</span> <span>10</span></a></li>
+                  <li><a href="#kulvar-ddi"><span class="kv-index__name" data-i18n="track6Title">Doğal Dil İşleme</span> <span>6</span></a></li>
+                </ul>
+              </nav>
+              <div class="kv-list">
+                <article class="kv-track" id="kulvar-iletisim" aria-labelledby="kulvar-iletisim-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-iletisim-ad"><span data-i18n="cf022">Kulvar</span> 1: <span data-i18n="track1Title">İletişim ve Ağlar</span></h4>
+                      <span class="kv-count">29 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person">Prof. Dr. Berna Özbek</span><span class="kv-org" data-i18n="affIyte">İzmir Yüksek Teknoloji Enstitüsü</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Elif Tuğçe Ceran Arslan</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Gökhan M. Güvensen</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Özlem Tuğfe Demir</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix011">6G ve Ötesi Teknolojiler</li>
+                      <li data-i18n="ix065">Ağ Güvenliği ve Mahremiyet</li>
+                      <li data-i18n="ix073">Akıllı Yansıtıcı Yüzeyler Aracılığı ile İletişim</li>
+                      <li data-i18n="ix008">Bilgi Teorisi ve Kodlama</li>
+                      <li data-i18n="ix059">Bilgi Yaşı ve Değeri</li>
+                      <li data-i18n="ix051">Bütünleşik Algılama ve İletişim</li>
+                      <li data-i18n="ix056">Dijital İkiz Çözümleri</li>
+                      <li data-i18n="ix054">Enerji Hasadı ve Düşük Güçlü İletişim</li>
+                      <li data-i18n="ix061">Enerji Verimli ve Yeşil Ağlar</li>
+                      <li data-i18n="ix066">Fiziksel Katman Güvenliği</li>
+                      <li data-i18n="ix062">Holografik Yüzeyler ve MIMO</li>
+                      <li data-i18n="ix009">İletişim Teorisi ve Uygulamaları</li>
+                      <li data-i18n="ix055">İletişim ve Ağlarda Güvenlik ve Gizlilik</li>
+                      <li data-i18n="ix070">İnsansız Hava Araçları ve Karasal Olmayan İletişim</li>
+                      <li data-i18n="ix060">İşbirlikli İletişim ve Ağlar</li>
+                      <li data-i18n="ix010">Kablosuz İletişim ve Ağlar</li>
+                      <li data-i18n="ix058">Kuantum İletişim</li>
+                      <li data-i18n="ix064">Milimetre Dalgalar ve Terahertz İletişim</li>
+                      <li data-i18n="ix057">Moleküler ve Nano İletişim</li>
+                      <li data-i18n="ix012">Nesnelerin İnterneti (IoT)</li>
+                      <li data-i18n="ix053">Optik İletişim ve Ağlar</li>
+                      <li data-i18n="ix067">Özkaynak Tahsisi</li>
+                      <li data-i18n="ix069">Semantik ve Hedef Odaklı İletişim</li>
+                      <li data-i18n="ix050">Siber-Fiziksel Sistemler</li>
+                      <li data-i18n="ix013">Taşıtsal İletişim</li>
+                      <li data-i18n="ix071">Telsiz Güç ve Bilgi Transferi</li>
+                      <li data-i18n="ix063">Uç Bilişim, Uç Zekâsı ve Sis Ağları</li>
+                      <li data-i18n="ix052">Uydu ve Derin Uzay İletişimi</li>
+                      <li data-i18n="ix068">Yazılım Tabanlı Ağlar, Ağ Fonksiyonlarını Sanallaştırma</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="kv-track" id="kulvar-goruntu" aria-labelledby="kulvar-goruntu-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-goruntu-ad"><span data-i18n="cf022">Kulvar</span> 2: <span data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</span></h4>
+                      <span class="kv-count">8 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person">Prof. Dr. Hasan F. Ateş</span><span class="kv-org" data-i18n="affOzyegin">Özyeğin Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Ramazan Gökberk Cinbiş</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Selim Aksoy</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Yakup Genç</span><span class="kv-org" data-i18n="affGtu">Gebze Teknik Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix075">3B Görüntü ve Hesaplamalı Fotoğrafçılık</li>
+                      <li data-i18n="ix019">Belge Analizi ve Anlama</li>
+                      <li data-i18n="ix016">Çok Kanallı ve Çok Kameralı İşleme</li>
+                      <li data-i18n="ix014">Görüntü ve Video İşleme</li>
+                      <li data-i18n="ix018">Görüntü ve Video Tabanlı Biyometrik</li>
+                      <li data-i18n="ix017">Görüntü/Video Kodlama ve Sıkıştırma</li>
+                      <li data-i18n="ix015">Obje Algılama ve Desen Tanıma</li>
+                      <li data-i18n="ix074">Uzaktan Algılama ve Coğrafi Analiz</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="kv-track" id="kulvar-sinyal" aria-labelledby="kulvar-sinyal-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-sinyal-ad"><span data-i18n="cf022">Kulvar</span> 3: <span data-i18n="track3Title">Sinyal İşleme ve Robotik</span></h4>
+                      <span class="kv-count">15 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Elif Vural</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Ertan Kazıklı</span><span class="kv-org" data-i18n="affEtu">TOBB ETÜ</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> İsmail Uyanık</span><span class="kv-org" data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Mert Kalfa</span><span class="kv-org" data-i18n="affSabanci">Sabancı Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Ömer Nezih Gerek</span><span class="kv-org" data-i18n="affEstu">Eskişehir Teknik Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix044">Deniz, Hava ve Kara Robotları</li>
+                      <li data-i18n="ix081">E-Sağlık Uygulamaları ve Destekleyici Teknolojiler</li>
+                      <li data-i18n="ix045">Endüstriyel Robotlar</li>
+                      <li data-i18n="ix079">Endüstriyel ve Otomotiv Uygulamaları</li>
+                      <li data-i18n="ix082">Finansal Sinyal İşleme</li>
+                      <li data-i18n="ix080">Gerçek Zamanlı Sinyal İşleme ve Gömülü Sistemler</li>
+                      <li data-i18n="ix078">İnsan-Bilgisayar Etkileşimi ve Davranış Analizi</li>
+                      <li data-i18n="ix046">İnsansı ve Sosyal Robotlar</li>
+                      <li data-i18n="ix021">İstatistiksel Sinyal İşleme</li>
+                      <li data-i18n="ix077">Otonom Sistemler için Sinyal İşleme</li>
+                      <li data-i18n="ix024">Radar Sinyal İşleme</li>
+                      <li data-i18n="ix083">Robotik ve Otomasyon</li>
+                      <li data-i18n="ix076">Siber Güvenlik Uygulamaları için Sinyal İşleme</li>
+                      <li data-i18n="ix020">Sinyal İşleme Teorisi</li>
+                      <li data-i18n="ix047">Sürü Robotları</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="kv-track" id="kulvar-ml" aria-labelledby="kulvar-ml-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-ml-ad"><span data-i18n="cf022">Kulvar</span> 4: <span data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</span></h4>
+                      <span class="kv-count">12 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Ayşegül Dündar</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Cem Tekin</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Çiğdem Gündüz Demir</span><span class="kv-org" data-i18n="affKoc">Koç Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Hamdi Dibeklioğlu</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Onur Varol</span><span class="kv-org" data-i18n="affSabanci">Sabancı Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Tunca Doğan</span><span class="kv-org" data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Zafer Doğan</span><span class="kv-org" data-i18n="affKoc">Koç Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix085">Açıklanabilir Yapay Zekâ ve Güvenilir Makine Öğrenmesi</li>
+                      <li data-i18n="ix087">Aktarmalı, Yarı-Gözetmenli ve Gözetimsiz Öğrenme</li>
+                      <li data-i18n="ix086">Çekişmeli Öğrenme ve Dayanıklı Yapay Zekâ</li>
+                      <li data-i18n="ix030">Çok Modlu Analiz</li>
+                      <li data-i18n="ix089">Denetimsiz ve Üretken Modeller</li>
+                      <li data-i18n="ix027">Derin Öğrenme</li>
+                      <li data-i18n="ix029">İletişim Sistemleri için Makine Öğrenmesi ve Derin Öğrenme</li>
+                      <li data-i18n="ix084">İşaret/İmge İşleme Uygulamaları için Makine Öğrenmesi ve Derin Öğrenme</li>
+                      <li data-i18n="ix026">Makine Öğrenmesi Kuramı</li>
+                      <li data-i18n="ix088">Makine Öğrenmesi Tekniklerinin Başarım Analizi</li>
+                      <li data-i18n="ix031">Pekiştirmeli Öğrenme</li>
+                      <li data-i18n="ix028">Sağlık Uygulamaları için Makine Öğrenmesi</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="kv-track" id="kulvar-biyomedikal" aria-labelledby="kulvar-biyomedikal-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-biyomedikal-ad"><span data-i18n="cf022">Kulvar</span> 5: <span data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</span></h4>
+                      <span class="kv-count">10 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person">Prof. Dr. Aydın Akan</span><span class="kv-org" data-i18n="affIeu">İzmir Ekonomi Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> İmam Şamil Yetik</span><span class="kv-org" data-i18n="affEtu">TOBB ETÜ</span></li>
+                        <li><span class="kv-person">Prof. Dr. Mustafa Alper Selver</span><span class="kv-org" data-i18n="affDeu">Dokuz Eylül Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Tolga Çukur</span><span class="kv-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Yeşim Serinağaoğlu Doğrusöz</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix034">Biyoinformatik ve Genomik Sinyal İşleme</li>
+                      <li data-i18n="ix032">Biyomedikal Sinyal Analizi</li>
+                      <li data-i18n="ix036">Biyomedikal Veri Gizliliği ve Güvenliği</li>
+                      <li data-i18n="ix090">Biyometrik Sinyal İşleme</li>
+                      <li data-i18n="ix035">Giyilebilir Algılayıcılar ve E-Sağlık</li>
+                      <li data-i18n="ix093">Nöromühendislik ve Beyin Sinyali İşleme</li>
+                      <li data-i18n="ix037">Sağlık İzleme için Biyosinyal İşleme</li>
+                      <li data-i18n="ix092">Tele-Tıp ve Uzaktan Hasta Takibi</li>
+                      <li data-i18n="ix033">Tıbbi Görüntü Analizi ve Uygulamaları</li>
+                      <li data-i18n="ix091">Tıbbi Tanıda Yapay Zekâ Uygulamaları</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="kv-track" id="kulvar-ddi" aria-labelledby="kulvar-ddi-ad">
+                  <div class="kv-body">
+                    <header class="kv-head">
+                      <h4 class="kv-name" id="kulvar-ddi-ad"><span data-i18n="cf022">Kulvar</span> 6: <span data-i18n="track6Title">Doğal Dil İşleme</span></h4>
+                      <span class="kv-count">6 <span data-i18n="hm060">konu</span></span>
+                    </header>
+                    <div class="kv-chairs">
+                      <h5 class="kv-label" data-i18n="cf023">Kulvar Başkanları</h5>
+                      <ul class="kv-people">
+                        <li><span class="kv-person"><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Çağrı Toraman</span><span class="kv-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person">Prof. Dr. Mehmet Fatih Amasyalı</span><span class="kv-org" data-i18n="affYtu">Yıldız Teknik Üniversitesi</span></li>
+                        <li><span class="kv-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Murat Can Ganiz</span><span class="kv-org" data-i18n="affMarmara">Marmara Üniversitesi</span></li>
+                      </ul>
+                    </div>
+                    <ul class="kv-topics">
+                      <li data-i18n="ix041">Bilgi Çıkarma ve Erişimi</li>
+                      <li data-i18n="ix038">Büyük Dil Modelleri ve Eğitim Stratejileri</li>
+                      <li data-i18n="ix042">Dil Teorileri ve Bilişsel Modeller</li>
+                      <li data-i18n="ix040">Diyalog ve Etkileşimli Sistemler</li>
+                      <li data-i18n="ix043">Tercüme ve Çoklu Dil İşleme</li>
+                      <li data-i18n="ix039">Yapay Zekâ ve Büyük Dil Modeli Ajanları</li>
+                    </ul>
+                  </div>
+                </article>
+              </div>
+              <!-- KV:SON -->
+            </div>
+          </section>
+
+          <section class="section" id="gonderim-kurallari" aria-labelledby="gonderim-kurallari-title">
+            <div class="section__head">
+              <h3 id="gonderim-kurallari-title" data-i18n="cf030">Gönderim Kuralları</h3>
+            </div>
+            <div class="section__body prose">
+              <ul class="cfp-rules">
+                <li data-i18n-html="cf031"><strong>Bildiri Formatı:</strong> Bildiriler en fazla dört sayfa uzunluğunda olmalıdır.</li>
+                <li data-i18n-html="cf032"><strong>Dil:</strong> Bildiriler Türkçe olarak yazılmalıdır. Yazarlardan birinin anadilinin Türkçe olmaması durumunda İngilizce bildiriler değerlendirmeye alınacaktır.</li>
+                <li data-i18n-html="cf033"><strong>Değerlendirme Süreci:</strong> Tüm gönderimler çift kör hakem değerlendirmesine tabi tutulacaktır. Yazarlar, bildirilerin anonimleştirildiğinden emin olmalıdır.</li>
+                <li data-i18n-html="cf034"><strong>Yayın:</strong> Kabul edilen ve kurultayda sunulan bildirilerin IEEE Xplore Dijital Kütüphanesi'ne gönderilmesi planlanmaktadır.</li>
+              </ul>
+              <p data-i18n-html="cf035">Ayrıntılı gönderim talimatları, şablonlar ve yönergeler için aşağıdaki <a href="#yazar-kilavuzu">Yazar Kılavuzu</a> bölümüne bakınız.</p>
+            </div>
+          </section>
+
+          <section class="section" id="duzenleme-kurulu" aria-labelledby="duzenleme-kurulu-title">
+            <div class="section__head">
+              <h3 id="duzenleme-kurulu-title" data-i18n="km008">Düzenleme Kurulu</h3>
+            </div>
+            <div class="section__body">
+              <!-- DK:BAŞ — _tools/dk_blok.py üretir; elle düzenlemeyin -->
+              <div class="dk-grid">
+                <div class="dk-col">
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk001">Kurultay Başkanları</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Prof. Dr. Hüseyin Arslan</span><span class="dk-org" data-i18n="affMedipol">İstanbul Medipol Üniversitesi</span></li>
+                      <li><span class="dk-person">Prof. Dr. Elif Uysal</span><span class="dk-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk002">Özel Oturumlar Başkanları</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Dr. Oktay Altun</span><span class="dk-org" data-i18n="affBogazici">Boğaziçi Üniversitesi</span></li>
+                      <li><span class="dk-person">Dr. Ahmet Yazar</span><span class="dk-org">Türk Telekom</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dk-col">
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk003">Teknik Program Komitesi Başkanları</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Prof. Dr. Tolga Duman</span><span class="dk-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      <li><span class="dk-person">Prof. Dr. Sinan Gezici</span><span class="dk-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                      <li><span class="dk-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Aykut Koç</span><span class="dk-org" data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk004">Eğitim Seminerleri Başkanları</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Prof. Dr. Hakan Ali Çırpan</span><span class="dk-org" data-i18n="affItu">İstanbul Teknik Üniversitesi</span></li>
+                      <li><span class="dk-person">Dr. İbrahim Hökelek</span><span class="dk-org">TÜBİTAK BİLGEM</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dk-col">
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk005">Yayınlar Başkanı</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Gülsüm Zeynep Gürkaş Aydın</span><span class="dk-org" data-i18n="affIuc">İstanbul Üniversitesi-Cerrahpaşa</span></li>
+                    </ul>
+                  </div>
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk006">Davetli Konuşmacılar ve Ödüller Başkanı</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person"><span data-i18n="unvanDoc">Doç. Dr.</span> Tunçer Baykaş</span><span class="dk-org" data-i18n="affMef">MEF Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk007">Endüstri İlişkileri ve Sponsorluklar Başkanları</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Büşra Batği</span><span class="dk-org" data-i18n="affMedipol">İstanbul Medipol Üniversitesi</span></li>
+                      <li><span class="dk-person">Burak Gökay</span><span class="dk-org" data-i18n="affMedipol">İstanbul Medipol Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dk-col">
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk008">Tanıtım ve Medya Başkanı</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Mevlüt Çelik</span><span class="dk-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
+                  <div class="dk-group">
+                    <h4 class="dk-role" data-i18n="dk009">Sosyal Etkinlikler Başkanı</h4>
+                    <ul class="dk-people">
+                      <li><span class="dk-person">Ayça Osunluk</span><span class="dk-org" data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <ul class="track__topics">
-                <li data-i18n="ix008">Bilgi Teorisi ve Kodlama</li>
-                <li data-i18n="ix009">İletişim Teorisi ve Uygulamaları</li>
-                <li data-i18n="ix010">Kablosuz İletişim ve Ağlar</li>
-                <li data-i18n="ix011">6G ve Ötesi Teknolojiler</li>
-                <li data-i18n="ix012">Nesnelerin İnterneti (IoT)</li>
-                <li data-i18n="ix013">Taşıtsal İletişim</li>
-                <li data-i18n="ix050">Siber-Fiziksel Sistemler</li>
-                <li data-i18n="ix051">Bütünleşik Algılama ve İletişim</li>
-                <li data-i18n="ix052">Uydu ve Derin Uzay İletişimi</li>
-                <li data-i18n="ix053">Optik İletişim ve Ağlar</li>
-                <li data-i18n="ix054">Enerji Hasadı ve Düşük Güçlü İletişim</li>
-                <li data-i18n="ix055">İletişim ve Ağlarda Güvenlik ve Gizlilik</li>
-                <li data-i18n="ix056">Dijital İkiz Çözümleri</li>
-                <li data-i18n="ix057">Moleküler ve Nano İletişim</li>
-                <li data-i18n="ix058">Kuantum İletişim</li>
-                <li data-i18n="ix059">Bilgi Yaşı ve Değeri</li>
-                <li data-i18n="ix060">İşbirlikli İletişim ve Ağlar</li>
-                <li data-i18n="ix061">Enerji Verimli ve Yeşil Ağlar</li>
-                <li data-i18n="ix062">Holografik Yüzeyler ve MIMO</li>
-                <li data-i18n="ix063">Uç Bilişim, Uç Zekâsı ve Sis Ağları</li>
-                <li data-i18n="ix064">Milimetre Dalgalar ve Terahertz İletişim</li>
-                <li data-i18n="ix065">Ağ Güvenliği ve Mahremiyet</li>
-                <li data-i18n="ix066">Fiziksel Katman Güvenliği</li>
-                <li data-i18n="ix067">Özkaynak Tahsisi</li>
-                <li data-i18n="ix068">Yazılım Tabanlı Ağlar, Ağ Fonksiyonlarını Sanallaştırma</li>
-                <li data-i18n="ix069">Semantik ve Hedef Odaklı İletişim</li>
-                <li data-i18n="ix070">İnsansız Hava Araçları ve Karasal Olmayan İletişim</li>
-                <li data-i18n="ix071">Telsiz Güç ve Bilgi Transferi</li>
-                <li data-i18n="ix073">Akıllı Yansıtıcı Yüzeyler Aracılığı ile İletişim</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum2">KULVAR 2</p>
-                <h3 class="track__title" data-i18n="track2Title">Görüntü İşleme ve Bilgisayarlı Görü</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Ramazan Gökberk Cinbiş, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Yakup Genç, <span data-i18n="affGtu">Gebze Teknik Üniversitesi</span></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix014">Görüntü ve Video İşleme</li>
-                <li data-i18n="ix015">Obje Algılama ve Desen Tanıma</li>
-                <li data-i18n="ix016">Çok Kanallı ve Çok Kameralı İşleme</li>
-                <li data-i18n="ix017">Görüntü/Video Kodlama ve Sıkıştırma</li>
-                <li data-i18n="ix018">Görüntü ve Video Tabanlı Biyometrik</li>
-                <li data-i18n="ix019">Belge Analizi ve Anlama</li>
-                <li data-i18n="ix074">Uzaktan Algılama ve Coğrafi Analiz</li>
-                <li data-i18n="ix075">3B Görüntü ve Hesaplamalı Fotoğrafçılık</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum3">KULVAR 3</p>
-                <h3 class="track__title" data-i18n="track3Title">Sinyal İşleme ve Robotik</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Ömer Nezih Gerek, <span data-i18n="affEstu">Eskişehir Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Mert Kalfa, <span data-i18n="affSabanci">Sabancı Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Ertan Kazıklı, <span data-i18n="affEtu">TOBB ETÜ</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> İsmail Uyanık, <span data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Elif Vural, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix020">Sinyal İşleme Teorisi</li>
-                <li data-i18n="ix021">İstatistiksel Sinyal İşleme</li>
-                <li data-i18n="ix024">Radar Sinyal İşleme</li>
-                <li data-i18n="ix076">Siber Güvenlik Uygulamaları için Sinyal İşleme</li>
-                <li data-i18n="ix083">Robotik ve Otomasyon</li>
-                <li data-i18n="ix078">İnsan-Bilgisayar Etkileşimi ve Davranış Analizi</li>
-                <li data-i18n="ix079">Endüstriyel ve Otomotiv Uygulamaları</li>
-                <li data-i18n="ix080">Gerçek Zamanlı Sinyal İşleme ve Gömülü Sistemler</li>
-                <li data-i18n="ix081">E-Sağlık Uygulamaları ve Destekleyici Teknolojiler</li>
-                <li data-i18n="ix082">Finansal Sinyal İşleme</li>
-                <li data-i18n="ix044">Deniz, Hava ve Kara Robotları</li>
-                <li data-i18n="ix045">Endüstriyel Robotlar</li>
-                <li data-i18n="ix046">İnsansı ve Sosyal Robotlar</li>
-                <li data-i18n="ix047">Sürü Robotları</li>
-                <li data-i18n="ix077">Otonom Sistemler için Sinyal İşleme</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum4">KULVAR 4</p>
-                <h3 class="track__title" data-i18n="track4Title">Makine Öğrenmesi ve Yapay Zekâ</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Tunca Doğan, <span data-i18n="affHacettepe">Hacettepe Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Zafer Doğan, <span data-i18n="affKoc">Koç Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Ayşegül Dündar, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Cem Tekin, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix026">Makine Öğrenmesi Kuramı</li>
-                <li data-i18n="ix027">Derin Öğrenme</li>
-                <li data-i18n="ix028">Sağlık Uygulamaları için Makine Öğrenmesi</li>
-                <li data-i18n="ix029">İletişim Sistemleri için Makine Öğrenmesi ve Derin Öğrenme</li>
-                <li data-i18n="ix085">Açıklanabilir Yapay Zekâ ve Güvenilir Makine Öğrenmesi</li>
-                <li data-i18n="ix030">Çok Modlu Analiz</li>
-                <li data-i18n="ix031">Pekiştirmeli Öğrenme</li>
-                <li data-i18n="ix084">İşaret/İmge İşleme Uygulamaları için Makine Öğrenmesi ve Derin Öğrenme</li>
-                <li data-i18n="ix086">Çekişmeli Öğrenme ve Dayanıklı Yapay Zekâ</li>
-                <li data-i18n="ix087">Aktarmalı, Yarı-Gözetmenli ve Gözetimsiz Öğrenme</li>
-                <li data-i18n="ix088">Makine Öğrenmesi Tekniklerinin Başarım Analizi</li>
-                <li data-i18n="ix089">Denetimsiz ve Üretken Modeller</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum5">KULVAR 5</p>
-                <h3 class="track__title" data-i18n="track5Title">Biyomedikal Sinyal/Görüntü İşleme</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Aydın Akan, <span data-i18n="affIeu">İzmir Ekonomi Üniversitesi</span></li>
-                    <li>Prof. Dr. Tolga Çukur, <span data-i18n="affBilkent">Bilkent Üniversitesi</span></li>
-                    <li>Prof. Dr. Mustafa Alper Selver, <span data-i18n="affDeu">Dokuz Eylül Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Yeşim Serinağaoğlu Doğrusöz, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> İmam Şamil Yetik, <span data-i18n="affEtu">TOBB ETÜ</span></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix032">Biyomedikal Sinyal Analizi</li>
-                <li data-i18n="ix033">Tıbbi Görüntü Analizi ve Uygulamaları</li>
-                <li data-i18n="ix034">Biyoinformatik ve Genomik Sinyal İşleme</li>
-                <li data-i18n="ix091">Tıbbi Tanıda Yapay Zekâ Uygulamaları</li>
-                <li data-i18n="ix036">Biyomedikal Veri Gizliliği ve Güvenliği</li>
-                <li data-i18n="ix037">Sağlık İzleme için Biyosinyal İşleme</li>
-                <li data-i18n="ix090">Biyometrik Sinyal İşleme</li>
-                <li data-i18n="ix092">Tele-Tıp ve Uzaktan Hasta Takibi</li>
-                <li data-i18n="ix093">Nöromühendislik ve Beyin Sinyali İşleme</li>
-                <li data-i18n="ix035">Giyilebilir Algılayıcılar ve E-Sağlık</li>
-              </ul>
-            </li>
-            <li class="track">
-              <div class="track__head">
-                <p class="track__num visually-hidden" data-i18n="trackNum6">KULVAR 6</p>
-                <h3 class="track__title" data-i18n="track6Title">Doğal Dil İşleme</h3>
-                <div class="track__chair">
-                  <p><span data-i18n="trackChair">Kulvar Eş Başkanları:</span></p>
-                  <ul>
-                    <li>Prof. Dr. Mehmet Fatih Amasyalı, <span data-i18n="affYtu">Yıldız Teknik Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDoc">Doç. Dr.</span> Murat Can Ganiz, <span data-i18n="affMarmara">Marmara Üniversitesi</span></li>
-                    <li><span data-i18n="unvanDrOgr">Dr. Öğr. Üyesi</span> Çağrı Toraman, <span data-i18n="affOdtu">Orta Doğu Teknik Üniversitesi</span></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="track__topics">
-                <li data-i18n="ix038">Büyük Dil Modelleri ve Eğitim Stratejileri</li>
-                <li data-i18n="ix039">Yapay Zekâ ve Büyük Dil Modeli Ajanları</li>
-                <li data-i18n="ix040">Diyalog ve Etkileşimli Sistemler</li>
-                <li data-i18n="ix041">Bilgi Çıkarma ve Erişimi</li>
-                <li data-i18n="ix042">Dil Teorileri ve Bilişsel Modeller</li>
-                <li data-i18n="ix043">Tercüme ve Çoklu Dil İşleme</li>
-              </ul>
-            </li>
-          </ol>
+              <!-- DK:SON -->
+            </div>
+          </section>
         </section>
 
-        <section class="section" id="sablonlar" aria-labelledby="sablonlar-title">
-          <div class="section__head">
-            <h2 id="sablonlar-title" data-i18n="yz056">Bildiri Şablonları (IEEE LaTeX & MS Word)</h2>
-            <p class="visually-hidden" data-i18n="yz055">DOSYA FORMATLARI</p>
-          </div>
-          <p class="section__lede" data-i18n="yz057a">Bildiri şablonu burada duyurulacaktır.</p>
-        </section>
+        <!-- KISIM 2 — YAZAR KILAVUZU: şablonlar, özel oturum / eğitim semineri / panel çağrıları, baskıya hazır süreç -->
+        <section class="part" id="yazar-kilavuzu" aria-labelledby="yazar-kilavuzu-title">
+          <header class="part__head">
+            <h2 class="part__title" id="yazar-kilavuzu-title" data-i18n="yz001">Yazar Kılavuzu</h2>
+          </header>
 
-        <section class="section" id="ozel-oturumlar" aria-labelledby="ozel-title">
-          <div class="section__head">
-            <h2 id="ozel-title" data-i18n="yz065">Özel Oturum (Special Session) Öneri Yönergesi</h2>
-            <p class="visually-hidden" data-i18n="yz064">ÖZEL OTURUM ÇAĞRISI</p>
-          </div>
-          <p class="section__lede" data-i18n-html="dt001">SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Özel oturum düzenlemek isteyen araştırmacıların en geç <strong>16 Kasım 2026</strong> tarihine kadar aşağıdaki bilgileri içeren öneri dosyasını <a href="mailto:siu2027@medipol.edu.tr">siu2027@medipol.edu.tr</a> adresine iletmeleri gerekmektedir:</p>
-          <div class="section__body prose">
-            <ul>
-              <li data-i18n="yz067">Özel oturum başlığı ve kapsam özeti (en fazla 1 sayfa)</li>
-              <li data-i18n="yz068">Oturum düzenleyicilerinin (organizers) özgeçmişleri ve iletişim bilgileri</li>
-              <li data-i18n="yz069">Oturuma davet edilmesi planlanan en az 5 adet taslak bildiri başlığı ve yazar listesi</li>
-            </ul>
-            <p data-i18n-html="dt003">Kabul edilen özel oturumlar <strong>30 Kasım 2026</strong> tarihine kadar düzenleyicilere bildirilecektir.</p>
-          </div>
-        </section>
+          <section class="section" id="sablonlar" aria-labelledby="sablonlar-title">
+            <div class="section__head">
+              <h3 id="sablonlar-title" data-i18n="yz056">Bildiri Şablonları (IEEE LaTeX & MS Word)</h3>
+            </div>
+            <p class="section__lede" data-i18n-html="yz057">Bildiriler standart <strong>IEEE iki sütunlu A4</strong> konferans formatına uygun olarak hazırlanmalıdır. Şablonlarda sayfa boyutu, kenar boşlukları, yazı tipi boyutları veya sütun genişliklerinde kesinlikle değişiklik yapılmamalıdır.</p>
+            <div class="section__body prose">
+              <p data-i18n="yz057b">Şablonlarda yazar bilgileri gizlenmiştir. Değerlendirme çift kör olduğundan bildirinin ilk gönderilen hâlinde yazarların kimliğini açığa çıkaran hiçbir bilgi bulunmamalıdır; yazar ve kurum bilgileri kabulden sonra baskıya hazır sürüme eklenir.</p>
+            </div>
+            <div class="download-list template-downloads">
+              <a class="btn btn--primary btn--download" href="assets/siu2027_bildiri_ornegi_yazarlar_gizli.docx" download>
+                <span data-i18n="yz058a">Word Şablonu</span>
+                <span class="btn__meta">DOCX · 32 KB</span>
+              </a>
+              <a class="btn btn--download" href="assets/siu2027_latex_yazarlar_gizli.zip" download>
+                <span data-i18n="yz058b">LaTeX Şablonu</span>
+                <span class="btn__meta">ZIP · 395 KB</span>
+              </a>
+            </div>
+            <p class="small muted template-note" data-i18n="yz058c">Şablonlar Türkçedir; İngilizce bildirilerde aynı biçim kullanılır.</p>
+          </section>
 
-        <section class="section" id="egitim-cagrisi" aria-labelledby="egitim-cagrisi-title">
-          <div class="section__head">
-            <h2 id="egitim-cagrisi-title" data-i18n="yzTutCallTitle">Eğitim Semineri Çağrısı</h2>
-          </div>
-          <div class="section__body notice notice--tba">
-            <p class="notice__title" data-i18n="yzTutCallNote">Eğitim semineri çağrısı burada duyurulacaktır.</p>
-          </div>
-        </section>
+          <section class="section" id="ozel-oturumlar" aria-labelledby="ozel-title">
+            <div class="section__head">
+              <h3 id="ozel-title" data-i18n="yz065">Özel Oturum (Special Session) Öneri Yönergesi</h3>
+            </div>
+            <p class="section__lede" data-i18n-html="dt001">SİU 2027 kapsamında güncel ve özelleşmiş araştırma başlıklarında özel oturumlar düzenlenecektir. Özel oturum düzenlemek isteyen araştırmacıların en geç <strong>16 Kasım 2026</strong> tarihine kadar aşağıdaki bilgileri içeren öneri dosyasını <a href="mailto:siu2027ozeloturum@gmail.com">siu2027ozeloturum@gmail.com</a> adresine iletmeleri gerekmektedir:</p>
+            <div class="section__body prose">
+              <ul>
+                <li data-i18n="yz067">Özel oturum başkan(lar)ı: ad ve soyad, çalıştığı kurum, görevi, e-posta adresi ve telefon numarası</li>
+                <li data-i18n="yz068">Özel oturum başlığı</li>
+                <li data-i18n="yz069a">Özel oturumun ilgili olduğu kulvarlar (kurultay kulvarlarından en fazla iki tanesi)</li>
+                <li data-i18n="yz069">Özel oturumun kısa tanıtımı: konusu, kapsamı, bilimsel önemi ve kurultaya katkısı</li>
+                <li data-i18n="yz069d">Özel oturum bildiri çağrısı metni: duyuruda kullanılmak üzere oturum kapsamını ve önerilen konu başlıklarını açıklayan metin</li>
+              </ul>
+              <p data-i18n="yz069b">Öneriler, aşağıdaki Özel Oturum Öneri Formu doldurularak iletilebilir.</p>
+              <p data-i18n="yz069e">Öneriler; konunun kurultay kapsamıyla uyumu, güncelliği ve bilimsel önemi, oturumun kurultay katılımcılarına sağlayacağı katkı ve gerçekleştirilebilirliği gibi ölçütlerle değerlendirilecektir. Kabul edilen özel oturumlardaki bildiriler kurultay bildiri gönderim sistemi üzerinden alınacak ve genel bildiri değerlendirme sürecine tabi tutulacaktır; kabul edilen bildiriler ilgili özel oturumda gruplanarak programda yer alacaktır.</p>
+              <p data-i18n-html="dt003">Kabul edilen özel oturumlar <strong>30 Kasım 2026</strong> tarihine kadar düzenleyicilere bildirilecektir.</p>
+            </div>
+            <div class="download-list form-downloads">
+              <a class="btn btn--primary btn--download" href="assets/SIU_2027_Ozel_Oturum_Oneri_Formu.pptx" download>
+                <span data-i18n="yz069c">Özel Oturum Öneri Formu</span>
+                <span class="btn__meta">PPTX · 47 KB</span>
+              </a>
+            </div>
+          </section>
 
-        <section class="section" id="panel-cagrisi" aria-labelledby="panel-cagrisi-title">
-          <div class="section__head">
-            <h2 id="panel-cagrisi-title" data-i18n="yzPanelCallTitle">Panel Çağrısı</h2>
-          </div>
-          <div class="section__body notice notice--tba">
-            <p class="notice__title" data-i18n="yzPanelCallNote">Panel çağrısı burada duyurulacaktır.</p>
-          </div>
-        </section>
+          <section class="section" id="egitim-cagrisi" aria-labelledby="egitim-cagrisi-title">
+            <div class="section__head">
+              <h3 id="egitim-cagrisi-title" data-i18n="yzTutCallTitle">Eğitim Semineri Çağrısı</h3>
+            </div>
+            <div class="section__body notice notice--tba">
+              <p class="notice__title" data-i18n="yzTutCallNote">Eğitim semineri çağrısı burada duyurulacaktır.</p>
+            </div>
+          </section>
 
-        <section class="section" id="baskiya-hazir" aria-labelledby="baskiya-title">
-          <div class="section__head">
-            <h2 id="baskiya-title" data-i18n="yz071">Baskıya Hazır Bildiri & IEEE Telif Devir Süreci</h2>
-            <p class="visually-hidden" data-i18n="yz070">YAYIN VE TELİF SÜRECİ</p>
-          </div>
-          <p class="section__lede" data-i18n="yz072a">Baskıya hazır bildiri ve IEEE telif devri süreci burada duyurulacaktır.</p>
+          <section class="section" id="panel-cagrisi" aria-labelledby="panel-cagrisi-title">
+            <div class="section__head">
+              <h3 id="panel-cagrisi-title" data-i18n="yzPanelCallTitle">Panel Çağrısı</h3>
+            </div>
+            <div class="section__body notice notice--tba">
+              <p class="notice__title" data-i18n="yzPanelCallNote">Panel çağrısı burada duyurulacaktır.</p>
+            </div>
+          </section>
+
+          <section class="section" id="baskiya-hazir" aria-labelledby="baskiya-title">
+            <div class="section__head">
+              <h3 id="baskiya-title" data-i18n="yz071">Baskıya Hazır Bildiri & IEEE Telif Devir Süreci</h3>
+            </div>
+            <p class="section__lede" data-i18n="yz072a">Baskıya hazır bildiri ve IEEE telif devri süreci burada duyurulacaktır.</p>
+          </section>
         </section>
 
       </div>
 
-      <aside class="col-side side" aria-label="Sayfa içi gezinme">
-        <nav class="side__block side__block--toc" aria-label="Bu sayfada">
-          <h2 class="side__title" data-i18n="yz001">Yazar Kılavuzu</h2>
-          <ol class="toc toc--dict">
-            <li><a href="#cfp" data-i18n="yz002">• Bildiri Çağrısı (CFP)</a></li>
-            <li><a href="#kulvarlar" data-i18n="yz003">• Konular ve Kulvarlar (6 Kulvar)</a></li>
-            <li><a href="#sablonlar" data-i18n="yz006">• Bildiri Şablonları (LaTeX/Word)</a></li>
-            <li><a href="#ozel-oturumlar" data-i18n="yz007">• Özel Oturum Çağrısı</a></li>
-            <li><a href="#egitim-cagrisi" data-i18n="yzTutCallToc">• Eğitim Semineri Çağrısı</a></li>
-            <li><a href="#panel-cagrisi" data-i18n="yzPanelCallToc">• Panel Çağrısı</a></li>
-            <li><a href="#baskiya-hazir" data-i18n="yz008">• Baskıya Hazır & Telif Devri</a></li>
+      <aside class="col-side side" aria-label="Sayfa içi gezinme" data-i18n-aria="a11y011">
+        <nav class="side__block side__block--toc" aria-label="Bu sayfada" data-i18n-aria="a11y010">
+          <h2 class="side__title"><a href="#cfp" data-i18n="navAuthorsCfp">Bildiri Çağrısı (CFP)</a></h2>
+          <ol class="toc">
+            <li><a href="#onemli-tarihler" data-i18n="importantDatesTitle">Önemli Tarihler</a></li>
+            <li><a href="#kulvarlar" data-i18n="cf020">Konular ve İlgi Alanları</a></li>
+            <li><a href="#gonderim-kurallari" data-i18n="cf030">Gönderim Kuralları</a></li>
+            <li><a href="#duzenleme-kurulu" data-i18n="km008">Düzenleme Kurulu</a></li>
+          </ol>
+          <h2 class="side__title"><a href="#yazar-kilavuzu" data-i18n="yz001">Yazar Kılavuzu</a></h2>
+          <ol class="toc">
+            <li><a href="#sablonlar" data-i18n="navAuthorsTemplates">Bildiri Şablonları</a></li>
+            <li><a href="#ozel-oturumlar" data-i18n="navAuthorsSpecial">Özel Oturum Çağrısı</a></li>
+            <li><a href="#egitim-cagrisi" data-i18n="navAuthorsTutCall">Eğitim Semineri Çağrısı</a></li>
+            <li><a href="#panel-cagrisi" data-i18n="navAuthorsPanelCall">Panel Çağrısı</a></li>
+            <li><a href="#baskiya-hazir" data-i18n="navAuthorsCamera">Baskıya Hazır Bildiri & Telif</a></li>
           </ol>
         </nav>
       </aside>
@@ -504,24 +564,21 @@
 
   </main>
 
-<!-- ALTBİLGİ:BAŞ — footer + arama modalı + mobil çekmece. Diğer sayfalar BİREBİR kopyalar;
-       yalnızca çekmecedeki aktif bağlantının class="active" + aria-current="page" değişir. -->
+<!-- ALTBİLGİ:BAŞ — footer + arama modalı. Diğer sayfalar BİREBİR kopyalar;
+       değişen bir şey yoktur. -->
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-grid">
-        <div>
-          <div class="footer-brand">
-            <img src="assets/siu-2027-logo-white.png" alt="SİU 2027 Logo" width="1024" height="1024" loading="lazy" decoding="async">
-            <span class="footer-brand__name">SİU 2027</span>
-          </div>
-          <div class="footer-host">
-            <img src="assets/medipol-logo-white.png" alt="İstanbul Medipol Üniversitesi" width="999" height="313" loading="lazy" decoding="async">
+        <div class="footer-brand">
+          <div class="footer-logos">
+            <span class="footer-wordmark">SİU 2027</span>
+            <span class="footer-logos__host" data-i18n-html="ft024">İstanbul Medipol<br>Üniversitesi</span>
           </div>
           <p class="footer-about" data-i18n="footerAbout">35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı, 4–7 Temmuz 2027 tarihlerinde İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü'nde düzenlenecektir.</p>
         </div>
 
-        <nav aria-label="Hızlı Erişim">
-          <h2 class="footer-heading" data-i18n="footerQuickLinks">Hızlı Erişim</h2>
+        <nav aria-labelledby="ft-hizli">
+          <h2 class="footer-heading" id="ft-hizli" data-i18n="footerQuickLinks">Hızlı Erişim</h2>
           <ul class="footer-links">
             <li><a href="yazarlar#cfp" data-i18n="ft001">Bildiri Çağrısı (CFP)</a></li>
             <li><a href="yazarlar#kulvarlar" data-i18n="ft001a">Konular ve Kulvarlar</a></li>
@@ -531,33 +588,35 @@
           </ul>
         </nav>
 
-        <nav aria-label="Kurumsal">
-          <h2 class="footer-heading" data-i18n="footerInstitutional">Kurumsal</h2>
+        <nav aria-labelledby="ft-kurumsal">
+          <h2 class="footer-heading" id="ft-kurumsal" data-i18n="footerInstitutional">Kurumsal</h2>
           <ul class="footer-links">
             <li><a href="komiteler#baskanlar" data-i18n="ft007">Kurultay Eş Başkanları</a></li>
             <li><a href="komiteler#duzenleme" data-i18n="ft008">Düzenleme Kurulu</a></li>
             <li><a href="komiteler#tpc" data-i18n="ft009">Teknik Program Komitesi</a></li>
             <li><a href="hakkinda#ev-sahibi" data-i18n="ft010">İstanbul Medipol Üniversitesi</a></li>
             <li><a href="arsiv" data-i18n="ft011">1993–2027 Kurultay Arşivi</a></li>
+            <li><a href="sponsorluk" data-i18n="navSponsorship">Sponsorluk</a></li>
           </ul>
         </nav>
 
-        <div class="footer-address">
+        <div>
           <h2 class="footer-heading" data-i18n="footerSecretariat">Kurultay Sekreterliği</h2>
-          <address>
-            <dl class="footer-contact">
-              <dt data-i18n="ft012">Adres</dt>
-              <dd data-i18n="ft015">İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü, Göztepe Mah. Atatürk Cad. No: 40/16, 34815 Beykoz / İstanbul</dd>
-              <dt data-i18n="ft013">E-posta</dt>
-              <dd><a href="mailto:siu2027@medipol.edu.tr">siu2027@medipol.edu.tr</a></dd>
-              <dt data-i18n="ft014">Telefon</dt>
-              <dd>+90 (216) 681 51 00</dd>
-            </dl>
+          <address class="footer-contact">
+            <p data-i18n="ft015">İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü, Göztepe Mah. Atatürk Cad. No: 40/16, 34815 Beykoz / İstanbul</p>
+            <a href="mailto:siu2027@medipol.edu.tr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              siu2027@medipol.edu.tr
+            </a>
+            <a href="tel:+902166815100">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+              +90 (216) 681 51 00
+            </a>
           </address>
         </div>
       </div>
 
-      <p class="footer-cmt" data-i18n="cmt002">The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.</p>
+      <p class="footer-cmt" lang="en" data-i18n="cmt002">The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.</p>
 
       <div class="footer-bottom">
         <p class="footer-copy" data-i18n="ft016">© 2027 Sinyal İşleme ve İletişim Uygulamaları Kurultayı (SİU 2027). Tüm hakları saklıdır.</p>
@@ -572,12 +631,12 @@
   <!-- ==========================================
        GLOBAL ARAMA MODALI (CTRL+K)
        ========================================== -->
-  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama">
+  <div class="modal-backdrop" id="searchModal" aria-hidden="true" role="dialog" aria-label="Site içi arama" data-i18n-aria="a11y007">
     <div class="search-modal-box">
       <div class="search-modal-header">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." autocomplete="off">
-        <button type="button" class="search-modal-close" aria-label="Aramayı kapat">&times;</button>
+        <input type="text" class="search-modal-input" id="globalSearchInput" placeholder="SİU 2027'de arayın (bildiri, şablon, kayıt, program)..." data-i18n-placeholder="searchPlaceholder" autocomplete="off">
+        <button type="button" class="search-modal-close" aria-label="Aramayı kapat" data-i18n-aria="a11y008">&times;</button>
       </div>
       <div class="search-modal-results" id="globalSearchResults">
         <p class="search-modal__hint" data-i18n="ft020">Aramak istediğiniz konuyu yazın veya hızlı başlıklardan seçin.</p>
@@ -585,75 +644,9 @@
     </div>
   </div>
 
-  <!-- ==========================================
-       MOBİL MENÜ ÇEKMECESİ (DRAWER)
-       ========================================== -->
-  <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobil Menü">
-    <div class="mobile-drawer-header">
-      <img src="assets/siu-2027-logo.png" alt="SİU 2027" class="brand__logo" width="1024" height="1024" loading="lazy" decoding="async">
-      <span class="brand__name">SİU 2027</span>
-      <button type="button" class="mobile-drawer-close" aria-label="Menüyü Kapat">&times;</button>
-    </div>
-
-    <div class="mobile-drawer-lang-bar">
-      <span data-i18n="mobileMenuLang">DİL SEÇİMİ</span>
-      <div class="lang-switch" role="group" aria-label="Dil Seçimi">
-        <button type="button" class="lang-btn lang-btn-tr active" aria-label="Türkçe">TR</button>
-        <button type="button" class="lang-btn lang-btn-en" aria-label="English">EN</button>
-      </div>
-    </div>
-
-    <nav class="mobile-menu-list" aria-label="Mobil Ana Menü">
-      <a href="./" class="mobile-nav-link" data-i18n="navHome">Ana Sayfa</a>
-
-      <a href="hakkinda" class="mobile-nav-link" data-i18n="navAbout">Kurultay Hakkında</a>
-      <div class="mobile-sub-menu">
-        <a href="hakkinda#hosgeldiniz" class="mobile-sub-link" data-i18n="navAboutMsg">Hoş Geldiniz Mesajı</a>
-        <a href="hakkinda#kapsam" class="mobile-sub-link" data-i18n="navAboutScope">Kapsam ve Amaç</a>
-        <a href="komiteler" class="mobile-sub-link" data-i18n="navCommittees">Düzenleme Kurulu</a>
-        <a href="hakkinda#ev-sahibi" class="mobile-sub-link" data-i18n="navAboutHost">Kurultay Yeri</a>
-        <a href="arsiv" class="mobile-sub-link" data-i18n="navAboutHistory">SİU Tarihçesi (1993–2027)</a>
-      </div>
-
-      <a href="yazarlar" class="mobile-nav-link active" data-i18n="navAuthors" aria-current="page">Yazarlar İçin</a>
-      <div class="mobile-sub-menu">
-        <a href="yazarlar#cfp" class="mobile-sub-link" data-i18n="navAuthorsCfp">Bildiri Çağrısı (CFP)</a>
-        <a href="yazarlar#kulvarlar" class="mobile-sub-link" data-i18n="navAuthorsTracks">Konular ve Kulvarlar</a>
-        <a href="yazarlar#sablonlar" class="mobile-sub-link" data-i18n="navAuthorsTemplates">Bildiri Şablonları</a>
-        <a href="yazarlar#ozel-oturumlar" class="mobile-sub-link" data-i18n="navAuthorsSpecial">Özel Oturum Çağrısı</a>
-        <a href="yazarlar#egitim-cagrisi" class="mobile-sub-link" data-i18n="navAuthorsTutCall">Eğitim Semineri Çağrısı</a>
-        <a href="yazarlar#panel-cagrisi" class="mobile-sub-link" data-i18n="navAuthorsPanelCall">Panel Çağrısı</a>
-        <a href="yazarlar#baskiya-hazir" class="mobile-sub-link" data-i18n="navAuthorsCamera">Baskıya Hazır Bildiri & Telif</a>
-      </div>
-
-      <a href="program" class="mobile-nav-link" data-i18n="navProgram">Program</a>
-      <div class="mobile-sub-menu">
-        <a href="program#genel-akis" class="mobile-sub-link" data-i18n="navProgramOverview">Bir Bakışta Program</a>
-        <a href="program#bilimsel-program" class="mobile-sub-link" data-i18n="navProgramDetail">Ayrıntılı Bilimsel Program</a>
-        <a href="program#konusmacilar" class="mobile-sub-link" data-i18n="navProgramSpeakers">Davetli Konuşmacılar (Keynotes)</a>
-        <a href="program#seminerler" class="mobile-sub-link" data-i18n="navProgramTutorials">Eğitim Seminerleri</a>
-        <a href="program#paneller" class="mobile-sub-link" data-i18n="navProgramPanels">Paneller</a>
-        <a href="program#sosyal-program" class="mobile-sub-link" data-i18n="navProgramSocial">Sosyal Program & Gala</a>
-      </div>
-
-      <a href="katilim" class="mobile-nav-link" data-i18n="navRegistration">Katılım & Kayıt</a>
-      <div class="mobile-sub-menu">
-        <a href="katilim#kayit" class="mobile-sub-link" data-i18n="navRegistrationFees">Kayıt ve Ücretler</a>
-        <a href="katilim#konaklama" class="mobile-sub-link" data-i18n="navRegistrationAccom">Konaklama</a>
-        <a href="katilim#ulasim" class="mobile-sub-link" data-i18n="navRegistrationTravel">Ulaşım ve Kampüs Haritası</a>
-      </div>
-
-      <a href="arsiv" class="mobile-nav-link" data-i18n="navArchive">Arşiv</a>
-      <a href="iletisim" class="mobile-nav-link" data-i18n="navContact">İletişim</a>
-    </nav>
-
-    <div class="mobile-drawer-footer">
-      <a href="yazarlar#cfp" class="btn btn--primary" data-i18n="navQuickSubmit">Bildiri Gönderimi</a>
-    </div>
-  </aside>
 
   <!-- ALTBİLGİ:SON -->
 
-  <script src="js/main.js?v=132"></script>
+  <script src="js/main.js?v=210"></script>
 </body>
 </html>

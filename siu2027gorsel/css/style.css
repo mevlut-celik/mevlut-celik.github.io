@@ -1,6 +1,6 @@
 /* ==========================================================================
    SİU 2027 — 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı
-   Tasarım sistemi v2 (7 Eki 2026, siu2027gorsel denemesi).
+   Tasarım sistemi v2 (7 Eki 2026; 11 Eki 2026 kabul edildi, ana siteye alındı).
    Tek yazı ailesi (Plus Jakarta Sans, gömülü). Açık, temayı izleyen yapışkan
    başlık; altında koyu hero / sayfa başlığı bandı, en altta koyu alt bilgi.
    Açık ve koyu tema aynı token'larla çalışır; hero ve alt bilgi her iki temada koyudur.
@@ -691,6 +691,21 @@ p { max-width: var(--measure); }
   .kv-track { break-inside: avoid; }
 }
 
+/* 9.1 Düzenleme kurulu (ana sayfa + CFP): CFP belgesinin alt kısmı, dört sütun.
+   Görev kalın, altında unvanlı isim, altında gri kurum; sütun sırası belgeyle aynı. */
+.dk-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem 1.75rem;
+  padding-block: 1.75rem; border-block: 1px solid var(--ot-line);
+}
+.dk-col { display: grid; gap: 1.75rem; align-content: start; }
+.dk-role { margin: 0 0 .625rem; font-size: var(--step--1); font-weight: 700; line-height: 1.35; color: var(--ot-ink); text-wrap: balance; }
+.dk-people { display: grid; gap: .75rem; }
+.dk-person { display: block; font-size: var(--step--1); font-weight: 500; line-height: 1.35; color: var(--ot-text); }
+.dk-org { display: block; margin-top: .125rem; font-size: var(--step--2); line-height: 1.4; color: var(--ot-muted); }
+@media (max-width: 80em) { .dk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 35em) { .dk-grid { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; } }
+@media print { .dk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
 /* 10. Bilgi bloğu (TBA / henüz kesinleşmedi) ------------------------------ */
 .notice {
   padding: 1.25rem 1.5rem;
@@ -947,7 +962,10 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 .bio-modal-note { margin-top: var(--space-4); font-size: var(--step--2); color: var(--ot-muted); }
 
 /* 12.8 Harita kabı (Leaflet) */
+/* Leaflet katmanları 400–1000 z-index kullanır; kap kendi yığın bağlamını kurar,
+   yoksa harita yapışkan başlığın (.hd, z-index 50) üstüne çıkar. */
 .map-frame {
+  position: relative; z-index: 0; isolation: isolate;
   height: 22rem;
   width: 100%;
   overflow: hidden;

@@ -5,6 +5,19 @@
    .notice > .notice__text:first-child sıfırlaması, .toc--dict
    ========================================================================== */
 
+/* 0. İki kısım (11 Eki 2026): 1) Bildiri Çağrısı (CFP Word belgesinin web karşılığı), 2) Yazar Kılavuzu.
+      Kısım başlığı h2, bölüm başlıkları h3; kısımlar arasında geniş boşluk. */
+.part + .part { margin-top: 7rem; }
+.part__title { font-size: var(--step-4); line-height: 1.15; color: var(--ot-ink); }
+.part__lede { margin-top: .5rem; font-size: var(--step-0); font-weight: 600; color: var(--ot-text); }
+.part__meta { margin-top: .25rem; font-size: var(--step--1); color: var(--ot-muted); }
+.part__head + .section { margin-top: 3rem; }
+.part .section + .section { margin-top: 4rem; }
+.part .section__head h3 { grid-column: 1; font-size: var(--step-2); color: var(--ot-ink); }
+.side__title a { color: inherit; text-decoration: none; }
+.side__title a:hover { color: var(--ot-link); }
+.toc + .side__title { margin-top: 1.75rem; }
+
 /* 1. Sayfa başlığı: solda h1 + lede, sağda sakin künye (index hero ile aynı aile) */
 .page-head--facts .wrap {
   display: grid;
@@ -13,15 +26,33 @@
 }
 .page-head__facts { align-self: start; }
 .page-head__facts > div { grid-template-columns: minmax(0, 1fr); }
-.page-head__facts > div:first-child { border-top: 2px solid var(--navy); }
+.page-head__facts > div:first-child { border-top: 1px solid var(--hero-line); }
 .page-head__facts .facts__val { font-size: var(--step-1); }
-.page-head__facts--deadline .facts__val { color: var(--cyan-text); }
+.page-head__facts--deadline .facts__val { color: var(--hero-accent); }
 
 @media (min-width: 48em) {
   .page-head--facts { padding-block: var(--space-8) var(--space-7); }
   .page-head--facts .wrap { grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 1fr); align-items: start; }
   .page-head__facts { margin-top: var(--space-2); }
 }
+
+/* 1b. Önemli tarihler (CFP): CFP'deki beş satır; çizgili tanım listesi, tarih sağda */
+.cfp-dates { margin-top: var(--space-5); border-top: 1px solid var(--ot-line); }
+.cfp-date {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .25rem 1.5rem; align-items: baseline;
+  padding-block: .875rem; border-bottom: 1px solid var(--ot-line);
+}
+.cfp-date dt { font-weight: 600; line-height: 1.4; color: var(--ot-ink); }
+.cfp-date dd { margin: 0; font-weight: 600; color: var(--ot-text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cfp-date--key dt, .cfp-date--key dd { color: var(--ot-link); }
+@media (max-width: 35em) {
+  .cfp-date { grid-template-columns: minmax(0, 1fr); }
+  .cfp-date dd { white-space: normal; font-weight: 500; }
+}
+
+/* Gönderim kuralları: kalın başlıklı maddeler */
+.cfp-rules strong { color: var(--ot-ink); }
+.cfp-rules + p { margin-top: var(--space-4); }
 
 /* 2. CFP koşulları: çizgili tanım listesi; ≥48em iki sütun, satır çizgileri hizalı */
 .terms {
@@ -40,7 +71,8 @@
   .terms, .prose .terms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.cfp-downloads { margin-top: var(--space-6); }
+.cfp-downloads, .template-downloads, .form-downloads { margin-top: var(--space-6); }
+.template-note { margin-top: var(--space-3); }
 .cfp-xplore { margin-top: var(--space-6); }
 
 /* 3. Kulvar satırları: başlık solda, alt konular sağda iki sütun.
@@ -122,7 +154,8 @@
 
 /* 7. Baskı */
 @media print {
-  .cfp-downloads, .cmt-ack { display: none !important; }
+  .cfp-downloads, .template-downloads, .form-downloads, .cmt-ack { display: none !important; }
   .track-list__topics { columns: 2; }
-  .steps > li, .terms__item, .template { break-inside: avoid; }
+  .steps > li, .terms__item, .template, .cfp-date { break-inside: avoid; }
+  .kv-index { display: none !important; }
 }
