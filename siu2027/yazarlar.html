@@ -26,8 +26,8 @@
 
   <!-- CSS: tek kaynak, tasarım sistemi + sayfaya özel kurallar -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=210">
-  <link rel="stylesheet" href="css/pages/yazarlar.css?v=210">
+  <link rel="stylesheet" href="css/style.css?v=211">
+  <link rel="stylesheet" href="css/pages/yazarlar.css?v=211">
 
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -466,6 +466,28 @@
             <h2 class="part__title" id="yazar-kilavuzu-title" data-i18n="yz001">Yazar Kılavuzu</h2>
           </header>
 
+          <!-- Bildiri gönderimi: kurul metni (11 Eki 2026); kurallar SİU 2025/2026 "Bildiri Gönderimi" sayfalarındaki
+               gibi, atıf kuralı SİU 2027 Word şablonundan. CMT bağlantısı açılınca yzSub002'ye eklenecek. -->
+          <section class="section" id="gonderim" aria-labelledby="gonderim-title">
+            <div class="section__head">
+              <h3 id="gonderim-title" data-i18n="yzSub001">Bildiri Gönderimi (Microsoft CMT)</h3>
+            </div>
+            <div class="section__body prose">
+              <p data-i18n="yzSub002">SİU 2027 bildiri gönderimleri yalnızca Microsoft Conference Management Toolkit (CMT) üzerinden gerçekleştirilecektir. Bildiri gönderim bağlantısı CMT konferans sayfası oluşturulduktan sonra paylaşılacaktır.</p>
+              <p data-i18n="yzSub003">Yazarların bildiri göndermeden önce bir CMT hesabı oluşturmaları, bildirilerini ilgili kulvarı seçerek PDF formatında sisteme yüklemeleri gerekmektedir. E-posta yoluyla bildiri kabul edilmeyecektir.</p>
+              <h4 class="steps__title" data-i18n="yzSub004">Gönderimde dikkat edilecekler</h4>
+              <ul>
+                <li data-i18n="yzSub010">Değerlendirme çift kördür; gönderilen bildiri anonim olmalıdır. Yazarların kimliğini açığa çıkaran bildiriler reddedilecektir.</li>
+                <li data-i18n="yzSub011">Önceki çalışmalarınıza, başka bir yazarın çalışmasına atıf yapar gibi atıf yapınız (örneğin “daha önce geliştirdiğimiz yöntem [3]” yerine “[3]’te geliştirilen yöntem”); bu çalışmaları kaynakçadan çıkarmayınız.</li>
+                <li data-i18n-html="yzSub012">Bildiriler <a href="#sablonlar">Bildiri Şablonları</a>’ndaki biçim kurallarına uygun hazırlanmalı ve en fazla dört sayfa olmalıdır.</li>
+                <li data-i18n="yzSub013">Değerlendirme sürecindeki bir bildiri, metni büyük ölçüde aynı olan başka bir sürümüyle başka bir kurultay ya da çalıştaya gönderilmemelidir.</li>
+                <li data-i18n-html="yzSub014">Bildirilerin hazırlanmasında üretken yapay zekâ kullanımına ilişkin <a href="https://conferences.ieeeauthorcenter.ieee.org/author-ethics/guidelines-and-policies/submission-policies/" target="_blank" rel="noopener">IEEE kuralları</a> geçerlidir.</li>
+                <li data-i18n-html="yzSub015">Bildiri gönderim son tarihi: <strong>1 Şubat 2027</strong>.</li>
+              </ul>
+              <p class="cmt-ack" lang="en" data-i18n="cmt001">The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.</p>
+            </div>
+          </section>
+
           <section class="section" id="sablonlar" aria-labelledby="sablonlar-title">
             <div class="section__head">
               <h3 id="sablonlar-title" data-i18n="yz056">Bildiri Şablonları (IEEE LaTeX & MS Word)</h3>
@@ -551,6 +573,7 @@
           </ol>
           <h2 class="side__title"><a href="#yazar-kilavuzu" data-i18n="yz001">Yazar Kılavuzu</a></h2>
           <ol class="toc">
+            <li><a href="#gonderim" data-i18n="yzSubToc">Bildiri Gönderimi (CMT)</a></li>
             <li><a href="#sablonlar" data-i18n="navAuthorsTemplates">Bildiri Şablonları</a></li>
             <li><a href="#ozel-oturumlar" data-i18n="navAuthorsSpecial">Özel Oturum Çağrısı</a></li>
             <li><a href="#egitim-cagrisi" data-i18n="navAuthorsTutCall">Eğitim Semineri Çağrısı</a></li>
@@ -644,9 +667,8 @@
     </div>
   </div>
 
-
   <!-- ALTBİLGİ:SON -->
 
-  <script src="js/main.js?v=210"></script>
+  <script src="js/main.js?v=211"></script>
 </body>
 </html>
