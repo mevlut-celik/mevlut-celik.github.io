@@ -26,12 +26,12 @@
 
   <!-- CSS: tasarım sistemi + sayfaya özel kurallar -->
   <link rel="preload" href="assets/fonts/PlusJakartaSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=211">
-  <link rel="stylesheet" href="css/pages/hakkinda.css?v=211">
+  <link rel="stylesheet" href="css/style.css?v=212">
+  <link rel="stylesheet" href="css/pages/hakkinda.css?v=212">
 
   <!-- Favicon / Touch Icon -->
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=212">
+  <link rel="apple-touch-icon" href="assets/favicon.png?v=212">
 </head>
 <body data-title-key="ttlHakkinda">
   <a class="skip-link" href="#icerik" data-i18n="a11y001">Ana içeriğe atla</a>
@@ -55,7 +55,7 @@
       <div class="wrap">
         <a class="hd-medipol" href="https://www.medipol.edu.tr/" target="_blank" rel="noopener" aria-label="İstanbul Medipol Üniversitesi (ev sahibi)" data-i18n-aria="a11y004"></a>
         <span class="hd-divider" aria-hidden="true"></span>
-        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa" data-i18n-aria="a11y005"><img src="assets/siu-2027-logo-white.png" alt="" width="1024" height="1024" decoding="async"><span>SİU 2027</span></a>
+        <a class="hd-brand" href="./" aria-label="SİU 2027 ana sayfa" data-i18n-aria="a11y005"></a>
         <nav class="hd-nav" id="hd-nav" aria-label="Ana menü" data-i18n-aria="a11y006">
           <ul class="hd-menu-list">
             <li class="hd-item">
@@ -154,29 +154,20 @@
           </div>
         </section>
 
-        <!-- 04 RESMÎ LOGO VE ANLAMI -->
+        <!-- 04 RESMÎ LOGO (görsel + indirme) -->
         <section class="section" id="logo-kimlik" aria-labelledby="logo-kimlik-title">
           <div class="section__head">
-            <h2 id="logo-kimlik-title" data-i18n="hk030">SİU 2027 Resmî Logosu ve Anlamı</h2>
+            <h2 id="logo-kimlik-title" data-i18n="hk030">SİU 2027 Resmî Logosu</h2>
             <p class="visually-hidden" data-i18n="hk029">GÖRSEL KİMLİK & AMBLEM</p>
           </div>
 
           <div class="section__body emblem-row">
-            <figure class="emblem-row__figure emblem-row__figure--square">
-              <img src="assets/siu-2027-logo-white.png" alt="SİU 2027 Resmî Logosu" data-i18n-alt="a11y026" width="1024" height="1024" loading="lazy" decoding="async">
+            <figure class="emblem-row__figure">
+              <img class="emblem-row__logo" src="assets/siu2027-logo.svg" alt="SİU 2027 Resmî Logosu" data-i18n-alt="a11y026" width="742" height="215" loading="lazy" decoding="async">
               <figcaption class="emblem-row__links">
-                <a href="assets/siu-2027-logo.png" download class="link-more link-more--down"><span data-i18n="hk036">Yüksek Çözünürlüklü Logoyu İndir (PNG)</span> <span class="arrow" aria-hidden="true">↓</span></a>
+                <a href="assets/siu2027-logo.png" download class="link-more link-more--down"><span data-i18n="hk036">Yüksek Çözünürlüklü Logoyu İndir (PNG)</span> <span class="arrow" aria-hidden="true">↓</span></a>
               </figcaption>
             </figure>
-            <div class="emblem-row__text">
-              <p data-i18n="hk031">SİU 2027 logosu; kurultayın temsil ettiği dört temel teknolojik sütunu görselleştirmektedir:</p>
-              <ul class="emblem-row__list">
-                <li data-i18n-html="hk032"><strong>Sinyal Dalgası (Sol):</strong> Klasik işaret işleme, biyomedikal sinyaller, RF dalgaları ve zaman serilerini ifade eder.</li>
-                <li data-i18n-html="hk033"><strong>İnsan Zihni ve Nöral Ağ (Merkez):</strong> Makine öğrenmesi, derin öğrenme, üretken yapay zekâ ve büyük dil modellerini (LLM) simgeler.</li>
-                <li data-i18n-html="hk034"><strong>Radyo Kulesi ve Dalgalar (Sağ):</strong> 5G/6G, uydu ağları, ISAC ve kablosuz telekomünikasyon altyapısını temsil eder.</li>
-                <li data-i18n-html="hk035"><strong>Yörünge Halkası ve Düğümler:</strong> 35 yıllık bilimsel ekosistemin sürekliliğini ve ağ bağlılığını simgeler.</li>
-              </ul>
-            </div>
           </div>
         </section>
 
@@ -307,6 +298,6 @@
   <!-- ALTBİLGİ:SON -->
 
   <!-- JavaScript (dokunulmaz) -->
-  <script src="js/main.js?v=211"></script>
+  <script src="js/main.js?v=212"></script>
 </body>
 </html>

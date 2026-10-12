@@ -383,9 +383,14 @@ p { max-width: var(--measure); }
           mask: url("../assets/medipol-logo-white.png") center / contain no-repeat;
 }
 .hd-divider { flex: none; width: 1px; height: 2.5rem; background: var(--ot-line); margin-inline: -.75rem; }
-.hd-brand { display: flex; align-items: center; gap: .625rem; flex: none; font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; color: var(--ot-ink); }
-/* Beyaz logo koyu bir karonun içinde durur */
-.hd-brand img { display: block; width: 2.75rem; height: 2.75rem; padding: .125rem; border-radius: var(--radius-md); background: var(--hero-bg); }
+/* SİU 2027 logosu (simge + yazı): aynı yöntemle tek renkli maske, metin rengini alır.
+   Maske ::before'da: bağlantının odak çerçevesi maskelenmesin */
+.hd-brand { flex: none; display: block; height: 2.5rem; aspect-ratio: 741.6 / 215.04; color: var(--ot-ink); }
+.hd-brand::before {
+  content: ""; display: block; height: 100%; background: currentColor;
+  -webkit-mask: url("../assets/siu2027-logo.svg") left center / auto 100% no-repeat;
+          mask: url("../assets/siu2027-logo.svg") left center / auto 100% no-repeat;
+}
 
 .hd-nav { margin-left: auto; min-width: 0; }
 .hd-menu-list { display: flex; align-items: center; gap: .25rem; }
@@ -434,12 +439,12 @@ p { max-width: var(--measure); }
     border: 1px solid var(--ot-line); border-radius: var(--radius); color: var(--ot-ink); font: 600 var(--step--1)/1 var(--ot-font);
   }
   .hd-toggle svg { width: 1.125rem; height: 1.125rem; }
-  .hd-brand img { width: 2.5rem; height: 2.5rem; }
 }
 @media (max-width: 35em) {
   .hd-search span, .hd-search kbd { display: none; }
   .hd-medipol, .hd-divider { height: 2rem; }
-  .hd-brand { font-size: 0; gap: 0; }
+  /* Yazı gizlenir, yalnız simge kalır: kutu simge genişliğine iner, maske sola yaslı */
+  .hd-brand { height: 2.25rem; aspect-ratio: 226.54 / 215.04; }
 }
 
 /* 4.5 Modal zemini (arama + biyografi) */
@@ -1072,6 +1077,8 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 :focus-visible { outline: 3px solid var(--ot-accent); outline-offset: 2px; }
 .page-head :focus-visible,
 .site-footer :focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
+/* Yüksek karşıtlık kipi zemin rengini ezer: maskeli logo sistem rengiyle boyanır */
+@media (forced-colors: active) { .hd-brand::before { forced-color-adjust: none; background: LinkText; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1088,6 +1095,7 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
   .calendar-actions, .calendar-actions__note { display: none !important; }
   body { font-size: 10.5pt; color: #000; background: #fff; }
   .hd { position: static; box-shadow: none; border-bottom: 1px solid #000; }
+  .hd-brand::before { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page-head { background: none; color: #000; }
   .page-head__title { color: #000; }
   .page-head { padding-block: 1rem; border-bottom: 1px solid #000; }
