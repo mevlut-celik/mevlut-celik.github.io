@@ -1042,7 +1042,12 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 
 .footer-brand { display: grid; gap: 1.25rem; align-content: start; }
 .footer-logos { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; }
-.footer-wordmark { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; line-height: 1; color: #fff; }
+/* SİU 2027 logosu: başlıktaki gibi tek renkli maske, beyaz */
+.footer-wordmark {
+  flex: none; display: block; height: 2.5rem; aspect-ratio: 741.6 / 215.04; background: #fff;
+  -webkit-mask: url("../assets/siu2027-logo.svg") center / contain no-repeat;
+          mask: url("../assets/siu2027-logo.svg") center / contain no-repeat;
+}
 .footer-logos__host { padding-left: 1.5rem; border-left: 1px solid var(--ft-line); font-size: var(--step--2); font-weight: 600; line-height: 1.3; color: var(--ft-muted); }
 .footer-about { max-width: 24rem; color: var(--ft-muted); }
 
@@ -1078,7 +1083,10 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 .page-head :focus-visible,
 .site-footer :focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
 /* Yüksek karşıtlık kipi zemin rengini ezer: maskeli logo sistem rengiyle boyanır */
-@media (forced-colors: active) { .hd-brand::before { forced-color-adjust: none; background: LinkText; } }
+@media (forced-colors: active) {
+  .hd-brand::before { forced-color-adjust: none; background: LinkText; }
+  .footer-wordmark { forced-color-adjust: none; background: CanvasText; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
