@@ -298,15 +298,13 @@ function initSideNav() {
    ========================================================================== */
 const i18nDictionary = {
   tr: {
-    ar001: "Kurultay Kronolojisi (1993 – 2027)",
+    ar001: "Kurultay Kronolojisi (1993 – 2026)",
     ar002: "SİU kurultaylarının yıl, sıra numarası, ev sahibi kurum, düzenlendiği şehir ve kurultay başkanları bilgileri. Tabloda arama yaparak geçmiş kurultayları filtreleyebilirsiniz.",
     ar003: "Arşivde ara",
     ar004: "No",
     ar005: "Yıl",
     ar006: "Ev Sahibi / Ortak Kurum",
     ar007: "Şehir / Yer / Biçim",
-    ar009: "İstanbul Medipol Üniversitesi",
-    ar010: "Kavacık, İstanbul (Yüz Yüze)",
     ar012: "Piri Reis Üniversitesi",
     ar013: "Tuzla, İstanbul",
     ar015: "Işık Üniversitesi",
@@ -376,8 +374,8 @@ const i18nDictionary = {
     ar111: "Boğaziçi Üniversitesi + Bilkent Üniversitesi",
     ar112: "Bebek, İstanbul",
     arsivKicker: "KURUMSAL BELLEK & BİLİMSEL ARŞİV",
-    arsivPageDesc: "Boğaziçi Üniversitesi'nde başlayan 35 yıllık kurultay kronolojisi, ev sahibi kurumlar ve etkinlik yerleri.",
-    arsivPageTitle: "SİU Tarihsel Arşivi (1993 – 2027)",
+    arsivPageDesc: "Boğaziçi Üniversitesi'nde başlayan 34 yıllık kurultay kronolojisi, ev sahibi kurumlar ve etkinlik yerleri.",
+    arsivPageTitle: "SİU Tarihsel Arşivi (1993 – 2026)",
     brandSubtitle: "35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı",
     btnCfp: "Bildiri Çağrısı (CFP)",
     btnTracks: "Bildiri Konuları / Kulvarlar",
@@ -404,7 +402,7 @@ const i18nDictionary = {
     datesThDate: "Tarih",
     datesThProcess: "Aşama / İşlem",
     datesThStatus: "Durum",
-    descAboutHistory: "35 yıllık kurultay kronolojisi",
+    descAboutHistory: "34 yıllık kurultay kronolojisi",
     descAboutHost: "İstanbul Medipol Üniversitesi",
     descAboutCommittee: "Kurultay başkanları ve kurullar",
     descAboutHonor: "SİU Onur Kurulu üyeleri",
@@ -520,6 +518,8 @@ const i18nDictionary = {
     hk029: "GÖRSEL KİMLİK & AMBLEM",
     hk030: "SİU 2027 Resmî Logosu",
     hk036: "Yüksek Çözünürlüklü Logoyu İndir (PNG)",
+    logoSvg: "assets/siu2027-logo.svg?v=217",
+    logoPng: "assets/siu2027-logo.png?v=217",
     il001: "SEKRETERLİK BİLGİLERİ",
     il002: "İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü",
     il003: "Kurultay Adresi",
@@ -527,7 +527,7 @@ const i18nDictionary = {
     il005: "E-posta Adresi",
     il006: "Genel İletişim ve Kayıt: <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a>",
     il007: "Telefon & Çağrı Merkezi",
-    il008: "+90 (216) 681 51 00 (Santral) • Dahili: Duyurulacaktır",
+    il008: "+90 (216) 681 51 00 (Santral) • Dahili: 5338",
     il009: "Konum ve Otopark Bilgisi",
     il010: "Kampüs otoparkının kullanımına ilişkin bilgi duyurulacaktır. Navigasyon için: <em>\"İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü\"</em>.",
     il011: "HIZLI DESTEK FORMU",
@@ -825,7 +825,7 @@ const i18nDictionary = {
     kv032: "Bu metin bilgilendirme amaçlıdır ve yayımlanmadan önce İstanbul Medipol Üniversitesi Hukuk Müşavirliği / KVKK birimi tarafından onaylanmalıdır.",
     mobileMenuLang: "DİL SEÇİMİ",
     navAbout: "Kurultay Hakkında",
-    navAboutHistory: "SİU Tarihçesi (1993–2027)",
+    navAboutHistory: "SİU Tarihçesi (1993–2026)",
     navAboutHost: "Kurultay Yeri",
     navAboutHonor: "Onur Kurulu",
     navAboutMsg: "Hoş Geldiniz Mesajı",
@@ -954,7 +954,7 @@ const i18nDictionary = {
     tracksKicker: "TEKNİK PROGRAM VE KAPSAM",
     tracksTitle: "Konular ve Araştırma Kulvarları",
     ttl404: "Sayfa Bulunamadı (404) | IEEE SİU 2027",
-    ttlArsiv: "SİU Kurultay Arşivi 1993–2027 | IEEE SİU 2027",
+    ttlArsiv: "SİU Kurultay Arşivi 1993–2026 | IEEE SİU 2027",
     ttlHakkinda: "Kurultay Hakkında | IEEE SİU 2027 — İstanbul Medipol Üniversitesi",
     ttlIletisim: "İletişim ve Kurultay Sekreterliği | IEEE SİU 2027",
     ttlIndex: "IEEE SİU 2027 | 35. Sinyal İşleme ve İletişim Uygulamaları Kurultayı",
@@ -1094,7 +1094,7 @@ const i18nDictionary = {
     yz073: "<strong>Yazar ve Kurum Bilgilerinin Eklenmesi:</strong> Hakem eleştirileri doğrultusunda revize edilen kamera-hazır metne tüm yazarların adı, soyadı, kurum bilgileri ve e-posta adresleri eklenmelidir.",
     yz074: "<strong>IEEE PDF eXpress Kontrolü:</strong> Nihai PDF dosyası, IEEE Xplore format uyumluluğunu denetleyen <strong>IEEE PDF eXpress</strong> sisteminden geçirilmelidir. (Sistem konferans ID'si kabul mektuplarıyla duyurulacaktır).",
     yz075: "<strong>IEEE Telif Devri (IEEE eCF):</strong> Microsoft CMT sistemi üzerinden yönlendirilecek <strong>IEEE Electronic Copyright Form (eCF)</strong> bağlantısı üzerinden telif hakkı devir işlemi online olarak onaylanmalıdır.",
-    arh001: "Kurultay Haritası (1993 – 2027)",
+    arh001: "Kurultay Haritası (1993 – 2026)",
     arh002: "SİU kurultaylarının Türkiye ve KKTC genelindeki dağılımı. Yıl çubuğunu sürükleyerek ya da ok tuşlarıyla kurultayları sırayla gezebilirsiniz; daire büyüklüğü o yerin kaç kez ev sahipliği yaptığını gösterir.",
     arh003: "Yıl",
     arh004: "Önceki kurultay",
@@ -1151,7 +1151,7 @@ const i18nDictionary = {
     ft008: "Düzenleme Kurulu",
     ft009: "Teknik Program Komitesi",
     ft010: "İstanbul Medipol Üniversitesi",
-    ft011: "1993–2027 Kurultay Arşivi",
+    ft011: "1993–2026 Kurultay Arşivi",
     ft012: "Adres",
     ft013: "E-posta",
     ft014: "Telefon",
@@ -1340,15 +1340,13 @@ const i18nDictionary = {
     hm035: "Bildiri gönderimi (CMT)",
   },
   en: {
-    ar001: "Conference Chronology (1993 – 2027)",
+    ar001: "Conference Chronology (1993 – 2026)",
     ar002: "The year, edition number, host institution, host city and general chairs of each SIU conference. You can filter past conferences by searching the table.",
     ar003: "Search the archive",
     ar004: "No.",
     ar005: "Year",
     ar006: "Host / Partner Institution",
     ar007: "City / Venue / Format",
-    ar009: "Istanbul Medipol University",
-    ar010: "Kavacık, Istanbul (in person)",
     ar012: "Piri Reis University",
     ar013: "Tuzla, İstanbul",
     ar015: "Işık University",
@@ -1418,8 +1416,8 @@ const i18nDictionary = {
     ar111: "Boğaziçi University + Bilkent University",
     ar112: "Bebek, İstanbul",
     arsivKicker: "INSTITUTIONAL MEMORY & SCIENTIFIC ARCHIVE",
-    arsivPageDesc: "35-year conference chronology originating at Bogazici University, with host institutions and locations.",
-    arsivPageTitle: "SIU Historical Archive (1993 – 2027)",
+    arsivPageDesc: "34-year conference chronology originating at Bogazici University, with host institutions and locations.",
+    arsivPageTitle: "SIU Historical Archive (1993 – 2026)",
     brandSubtitle: "35th Signal Processing & Communications Applications Conference",
     btnCfp: "Call for Papers (CFP)",
     btnTracks: "Paper Topics / Tracks",
@@ -1446,7 +1444,7 @@ const i18nDictionary = {
     datesThDate: "Date",
     datesThProcess: "Milestone / Process",
     datesThStatus: "Status",
-    descAboutHistory: "35-year conference chronology",
+    descAboutHistory: "34-year conference chronology",
     descAboutHost: "Istanbul Medipol University",
     descAboutCommittee: "Conference chairs and committees",
     descAboutHonor: "SIU Honorary Committee members",
@@ -1562,6 +1560,8 @@ const i18nDictionary = {
     hk029: "VISUAL IDENTITY & EMBLEM",
     hk030: "The Official SIU 2027 Logo",
     hk036: "Download the High-Resolution Logo (PNG)",
+    logoSvg: "assets/siu2027-logo-en.svg?v=217",
+    logoPng: "assets/siu2027-logo-en.png?v=217",
     il001: "SECRETARIAT INFORMATION",
     il002: "Istanbul Medipol University Kavacık South Campus",
     il003: "Conference Address",
@@ -1569,7 +1569,7 @@ const i18nDictionary = {
     il005: "E-mail Address",
     il006: "General enquiries and registration: <a href=\"mailto:siu2027@medipol.edu.tr\">siu2027@medipol.edu.tr</a>",
     il007: "Telephone & Call Centre",
-    il008: "+90 (216) 681 51 00 (switchboard) • Ext.: TBA",
+    il008: "+90 (216) 681 51 00 (switchboard) • Ext.: 5338",
     il009: "Location and Parking",
     il010: "Information about the use of the campus car park will be announced. For navigation, search for: <em>\"İstanbul Medipol Üniversitesi Kavacık Güney Kampüsü\"</em>.",
     il011: "QUICK SUPPORT FORM",
@@ -1867,7 +1867,7 @@ const i18nDictionary = {
     kv032: "This text is for information purposes and must be approved by the Istanbul Medipol University Legal Counsel / KVKK unit before publication.",
     mobileMenuLang: "LANGUAGE",
     navAbout: "About",
-    navAboutHistory: "SIU History (1993–2027)",
+    navAboutHistory: "SIU History (1993–2026)",
     navAboutHost: "Venue",
     navAboutHonor: "Honorary Committee",
     navAboutMsg: "Welcome Message",
@@ -1996,7 +1996,7 @@ const i18nDictionary = {
     tracksKicker: "TECHNICAL PROGRAM & TRACKS",
     tracksTitle: "Topics and Research Tracks",
     ttl404: "Page Not Found (404) | IEEE SIU 2027",
-    ttlArsiv: "SIU Conference Archive 1993–2027 | IEEE SIU 2027",
+    ttlArsiv: "SIU Conference Archive 1993–2026 | IEEE SIU 2027",
     ttlHakkinda: "About the Conference | IEEE SIU 2027 — Istanbul Medipol University",
     ttlIletisim: "Contact and Conference Secretariat | IEEE SIU 2027",
     ttlIndex: "IEEE SIU 2027 | 35th Signal Processing and Communications Applications Conference",
@@ -2136,7 +2136,7 @@ const i18nDictionary = {
     yz073: "<strong>Adding Author and Affiliation Information:</strong> the names, surnames, affiliations and e-mail addresses of all authors must be added to the camera-ready text revised in line with the reviewers' comments.",
     yz074: "<strong>IEEE PDF eXpress Check:</strong> the final PDF must be processed through <strong>IEEE PDF eXpress</strong>, which verifies IEEE Xplore format compliance. (The system conference ID will be announced with the acceptance letters.)",
     yz075: "<strong>IEEE Copyright Transfer (IEEE eCF):</strong> the copyright transfer must be approved online via the <strong>IEEE Electronic Copyright Form (eCF)</strong> link provided through the Microsoft CMT system.",
-    arh001: "Conference Map (1993 – 2027)",
+    arh001: "Conference Map (1993 – 2026)",
     arh002: "Where SIU conferences have been held across Türkiye and the TRNC. Drag the year slider or use the arrow keys to step through the conferences; circle size shows how many times a place has hosted.",
     arh003: "Year",
     arh004: "Previous conference",
@@ -2193,7 +2193,7 @@ const i18nDictionary = {
     ft008: "Organizing Committee",
     ft009: "Technical Program Committee",
     ft010: "Istanbul Medipol University",
-    ft011: "1993–2027 Conference Archive",
+    ft011: "1993–2026 Conference Archive",
     ft012: "Address",
     ft013: "E-mail",
     ft014: "Telephone",
@@ -2435,8 +2435,10 @@ function initLangSwitcher() {
       }
     });
 
-    // Öznitelik çevirileri: ekran okuyucu etiketi, görsel açıklaması, arama kutusu ipucu
-    [['data-i18n-aria', 'aria-label'], ['data-i18n-alt', 'alt'], ['data-i18n-placeholder', 'placeholder']].forEach(([veri, oznitelik]) => {
+    // Öznitelik çevirileri: ekran okuyucu etiketi, görsel açıklaması, arama kutusu ipucu,
+    // dile göre değişen görsel/dosya (logo: SİU / SIU)
+    [['data-i18n-aria', 'aria-label'], ['data-i18n-alt', 'alt'], ['data-i18n-placeholder', 'placeholder'],
+     ['data-i18n-src', 'src'], ['data-i18n-href', 'href']].forEach(([veri, oznitelik]) => {
       document.querySelectorAll('[' + veri + ']').forEach(el => {
         const v = i18nDictionary[lang] && i18nDictionary[lang][el.getAttribute(veri)];
         if (v !== undefined) el.setAttribute(oznitelik, v);
@@ -2538,7 +2540,7 @@ function initProgramFilters() {
 }
 
 /* ==========================================================================
-   5. Tarihsel Arşiv Canlı Arama (1993–2027 SİU Tablosu)
+   5. Tarihsel Arşiv Canlı Arama (1993–2026 SİU Tablosu)
    ========================================================================== */
 function initArchiveSearch() {
   const archiveInput = document.getElementById('archiveSearchInput');
@@ -2646,7 +2648,7 @@ function initSearchModal() {
     { url: 'komiteler', tr: ['Komiteler ve Kurullar', 'Komiteler'], en: ['Committees', 'Committees'], kw: 'komite kurul başkan eş başkan tpc committee chair co-chair' },
     { url: 'sponsorluk', tr: ['Sponsorluk', 'Kurultay › Sponsorluk'], en: ['Sponsorship', 'Conference › Sponsorship'], kw: 'sponsor sponsorluk destek destekçi stand sergi firma şirket sanayi sponsorship supporter exhibit booth company industry' },
     { url: 'hakkinda', tr: ['Kurultay Hakkında', 'Kurultay › Hakkında'], en: ['About the Conference', 'Conference › About'], kw: 'hakkında hoş geldiniz kapsam medipol ev sahibi about welcome scope host' },
-    { url: 'arsiv', tr: ['SİU Kurultay Arşivi (1993–2027)', 'Arşiv › Kurultay Kronolojisi'], en: ['SIU Conference Archive (1993–2027)', 'Archive › Chronology'], kw: 'arşiv tarihçe geçmiş kronoloji archive history chronology' },
+    { url: 'arsiv', tr: ['SİU Kurultay Arşivi (1993–2026)', 'Arşiv › Kurultay Kronolojisi'], en: ['SIU Conference Archive (1993–2026)', 'Archive › Chronology'], kw: 'arşiv tarihçe geçmiş kronoloji archive history chronology' },
     { url: 'iletisim', tr: ['İletişim ve Sekreterlik', 'İletişim › Adres ve E-posta'], en: ['Contact and Secretariat', 'Contact › Address and E-mail'], kw: 'iletişim sekreterlik e-posta telefon adres contact secretariat email phone address' },
     { url: 'kvkk', tr: ['KVKK Aydınlatma Metni', 'Kurumsal › KVKK'], en: ['Privacy Notice', 'Legal › Privacy'], kw: 'kvkk gizlilik kişisel veri çerez privacy personal data cookie' }
   ];

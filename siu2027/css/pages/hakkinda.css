@@ -37,9 +37,9 @@
 }
 .emblem-row__figure { max-width: 14rem; }
 .emblem-row__figure img { width: 100%; }
-/* Resmî logo siyah (#121212) çizilmiştir; koyu temada açık renge döner */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .emblem-row__logo { filter: invert(1); } }
-:root[data-theme="dark"] .emblem-row__logo { filter: invert(1); }
+/* Resmî logo renkli ve açık zemin içindir; koyu temada renkler ters çevrilir, ton korunur */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .emblem-row__logo { filter: invert(1) hue-rotate(180deg); } }
+:root[data-theme="dark"] .emblem-row__logo { filter: invert(1) hue-rotate(180deg); }
 .emblem-row__links {
   display: grid;
   gap: var(--space-1);

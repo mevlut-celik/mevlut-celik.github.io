@@ -383,14 +383,13 @@ p { max-width: var(--measure); }
           mask: url("../assets/medipol-logo-white.png") center / contain no-repeat;
 }
 .hd-divider { flex: none; width: 1px; height: 2.5rem; background: var(--ot-line); margin-inline: -.75rem; }
-/* SİU 2027 logosu (simge + yazı): aynı yöntemle tek renkli maske, metin rengini alır.
-   Maske ::before'da: bağlantının odak çerçevesi maskelenmesin */
-.hd-brand { flex: none; display: block; height: 2.5rem; aspect-ratio: 741.6 / 215.04; color: var(--ot-ink); }
-.hd-brand::before {
-  content: ""; display: block; height: 100%; background: currentColor;
-  -webkit-mask: url("../assets/siu2027-logo.svg") left center / auto 100% no-repeat;
-          mask: url("../assets/siu2027-logo.svg") left center / auto 100% no-repeat;
-}
+/* SİU 2027 logosu (yazı + simge), renkli; İngilizcede noktasız "SIU". Koyu temada renkler
+   ters çevrilir, ton korunur. Logo ::before'da: bağlantının odak çerçevesi etkilenmesin */
+.hd-brand { flex: none; display: block; height: 2.5rem; aspect-ratio: 908.24 / 360.04; color: var(--ot-ink); }
+.hd-brand::before { content: ""; display: block; height: 100%; background: url("../assets/siu2027-logo.svg?v=217") left center / auto 100% no-repeat; }
+:root[lang="en"] .hd-brand::before { background-image: url("../assets/siu2027-logo-en.svg?v=217"); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hd-brand::before { filter: invert(1) hue-rotate(180deg); } }
+:root[data-theme="dark"] .hd-brand::before { filter: invert(1) hue-rotate(180deg); }
 
 .hd-nav { margin-left: auto; min-width: 0; }
 .hd-menu-list { display: flex; align-items: center; gap: .25rem; }
@@ -443,8 +442,12 @@ p { max-width: var(--measure); }
 @media (max-width: 35em) {
   .hd-search span, .hd-search kbd { display: none; }
   .hd-medipol, .hd-divider { height: 2rem; }
-  /* Yazı gizlenir, yalnız simge kalır: kutu simge genişliğine iner, maske sola yaslı */
-  .hd-brand { height: 2.25rem; aspect-ratio: 226.54 / 215.04; }
+  .hd-brand { height: 2.25rem; }
+}
+/* Çok dar ekranda (≤340 px) tam logo menü düğmesine sığmaz: yalnız amblem (yazısız) */
+@media (max-width: 21.25em) {
+  .hd-brand { aspect-ratio: 378.24 / 360.04; }
+  :root[lang] .hd-brand::before { background-image: url("../assets/siu2027-amblem.svg?v=217"); }
 }
 
 /* 4.5 Modal zemini (arama + biyografi) */
@@ -1042,12 +1045,13 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 
 .footer-brand { display: grid; gap: 1.25rem; align-content: start; }
 .footer-logos { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; }
-/* SİU 2027 logosu: başlıktaki gibi tek renkli maske, beyaz */
+/* SİU 2027 logosu: tek renkli maske, beyaz */
 .footer-wordmark {
-  flex: none; display: block; height: 2.5rem; aspect-ratio: 741.6 / 215.04; background: #fff;
-  -webkit-mask: url("../assets/siu2027-logo.svg") center / contain no-repeat;
-          mask: url("../assets/siu2027-logo.svg") center / contain no-repeat;
+  flex: none; display: block; height: 2.5rem; aspect-ratio: 908.24 / 360.04; background: #fff;
+  -webkit-mask: url("../assets/siu2027-logo.svg?v=217") center / contain no-repeat;
+          mask: url("../assets/siu2027-logo.svg?v=217") center / contain no-repeat;
 }
+:root[lang="en"] .footer-wordmark { -webkit-mask-image: url("../assets/siu2027-logo-en.svg?v=217"); mask-image: url("../assets/siu2027-logo-en.svg?v=217"); }
 .footer-logos__host { padding-left: 1.5rem; border-left: 1px solid var(--ft-line); font-size: var(--step--2); font-weight: 600; line-height: 1.3; color: var(--ft-muted); }
 .footer-about { max-width: 24rem; color: var(--ft-muted); }
 
@@ -1082,9 +1086,15 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
 :focus-visible { outline: 3px solid var(--ot-accent); outline-offset: 2px; }
 .page-head :focus-visible,
 .site-footer :focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 2px; }
-/* Yüksek karşıtlık kipi zemin rengini ezer: maskeli logo sistem rengiyle boyanır */
+/* Yüksek karşıtlık kipi zemin rengini ezer: logo maskeyle sistem rengine boyanır */
 @media (forced-colors: active) {
-  .hd-brand::before { forced-color-adjust: none; background: LinkText; }
+  :root[lang] .hd-brand::before {
+    forced-color-adjust: none; filter: none; background: LinkText;
+    -webkit-mask: url("../assets/siu2027-logo.svg?v=217") left center / auto 100% no-repeat;
+            mask: url("../assets/siu2027-logo.svg?v=217") left center / auto 100% no-repeat;
+  }
+  :root[lang="en"] .hd-brand::before { -webkit-mask-image: url("../assets/siu2027-logo-en.svg?v=217"); mask-image: url("../assets/siu2027-logo-en.svg?v=217"); }
+  @media (max-width: 21.25em) { :root[lang] .hd-brand::before { -webkit-mask-image: url("../assets/siu2027-amblem.svg?v=217"); mask-image: url("../assets/siu2027-amblem.svg?v=217"); } }
   .footer-wordmark { forced-color-adjust: none; background: CanvasText; }
 }
 
@@ -1103,7 +1113,7 @@ button.committee-card:hover .committee-name { text-decoration: underline; text-u
   .calendar-actions, .calendar-actions__note { display: none !important; }
   body { font-size: 10.5pt; color: #000; background: #fff; }
   .hd { position: static; box-shadow: none; border-bottom: 1px solid #000; }
-  .hd-brand::before { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  :root[lang] .hd-brand::before { filter: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .page-head { background: none; color: #000; }
   .page-head__title { color: #000; }
   .page-head { padding-block: 1rem; border-bottom: 1px solid #000; }
