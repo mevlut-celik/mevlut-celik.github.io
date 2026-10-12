@@ -50,6 +50,10 @@
 .emblem-row__text > * + * { margin-top: var(--space-4); }
 .emblem-row__text h3 { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--rule); }
 .emblem-row__text h3 + p { margin-top: var(--space-2); }
+.emblem-row__list { padding-left: 1.25em; list-style: disc; max-width: var(--measure); }
+.emblem-row__list li + li { margin-top: var(--space-2); }
+.emblem-row__list li::marker { color: var(--ink-3); }
+.emblem-row__list strong { color: var(--navy); }
 
 @media (min-width: 40em) {
   .emblem-row { grid-template-columns: 12rem minmax(0, 1fr); }
