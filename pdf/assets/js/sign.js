@@ -4,10 +4,16 @@
 
    1. Identity  — a self-signed X.509 certificate made in the browser, or the
                   user's own .p12/.pfx (RSA). Keys never leave the device.
-   2. Signing   — adbe.pkcs7.detached (the CMS profile every reader accepts),
-                  written as an incremental update so earlier signatures in
-                  the file stay valid. Classic xref tables and xref streams
-                  are both continued in kind.
+   2. Signing   — PAdES baseline (SubFilter ETSI.CAdES.detached): a CMS
+                  SignedData built here, with contentType, messageDigest
+                  and ESS signing-certificate-v2 as signed attributes and
+                  the signing time in the signature dictionary's /M. The
+                  signature value comes from a "signer": the browser's own
+                  key (self-signed or .p12), or an e-signature card behind
+                  the local bridge (kopru/), which signs the attributes
+                  after the user's PIN. Written as an incremental update
+                  so earlier signatures in the file stay valid; classic
+                  xref tables and xref streams are both continued in kind.
    3. Verifying — every /ByteRange in a file is checked: the digest of the
                   covered bytes against the signed messageDigest, then the
                   signature over the signed attributes with WebCrypto (RSA and
@@ -117,9 +123,11 @@ export async function describeIdentity(identity) {
 // Signs `input` (a complete PDF) and returns the signed bytes. The original
 // bytes are kept verbatim; everything new is appended after them.
 //
-// opts: { identity, name, reason, location, contact, date,
+// opts: { identity | signer, name, reason, location, contact, date,
 //         page (0-based), rect [x1 y1 x2 y2] in PDF user space or null,
 //         appearance: { imagePng, lines: [], fontBytes } }
+// signer: { certDer, chainDer: [], keyAlg: "RSA" | "ECDSA",
+//           sign(signedAttributesDer) -> Promise<signature bytes> }
 export async function signPdf(input, opts) {
   const P = lib();
   const original = toBytes(input);
@@ -208,7 +216,7 @@ export async function signPdf(input, opts) {
   }
 
   const hexText = (s) => P.PDFHexString.fromText(String(s)).toString();
-  const sigHead = `${sigRef.objectNumber} 0 obj\n<< /Type /Sig /Filter /Adobe.PPKLite /SubFilter /adbe.pkcs7.detached\n/ByteRange `;
+  const sigHead = `${sigRef.objectNumber} 0 obj\n<< /Type /Sig /Filter /Adobe.PPKLite /SubFilter /ETSI.CAdES.detached\n/ByteRange `;
   const sigContentsKey = `\n/Contents `;
   const contentsHex = "<" + "0".repeat(SIGNATURE_BYTES * 2) + ">";
   let sigTail = `\n/M (${pdfDate(date)})`;
@@ -255,38 +263,123 @@ export async function signPdf(input, opts) {
   out.set(enc.encode(rangeText), sigOffset + byteRangeAt);
 
   const signed = concatBytes([out.subarray(0, contentsStart), out.subarray(contentsEnd)]);
-  const cms = createCms(signed, opts.identity, date);
+  const cms = await createCms(signed, opts.signer || localSigner(opts.identity));
   if (cms.length * 2 > SIGNATURE_BYTES * 2) throw new Error("İmza verisi ayrılan alana sığmadı.");
   out.set(enc.encode(bytesToHex(cms)), contentsStart + 1);
   return out;
 }
 
-function createCms(signedBytes, identity, date) {
+/* --------------------------------- CMS ---------------------------------- */
+const OIDS = {
+  data: "1.2.840.113549.1.7.1",
+  signedData: "1.2.840.113549.1.7.2",
+  contentType: "1.2.840.113549.1.9.3",
+  messageDigest: "1.2.840.113549.1.9.4",
+  signingCertificateV2: "1.2.840.113549.1.9.16.2.47",
+  sha256: "2.16.840.1.101.3.4.2.1",
+  rsaEncryption: "1.2.840.113549.1.1.1",
+  ecdsaWithSha256: "1.2.840.10045.4.3.2",
+};
+
+function der(node) { return binaryToBytes(forge().asn1.toDer(node).getBytes()); }
+function asn1Of(bytes) { return forge().asn1.fromDer(bytesToBinary(bytes)); }
+
+// Issuer name and serial number of a certificate, as its own ASN.1 nodes.
+function issuerAndSerial(certDer) {
+  const A = forge().asn1;
+  const tbs = asn1Of(certDer).value[0].value;
+  const i = tbs[0].tagClass === A.Class.CONTEXT_SPECIFIC ? 1 : 0;
+  return { serial: tbs[i], issuer: tbs[i + 2] };
+}
+
+// The signed attributes as a DER SET OF, sorted the way DER requires.
+// PAdES baseline: no signing-time attribute (the time is /M), and the
+// signer's certificate pinned by its SHA-256 hash (ESS signing-certificate-v2).
+async function signedAttributes(contentDigest, certDer) {
   const f = forge();
-  const cert = f.pki.certificateFromPem(identity.certPem);
-  const key = f.pki.privateKeyFromPem(identity.keyPem);
-  const p7 = f.pkcs7.createSignedData();
-  p7.content = f.util.createBuffer(bytesToBinary(signedBytes));
-  p7.addCertificate(cert);
-  for (const pem of identity.chainPem || []) p7.addCertificate(f.pki.certificateFromPem(pem));
-  p7.addSigner({
-    key, certificate: cert, digestAlgorithm: f.pki.oids.sha256,
-    authenticatedAttributes: [
-      { type: f.pki.oids.contentType, value: f.pki.oids.data },
-      { type: f.pki.oids.messageDigest },
-      { type: f.pki.oids.signingTime, value: date },
-    ],
+  const A = f.asn1;
+  const C = A.Class.UNIVERSAL, T = A.Type;
+  const oid = (o) => A.create(C, T.OID, false, A.oidToDer(o).getBytes());
+  const octets = (bytes) => A.create(C, T.OCTETSTRING, false, bytesToBinary(bytes));
+  const attr = (type, value) => A.create(C, T.SEQUENCE, true, [oid(type), A.create(C, T.SET, true, [value])]);
+  const { issuer, serial } = issuerAndSerial(certDer);
+  const certHash = await digest("SHA-256", certDer);
+  const essCertIdV2 = A.create(C, T.SEQUENCE, true, [
+    octets(certHash), // hashAlgorithm omitted: SHA-256 is the default
+    A.create(C, T.SEQUENCE, true, [
+      A.create(C, T.SEQUENCE, true, [A.create(A.Class.CONTEXT_SPECIFIC, 4, true, [issuer])]),
+      serial,
+    ]),
+  ]);
+  const attrs = [
+    attr(OIDS.contentType, oid(OIDS.data)),
+    attr(OIDS.messageDigest, octets(contentDigest)),
+    attr(OIDS.signingCertificateV2, A.create(C, T.SEQUENCE, true, [A.create(C, T.SEQUENCE, true, [essCertIdV2])])),
+  ];
+  const encoded = attrs.map((a) => ({ node: a, bytes: der(a) }));
+  encoded.sort((x, y) => {
+    for (let k = 0; k < Math.min(x.bytes.length, y.bytes.length); k++) if (x.bytes[k] !== y.bytes[k]) return x.bytes[k] - y.bytes[k];
+    return x.bytes.length - y.bytes.length;
   });
-  p7.sign({ detached: true });
-  const asn1 = p7.toAsn1();
-  // forge re-encodes the issuer name from parsed attributes and UTF-8 encodes
-  // UTF8String values a second time; put the certificate's own bytes back so
-  // verifiers can match the signer to its certificate.
-  const tbs = f.pki.certificateToAsn1(cert).value[0].value;
-  const issuer = tbs[(tbs[0].tagClass === f.asn1.Class.CONTEXT_SPECIFIC ? 1 : 0) + 2];
-  const signedData = asn1.value[1].value[0].value;
-  signedData[signedData.length - 1].value[0].value[1].value[0] = issuer;
-  return binaryToBytes(f.asn1.toDer(asn1).getBytes());
+  return encoded.map((e) => e.node);
+}
+
+async function createCms(signedBytes, signer) {
+  const f = forge();
+  const A = f.asn1;
+  const C = A.Class.UNIVERSAL, T = A.Type;
+  const oid = (o) => A.create(C, T.OID, false, A.oidToDer(o).getBytes());
+  const nul = () => A.create(C, T.NULL, false, "");
+  const int = (n) => A.create(C, T.INTEGER, false, A.integerToDer(n).getBytes());
+  const sha256Alg = () => A.create(C, T.SEQUENCE, true, [oid(OIDS.sha256), nul()]);
+
+  const contentDigest = await digest("SHA-256", signedBytes);
+  const attrs = await signedAttributes(contentDigest, signer.certDer);
+  // the signature covers the attributes encoded as a SET (tag 0x31); the
+  // SignerInfo carries the same content under [0] IMPLICIT
+  const toSign = der(A.create(C, T.SET, true, attrs));
+  const signature = await signer.sign(toSign);
+  const sigAlg = signer.keyAlg === "ECDSA"
+    ? A.create(C, T.SEQUENCE, true, [oid(OIDS.ecdsaWithSha256)])
+    : A.create(C, T.SEQUENCE, true, [oid(OIDS.rsaEncryption), nul()]);
+  const { issuer, serial } = issuerAndSerial(signer.certDer);
+  const signerInfo = A.create(C, T.SEQUENCE, true, [
+    int(1),
+    A.create(C, T.SEQUENCE, true, [issuer, serial]),
+    sha256Alg(),
+    A.create(A.Class.CONTEXT_SPECIFIC, 0, true, attrs),
+    sigAlg,
+    A.create(C, T.OCTETSTRING, false, bytesToBinary(signature)),
+  ]);
+  const certs = [signer.certDer].concat(signer.chainDer || []).map((d) => asn1Of(d));
+  const signedData = A.create(C, T.SEQUENCE, true, [
+    int(1),
+    A.create(C, T.SET, true, [sha256Alg()]),
+    A.create(C, T.SEQUENCE, true, [oid(OIDS.data)]),
+    A.create(A.Class.CONTEXT_SPECIFIC, 0, true, certs),
+    A.create(C, T.SET, true, [signerInfo]),
+  ]);
+  return der(A.create(C, T.SEQUENCE, true, [
+    oid(OIDS.signedData),
+    A.create(A.Class.CONTEXT_SPECIFIC, 0, true, [signedData]),
+  ]));
+}
+
+// The signer for an identity kept in this browser (self-signed or .p12).
+export function localSigner(identity) {
+  const f = forge();
+  const key = f.pki.privateKeyFromPem(identity.keyPem);
+  const pemToDer = (pem) => binaryToBytes(f.asn1.toDer(f.pki.certificateToAsn1(f.pki.certificateFromPem(pem))).getBytes());
+  return {
+    certDer: pemToDer(identity.certPem),
+    chainDer: (identity.chainPem || []).map(pemToDer),
+    keyAlg: "RSA",
+    async sign(data) {
+      const md = f.md.sha256.create();
+      md.update(bytesToBinary(data));
+      return binaryToBytes(key.sign(md));
+    },
+  };
 }
 
 async function buildAppearance(doc, w, h, appearance) {

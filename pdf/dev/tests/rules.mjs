@@ -1,0 +1,11 @@
+import { setup, app, fixture, out } from "../harness.mjs";
+await setup();
+const { openPdf, closePdf } = await app("js/libs.js");
+const { renderPage, canvasToBytes } = await app("js/convert/canvas.js");
+const { removeRules } = await app("js/ocr.js");
+const pdf = await openPdf(fixture("scanned.pdf"));
+const c = await renderPage(pdf, 0, 300 / 72);
+out("before.png", await canvasToBytes(c));
+console.log("removed", removeRules(c));
+out("after.png", await canvasToBytes(c));
+closePdf(pdf);

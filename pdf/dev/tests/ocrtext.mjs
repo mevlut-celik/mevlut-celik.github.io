@@ -1,0 +1,13 @@
+import { setup, app, fixture } from "../harness.mjs";
+await setup();
+const { openPdf, closePdf } = await app("js/libs.js");
+const { renderPage, canvasToBytes } = await app("js/convert/canvas.js");
+const { removeRules, createOcr } = await app("js/ocr.js");
+const pdf = await openPdf(fixture(process.argv[2] || "scanned.pdf"));
+const ocr = await createOcr({ langs: process.argv[3] || "tur+eng" });
+const c = await renderPage(pdf, Number(process.argv[4] || 0), 300 / 72);
+if (process.argv[5] !== "raw") removeRules(c);
+const r = await ocr.recognize(await canvasToBytes(c), c.width, c.height);
+console.log(r.text);
+console.log("words", r.words.length, "mean conf", Math.round(r.words.reduce((a, w) => a + w.confidence, 0) / r.words.length));
+await ocr.terminate(); closePdf(pdf);

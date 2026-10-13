@@ -21,6 +21,7 @@ import { currentVersion, createDoc, inspectPdf, rasterizePdf, renderThumb } from
 import { hasSignatures, verifyPdf, describeIdentity } from "./sign.js";
 import * as panels from "./panels.js";
 import * as sigui from "./sigui.js";
+import { openOcrDialog, checkScanned } from "./ocrui.js";
 
 const SVGNS = "http://www.w3.org/2000/svg";
 const PAD = W.TEXT_PAD;
@@ -1952,6 +1953,7 @@ function pagesMenu(anchor) {
     { label: "Çoğalt", icon: "copy", onClick: duplicatePages },
     { label: "Yeni belge olarak ayıkla", icon: "file-output", onClick: () => extractPages() },
     { label: "Geçerli sayfayı PNG olarak indir", icon: "image-down", onClick: () => exportPng() },
+    { label: "Metni tanı (OCR)…", icon: "scan-text", onClick: () => openOcrDialog(E.pageSel.size > 1 ? "selected" : "current") },
     "sep",
     { label: "Boş sayfa ekle", icon: "file-plus", onClick: insertBlank },
     { label: "PDF'den sayfa ekle…", icon: "files", onClick: insertPdf },
@@ -2528,6 +2530,7 @@ function bindOnce() {
     const b = e.target.closest(".tool");
     if (!b) return;
     if (b.dataset.action === "organizer") { toggleOrganizer(); return; }
+    if (b.dataset.action) return; // handled by the editor's [data-action] listener
     const t = b.dataset.tool;
     if (t === "signature" && !E.signatures.length) { sigui.signatureMenu(b, (sig) => setTool(sig.kind === "initials" ? "initials" : "signature", sig)); return; }
     setTool(E.tool === t && t !== "select" ? "select" : t);
@@ -2548,6 +2551,7 @@ function bindOnce() {
       case "download": download(); break;
       case "download-menu": downloadMenu(a); break;
       case "sign": sigui.openSignMenu(a); break;
+      case "ocr": openOcrDialog(); break;
       default: break;
     }
   });
@@ -2688,6 +2692,7 @@ export async function openEditor(docId, { user, onClose }) {
   dom.workspace.classList.toggle("no-right", window.matchMedia("(max-width: 980px)").matches);
   dom.workspace.classList.remove("show-left");
   verifyCurrent();
+  checkScanned();
 }
 
 E.reloadVersion = async () => {
@@ -2704,6 +2709,7 @@ E.reloadVersion = async () => {
   dom.redo.disabled = true;
   panels.refresh();
   await verifyCurrent();
+  checkScanned();
 };
 E.verifyCurrent = verifyCurrent;
 E.refreshPanels = () => panels.refresh();
