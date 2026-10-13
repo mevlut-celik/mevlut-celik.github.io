@@ -2,9 +2,14 @@
    Mühür — libs.js
    Third-party code is vendored under assets/vendor and loaded on first
    use, so the sign-in screen does not wait for 2 MB of PDF machinery.
+
+   globalThis.__MUHUR_NODE__, when present, is the Node test harness: it
+   supplies the libraries and file access a browser would fetch, so the
+   converters can be exercised outside the page.
    ========================================================================== */
 
 const vendor = (path) => new URL("../vendor/" + path, import.meta.url).href;
+const NODE = () => globalThis.__MUHUR_NODE__ || null;
 
 const scripts = new Map();
 function script(src) {
@@ -23,6 +28,7 @@ function script(src) {
 
 let pdfjsPromise = null;
 export function pdfjs() {
+  if (NODE() && NODE().pdfjs) return Promise.resolve(NODE().pdfjs);
   if (!pdfjsPromise) {
     pdfjsPromise = import(vendor("pdfjs/pdf.min.js")).then((m) => {
       m.GlobalWorkerOptions.workerSrc = vendor("pdfjs/pdf.worker.min.js");
@@ -33,27 +39,62 @@ export function pdfjs() {
 }
 
 export async function pdflib() {
-  await Promise.all([script(vendor("pdf-lib.min.js")), script(vendor("fontkit.umd.min.js"))]);
+  if (!(globalThis.PDFLib && globalThis.fontkit)) {
+    await Promise.all([script(vendor("pdf-lib.min.js")), script(vendor("fontkit.umd.min.js"))]);
+  }
   return globalThis.PDFLib;
 }
 
 export async function forge() {
-  await script(vendor("forge.min.js"));
+  if (!globalThis.forge) await script(vendor("forge.min.js"));
   return globalThis.forge;
+}
+
+// fflate: zip / unzip for the Office formats (OOXML is a zip of XML parts).
+export async function fflate() {
+  if (!globalThis.fflate) await script(vendor("fflate.min.js"));
+  return globalThis.fflate;
+}
+
+// tesseract.js: OCR. The core is picked once — the SIMD build where the
+// browser validates a SIMD module, the plain one otherwise.
+export async function tesseract() {
+  if (!globalThis.Tesseract) await script(vendor("tesseract/tesseract.min.js"));
+  return globalThis.Tesseract;
+}
+
+function simdSupported() {
+  try {
+    // (module (func (result v128) i32.const 0 i8x16.splat))
+    return WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 123, 3, 2, 1, 0, 10, 10, 1, 8, 0, 65, 0, 253, 15, 253, 98, 11]));
+  } catch (e) {
+    return false;
+  }
+}
+
+export function tesseractPaths() {
+  if (NODE() && NODE().tesseractPaths) return NODE().tesseractPaths;
+  return {
+    workerPath: vendor("tesseract/worker.min.js"),
+    corePath: vendor("tesseract/core/" + (simdSupported() ? "tesseract-core-simd-lstm.wasm.js" : "tesseract-core-lstm.wasm.js")),
+    langPath: vendor("tesseract/lang"),
+    gzip: true,
+  };
 }
 
 // Open bytes with pdf.js. The bytes are copied: pdf.js hands its buffer
 // to the worker and the caller keeps using theirs.
 export async function openPdf(bytes, password) {
   const lib = await pdfjs();
+  const node = NODE();
   const task = lib.getDocument({
     data: bytes.slice(),
     password,
-    cMapUrl: vendor("pdfjs/cmaps/"),
+    cMapUrl: node ? node.cMapUrl : vendor("pdfjs/cmaps/"),
     cMapPacked: true,
-    standardFontDataUrl: vendor("pdfjs/standard_fonts/"),
-    wasmUrl: vendor("pdfjs/wasm/"),
-    iccUrl: vendor("pdfjs/iccs/"),
+    standardFontDataUrl: node ? node.standardFontDataUrl : vendor("pdfjs/standard_fonts/"),
+    wasmUrl: node ? node.wasmUrl : vendor("pdfjs/wasm/"),
+    iccUrl: node ? node.iccUrl : vendor("pdfjs/iccs/"),
     enableXfa: false,
     isEvalSupported: false,
     fontExtraProperties: true,
@@ -64,10 +105,13 @@ export async function openPdf(bytes, password) {
 const fontBytesCache = new Map();
 export function fontBytes(file) {
   if (!fontBytesCache.has(file)) {
-    fontBytesCache.set(file, fetch(new URL("../fonts/" + file, import.meta.url)).then((r) => {
-      if (!r.ok) throw new Error("Font yüklenemedi: " + file);
-      return r.arrayBuffer();
-    }).then((b) => new Uint8Array(b)));
+    const load = NODE() && NODE().readFont
+      ? Promise.resolve(NODE().readFont(file))
+      : fetch(new URL("../fonts/" + file, import.meta.url)).then((r) => {
+        if (!r.ok) throw new Error("Font yüklenemedi: " + file);
+        return r.arrayBuffer();
+      });
+    fontBytesCache.set(file, load.then((b) => new Uint8Array(b)));
   }
   return fontBytesCache.get(file).then((b) => b.slice());
 }

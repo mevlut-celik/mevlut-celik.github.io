@@ -1,0 +1,16 @@
+{
+  "name": "muhur-dev",
+  "private": true,
+  "description": "Node test harness for Mühür's converters and OCR (not deployed code).",
+  "type": "module",
+  "dependencies": {
+    "@napi-rs/canvas": "*",
+    "@pdf-lib/fontkit": "1.1.1",
+    "@xmldom/xmldom": "*",
+    "fflate": "0.8.3",
+    "node-forge": "1.4.0",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.4.299",
+    "tesseract.js": "7.0.0"
+  }
+}

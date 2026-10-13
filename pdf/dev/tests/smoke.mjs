@@ -1,0 +1,20 @@
+import { setup, app, fixture, out } from "../harness.mjs";
+await setup(); globalThis.__fs = (await import("fs")).default;
+const { openPdf, closePdf, tesseract, tesseractPaths } = await app("js/libs.js");
+const { renderPage, canvasToBytes } = await app("js/convert/canvas.js");
+const { zip, unzip, parseXml, descendants, attr } = await app("js/convert/zip.js");
+const pdf = await openPdf(fixture("report.pdf"));
+const c1 = await renderPage(pdf, 0, 1.5); out("smoke-full.png", await canvasToBytes(c1));
+const c2 = await renderPage(pdf, 0, 1.5, { textless: true }); out("smoke-textless.png", await canvasToBytes(c2));
+closePdf(pdf);
+const files = await unzip(fixture("sample.docx")); console.log("docx parts:", Object.keys(files).length, Object.keys(files).filter(k=>k.startsWith("word/")).slice(0,8));
+const docXml = parseXml(new TextDecoder().decode(files["word/document.xml"])); console.log("w:p count", descendants(docXml.documentElement, "p").length);
+const z = await zip({ "a.txt": "merhaba ğ", "b/c.xml": "<x/>" }); const back = await unzip(z); console.log("zip roundtrip", new TextDecoder().decode(back["a.txt"]));
+const T = await tesseract(); const t0 = Date.now();
+const w = await T.createWorker("tur+eng", 1, { ...tesseractPaths() });
+const { data } = await w.recognize(new Uint8Array(require_fs().readFileSync("out/scan-1.jpg")), {}, { blocks: true });
+console.log("ocr ms", Date.now() - t0, JSON.stringify(data.text.slice(0, 200)));
+const words = []; for (const b of data.blocks || []) for (const p of b.paragraphs) for (const l of p.lines) for (const wd of l.words) words.push(wd);
+console.log("words", words.length, words.slice(0,3).map(x => [x.text, x.bbox, x.confidence|0]));
+await w.terminate();
+function require_fs() { return globalThis.__fs; }
