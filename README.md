@@ -34,7 +34,7 @@ small white tiles beside each entry.
   alma mater, location, GitHub / LinkedIn / YouTube profiles).
 - `robots.txt`, `sitemap.xml` (homepage, mescid, simulation, waves) and a
   root `404.html`. Client, research and personal subprojects are left out of
-  the sitemap on purpose; `siu2027/` and `siu2027gorsel/` keep their own robots and sitemap.
+  the sitemap on purpose.
 
 ## Shared skeleton
 
@@ -76,9 +76,7 @@ own copy, so nothing is loaded across folders.
 | `simulation/` | Lab notebook — graph paper, blueprint ink, red pen for the force |
 | `waves/` | Bench oscilloscope — phosphor screen, instrument keys |
 
-`siu2027/` is maintained separately and is not part of this skeleton.
-`siu2027gorsel/` is an independent copy of it for visual experiments; the
-siu2027 publish script never touches it.
+IEEE SİU 2027 is published at https://siu2027.medipol.edu.tr/ (source kept in a private repository).
 
 `pdf/` (Mühür) is an application rather than a page, so its `main.js` is an
 ES module that boots the same way and imports its neighbours: `store.js`
