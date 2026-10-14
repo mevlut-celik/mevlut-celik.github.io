@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/pdf/">
+<title>OCR triage test</title>
+<!-- Browser test for the OCR dialog's page-by-page "Taranmış sayfalar"
+     triage on an edited document (ocrui.js run()): closing the editor
+     while pages are being looked at must end as a cancel, not as "no
+     scanned pages" or "OCR tamamlanamadı". Serve the repository root on
+     http://localhost:4321 and open /pdf/dev/tests/ocr-triage.html; the
+     title turns to "done" and window.RESULT holds one line per case. -->
+<script type="importmap">
+{ "imports": {
+  "/pdf/assets/js/store.js": "/pdf/dev/tests/fakes/store.js",
+  "/pdf/assets/js/docs.js": "/pdf/dev/tests/fakes/docs.js",
+  "/pdf/assets/js/ocr.js": "/pdf/dev/tests/fakes/ocr-triage.js"
+} }
+</script>
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="ocr-banner" hidden></div>
+<pre id="out"></pre>
+<script type="module">
+  const { E } = await import("/pdf/assets/js/ed.js");
+  const ocrui = await import("/pdf/assets/js/ocrui.js");
+  const docs = await import("/pdf/assets/js/docs.js");
+  const { ctl } = await import("/pdf/assets/js/ocr.js");
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const RESULT = [];
+
+  // an edited (not pristine) three-page document: a watermark was added
+  function openDoc(id) {
+    const pdf = { destroyed: false };
+    E.open = true;
+    E.doc = { id, name: "Belge " + id, versions: [] };
+    E.state = { pages: [0, 1, 2].map((i) => ({ id: "p" + i, src: "main", index: i, rotate: 0 })), mainPageCount: 3, items: [], forms: {}, watermark: { text: "GİZLİ" } };
+    E.sources = new Map([["main", { bytes: new Uint8Array([37, 80, 68, 70]), pdf }]]);
+    E.pageSel = new Set();
+    E.current = "p0";
+    E.verification = [];
+    E.pageIndex = (pid) => E.state.pages.findIndex((p) => p.id === pid);
+    E.buildBytes = async () => new Uint8Array([37, 80, 68, 70]);
+    E.reloadVersion = async () => {};
+    return pdf;
+  }
+  // what closeEditor() does to the sources: dropped, pdf.js documents destroyed
+  function closeEditor(pdf, destroy) {
+    E.open = false;
+    E.doc = null;
+    E.sources.clear();
+    if (destroy) pdf.destroyed = true;
+  }
+  const toasts = () => [...document.querySelectorAll(".toast")].map((t) => t.innerText.trim());
+  async function runCase(name, { closeAfterMs, destroy, expect, fail, needs }) {
+    document.querySelectorAll(".toast").forEach((t) => t.remove());
+    ctl.runs = 0; ctl.triaged = []; ctl.fail = fail || null; ctl.needs = needs || (() => true);
+    docs.ctl.calls.length = 0;
+    const pdf = openDoc(name);
+    const done = ocrui.openOcrDialog("auto");
+    await wait(50);
+    const dlg = [...document.querySelectorAll("dialog")].pop();
+    dlg.querySelector('[data-action="start"]').click();
+    if (closeAfterMs != null) { await wait(closeAfterMs); closeEditor(pdf, destroy); }
+    await Promise.race([done, wait(4000)]);
+    await wait(50);
+    const t = toasts();
+    const ok = t.some((x) => x.startsWith(expect)) && (expect !== "OCR iptal edildi." || (ctl.runs === 0 && !docs.ctl.calls.length));
+    RESULT.push(`${ok ? "ok  " : "FAIL"} ${name} -> ${JSON.stringify(t)} triaged=${JSON.stringify(ctl.triaged)} ocrRuns=${ctl.runs} saved=${docs.ctl.calls.length}`);
+    for (const d of document.querySelectorAll("dialog[open]")) d.close();
+  }
+
+  // the editor closes while page 1 is looked at (it has text); the later
+  // pages find no source, which used to end as "no scanned pages"
+  await runCase("closed between pages", { closeAfterMs: 100, needs: () => false, expect: "OCR iptal edildi." });
+  // pdf.js fails on the destroyed document while a page is being read,
+  // which used to end as "OCR tamamlanamadı: Transport destroyed"
+  await runCase("closed during a page read", { closeAfterMs: 250, destroy: true, expect: "OCR iptal edildi." });
+  // controls: the editor stays open
+  await runCase("no scanned pages", { expect: "Taranmış sayfa bulunamadı", needs: () => false });
+  await runCase("a real triage error", { expect: "OCR tamamlanamadı", fail: "bozuk sayfa" });
+  await runCase("scanned pages found", { expect: "2 sayfada", needs: (i) => i !== 1 });
+
+  window.RESULT = RESULT;
+  document.getElementById("out").textContent = RESULT.join("\n");
+  document.title = "done";
+</script>
+</body>
+</html>

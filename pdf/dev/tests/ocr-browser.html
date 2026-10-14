@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- OCR of the scanned fixture in the browser, with the vendored libraries:
+     serve the pdf/ folder over http (python3 -m http.server -d pdf) and
+     open /dev/tests/ocr-browser.html. Checks the ruled table rows and the
+     word count, that a second run replaces Mühür's layer instead of
+     stacking a copy, that every Web Worker the runs made is terminated,
+     and that nothing ends up as an unhandled rejection. The result is
+     printed on the page and kept in window.__ocrBrowser. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCR in the browser</title>
+<style>body { font: 14px/1.5 ui-monospace, monospace; margin: 16px; background: #fff; color: #111; }</style>
+</head>
+<body>
+<pre id="log">running…</pre>
+<script type="module">
+const out = [];
+const log = (s) => { out.push(s); document.getElementById("log").textContent = out.join("\n"); };
+const unhandled = [];
+window.addEventListener("unhandledrejection", (e) => unhandled.push(String((e.reason && e.reason.message) || e.reason)));
+
+// count the Web Workers made and terminated (pdf.js keeps its own one)
+const made = [];
+const Native = window.Worker;
+window.Worker = class extends Native {
+  constructor(...args) { super(...args); this.stopped = false; this.src = String(args[0]); made.push(this); }
+  terminate() { this.stopped = true; super.terminate(); }
+};
+
+let failed = 0;
+function check(name, cond, detail) {
+  if (!cond) failed++;
+  log(`${cond ? "ok  " : "FAIL"} ${name}${detail ? " — " + detail : ""}`);
+}
+
+try {
+  const { ocrPdf } = await import("../../assets/js/ocr.js");
+  const { openPdf, closePdf } = await import("../../assets/js/libs.js");
+  const bytes = new Uint8Array(await (await fetch("../fixtures/scanned.pdf")).arrayBuffer());
+  const pageText = async (b) => {
+    const pdf = await openPdf(b);
+    const texts = [];
+    for (let i = 0; i < pdf.numPages; i++) texts.push((await (await pdf.getPage(i + 1)).getTextContent()).items.map((it) => it.str).join(" "));
+    closePdf(pdf);
+    return texts;
+  };
+  const count = (s, w) => s.split(w).length - 1;
+  const ocrWorkers = () => made.filter((w) => !/pdf\.worker/.test(w.src));
+
+  const t0 = performance.now();
+  const res = await ocrPdf(bytes, { pages: "auto", signal: new AbortController().signal, onProgress: () => {} });
+  const t = res.text[0] || "";
+  check("scanned pages found", res.pages.join() === "0,1", JSON.stringify(res.pages));
+  check("ruled table rows", [/stanbul\s+1\.250\.000/, /Ankara\s+640\.200/, /zmir\s+512\.000/, /Toplam\s+2\.402\.200/].every((re) => re.test(t)));
+  const n = t.split(/\s+/).filter(Boolean).length;
+  check(">= 90 words on page 1", n >= 90, `${n} words, ${Math.round(performance.now() - t0)} ms`);
+  const [p1] = await pageText(res.bytes);
+  check("text layer comes back out of pdf.js", count(p1, "Toplam") === 1, p1.slice(0, 80));
+
+  const again = await ocrPdf(res.bytes, { pages: "all" });
+  const [q1] = await pageText(again.bytes);
+  check("second run replaces the layer", again.replaced === 2 && count(q1, "Toplam") === 1, `replaced ${again.replaced}, Toplam x${count(q1, "Toplam")}`);
+
+  const ws = ocrWorkers();
+  check("every OCR worker terminated", ws.length === 2 && ws.every((w) => w.stopped), `${ws.length} made, ${ws.filter((w) => w.stopped).length} stopped`);
+} catch (e) {
+  failed++;
+  log("FAIL " + (e && e.stack || e));
+}
+await new Promise((r) => setTimeout(r, 300));
+check("no unhandled rejections", !unhandled.length, unhandled.join("; "));
+log(failed ? `\n${failed} failed` : "\nall ok");
+window.__ocrBrowser = { failed, log: out };
+</script>
+</body>
+</html>

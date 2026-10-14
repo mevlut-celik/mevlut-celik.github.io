@@ -195,9 +195,10 @@ export async function permissionState() {
 // -> { version, mode, library, card: "var"|"yok"|"deneme"|"hata:…", java, os,
 //      tokens: [{ slot, label }], pinpad? }
 //    tokens: the cards present; with several, the page names one (slot) so a
-//    PIN never goes to a card the user did not pick. pinpad: true when the
-//    token takes the PIN on the reader's own keypad; the dialog then sends an
-//    empty PIN instead of asking for one.
+//    PIN never goes to a card the user did not pick. pinpad (optional): true
+//    when the token takes the PIN on the reader's own keypad; the dialog then
+//    sends an empty PIN instead of asking for one. A bridge that does not
+//    report it leaves the choice to the user ("Okuyucumun tuş takımı var").
 export async function status() {
   return call("GET", "/v1/durum", null, { timeout: 60000, label: "Kart aranıyor…" });
 }

@@ -186,21 +186,35 @@ async function run({ langs, dpi, mode, selected, current, signal, onProgress, on
   // (as the banner does), not by the built bytes, where a watermark, page
   // numbers or a text box would count as the page's own text. The built
   // bytes are still what gets recognised, so the edits are kept.
+  // A cancel, or the editor closing (Back, lock, sign-out) or opening
+  // another document, ends the run as a cancel.
+  const gone = () => signal.aborted || !E.open || E.doc !== doc;
   if (mode === "auto" && !isPristine(E.state)) {
     pages = [];
     const list = E.state.pages;
     for (let i = 0; i < list.length; i++) {
-      if (signal.aborted) throw abortError();
+      // a closed editor drops its sources and destroys their pdf.js
+      // documents: later pages would look blank ("no scanned pages")
+      if (gone()) throw abortError();
       onProgress(0, 1, `Sayfalar inceleniyor ${i + 1}/${list.length}`);
       const src = list[i].src && E.sources.get(list[i].src);   // a blank page has no source
-      if (src && src.pdf && await pageNeedsOcr(src.pdf, list[i].index)) pages.push(i);
+      let scanned = false;
+      try {
+        scanned = !!(src && src.pdf && await pageNeedsOcr(src.pdf, list[i].index));
+      } catch (err) {
+        // the document was destroyed while this page was read
+        if (gone()) throw abortError();
+        throw err;
+      }
+      if (scanned) pages.push(i);
     }
+    if (gone()) throw abortError();
     if (!pages.length) return { empty: true };
   }
   const res = await ocrPdf(bytes, { pages, langs, dpi, signal, onProgress });
   // ocrPdf checks the signal only between pages and before saving the PDF:
   // a cancel during the save, or a document that is gone, ends here
-  if (signal.aborted || !E.open || E.doc !== doc) throw abortError();
+  if (gone()) throw abortError();
   if (!res.pages.length) return { empty: true };
   onCommit();
   onProgress(1, 1, "Yeni sürüm kaydediliyor");

@@ -487,7 +487,8 @@ export async function openDigitalSign(saved) {
     audit: true, source: lastSource(),
     // redraw: draws the card box of the dialog showing it now (null once the signing ends)
     // tokens/slot: the cards the bridge sees, and the one the PIN goes to
-    card: { stage: "idle", certs: [], selected: null, pin: "", status: null, error: null, tokens: [], slot: null, redraw: null },
+    // pinpad: the user said the reader has its own keypad (remembered)
+    card: { stage: "idle", certs: [], selected: null, pin: "", status: null, error: null, tokens: [], slot: null, redraw: null, pinpad: lastPinpad() },
   };
   const existing = (E.verification || []).length;
   const pristine = isPristine(E.state);
@@ -533,10 +534,17 @@ export async function openDigitalSign(saved) {
   const sourceSeg = h("div.segment", { role: "radiogroup", "aria-label": "İmza aracı" });
   const sourceBody = h("div");
   const cardBox = h("div.cardbox");
+  // The card box is rebuilt on every redraw, and a live region that is
+  // inserted with its text already in it is usually not read out. Its stage
+  // changes are therefore spoken from this one, which lives as long as the
+  // dialog and only has its text changed.
+  const cardLive = h("p.visually-hidden", { role: "status" });
+  const say = (text) => { if (cardLive.textContent !== text) cardLive.textContent = text; };
   const drawSource = () => {
     sourceBody.textContent = "";
     sourceBody.append(st.source === "card" ? cardBox : idBox);
     if (st.source === "card") drawCard();
+    else say("");
     syncSub();
   };
   for (const [k, label] of [["browser", "Bu tarayıcıdaki kimlik"], ["card", "e-İmza kartı"]]) {
@@ -550,7 +558,7 @@ export async function openDigitalSign(saved) {
   // Requests to the card finish later; they draw into whichever dialog
   // shows the card by then (a new one after the field is drawn), not the
   // one that started them.
-  const drawCard = () => { drawCardBox(cardBox, st.card); syncSub(); };
+  const drawCard = () => { drawCardBox(cardBox, st.card); say(cardStageText(st.card)); syncSub(); };
   st.card.redraw = drawCard;
   drawSource();
 
@@ -603,6 +611,7 @@ export async function openDigitalSign(saved) {
   body.append(
     h("div.field", {}, h("span.field__label", { text: "İmza aracı" }), sourceSeg),
     sourceBody,
+    cardLive,
     h("label.field", {}, h("span.field__label", { text: "İmza nedeni" }), reasonSel, reasonCustom),
     h("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" } },
       h("label.field", {}, h("span.field__label", { text: "Konum" }), loc),
@@ -662,7 +671,7 @@ export async function openDigitalSign(saved) {
   let who;
   if (st.source === "card") {
     const c = st.card.selected;
-    who = { signer: kart.cardSigner(c, st.card.pin), info: c.info, name: c.info.name, card: true };
+    who = { signer: kart.cardSigner(c, st.card.pin), info: c.info, name: c.info.name, card: true, keypad: usesKeypad(st.card) };
   } else {
     who = { identity, info: await describeIdentity(identity), name: user.name, card: false };
   }
@@ -680,10 +689,31 @@ function endCardSession(c) {
   kart.closeRelay();
 }
 
-// Signing needs the PIN typed here, unless the reader takes it on its own
-// keypad (the bridge reports such a token as pinpad).
+// Whether the reader takes the PIN on its own keypad. SunPKCS11 then ignores
+// a PIN sent to it and asks the reader instead, so none is asked for here
+// and an empty one is sent. A bridge that reads the token's flags says so
+// (status.pinpad); otherwise the user does, with "Okuyucumun tuş takımı
+// var". The test file (p12) always needs a typed password.
+function usesKeypad(c) {
+  const s = c.status || {};
+  if (s.mode === "p12") return false;
+  return typeof s.pinpad === "boolean" ? s.pinpad : !!c.pinpad;
+}
+
+// Signing needs the PIN typed here, unless the reader takes it on its keypad.
 function cardPinReady(c) {
-  return !!c.pin || !!(c.status && c.status.pinpad);
+  return !!c.pin || usesKeypad(c);
+}
+
+// What a screen reader hears when the card box moves to another stage.
+// Errors are not repeated here: the box shows them with role=alert.
+function cardStageText(c) {
+  const keypad = usesKeypad(c);
+  if (c.stage === "connecting") return "Köprüye bağlanılıyor…" + (kart.isSafari() ? " Açılan küçük köprü penceresini kapatma." : "");
+  if (c.stage === "pin" && !c.error) return keypad ? "Köprü bağlandı. Sertifikaları göster'e bas; PIN'i okuyucunun tuş takımından gireceksin." : "Köprü bağlandı. Kart PIN'ini gir.";
+  if (c.stage === "loading") return keypad ? "Kart okunuyor… PIN'i okuyucunun tuş takımından gir." : "Kart okunuyor…";
+  if (c.stage === "certs") return `Kartta ${c.certs.length} sertifika bulundu. İmzalayacak sertifikayı seç.`;
+  return "";
 }
 
 // The editor's field picker settles when a field is drawn or the tool
@@ -709,6 +739,11 @@ function checkSegment(seg, btn) {
 const SOURCE_KEY = "muhur.signSource";
 function lastSource() { try { return localStorage.getItem(SOURCE_KEY) || "browser"; } catch (e) { return "browser"; } }
 function saveSource(v) { try { localStorage.setItem(SOURCE_KEY, v); } catch (e) { /* storage blocked */ } }
+// "Okuyucumun tuş takımı var" is a fact about this computer's reader: kept
+// for the next signing, so a keypad user does not tick it every time
+const PINPAD_KEY = "muhur.cardPinpad";
+function lastPinpad() { try { return localStorage.getItem(PINPAD_KEY) === "1"; } catch (e) { return false; } }
+function savePinpad(on) { try { if (on) localStorage.setItem(PINPAD_KEY, "1"); else localStorage.removeItem(PINPAD_KEY); } catch (e) { /* storage blocked */ } }
 
 // The card box has one state object (c) for the whole signing, which
 // outlives the dialog: picking the field closes the dialog and opens a new
@@ -766,9 +801,10 @@ function drawCardBox(box, c) {
       h("div.pactions", {},
         h("button.btn.btn--sm.btn--primary", { type: "button", disabled: connecting, html: icon(connecting ? "loader-circle" : "plug-zap", connecting ? "spin" : "") + (connecting ? "Bağlanıyor…" : "Kartı bağla"), onclick: connect }),
         h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("info") + "Kurulum", onclick: () => { c.stage = "error"; c.error = null; repaint(); } })));
+    // (spoken from the dialog's live region; the bridge's status check does
+    // not log in, so a keypad reader asks for nothing at this stage)
     if (connecting) {
-      card.append(h("p.fineprint", { role: "status", text: (kart.isSafari() ? "Açılan küçük köprü penceresini kapatma." : "Tarayıcı 'bu cihazdaki uygulamalara erişim' izni isterse İzin ver'i seç.") +
-        " Okuyucunun tuş takımı PIN isterse PIN'i okuyucudan gir." }));
+      card.append(h("p.fineprint", { text: kart.isSafari() ? "Açılan küçük köprü penceresini kapatma." : "Tarayıcı 'bu cihazdaki uygulamalara erişim' izni isterse İzin ver'i seç." }));
     }
     return;
   }
@@ -781,8 +817,8 @@ function drawCardBox(box, c) {
   }
 
   const s = c.status || {};
-  const pinpad = !!s.pinpad;
-  card.append(h("div.fineprint", { html: icon("circle-check", "icon--sm") + ` Köprü ${esc(s.version || "")} · ${s.mode === "p12" ? "deneme modu" : "kart takılı"}${pinpad ? " · tuş takımlı okuyucu" : ""} · Java ${esc(s.java || "?")}` }));
+  const keypad = usesKeypad(c);
+  card.append(h("div.fineprint", { html: icon("circle-check", "icon--sm") + ` Köprü ${esc(s.version || "")} · ${s.mode === "p12" ? "deneme modu" : "kart takılı"}${keypad ? " · tuş takımlı okuyucu" : ""} · Java ${esc(s.java || "?")}` }));
 
   if (c.stage === "pin" || c.stage === "loading") {
     const loading = c.stage === "loading";
@@ -792,18 +828,18 @@ function drawCardBox(box, c) {
     const chosen = tokens.find((t) => t.slot === c.slot);
     const errId = uid("kart-err");
     const showError = c.error && !loading;
-    // A pinpad reader takes the PIN on its own keypad: nothing to type here.
+    // A keypad reader takes the PIN on its own keypad: nothing to type here.
     // Otherwise the field is not a site password: keep password managers
     // from saving the PIN or filling the account password into it. The PIN
     // is never written back into the field.
-    const pin = pinpad ? null : h("input.input", {
+    const pin = keypad ? null : h("input.input", {
       type: "password", inputmode: "numeric", disabled: loading,
       autocomplete: "one-time-code", "data-1p-ignore": true, "data-lpignore": "true", "data-bwignore": true, "data-form-type": "other",
       placeholder: "Kart PIN'i", "aria-label": "Kart PIN'i", "aria-describedby": showError ? errId : null,
     });
     const go = async () => {
       if (c.stage !== "pin") return;   // a check is already running
-      if (several && c.slot == null) { toast("Önce PIN'in gideceği kartı seç.", "warn"); return; }
+      if (several && c.slot == null) { toast(keypad ? "Önce kullanılacak kartı seç." : "Önce PIN'in gideceği kartı seç.", "warn"); return; }
       if (pin && !pin.value) { pin.focus(); return; }
       const ready = relayReady();
       c.pin = pin ? pin.value : "";
@@ -817,10 +853,18 @@ function drawCardBox(box, c) {
         c.selected = c.certs.find((x) => x.signing) || c.certs[0];
         c.stage = "certs";
       } catch (err) {
+        const typed = !!c.pin;
         c.pin = "";
         // the bridge or the card is gone, or another card was plugged in: connect again
         c.stage = ["KOPRU_YOK", "IZIN", "POPUP", "KART_YOK", "KART_SEC"].includes(err.code) ? "error" : "pin";
         c.error = { code: err.code, message: err.message };
+        // No PIN was sent and the card would not log in without one: the
+        // reader has no keypad after all. Bring the PIN field back.
+        if (err.code === "PIN_GEREKLI" && !typed && c.pinpad) {
+          c.pinpad = false;
+          savePinpad(false);
+          c.error.message = "Bu okuyucu PIN'i kendi tuş takımından almıyor; PIN'i buraya yaz.";
+        }
       }
       repaint();
     };
@@ -836,7 +880,7 @@ function drawCardBox(box, c) {
     const pinLabel = h("span.field__label", { text: several && chosen ? "PIN · " + tokenName(chosen) : "PIN" });
     if (several) {
       // no redraw on a choice: that would throw away a PIN already typed
-      const which = h("div.segment.segment--sm", { role: "radiogroup", "aria-label": "PIN'in gideceği kart" });
+      const which = h("div.segment.segment--sm", { role: "radiogroup", "aria-label": keypad ? "Kullanılacak kart" : "PIN'in gideceği kart" });
       for (const t of tokens) {
         const on = t.slot === c.slot;
         which.append(h("button.segment__btn", { type: "button", role: "radio", "aria-checked": String(on), disabled: loading, class: "segment__btn" + (on ? " is-active" : ""), text: tokenName(t), onclick: (e) => {
@@ -846,15 +890,32 @@ function drawCardBox(box, c) {
           if (pin) pin.focus();
         } }));
       }
-      card.append(h("div.field", {}, h("span.field__label", { text: "Birden fazla kart takılı: PIN'in gideceği kartı seç" }), which));
+      card.append(h("div.field", {}, h("span.field__label", { text: keypad ? "Birden fazla kart takılı: kullanılacak kartı seç" : "Birden fazla kart takılı: PIN'in gideceği kartı seç" }), which));
     }
     if (pin) {
       card.append(h("label.field", {}, pinLabel, pin,
         h("span.field__hint", { text: "AKİS kartlar art arda 3 yanlış PIN'de kilitlenir. PIN tarayıcıda saklanmaz." })));
     } else {
-      card.append(h("p.fineprint", { text: "Bu okuyucu PIN'i kendi tuş takımından alır; PIN bu sayfaya yazılmaz. Sertifikalar okunurken okuyucu PIN isteyecek." }));
+      card.append(h("p.fineprint", { text: "PIN bu sayfaya yazılmaz. Okuyucu PIN'i sertifikalar okunurken ve imza atılırken ister; ikisinde de okuyucunun tuş takımından gir." }));
     }
-    if (loading) card.append(h("p.fineprint", { role: "status", text: pinpad ? "Kart okunuyor… PIN'i okuyucunun tuş takımından gir." : "Kart okunuyor… Okuyucunun tuş takımı PIN isterse PIN'i okuyucudan gir." }));
+    // A bridge that reads the token's flags settles this itself; otherwise
+    // the user says so. With a keypad SunPKCS11 ignores a typed PIN and asks
+    // the reader anyway, so a PIN typed here would be thrown away.
+    if (typeof s.pinpad !== "boolean" && s.mode !== "p12") {
+      const cb = h("input", { type: "checkbox", checked: !!c.pinpad, disabled: loading, dataset: { pinpad: "" }, onchange: () => {
+        c.pinpad = cb.checked;
+        savePinpad(c.pinpad);
+        c.error = null;
+        repaint();
+        // the box was rebuilt: when the PIN field went away, keep the keyboard
+        // on the box; a PIN field that came back takes the focus itself
+        const again = box.querySelector("input[data-pinpad]");
+        if (again && c.pinpad) again.focus();
+      } });
+      cb.addEventListener("keydown", (e) => e.stopPropagation());
+      card.append(h("label.check", {}, cb, h("span", { text: "Okuyucumun tuş takımı var (PIN'i okuyucudan gireceğim)" })));
+    }
+    if (loading) card.append(h("p.fineprint", { text: keypad ? "Kart okunuyor… PIN'i okuyucunun tuş takımından gir." : "Kart okunuyor… Okuyucunun tuş takımı PIN isterse PIN'i okuyucudan gir." }));
     card.append(h("div.pactions", {}, h("button.btn.btn--sm.btn--primary", { type: "button", disabled: loading, html: icon(loading ? "loader-circle" : "key-round", loading ? "spin" : "") + (loading ? "Kart okunuyor…" : "Sertifikaları göster"), onclick: go })));
     if (pin && !loading) setTimeout(() => { if (pin.isConnected) { pin.focus(); pin.select(); } }, 30);
     return;
@@ -889,7 +950,7 @@ function drawCardBox(box, c) {
     choose(c.certs[(at + step + c.certs.length) % c.certs.length]);
   });
   card.append(h("span.field__label", { text: "İmzalayacak sertifika" }), list,
-    h("div.pactions", {}, h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("key-round") + "PIN'i değiştir", onclick: () => { c.pin = ""; c.certs = []; c.selected = null; c.stage = "pin"; c.error = null; repaint(); } })));
+    h("div.pactions", {}, h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("key-round") + (usesKeypad(c) ? "Kartı yeniden oku" : "PIN'i değiştir"), onclick: () => { c.pin = ""; c.certs = []; c.selected = null; c.stage = "pin"; c.error = null; repaint(); } })));
 }
 
 function setupGuide() {
@@ -958,7 +1019,8 @@ async function performSign(st, who, user, { incremental }) {
         };
       }
     }
-    b.set(who.card ? "Kart imzalıyor… (pinpad okuyucuda PIN'i okuyucudan gir)" : "İmza oluşturuluyor…");
+    // the bridge logs out after every request: a keypad reader asks again now
+    b.set(!who.card ? "İmza oluşturuluyor…" : who.keypad ? "Kart imzalıyor… PIN'i okuyucunun tuş takımından gir." : "Kart imzalıyor… (tuş takımlı okuyucuda PIN'i okuyucudan gir)");
     const signed = await signPdf(base, {
       identity: who.identity, signer: who.signer, name: who.name, reason: st.reason, location: st.location, contact: st.contact,
       page: Math.max(0, page), rect, appearance, date: now,

@@ -101,11 +101,20 @@ export async function createOcr({ langs = "tur+eng", onProgress, signal } = {}) 
       else current = err;
     },
   });
+  // The Web Worker is stopped directly, never through tesseract's own
+  // terminate(): that one drops its reference, and a page cancelled while
+  // its image is still being loaded then posts to null — an uncaught
+  // rejection inside tesseract.js (fatal in Node). Posting to a stopped
+  // worker does nothing. Node has no global Worker to catch, so there the
+  // worker comes from the handle (`.worker`) once creation has resolved.
   let worker = null;
+  let dead = false;
+  const stop = (w) => { if (w.worker) w.worker.terminate(); else w.terminate(); };
   const kill = () => {
+    dead = true;
     if (raw) raw.terminate();
-    if (worker) worker.terminate();
-    else pending.then((w) => w.terminate(), () => null);
+    else if (worker) stop(worker);
+    else pending.then(stop, () => null);
   };
   try {
     worker = await abortable(Promise.race([pending, failed]), signal, kill);
@@ -120,6 +129,8 @@ export async function createOcr({ langs = "tur+eng", onProgress, signal } = {}) 
   }
   return {
     async recognize(image, width, height) {
+      // a stopped worker never answers: fail instead of waiting forever
+      if (dead) throw signal && signal.aborted ? abortError() : new Error("OCR motoru kapatıldı.");
       current = null;
       const { data } = await abortable(worker.recognize(image, {}, { text: true, blocks: true }), signal, kill);
       if (current) throw asError(current);
@@ -673,7 +684,8 @@ function writeTextLayer(doc, page, ocrPage, { scale, box, rotation, font, charse
 // -> { bytes, pages: number[] (0-based, OCRed), words: number (written),
 //      text: string[], covered: number (words skipped: already text on the
 //      page), replaced: number (pages whose earlier Mühür OCR layer was
-//      replaced) }
+//      replaced) }. pages is empty, and bytes are the input, when there was
+//      nothing to recognise or everything recognised was already text.
 export async function ocrPdf(bytes, opts = {}) {
   const { langs = "tur+eng", dpi = 300, onProgress, signal } = opts;
   const P = await pdflib();
@@ -743,6 +755,11 @@ export async function ocrPdf(bytes, opts = {}) {
       report(0, `Sayfa ${index + 1} tamamlandı`);
     }
     check();
+    // Every word read is already text on its page (a born-digital page sent
+    // through "Bu sayfa" or "Tüm sayfalar") and no old layer was replaced:
+    // the document would come back unchanged, so it is not rewritten and
+    // no page counts as OCRed — the caller then saves no new version.
+    if (!words && !replaced && skipped) return { bytes, pages: [], words: 0, text: [], covered: skipped, replaced: 0 };
     if (onProgress) onProgress(total, total, "PDF kaydediliyor");
     doc.setProducer("Mühür PDF (pdf-lib, tesseract.js)");
     const out = await doc.save({ useObjectStreams: false });
