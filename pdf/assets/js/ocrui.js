@@ -9,11 +9,11 @@
 
 import { E } from "./ed.js";
 import * as store from "./store.js";
-import { $, h, icon, toast, dialog, confirmDialog } from "./ui.js";
+import { $, h, icon, toast, dialog, confirmDialog, busy } from "./ui.js";
 import { pdflib } from "./libs.js";
 import { isPristine } from "./pdfwork.js";
 import { addVersion } from "./docs.js";
-import { ocrPdf, scannedPages, LANGS } from "./ocr.js";
+import { ocrPdf, scannedPages, pageNeedsOcr, LANGS } from "./ocr.js";
 
 const PREF = "muhur.ocr";
 
@@ -24,14 +24,17 @@ function savePrefs(p) {
   try { localStorage.setItem(PREF, JSON.stringify({ langs: p.langs, dpi: p.dpi })); } catch (e) { /* storage blocked */ }
 }
 
-function segment(options, value, onPick) {
-  const seg = h("div.segment.segment--sm", { role: "radiogroup" });
+// A row of choices exposed as a radio group: aria-checked must be the
+// strings "true"/"false" (h() drops false and writes true as "").
+function segment(name, options, value, onPick) {
+  const seg = h("div.segment.segment--sm", { role: "radiogroup", "aria-label": name });
   for (const [v, label] of options) {
+    const on = String(v) === String(value);
     seg.append(h("button.segment__btn", {
-      type: "button", role: "radio", class: "segment__btn" + (String(v) === String(value) ? " is-active" : ""),
-      "aria-checked": String(v) === String(value), text: label,
+      type: "button", role: "radio", class: "segment__btn" + (on ? " is-active" : ""),
+      "aria-checked": String(on), text: label,
       onclick: (e) => {
-        for (const b of seg.children) { b.classList.toggle("is-active", b === e.currentTarget); b.setAttribute("aria-checked", b === e.currentTarget); }
+        for (const b of seg.children) { b.classList.toggle("is-active", b === e.currentTarget); b.setAttribute("aria-checked", String(b === e.currentTarget)); }
         onPick(v);
       },
     }));
@@ -53,13 +56,16 @@ export async function openOcrDialog(preset) {
   if (sel.length > 1) scopes.push(["selected", `Seçili ${sel.length} sayfa`]);
 
   const bar = h("span.progress__bar");
-  const label = h("span.progress__label", { text: "Hazırlanıyor…" });
-  const progress = h("div.progress", { hidden: true }, h("span.progress__track", {}, bar), label);
+  const track = h("span.progress__track", { role: "progressbar", "aria-label": "OCR ilerlemesi", "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": "0" }, bar);
+  // phase changes ("sayfa 3", "PDF kaydediliyor") are read out; the bar is not
+  const label = h("span.progress__label", { role: "status", text: "Hazırlanıyor…" });
+  const progress = h("div.progress", { hidden: true }, track, label);
+  const setLabel = (text) => { if (label.textContent !== text) label.textContent = text; };
   const form = h("div.form",
     {},
-    h("div.field", {}, h("span.field__label", { text: "Belgenin dili" }), segment(Object.entries(LANGS), p.langs, (v) => { p.langs = v; })),
-    h("div.field", {}, h("span.field__label", { text: "Hangi sayfalar" }), segment(scopes, scope.mode, (v) => { scope.mode = v; })),
-    h("div.field", {}, h("span.field__label", { text: "Kalite" }), segment([[200, "Hızlı · 200 dpi"], [300, "Dengeli · 300 dpi"]], p.dpi, (v) => { p.dpi = Number(v); }),
+    h("div.field", {}, h("span.field__label", { text: "Belgenin dili" }), segment("Belgenin dili", Object.entries(LANGS), p.langs, (v) => { p.langs = v; })),
+    h("div.field", {}, h("span.field__label", { text: "Hangi sayfalar" }), segment("Hangi sayfalar", scopes, scope.mode, (v) => { scope.mode = v; })),
+    h("div.field", {}, h("span.field__label", { text: "Kalite" }), segment("Kalite", [[200, "Hızlı · 200 dpi"], [300, "Dengeli · 300 dpi"]], p.dpi, (v) => { p.dpi = Number(v); }),
       h("span.field__hint", { text: "Küçük yazılı ya da soluk taramalarda 300 dpi daha iyi sonuç verir; sayfa başına birkaç saniye sürer." })),
   );
   const notes = h("div", { style: { display: "grid", gap: "8px" } },
@@ -68,8 +74,14 @@ export async function openOcrDialog(preset) {
   if (signed) notes.append(h("div.tip.tip--danger", { html: icon("shield-x") + `<span>Belgede ${signed} dijital imza var. OCR dosyayı değiştirdiği için bu imzalar geçersiz olur.</span>` }));
   const body = h("div", { style: { display: "grid", gap: "16px" } }, form, notes, progress);
 
+  // Until the result is written, cancel (İptal, Esc, × or a click outside)
+  // stops the run and nothing is saved. Writing the new version is the
+  // commit point: from there the save is not interrupted, the dialog stays
+  // open until it is done, and the editor is held busy if it was closed anyway.
   let controller = null;
   let running = false;
+  let committing = false;
+  let hold = null;
   const d = dialog({
     title: "Metni tanı (OCR)",
     sub: "Taranmış ya da fotoğrafı çekilmiş sayfaları aranabilir ve seçilebilir metne çevirir.",
@@ -78,7 +90,10 @@ export async function openOcrDialog(preset) {
     dismissable: true,
     actions: [
       { label: "Vazgeç", id: "cancel", onClick: ({ close }) => {
-        if (running && controller) { controller.abort(); label.textContent = "İptal ediliyor…"; return false; }
+        if (running && controller) {
+          if (!committing) { controller.abort(); setLabel("İptal ediliyor…"); }
+          return false;
+        }
         close(null);
         return false;
       } },
@@ -88,17 +103,30 @@ export async function openOcrDialog(preset) {
         running = true;
         savePrefs(p);
         controller = new AbortController();
+        const { signal } = controller;
         form.style.opacity = "0.5";
         form.style.pointerEvents = "none";
         progress.hidden = false;
         el.querySelector('[data-action="start"]').disabled = true;
         el.querySelector('[data-action="cancel"]').textContent = "İptal";
+        const onCommit = () => {
+          committing = true;
+          el.querySelector('[data-action="cancel"]').disabled = true;
+          const x = el.querySelector(".dialog__close");
+          if (x) x.disabled = true;
+        };
         try {
-          const result = await run({ ...p, mode: scope.mode, selected: sel, current: curIndex, signal: controller.signal, onProgress: (done, total, text) => {
-            bar.style.width = (total ? Math.min(100, (done / total) * 100) : 0).toFixed(1) + "%";
-            label.textContent = text || "";
+          const result = await run({ ...p, mode: scope.mode, selected: sel, current: curIndex, signal, onCommit, onProgress: (done, total, text) => {
+            // after a cancel, keep "İptal ediliyor…" until the run stops
+            if (signal.aborted && !committing) return;
+            const pct = total ? Math.min(100, (done / total) * 100) : 0;
+            bar.style.width = pct.toFixed(1) + "%";
+            track.setAttribute("aria-valuenow", String(Math.round(pct)));
+            setLabel(text || "");
           } });
-          close(result);
+          running = false;
+          close(true);
+          finish(result);
         } catch (err) {
           running = false;
           form.style.opacity = "";
@@ -108,39 +136,86 @@ export async function openOcrDialog(preset) {
           el.querySelector('[data-action="cancel"]').textContent = "Vazgeç";
           if (err && err.name === "AbortError") { toast("OCR iptal edildi.", "warn"); close(null); return false; }
           console.error(err);
+          if (committing) close(null);
           toast("OCR tamamlanamadı: " + (err.message || err), "error");
+        } finally {
+          committing = false;
+          if (hold) { hold.done(); hold = null; }
         }
         return false;
       } },
     ],
   });
+  // While the version is written, Esc and a click on the backdrop are held
+  // back (capture phase, ahead of the dialog's own handlers). If the browser
+  // closes the dialog regardless (Chrome lets a repeated Esc through), the
+  // page is covered until the save is done, so no edit is made on a
+  // document that is about to be reloaded.
+  const guard = (e) => {
+    if (!committing || e.target !== d.el) return;
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  window.addEventListener("cancel", guard, true);
+  window.addEventListener("click", guard, true);
+  d.el.addEventListener("close", () => {
+    if (committing && running && !hold) hold = busy("Yeni sürüm kaydediliyor…");
+  });
   const result = await d.result;
-  // closed with Esc or the × while recognising: stop the run as well
-  if (result == null && running && controller) controller.abort();
-  if (result) finish(result);
+  window.removeEventListener("cancel", guard, true);
+  window.removeEventListener("click", guard, true);
+  // closed with Esc, the × or a click outside while recognising: stop the run as well
+  if (result == null && running && controller && !committing) controller.abort();
 }
 
-async function run({ langs, dpi, mode, selected, current, signal, onProgress }) {
+function abortError() {
+  const e = new Error("OCR iptal edildi.");
+  e.name = "AbortError";
+  return e;
+}
+
+async function run({ langs, dpi, mode, selected, current, signal, onProgress, onCommit }) {
   await pdflib();
+  // the document this run belongs to; the editor may close or move on
+  const doc = E.doc;
   const bytes = isPristine(E.state) ? E.sources.get("main").bytes.slice() : await E.buildBytes({ force: true });
   let pages = mode;
   if (mode === "current") pages = [current];
   if (mode === "selected") pages = selected.map((pg) => E.pageIndex(pg.id)).sort((a, b) => a - b);
+  // "Taranmış sayfalar" on an edited document: judge each page by its source
+  // (as the banner does), not by the built bytes, where a watermark, page
+  // numbers or a text box would count as the page's own text. The built
+  // bytes are still what gets recognised, so the edits are kept.
+  if (mode === "auto" && !isPristine(E.state)) {
+    pages = [];
+    const list = E.state.pages;
+    for (let i = 0; i < list.length; i++) {
+      if (signal.aborted) throw abortError();
+      onProgress(0, 1, `Sayfalar inceleniyor ${i + 1}/${list.length}`);
+      const src = list[i].src && E.sources.get(list[i].src);   // a blank page has no source
+      if (src && src.pdf && await pageNeedsOcr(src.pdf, list[i].index)) pages.push(i);
+    }
+    if (!pages.length) return { empty: true };
+  }
   const res = await ocrPdf(bytes, { pages, langs, dpi, signal, onProgress });
+  // ocrPdf checks the signal only between pages and before saving the PDF:
+  // a cancel during the save, or a document that is gone, ends here
+  if (signal.aborted || !E.open || E.doc !== doc) throw abortError();
   if (!res.pages.length) return { empty: true };
+  onCommit();
   onProgress(1, 1, "Yeni sürüm kaydediliyor");
-  await addVersion(E.doc, res.bytes, `OCR uygulandı · ${res.pages.length} sayfa`);
-  await store.deleteState(E.doc.id);
-  E.doc.ocr = { at: Date.now(), pages: res.pages.length, words: res.words };
-  await store.putDoc(E.doc);
-  await E.reloadVersion();
+  await addVersion(doc, res.bytes, `OCR uygulandı · ${res.pages.length} sayfa`);
+  await store.deleteState(doc.id);
+  doc.ocr = { at: Date.now(), pages: res.pages.length, words: res.words };
+  await store.putDoc(doc);
+  if (E.open && E.doc === doc) await E.reloadVersion();
   return res;
 }
 
 function finish(res) {
   hideBanner();
   if (res.empty) {
-    toast("Taranmış sayfa bulunamadı: sayfalar zaten seçilebilir metin içeriyor. Yine de tanımak için 'Tüm sayfalar'ı seç.", "info", { timeout: 7000 });
+    toast("Taranmış sayfa bulunamadı: sayfalar zaten seçilebilir metin içeriyor. Önceki bir OCR'ı başka bir dille yenilemek için 'Tüm sayfalar'ı seç; Mühür'ün eski OCR katmanı değiştirilir.", "info", { timeout: 8000 });
     return;
   }
   if (!res.words) {

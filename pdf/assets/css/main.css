@@ -400,8 +400,12 @@ kbd {
   border-radius: var(--radius-md);
   background: var(--surface-3);
 }
+/* min-height, not height: on a phone a long label ("Bu tarayıcıdaki kimlik",
+   "Taranmış sayfalar") wraps to two lines and must stay inside its pill */
 .segment__btn {
-  height: 32px;
+  min-height: 32px;
+  padding: 4px 6px;
+  line-height: 1.2;
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -412,7 +416,7 @@ kbd {
 }
 .segment__btn:hover { color: var(--ink); }
 .segment__btn.is-active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm); }
-.segment--sm .segment__btn { height: 26px; font-size: 12px; }
+.segment--sm .segment__btn { min-height: 26px; font-size: 12px; }
 
 .swatches { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .swatch {
@@ -879,10 +883,10 @@ kbd {
 .organizer__head { position: sticky; top: -22px; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-md); flex-wrap: wrap; margin: -22px -32px 18px; padding: 18px 32px 14px; background: color-mix(in srgb, var(--desk) 92%, transparent); backdrop-filter: blur(8px); }
 .organizer__actions { display: flex; flex-wrap: wrap; gap: 6px; }
 
+/* The signature and OCR banners stick together in one wrapper: each takes
+   its own height (it grows when the text wraps), so neither covers the other. */
+.stage__banners { position: sticky; top: 0; z-index: 8; }
 .banner {
-  position: sticky;
-  top: 0;
-  z-index: 8;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -896,7 +900,6 @@ kbd {
 .banner--warn .icon { color: var(--warn); }
 .banner--danger .icon { color: var(--danger); }
 .banner--info .icon { color: var(--accent); }
-#sig-banner:not([hidden]) + #ocr-banner { top: 41px; }
 .banner__text { flex: 1; min-width: 0; }
 .banner__text strong { font-weight: 650; }
 
@@ -1481,6 +1484,20 @@ select.fw { appearance: auto; }
 .idcard { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--hairline); border-radius: var(--radius-md); background: var(--surface-2); }
 .idcard__head { display: flex; gap: 10px; align-items: center; }
 .idcard__seal { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--seal-soft); color: var(--seal); flex: none; }
+
+.cardbox .idcard { gap: 12px; }
+.cardbox .fineprint .icon { vertical-align: -3px; color: var(--ok); }
+.steps { display: grid; gap: 10px; margin: 0; padding-left: 20px; list-style: decimal; font-size: 13px; line-height: 1.5; color: var(--ink); }
+.steps li::marker { color: var(--ink-mute); font-weight: 600; }
+.steps a { color: var(--accent); }
+.cmd { display: flex; align-items: center; gap: 6px; margin: 6px 0 4px; padding: 6px 6px 6px 10px; border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); background: var(--surface); }
+.cmd code { flex: 1; min-width: 0; overflow-x: auto; font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+.certlist { display: grid; gap: 6px; }
+.certopt { display: grid; gap: 2px; padding: 9px 12px; border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; }
+.certopt:hover { border-color: var(--ink-faint); }
+.certopt.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.certopt__name { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 13.5px; }
+.certopt__sub { font-size: 12px; color: var(--ink-mute); }
 
 .busy {
   position: fixed;

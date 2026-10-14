@@ -190,7 +190,7 @@
   <section class="view view--editor" data-view-name="editor" hidden>
     <header class="ebar">
       <div class="ebar__left">
-        <button class="ibtn" type="button" data-action="back" data-tip="Belgelere dön"><svg class="icon"><use href="./assets/img/icons.svg#i-arrow-left"/></svg></button>
+        <button class="ibtn" type="button" data-action="back" data-tip="Belgelere dön" aria-label="Belgelere dön"><svg class="icon"><use href="./assets/img/icons.svg#i-arrow-left"/></svg></button>
         <button class="ibtn ibtn--pages" type="button" data-action="toggle-left" aria-label="Sayfalar"><svg class="icon"><use href="./assets/img/icons.svg#i-panel-left"/></svg></button>
         <div class="ebar__doc">
           <input class="ebar__name" id="doc-name" type="text" spellcheck="false" aria-label="Belge adı">
@@ -199,12 +199,12 @@
       </div>
 
       <div class="ebar__center">
-        <button class="ibtn" type="button" data-action="undo" data-tip="Geri al · Ctrl+Z" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-undo-2"/></svg></button>
-        <button class="ibtn" type="button" data-action="redo" data-tip="Yinele · Ctrl+Shift+Z" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-redo-2"/></svg></button>
+        <button class="ibtn" type="button" data-action="undo" data-tip="Geri al · Ctrl+Z" aria-label="Geri al" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-undo-2"/></svg></button>
+        <button class="ibtn" type="button" data-action="redo" data-tip="Yinele · Ctrl+Shift+Z" aria-label="Yinele" disabled><svg class="icon"><use href="./assets/img/icons.svg#i-redo-2"/></svg></button>
         <span class="sep" aria-hidden="true"></span>
-        <button class="ibtn" type="button" data-action="zoom-out" data-tip="Uzaklaştır · Ctrl+−"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-out"/></svg></button>
+        <button class="ibtn" type="button" data-action="zoom-out" data-tip="Uzaklaştır · Ctrl+−" aria-label="Uzaklaştır"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-out"/></svg></button>
         <button class="zoom" type="button" id="zoom-btn" data-tip="Yakınlaştırma">100%</button>
-        <button class="ibtn" type="button" data-action="zoom-in" data-tip="Yakınlaştır · Ctrl++"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-in"/></svg></button>
+        <button class="ibtn" type="button" data-action="zoom-in" data-tip="Yakınlaştır · Ctrl++" aria-label="Yakınlaştır"><svg class="icon"><use href="./assets/img/icons.svg#i-zoom-in"/></svg></button>
         <span class="sep" aria-hidden="true"></span>
         <span class="pager">
           <input class="pager__input" id="page-input" type="text" inputmode="numeric" aria-label="Sayfa">
@@ -213,8 +213,8 @@
       </div>
 
       <div class="ebar__right">
-        <button class="ibtn" type="button" data-action="search" data-tip="Ara · Ctrl+F"><svg class="icon"><use href="./assets/img/icons.svg#i-search"/></svg></button>
-        <button class="ibtn ibtn--panel" type="button" data-action="toggle-right" data-tip="Paneli göster/gizle"><svg class="icon"><use href="./assets/img/icons.svg#i-panel-right"/></svg></button>
+        <button class="ibtn" type="button" data-action="search" data-tip="Ara · Ctrl+F" aria-label="Ara"><svg class="icon"><use href="./assets/img/icons.svg#i-search"/></svg></button>
+        <button class="ibtn ibtn--panel" type="button" data-action="toggle-right" data-tip="Paneli göster/gizle" aria-label="Paneli göster/gizle"><svg class="icon"><use href="./assets/img/icons.svg#i-panel-right"/></svg></button>
         <button class="btn btn--seal" type="button" data-action="sign"><svg class="icon"><use href="./assets/img/icons.svg#i-file-pen-line"/></svg><span>İmzala</span></button>
         <div class="split">
           <button class="btn btn--primary split__main" type="button" data-action="download"><svg class="icon"><use href="./assets/img/icons.svg#i-download"/></svg><span>İndir</span></button>
@@ -227,53 +227,53 @@
     <nav class="tools" id="tools" aria-label="Araçlar">
       <div class="tools__scroll">
         <div class="tools__group">
-          <button class="tool is-active" type="button" data-tool="select" data-tip="Seç · V"><svg class="icon"><use href="./assets/img/icons.svg#i-mouse-pointer-2"/></svg></button>
-          <button class="tool" type="button" data-tool="hand" data-tip="Kaydır · H"><svg class="icon"><use href="./assets/img/icons.svg#i-hand"/></svg></button>
+          <button class="tool is-active" type="button" data-tool="select" data-tip="Seç · V" aria-label="Seç"><svg class="icon"><use href="./assets/img/icons.svg#i-mouse-pointer-2"/></svg></button>
+          <button class="tool" type="button" data-tool="hand" data-tip="Kaydır · H" aria-label="Kaydır"><svg class="icon"><use href="./assets/img/icons.svg#i-hand"/></svg></button>
         </div>
         <div class="tools__group">
-          <button class="tool tool--label" type="button" data-tool="text" data-tip="Metin ekle · T"><svg class="icon"><use href="./assets/img/icons.svg#i-type"/></svg><span>Metin ekle</span></button>
-          <button class="tool tool--label" type="button" data-tool="edittext" data-tip="Mevcut metni düzenle · E"><svg class="icon"><use href="./assets/img/icons.svg#i-text-cursor-input"/></svg><span>Metni düzenle</span></button>
+          <button class="tool tool--label" type="button" data-tool="text" data-tip="Metin ekle · T" aria-label="Metin ekle"><svg class="icon"><use href="./assets/img/icons.svg#i-type"/></svg><span>Metin ekle</span></button>
+          <button class="tool tool--label" type="button" data-tool="edittext" data-tip="Mevcut metni düzenle · E" aria-label="Mevcut metni düzenle"><svg class="icon"><use href="./assets/img/icons.svg#i-text-cursor-input"/></svg><span>Metni düzenle</span></button>
         </div>
         <div class="tools__group">
           <div class="tgroup" data-group="markup">
-            <button class="tool" type="button" data-tool="highlight" data-tip="Vurgula · U"><svg class="icon"><use href="./assets/img/icons.svg#i-highlighter"/></svg></button>
+            <button class="tool" type="button" data-tool="highlight" data-tip="Vurgula · U" aria-label="Metin işaretleme aracı"><svg class="icon"><use href="./assets/img/icons.svg#i-highlighter"/></svg></button>
             <button class="tgroup__caret" type="button" aria-label="İşaretleme araçları"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
           <div class="tgroup" data-group="draw">
-            <button class="tool" type="button" data-tool="pen" data-tip="Kalem · P"><svg class="icon"><use href="./assets/img/icons.svg#i-pen-line"/></svg></button>
+            <button class="tool" type="button" data-tool="pen" data-tip="Kalem · P" aria-label="Çizim aracı"><svg class="icon"><use href="./assets/img/icons.svg#i-pen-line"/></svg></button>
             <button class="tgroup__caret" type="button" aria-label="Çizim araçları"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
           <div class="tgroup" data-group="shape">
-            <button class="tool" type="button" data-tool="rect" data-tip="Dikdörtgen · R"><svg class="icon"><use href="./assets/img/icons.svg#i-square"/></svg></button>
+            <button class="tool" type="button" data-tool="rect" data-tip="Dikdörtgen · R" aria-label="Şekil aracı"><svg class="icon"><use href="./assets/img/icons.svg#i-square"/></svg></button>
             <button class="tgroup__caret" type="button" aria-label="Şekiller"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
         </div>
         <div class="tools__group">
-          <button class="tool" type="button" data-tool="note" data-tip="Yapışkan not · N"><svg class="icon"><use href="./assets/img/icons.svg#i-message-square-text"/></svg></button>
-          <button class="tool" type="button" data-tool="image" data-tip="Görsel ekle · I"><svg class="icon"><use href="./assets/img/icons.svg#i-image"/></svg></button>
+          <button class="tool" type="button" data-tool="note" data-tip="Yapışkan not · N" aria-label="Yapışkan not"><svg class="icon"><use href="./assets/img/icons.svg#i-message-square-text"/></svg></button>
+          <button class="tool" type="button" data-tool="image" data-tip="Görsel ekle · I" aria-label="Görsel ekle"><svg class="icon"><use href="./assets/img/icons.svg#i-image"/></svg></button>
           <div class="tgroup" data-group="stamp">
-            <button class="tool" type="button" data-tool="stamp" data-tip="Damga"><svg class="icon"><use href="./assets/img/icons.svg#i-stamp"/></svg></button>
+            <button class="tool" type="button" data-tool="stamp" data-tip="Damga" aria-label="Damga"><svg class="icon"><use href="./assets/img/icons.svg#i-stamp"/></svg></button>
             <button class="tgroup__caret" type="button" aria-label="Damgalar"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
           <div class="tgroup" data-group="mark">
-            <button class="tool" type="button" data-tool="check" data-tip="Onay işareti · K"><svg class="icon"><use href="./assets/img/icons.svg#i-check"/></svg></button>
+            <button class="tool" type="button" data-tool="check" data-tip="Onay işareti · K" aria-label="İşaret aracı"><svg class="icon"><use href="./assets/img/icons.svg#i-check"/></svg></button>
             <button class="tgroup__caret" type="button" aria-label="İşaretler"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
-          <button class="tool" type="button" data-tool="date" data-tip="Tarih ekle · D"><svg class="icon"><use href="./assets/img/icons.svg#i-calendar"/></svg></button>
+          <button class="tool" type="button" data-tool="date" data-tip="Tarih ekle · D" aria-label="Tarih ekle"><svg class="icon"><use href="./assets/img/icons.svg#i-calendar"/></svg></button>
         </div>
         <div class="tools__group">
-          <button class="tool" type="button" data-tool="whiteout" data-tip="Beyaz kutu · W"><svg class="icon"><use href="./assets/img/icons.svg#i-eraser"/></svg></button>
-          <button class="tool" type="button" data-tool="redact" data-tip="Karartma (kalıcı) · X"><svg class="icon"><use href="./assets/img/icons.svg#i-eye-off"/></svg></button>
+          <button class="tool" type="button" data-tool="whiteout" data-tip="Beyaz kutu · W" aria-label="Beyaz kutu"><svg class="icon"><use href="./assets/img/icons.svg#i-eraser"/></svg></button>
+          <button class="tool" type="button" data-tool="redact" data-tip="Karartma (kalıcı) · X" aria-label="Karartma (kalıcı)"><svg class="icon"><use href="./assets/img/icons.svg#i-eye-off"/></svg></button>
         </div>
         <div class="tools__group">
           <div class="tgroup tgroup--wide" data-group="signature">
-            <button class="tool tool--label tool--sign" type="button" data-tool="signature" data-tip="İmza ekle · S"><svg class="icon"><use href="./assets/img/icons.svg#i-signature"/></svg><span>İmza</span></button>
+            <button class="tool tool--label tool--sign" type="button" data-tool="signature" data-tip="İmza ekle · S" aria-label="İmza ekle"><svg class="icon"><use href="./assets/img/icons.svg#i-signature"/></svg><span>İmza</span></button>
             <button class="tgroup__caret" type="button" aria-label="İmzalarım"><svg class="icon"><use href="./assets/img/icons.svg#i-chevron-down"/></svg></button>
           </div>
         </div>
         <div class="tools__group tools__group--end">
-          <button class="tool tool--label" type="button" data-action="ocr" data-tip="Metni tanı (OCR)"><svg class="icon"><use href="./assets/img/icons.svg#i-scan-text"/></svg><span>OCR</span></button>
-          <button class="tool tool--label" type="button" data-action="organizer" data-tip="Sayfaları düzenle"><svg class="icon"><use href="./assets/img/icons.svg#i-layout-grid"/></svg><span>Sayfa düzeni</span></button>
+          <button class="tool tool--label" type="button" data-action="ocr" data-tip="Metni tanı (OCR)" aria-label="Metni tanı (OCR)"><svg class="icon"><use href="./assets/img/icons.svg#i-scan-text"/></svg><span>OCR</span></button>
+          <button class="tool tool--label" type="button" data-action="organizer" data-tip="Sayfaları düzenle" aria-label="Sayfa düzeni"><svg class="icon"><use href="./assets/img/icons.svg#i-layout-grid"/></svg><span>Sayfa düzeni</span></button>
         </div>
       </div>
     </nav>
@@ -284,9 +284,9 @@
         <div class="side__head">
           <span class="side__title">Sayfalar</span>
           <div class="side__tools">
-            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-left" data-tip="Sola döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-ccw"/></svg></button>
-            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-right" data-tip="Sağa döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-cw"/></svg></button>
-            <button class="ibtn ibtn--sm" type="button" data-pages="menu" data-tip="Sayfa işlemleri"><svg class="icon"><use href="./assets/img/icons.svg#i-ellipsis"/></svg></button>
+            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-left" data-tip="Sola döndür" aria-label="Sola döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-ccw"/></svg></button>
+            <button class="ibtn ibtn--sm" type="button" data-pages="rotate-right" data-tip="Sağa döndür" aria-label="Sağa döndür"><svg class="icon"><use href="./assets/img/icons.svg#i-rotate-cw"/></svg></button>
+            <button class="ibtn ibtn--sm" type="button" data-pages="menu" data-tip="Sayfa işlemleri" aria-label="Sayfa işlemleri"><svg class="icon"><use href="./assets/img/icons.svg#i-ellipsis"/></svg></button>
           </div>
         </div>
         <ol class="thumbs" id="thumbs" aria-label="Sayfa küçük resimleri"></ol>
@@ -298,8 +298,10 @@
 
       <!-- centre: the stage -->
       <main class="stage" id="stage">
-        <div class="banner" id="sig-banner" hidden></div>
-        <div class="banner banner--info" id="ocr-banner" hidden></div>
+        <div class="stage__banners">
+          <div class="banner" id="sig-banner" hidden></div>
+          <div class="banner banner--info" id="ocr-banner" hidden></div>
+        </div>
         <div class="hintbar" id="hintbar" hidden></div>
         <div class="pages" id="pages"></div>
         <div class="organizer" id="organizer" hidden>

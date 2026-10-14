@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- OCR engine start-up in the browser: serve the pdf/ folder over http
+     (python3 -m http.server -d pdf) and open /dev/tests/ocr-init.html.
+     Checks that createOcr settles when the language data is missing or
+     the run is cancelled, and that the Web Worker is terminated either
+     way (tesseract.js 7 never hands it back in those cases). The result
+     is printed on the page and kept in window.__ocrInit. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCR start-up</title>
+<style>body { font: 14px/1.5 ui-monospace, monospace; margin: 16px; background: #fff; color: #111; }</style>
+</head>
+<body>
+<pre id="log">running…</pre>
+<script type="module">
+const out = [];
+const log = (s) => { out.push(s); document.getElementById("log").textContent = out.join("\n"); };
+
+// count the Web Workers made and terminated
+const made = [];
+const Native = window.Worker;
+const Counted = class extends Native {
+  constructor(...args) { super(...args); this.stopped = false; made.push(this); }
+  terminate() { this.stopped = true; super.terminate(); }
+};
+window.Worker = Counted;
+
+const base = new URL("../../assets/vendor/tesseract/", location.href).href;
+const good = { workerPath: base + "worker.min.js", corePath: base + "core/tesseract-core-lstm.wasm.js", langPath: base + "lang", gzip: true, cacheMethod: "none" };
+// libs.js reads tesseract paths from the harness hook when present
+globalThis.__MUHUR_NODE__ = { tesseractPaths: good };
+const { createOcr } = await import("../../assets/js/ocr.js");
+
+async function settle(p, ms) {
+  const t0 = performance.now();
+  let timer;
+  try {
+    const v = await Promise.race([p, new Promise((_, rej) => { timer = setTimeout(() => rej(new Error("pending")), ms); })]);
+    return { ok: true, value: v, ms: performance.now() - t0 };
+  } catch (e) {
+    return { ok: false, error: e, ms: performance.now() - t0 };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+let failed = 0;
+function check(name, cond, detail) {
+  if (!cond) failed++;
+  log(`${cond ? "ok  " : "FAIL"} ${name}${detail ? " — " + detail : ""}`);
+}
+
+// 1. missing language data
+{
+  globalThis.__MUHUR_NODE__.tesseractPaths = { ...good, langPath: base + "lang-missing" };
+  const n = made.length;
+  const r = await settle(createOcr({}), 20000);
+  check("missing language data rejects", !r.ok && /başlatılamadı/.test(r.error.message), r.ok ? "resolved" : `${r.error.message} (${Math.round(r.ms)} ms)`);
+  check("…and its worker is terminated", made.length === n + 1 && made[n].stopped, `${made.length - n} made`);
+}
+// 2. cancelled while starting
+{
+  globalThis.__MUHUR_NODE__.tesseractPaths = good;
+  const n = made.length;
+  const ac = new AbortController();
+  // cancel on the first start-up progress message: the engine is loading
+  const p = createOcr({ signal: ac.signal, onProgress: () => ac.abort() });
+  const r = await settle(p, 5000);
+  check("cancel while starting rejects with AbortError", !r.ok && r.error.name === "AbortError", r.ok ? "resolved" : `${r.error.name} (${Math.round(r.ms)} ms)`);
+  check("…and its worker is terminated", made.length === n + 1 && made[n].stopped);
+}
+// 3. a normal start, a cancelled page, terminate
+{
+  const n = made.length;
+  const ac = new AbortController();
+  const r = await settle(createOcr({ signal: ac.signal }), 60000);
+  check("normal start resolves", r.ok, r.ok ? `${Math.round(r.ms)} ms` : r.error.message);
+  if (r.ok) {
+    const c = document.createElement("canvas");
+    c.width = 1200; c.height = 300;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#000"; ctx.font = "60px sans-serif"; ctx.fillText("Merhaba dünya", 40, 150);
+    const page = await settle(r.value.recognize(c, c.width, c.height), 60000);
+    check("recognize reads a line", page.ok && /Merhaba/.test(page.value.text), page.ok ? JSON.stringify(page.value.text) : page.error.message);
+    const p = r.value.recognize(c, c.width, c.height);
+    ac.abort();
+    const cut = await settle(p, 3000);
+    check("cancel during recognize rejects at once", !cut.ok && cut.error.name === "AbortError", `${Math.round(cut.ms)} ms`);
+    check("…and the worker is terminated", made.length === n + 1 && made[n].stopped);
+    await r.value.terminate();
+  }
+}
+check("window.Worker restored", window.Worker === Counted);
+log(failed ? `\n${failed} failed` : "\nall ok");
+window.__ocrInit = { failed, log: out };
+</script>
+</body>
+</html>

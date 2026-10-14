@@ -2387,6 +2387,7 @@ async function verifyCurrent() {
     try {
       const id = await store.getVault("identity");
       if (id) known.push((await describeIdentity(id)).fingerprint);
+      known.push(...(await store.getVault("cards", [])));
     } catch (e) { /* no identity */ }
     E.verification = await verifyPdf(bytes, known);
   } catch (err) {
@@ -2401,12 +2402,22 @@ function renderBanner() {
   const v = E.verification;
   const el = dom.banner;
   if (!v || !v.length) { el.hidden = true; return; }
-  const bad = v.filter((r) => !r.integrity || r.signatureValid === false);
+  // Only a signature value that verified vouches for the content: integrity
+  // on its own compares the file with a digest whoever built the CMS chose.
+  // So a signature that could not be checked (signatureValid null, or
+  // content that cannot be related to the file) is "unverified", never
+  // "unchanged".
+  const bad = v.filter((r) => r.integrity === false || r.signatureValid === false);
+  const unverified = v.filter((r) => !bad.includes(r) && !(r.integrity === true && r.signatureValid === true));
+  const stamps = v.filter((r) => r.documentTimestamp).length;
+  const people = v.length - stamps;
+  const what = [people ? `${people} dijital imza` : "", stamps ? `${stamps} zaman damgası` : ""].filter(Boolean).join(", ");
   const changed = !W.isPristine(E.state);
   let cls = "banner--ok", ic = "shield-check";
-  let text = `<strong>${v.length} dijital imza</strong> · imzalandıktan sonra belge değiştirilmemiş.`;
+  let text = `<strong>${what}</strong> · imzalandıktan sonra belge değiştirilmemiş.`;
   if (bad.length) { cls = "banner--danger"; ic = "shield-x"; text = `<strong>${bad.length} imza geçersiz.</strong> Belge imzalandıktan sonra değiştirilmiş ya da imza bozuk.`; }
-  else if (v.some((r) => r.laterChanges) && v[v.length - 1].laterChanges) { cls = "banner--warn"; ic = "shield-alert"; text = `<strong>${v.length} dijital imza</strong> geçerli, ancak son imzadan sonra belgeye eklemeler yapılmış.`; }
+  else if (unverified.length) { cls = "banner--warn"; ic = "shield-alert"; text = `<strong>${unverified.length} imza doğrulanamadı.</strong> İmza denetlenemediği için belgenin imzadan sonra değiştirilmediği garanti edilemez.`; }
+  else if (v[v.length - 1].laterChanges) { cls = "banner--warn"; ic = "shield-alert"; text = `<strong>${what}</strong> geçerli, ancak son imzadan sonra belgeye eklemeler yapılmış.`; }
   if (changed && !bad.length) { cls = "banner--warn"; ic = "shield-alert"; text += " Yaptığın düzenlemeler kaydedildiğinde mevcut imzalar geçersiz olur."; }
   el.className = "banner " + cls;
   el.innerHTML = icon(ic) + `<span class="banner__text">${text}</span>`;

@@ -84,12 +84,28 @@ siu2027 publish script never touches it.
 ES module that boots the same way and imports its neighbours: `store.js`
 (accounts, AES-GCM, IndexedDB), `docs.js`, `editor.js` with `ed.js`,
 `panels.js` and `sigui.js`, `pdfwork.js` (state → PDF), `textstrip.js`
-(removes edited text from content streams) and `sign.js` (PAdES signing and
-verification). Its Reset block and `$`/`$$` helpers are the shared ones.
-Third-party code is vendored under `pdf/assets/vendor/` and loaded on first
-use: pdf.js 6 (Apache-2.0), pdf-lib and @pdf-lib/fontkit (MIT), node-forge
-(BSD); fonts are Liberation Sans/Serif/Mono (OFL) and icons Lucide (ISC),
-each with its licence file next to it. Nothing is sent to a server.
+(removes edited text from content streams), `sign.js` (PAdES B-B signing and
+verification, chains to the Kamu SM roots pinned in `trust.js`), `ocr.js` /
+`ocrui.js` (tesseract.js OCR into an invisible text layer) and `kart.js`
+(e-signature cards through the local bridge). Its Reset block and `$`/`$$`
+helpers are the shared ones. Third-party code is vendored under
+`pdf/assets/vendor/` and loaded on first use: pdf.js 6 (Apache-2.0), pdf-lib
+and @pdf-lib/fontkit (MIT), node-forge (BSD), tesseract.js 7 (Apache-2.0),
+fflate (MIT); fonts are Liberation, Carlito and Caladea (OFL) and icons
+Lucide (ISC), each with its licence file next to it. Nothing is sent to a
+server.
+
+`pdf/kopru/` is the one piece that runs outside the browser: Mühür İmza
+Köprüsü, a single-file Java program (source + a jar built with
+`javac --release 8`) that lets the page sign with a qualified e-signature
+card (Kamu SM / TÜBİTAK AKİS or any PKCS#11 token). It listens on
+127.0.0.1:21730 only, answers only the site's origins, hashes and signs the
+CMS signed attributes on the card after the PIN, and returns the signature
+with the CA chain. Rebuild the jar after editing the source:
+
+```bash
+mkdir -p /tmp/kopru && javac --release 8 -d /tmp/kopru pdf/kopru/MuhurImzaKoprusu.java && printf "Main-Class: MuhurImzaKoprusu\n" > /tmp/kopru.mf && jar cfm pdf/kopru/MuhurImzaKoprusu.jar /tmp/kopru.mf -C /tmp/kopru .
+```
 
 ## Local preview
 

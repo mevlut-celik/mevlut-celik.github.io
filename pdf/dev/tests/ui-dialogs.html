@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/pdf/">
+<title>UI dialogs test</title>
+<!-- Browser test page for the signing and OCR dialogs (sigui.js, ocrui.js,
+     kart.js) without an account: store.js, docs.js and ocr.js are swapped
+     for fakes by the import map. Serve the repository root on
+     http://localhost:4321 (the bridge allows that origin), start the bridge
+     in test mode (java -jar kopru/MuhurImzaKoprusu.jar --p12 <file>), open
+     /pdf/dev/tests/ui-dialogs.html and drive window.T from the console. -->
+<script type="importmap">
+{ "imports": {
+  "/pdf/assets/js/store.js": "/pdf/dev/tests/fakes/store.js",
+  "/pdf/assets/js/docs.js": "/pdf/dev/tests/fakes/docs.js",
+  "/pdf/assets/js/ocr.js": "/pdf/dev/tests/fakes/ocr.js"
+} }
+</script>
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<main class="stage" id="stage" style="height: 320px; width: 100%; max-width: 640px; border: 1px solid #ccc">
+  <div class="stage__banners">
+    <div class="banner banner--danger" id="sig-banner"><span class="banner__text"><strong>2 imza geçersiz.</strong> Belge imzalandıktan sonra değiştirilmiş. Yaptığın düzenlemeler kaydedildiğinde mevcut imzalar geçersiz olur.</span><button class="btn btn--sm" type="button">İmzalar</button></div>
+    <div class="banner banner--info" id="ocr-banner"><span class="banner__text"><strong>Bu belge taranmış görünüyor.</strong> OCR uygula.</span></div>
+  </div>
+  <div style="height: 2000px"></div>
+</main>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<input type="file" id="file-any" hidden>
+<script type="module">
+  // count the PIN checks that reach the bridge
+  const counts = { durum: 0, sertifikalar: 0, imzala: 0 };
+  const realFetch = window.fetch.bind(window);
+  window.fetch = (url, opts) => {
+    const m = /\/v1\/(\w+)/.exec(String(url));
+    if (m && m[1] in counts) counts[m[1]]++;
+    return realFetch(url, opts);
+  };
+  const { E } = await import("/pdf/assets/js/ed.js");
+  const sigui = await import("/pdf/assets/js/sigui.js");
+  const ocrui = await import("/pdf/assets/js/ocrui.js");
+  const kart = await import("/pdf/assets/js/kart.js");
+  const store = await import("/pdf/assets/js/store.js");
+  const docs = await import("/pdf/assets/js/docs.js");
+  const ocr = await import("/pdf/assets/js/ocr.js");
+  const T = { E, sigui, ocrui, kart, store, docs, ocr, counts, field: null, reloads: 0 };
+  T.openDoc = (id) => {
+    E.open = true;
+    E.doc = { id, name: "Belge " + id, versions: [] };
+    E.state = { pages: [{ id: "p1", src: "main", index: 0, rotate: 0 }, { id: "p2", src: "main", index: 1, rotate: 0 }], mainPageCount: 2, items: [], forms: {} };
+    E.sources = new Map([["main", { bytes: new Uint8Array([37, 80, 68, 70]) }]]);
+    E.pageSel = new Set();
+    E.current = "p1";
+    E.signatures = [];
+    E.verification = [];
+    E.pageIndex = (pid) => E.state.pages.findIndex((p) => p.id === pid);
+    E.drawSigField = () => new Promise((r) => { T.field = r; });
+    E.reloadVersion = async () => { T.reloads++; E.doc = { ...E.doc }; };
+    E.buildBytes = async () => new Uint8Array([37, 80, 68, 70]);
+  };
+  T.closeDoc = () => { E.open = false; E.doc = null; E.state = null; };
+  T.openDoc("d1");
+  window.T = T;
+  document.title = "ready";
+</script>
+</body>
+</html>

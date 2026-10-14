@@ -734,7 +734,7 @@ async function appendAuditPage(doc, audit, font) {
   y -= 10;
   page.drawLine({ start: { x: left, y }, end: { x: 595.28 - left, y }, thickness: 0.6, color: P.rgb(0.85, 0.84, 0.82) });
   y -= 22;
-  const note = "Bu belge PAdES uyumlu (adbe.pkcs7.detached) dijital imza ile imzalanmıştır. İmza, bu sayfa dahil " +
+  const note = "Bu belge PAdES B-B (ETSI.CAdES.detached) dijital imza ile imzalanmıştır. İmza, bu sayfa dahil " +
     "belgenin tamamını kapsar; imzadan sonra yapılan her değişiklik PDF okuyucuların imza panelinde görünür. " +
     "Öz-imzalı sertifikalar kimliği bir sertifika otoritesi üzerinden kanıtlamaz; kimlik doğrulaması için " +
     "sertifika parmak izini imzalayanla karşılaştırın.";

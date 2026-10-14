@@ -14,11 +14,16 @@
                   after the user's PIN. Written as an incremental update
                   so earlier signatures in the file stay valid; classic
                   xref tables and xref streams are both continued in kind.
-   3. Verifying — every /ByteRange in a file is checked: the digest of the
-                  covered bytes against the signed messageDigest, then the
-                  signature over the signed attributes with WebCrypto (RSA and
-                  ECDSA), whether the signature covers the whole file, and
-                  what the certificate says about the signer.
+   3. Verifying — every /ByteRange in a file is checked: the gap it leaves
+                  must be the /Contents hex string and nothing else, and the
+                  signature dictionary is read from the signed bytes; then
+                  the digest of the covered bytes against the signed
+                  messageDigest (or a document timestamp's imprint), the
+                  signature over the signed attributes with WebCrypto (RSA
+                  PKCS#1 v1.5, RSA-PSS and ECDSA), whether the signature
+                  covers the whole file, the certificate path to a pinned
+                  root (CA flags, key usage, path length, validity) and any
+                  timestamp token.
 
    pdf-lib and forge are loaded as classic scripts and read from globalThis,
    so this module also runs under Node for the test-suite.
@@ -28,6 +33,7 @@ import {
   enc, toBytes, concatBytes, bytesToBinary, binaryToBytes, bytesToHex, digest,
   indexOfAscii, lastIndexOfAscii, pdfDate, parsePdfDate,
 } from "./util.js";
+import { ANCHORS } from "./trust.js";
 
 const lib = () => globalThis.PDFLib;
 const forge = () => globalThis.forge;
@@ -105,9 +111,7 @@ export function importP12(buffer, password) {
 }
 
 export function identityCertDer(identity) {
-  const f = forge();
-  const cert = f.pki.certificateFromPem(identity.certPem);
-  return binaryToBytes(f.asn1.toDer(f.pki.certificateToAsn1(cert)).getBytes());
+  return binaryToBytes(forge().pem.decode(identity.certPem)[0].body);
 }
 
 export async function describeIdentity(identity) {
@@ -276,9 +280,14 @@ const OIDS = {
   contentType: "1.2.840.113549.1.9.3",
   messageDigest: "1.2.840.113549.1.9.4",
   signingCertificateV2: "1.2.840.113549.1.9.16.2.47",
-  sha256: "2.16.840.1.101.3.4.2.1",
   rsaEncryption: "1.2.840.113549.1.1.1",
-  ecdsaWithSha256: "1.2.840.10045.4.3.2",
+};
+// digest -> [digest algorithm OID, ecdsa-with-<digest> OID]. EC keys take
+// the digest that matches the curve (P-384 -> SHA-384), RSA uses SHA-256.
+const DIGESTS = {
+  "SHA-256": ["2.16.840.1.101.3.4.2.1", "1.2.840.10045.4.3.2"],
+  "SHA-384": ["2.16.840.1.101.3.4.2.2", "1.2.840.10045.4.3.3"],
+  "SHA-512": ["2.16.840.1.101.3.4.2.3", "1.2.840.10045.4.3.4"],
 };
 
 function der(node) { return binaryToBytes(forge().asn1.toDer(node).getBytes()); }
@@ -331,22 +340,24 @@ async function createCms(signedBytes, signer) {
   const oid = (o) => A.create(C, T.OID, false, A.oidToDer(o).getBytes());
   const nul = () => A.create(C, T.NULL, false, "");
   const int = (n) => A.create(C, T.INTEGER, false, A.integerToDer(n).getBytes());
-  const sha256Alg = () => A.create(C, T.SEQUENCE, true, [oid(OIDS.sha256), nul()]);
+  const hash = signer.hash || "SHA-256";
+  if (!DIGESTS[hash]) throw new Error("Desteklenmeyen özet algoritması: " + hash);
+  const digestAlg = () => A.create(C, T.SEQUENCE, true, [oid(DIGESTS[hash][0]), nul()]);
 
-  const contentDigest = await digest("SHA-256", signedBytes);
+  const contentDigest = await digest(hash, signedBytes);
   const attrs = await signedAttributes(contentDigest, signer.certDer);
   // the signature covers the attributes encoded as a SET (tag 0x31); the
   // SignerInfo carries the same content under [0] IMPLICIT
   const toSign = der(A.create(C, T.SET, true, attrs));
   const signature = await signer.sign(toSign);
   const sigAlg = signer.keyAlg === "ECDSA"
-    ? A.create(C, T.SEQUENCE, true, [oid(OIDS.ecdsaWithSha256)])
+    ? A.create(C, T.SEQUENCE, true, [oid(DIGESTS[hash][1])])
     : A.create(C, T.SEQUENCE, true, [oid(OIDS.rsaEncryption), nul()]);
   const { issuer, serial } = issuerAndSerial(signer.certDer);
   const signerInfo = A.create(C, T.SEQUENCE, true, [
     int(1),
     A.create(C, T.SEQUENCE, true, [issuer, serial]),
-    sha256Alg(),
+    digestAlg(),
     A.create(A.Class.CONTEXT_SPECIFIC, 0, true, attrs),
     sigAlg,
     A.create(C, T.OCTETSTRING, false, bytesToBinary(signature)),
@@ -354,7 +365,7 @@ async function createCms(signedBytes, signer) {
   const certs = [signer.certDer].concat(signer.chainDer || []).map((d) => asn1Of(d));
   const signedData = A.create(C, T.SEQUENCE, true, [
     int(1),
-    A.create(C, T.SET, true, [sha256Alg()]),
+    A.create(C, T.SET, true, [digestAlg()]),
     A.create(C, T.SEQUENCE, true, [oid(OIDS.data)]),
     A.create(A.Class.CONTEXT_SPECIFIC, 0, true, certs),
     A.create(C, T.SET, true, [signerInfo]),
@@ -369,7 +380,7 @@ async function createCms(signedBytes, signer) {
 export function localSigner(identity) {
   const f = forge();
   const key = f.pki.privateKeyFromPem(identity.keyPem);
-  const pemToDer = (pem) => binaryToBytes(f.asn1.toDer(f.pki.certificateToAsn1(f.pki.certificateFromPem(pem))).getBytes());
+  const pemToDer = (pem) => binaryToBytes(f.pem.decode(pem)[0].body);
   return {
     certDer: pemToDer(identity.certPem),
     chainDer: (identity.chainPem || []).map(pemToDer),
@@ -538,14 +549,22 @@ function xrefStreamSection(offsets, size, trailer, prev, xrefNum) {
 
 const OID = {
   signedData: "1.2.840.113549.1.7.2",
+  tstInfo: "1.2.840.113549.1.9.16.1.4",
   contentType: "1.2.840.113549.1.9.3",
   messageDigest: "1.2.840.113549.1.9.4",
   signingTime: "1.2.840.113549.1.9.5",
+  signingCertificate: "1.2.840.113549.1.9.16.2.12",
+  signingCertificateV2: "1.2.840.113549.1.9.16.2.47",
   timeStampToken: "1.2.840.113549.1.9.16.2.14",
   rsaEncryption: "1.2.840.113549.1.1.1",
   rsaPss: "1.2.840.113549.1.1.10",
   ecPublicKey: "1.2.840.10045.2.1",
   qcStatements: "1.3.6.1.5.5.7.1.3",
+  subjectKeyIdentifier: "2.5.29.14",
+  keyUsage: "2.5.29.15",
+  basicConstraints: "2.5.29.19",
+  extKeyUsage: "2.5.29.37",
+  timeStamping: "1.3.6.1.5.5.7.3.8",
 };
 const HASH_BY_OID = {
   "1.3.14.3.2.26": "SHA-1",
@@ -561,16 +580,52 @@ const HASH_BY_OID = {
   "1.2.840.10045.4.3.3": "SHA-384",
   "1.2.840.10045.4.3.4": "SHA-512",
 };
+// Signature algorithms WebCrypto can check, each with the digest it names
+// (null: plain rsaEncryption / ecPublicKey, which leave it to the
+// SignerInfo's digestAlgorithm). RSA-PSS carries its own parameters.
+const RSA_PKCS1_SIG = new Map([
+  ["1.2.840.113549.1.1.1", null],
+  ["1.2.840.113549.1.1.5", "SHA-1"],
+  ["1.2.840.113549.1.1.11", "SHA-256"],
+  ["1.2.840.113549.1.1.12", "SHA-384"],
+  ["1.2.840.113549.1.1.13", "SHA-512"],
+]);
+const ECDSA_SIG = new Map([
+  ["1.2.840.10045.2.1", null],
+  ["1.2.840.10045.4.1", "SHA-1"],
+  ["1.2.840.10045.4.3.2", "SHA-256"],
+  ["1.2.840.10045.4.3.3", "SHA-384"],
+  ["1.2.840.10045.4.3.4", "SHA-512"],
+]);
 const CURVES = { "1.2.840.10045.3.1.7": ["P-256", 32], "1.3.132.0.34": ["P-384", 48], "1.3.132.0.35": ["P-521", 66] };
 const NAME_OIDS = {
   "2.5.4.3": "CN", "2.5.4.10": "O", "2.5.4.11": "OU", "2.5.4.6": "C", "2.5.4.7": "L",
   "2.5.4.5": "serialNumber", "1.2.840.113549.1.9.1": "email", "2.5.4.42": "givenName", "2.5.4.4": "surname",
 };
+const MAX_CHAIN = 6;                           // issuers above the signer
+const MAX_CHAIN_CHECKS = 64;                   // signature checks per path search
 
 export function hasSignatures(bytes) {
   return indexOfAscii(toBytes(bytes), "/ByteRange") >= 0;
 }
 
+// Every signature in the file, oldest first. Besides the fields the panel
+// has always read, a result can carry:
+//   documentTimestamp  true for a /DocTimeStamp (ETSI.RFC3161): a TSA's
+//                      token over the covered bytes, not a person's signature
+//   imprintMatch       document timestamps: the token's messageImprint is the
+//                      hash of the covered bytes
+//   timestamp          an unsigned timeStampToken on a signature, checked:
+//                      { trusted, imprintMatch, signatureValid, genTime, tsa,
+//                        chain, error }; hasTimestamp only says one is there
+//   signerMissing      the CMS does not hold the certificate its SignerInfo
+//                      names, so nothing could be verified
+//   certExpiredNow     the signer's certificate is outside its validity today
+//   verifyNote         why signatureValid is null
+// integrity compares the covered bytes with a digest that whoever built the
+// CMS chose, so it vouches for the content only when signatureValid is true.
+// integrity null means the CMS commits to something this code cannot relate
+// to the covered bytes: unverifiable, never "tampered".
 export async function verifyPdf(input, knownFingerprints) {
   const P = lib();
   const bytes = toBytes(input);
@@ -591,7 +646,7 @@ export async function verifyPdf(input, knownFingerprints) {
   }
 
   const results = [];
-  for (const [ref, dict, inlineWidget] of sigs) {
+  for (const [ref, newest, inlineWidget] of sigs) {
     const r = { fieldName: null, page: null, rect: null };
     try {
       const w = inlineWidget ? [null, inlineWidget] : widgets.get(ref ? ref.toString() : "");
@@ -605,6 +660,13 @@ export async function verifyPdf(input, knownFingerprints) {
         const rect = wd.lookup(P.PDFName.of("Rect"));
         if (rect instanceof P.PDFArray) r.rect = rect.asArray().map((n) => n.asNumber ? n.asNumber() : 0);
       }
+
+      // The CMS comes from the gap itself and the dictionary from the signed
+      // bytes around it, never from pdf-lib's copy of the object: that is
+      // the newest definition of its number, which unsigned bytes can supply.
+      const br = newest.lookup(P.PDFName.of("ByteRange"), P.PDFArray).asArray().map((n) => n.asNumber());
+      const cms = signedGap(bytes, br);
+      const dict = signedDictionary(bytes, br, ref, newest, ctx);
       const text = (key) => {
         const v = dict.lookup(P.PDFName.of(key));
         return v && v.decodeText ? v.decodeText() : null;
@@ -618,14 +680,11 @@ export async function verifyPdf(input, knownFingerprints) {
       const subFilter = dict.lookup(P.PDFName.of("SubFilter"));
       r.subFilter = subFilter ? subFilter.asString().replace(/^\//, "") : "";
 
-      const br = dict.lookup(P.PDFName.of("ByteRange"), P.PDFArray).asArray().map((n) => n.asNumber());
-      const contents = dict.lookup(P.PDFName.of("Contents"));
-      const cms = contents.asBytes();
-      const signed = concatBytes([bytes.subarray(br[0], br[0] + br[1]), bytes.subarray(br[2], br[2] + br[3])]);
+      const signed = concatBytes([bytes.subarray(0, br[1]), bytes.subarray(br[2], br[2] + br[3])]);
       const coveredEnd = br[2] + br[3];
       r.revisionEnd = coveredEnd;
       r.coversWholeDocument = isOnlyWhitespace(bytes, coveredEnd);
-      Object.assign(r, await verifyCms(cms, signed, r.subFilter));
+      Object.assign(r, await verifyCms(cms, signed, { subFilter: r.subFilter, claimedTime: r.dictTime }));
       if (r.certificate) {
         r.known = !!(knownFingerprints && knownFingerprints.includes(r.certificate.fingerprint));
       }
@@ -635,6 +694,7 @@ export async function verifyPdf(input, knownFingerprints) {
       r.signatureValid = false;
     }
     r.signingTime = r.cmsTime || r.dictTime || null;
+    checkValidity(r);
     results.push(r);
   }
   results.sort((a, b) => (a.revisionEnd || 0) - (b.revisionEnd || 0));
@@ -642,12 +702,95 @@ export async function verifyPdf(input, knownFingerprints) {
   return results;
 }
 
+// Certificate validity at the claimed signing time (CMS signing-time, a
+// document timestamp's genTime or the dictionary's /M — all inside what was
+// signed), and separately today. A certificate that has expired since, with
+// no timestamp to prove when the signature was made, is a different
+// statement from one that was already invalid when it signed.
+function checkValidity(r) {
+  const c = r.certificate;
+  if (!c || !c.notBefore || !c.notAfter) return;
+  if (r.signingTime) r.certValidAtSigning = r.signingTime >= c.notBefore && r.signingTime <= c.notAfter;
+  const now = new Date();
+  r.certExpiredNow = now < c.notBefore || now > c.notAfter;
+}
+
+function isPdfWhitespace(b) {
+  return b === 0x20 || b === 0x0a || b === 0x0d || b === 0x09 || b === 0x0c || b === 0x00;
+}
+
 function isOnlyWhitespace(bytes, from) {
-  for (let i = from; i < bytes.length; i++) {
-    const b = bytes[i];
-    if (b !== 0x0a && b !== 0x0d && b !== 0x20 && b !== 0x09 && b !== 0x00) return false;
-  }
+  for (let i = from; i < bytes.length; i++) if (!isPdfWhitespace(bytes[i])) return false;
   return true;
+}
+
+function hexValue(b) {
+  if (b >= 0x30 && b <= 0x39) return b - 0x30;
+  if (b >= 0x41 && b <= 0x46) return b - 0x37;
+  if (b >= 0x61 && b <= 0x66) return b - 0x57;
+  return -1;
+}
+
+function badStructure(why) {
+  throw new Error("İmza yapısı geçersiz: " + why + ".");
+}
+
+// The ByteRange has to cover the revision from its first byte, leaving out
+// one gap, and that gap has to be exactly the /Contents hex string: '<',
+// hex digits (whitespace allowed), '>'. Anything else in it is PDF syntax
+// that every parser reads and no signature covers — signature wrapping,
+// where a forged page and a second copy of the signature dictionary are
+// slipped into the gap and the file still hashes to the signed digest.
+// Returns the CMS bytes held in the gap.
+function signedGap(bytes, br) {
+  if (br.length !== 4 || !br.every((n) => Number.isSafeInteger(n) && n >= 0)) badStructure("ByteRange");
+  const [a, b, c, d] = br;
+  if (a !== 0 || b < 1 || c < b + 2 || c + d > bytes.length) badStructure("ByteRange");
+  if (bytes[b] !== 0x3c || bytes[c - 1] !== 0x3e) badStructure("/Contents sınırları");
+  const out = new Uint8Array((c - b - 1) >> 1);
+  let n = 0, hi = -1;
+  for (let i = b + 1; i < c - 1; i++) {
+    const v = hexValue(bytes[i]);
+    if (v < 0) {
+      if (isPdfWhitespace(bytes[i])) continue;
+      badStructure("/Contents dışında veri");
+    }
+    if (hi < 0) hi = v;
+    else { out[n++] = (hi << 4) | v; hi = -1; }
+  }
+  if (hi >= 0) out[n++] = hi << 4;             // odd digit count: a final 0 is implied
+  return out.subarray(0, n);
+}
+
+// The signature dictionary as its signer wrote it: the object around the
+// gap, parsed from the signed bytes, which must carry this same /ByteRange.
+// Its /M, /Reason and /SubFilter are then the signed ones even when a later
+// update has redefined the object number.
+function signedDictionary(bytes, br, ref, newest, ctx) {
+  const P = lib();
+  const [, b, c, d] = br;
+  if (!ref) {
+    // a direct dictionary in the field's /V (ISO 32000 asks for an indirect
+    // one) has no object header to parse from: its /ByteRange at least has
+    // to be written in the signed bytes next to the gap
+    const near = bytesToBinary(bytes.subarray(Math.max(0, b - 4096), b)) + "\u0000" +
+                 bytesToBinary(bytes.subarray(c, Math.min(c + d, c + 4096)));
+    const written = [...near.matchAll(/\/ByteRange\s*\[\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s*\]/g)];
+    if (!written.some((m) => m.slice(1, 5).map(Number).join() === br.join())) badStructure("imzalı ByteRange eşleşmiyor");
+    return newest;
+  }
+  const from = Math.max(0, b - 65536);
+  const header = new RegExp(`(?:^|[^0-9])${ref.objectNumber}\\s+${ref.generationNumber}\\s+obj`, "g");
+  let at = -1;
+  for (const m of bytesToBinary(bytes.subarray(from, b)).matchAll(header)) at = from + m.index + m[0].length;
+  if (at < 0) badStructure("imza sözlüğü bulunamadı");
+  const parser = P.PDFObjectParser.forBytes(bytes.subarray(at, c + d), ctx);
+  const dict = parser.parseObject();
+  if (!(dict instanceof P.PDFDict) || at + parser.bytes.offset() <= c) badStructure("imza sözlüğü");
+  const written = dict.get(P.PDFName.of("ByteRange"));
+  const nums = written instanceof P.PDFArray ? written.asArray().map((x) => (x instanceof P.PDFNumber ? x.asNumber() : NaN)) : [];
+  if (nums.join() !== br.join()) badStructure("imzalı ByteRange eşleşmiyor");
+  return dict;
 }
 
 function findWidgetPage(doc, widgetRef) {
@@ -661,116 +804,418 @@ function findWidgetPage(doc, widgetRef) {
   return null;
 }
 
-async function verifyCms(cmsBytes, signedBytes, subFilter) {
+// One CMS SignedData against the bytes it covers.
+// opts: { subFilter, claimedTime: the dictionary's /M (for the certificate
+//         path when the CMS has no time of its own),
+//         nested: a timestamp token inside another signature, whose own
+//         unsigned attributes are not followed }
+async function verifyCms(cmsBytes, signedBytes, opts = {}) {
   const f = forge();
   const A = f.asn1;
+  const subFilter = opts.subFilter || "";
   const out = { integrity: false, signatureValid: null };
-  if (subFilter && /x509\.rsa_sha1/.test(subFilter)) {
-    throw new Error("adbe.x509.rsa_sha1 biçimi doğrulanamıyor.");
+  if (/x509\.rsa_sha1/.test(subFilter)) {
+    // a bare PKCS#1 value with the certificate in /Cert: not CMS, and not
+    // something this code reads. Unverifiable, which is not "tampered".
+    out.integrity = null;
+    out.verifyNote = "adbe.x509.rsa_sha1 biçimi doğrulanamıyor.";
+    return out;
   }
   const root = A.fromDer(bytesToBinary(cmsBytes), { parseAllBytes: false, strict: false });
   if (A.derToOid(root.value[0].value) !== OID.signedData) throw new Error("İmza verisi CMS SignedData değil.");
   const sd = root.value[1].value[0].value;
-  let i = 3;
   let certs = [];
-  while (i < sd.length && sd[i].tagClass === A.Class.CONTEXT_SPECIFIC) {
+  for (let i = 3; i < sd.length && sd[i].tagClass === A.Class.CONTEXT_SPECIFIC; i++) {
     if (sd[i].type === 0) certs = sd[i].value;
-    i++;
   }
   const signerInfos = sd[sd.length - 1].value;
   if (!signerInfos.length) throw new Error("İmzalayan bilgisi yok.");
   const si = signerInfos[0].value;
-  let k = 0;
-  k++; // version
+  let k = 1;                                   // after the version
   const sid = si[k++];
   const digestOid = A.derToOid(si[k++].value[0].value);
   let signedAttrs = null;
   if (si[k].tagClass === A.Class.CONTEXT_SPECIFIC && si[k].type === 0) signedAttrs = si[k++];
-  const sigAlgOid = A.derToOid(si[k++].value[0].value);
+  const sigAlgNode = si[k++];
   const signature = binaryToBytes(si[k++].value);
   const unsigned = si[k] && si[k].tagClass === A.Class.CONTEXT_SPECIFIC && si[k].type === 1 ? si[k].value : [];
 
   const hash = HASH_BY_OID[digestOid];
   if (!hash) throw new Error("Bilinmeyen özet algoritması: " + digestOid);
   out.digestAlgorithm = hash;
-  const actual = await digest(hash, signedBytes);
 
-  // certificates
+  const content = await encapsulatedContent(sd[2], signedBytes, subFilter);
+  if (content.tstInfo) {
+    out.imprintMatch = content.rangeOk;
+    out.cmsTime = content.tstInfo.genTime;
+    if (!opts.nested) out.documentTimestamp = true;
+  }
+  const actual = await digest(hash, content.bytes);
+  // what the CMS says about the covered bytes, once its digest is known to hold
+  const committed = () => (content.rangeOk === false ? false : content.rangeOk === null ? null : true);
+
+  // certificates, and the one the SignerInfo names
   const parsed = [];
   for (const c of certs) {
     try { parsed.push({ asn1: c, info: parseCertificate(c) }); } catch (e) { /* skip unreadable certs */ }
   }
-  let signer = null;
-  if (sid.tagClass === A.Class.UNIVERSAL && sid.type === A.Type.SEQUENCE) {
-    const serial = bytesToHex(binaryToBytes(sid.value[1].value));
-    signer = parsed.find((p) => p.info.serialHex === serial);
-  }
-  signer = signer || parsed[0];
+  const signer = findSigner(sid, parsed);
   if (signer) {
-    const der = binaryToBytes(A.toDer(signer.asn1).getBytes());
-    signer.info.fingerprint = bytesToHex(await digest("SHA-256", der), ":");
+    signer.info.fingerprint = bytesToHex(await digest("SHA-256", der(signer.asn1)), ":");
     out.certificate = signer.info;
+  } else {
+    out.signerMissing = true;
+    out.verifyNote = "İmzalayan sertifika imza verisinde bulunamadı.";
   }
   out.chainLength = parsed.length;
 
-  // integrity: the bytes we hashed must equal the signed messageDigest
-  let signedContent;
+  // signed attributes: messageDigest against what we hashed, time, ESS
+  let signedContent = content.bytes;
   if (signedAttrs) {
+    let digestOk = false;
     for (const attr of signedAttrs.value) {
       const oid = A.derToOid(attr.value[0].value);
       const val = attr.value[1].value[0];
-      if (oid === OID.messageDigest) out.integrity = bytesToHex(binaryToBytes(val.value)) === bytesToHex(actual);
-      if (oid === OID.signingTime) {
+      if (oid === OID.messageDigest) digestOk = bytesToHex(binaryToBytes(val.value)) === bytesToHex(actual);
+      if (oid === OID.signingTime && !content.tstInfo) {
         out.cmsTime = val.type === A.Type.UTCTIME ? A.utcTimeToDate(val.value) : A.generalizedTimeToDate(val.value);
       }
+      if ((oid === OID.signingCertificateV2 || oid === OID.signingCertificate) && signer) {
+        // ESS: the signed attributes pin the signer's certificate by hash
+        try {
+          const first = val.value[0].value[0].value;
+          const v2 = oid === OID.signingCertificateV2;
+          const hasAlg = v2 && first[0].type === A.Type.SEQUENCE;
+          const essHash = v2 ? (hasAlg ? HASH_BY_OID[A.derToOid(first[0].value[0].value)] : "SHA-256") : "SHA-1";
+          const pinned = binaryToBytes(first[hasAlg ? 1 : 0].value);
+          const own = await digest(essHash, der(signer.asn1));
+          out.essCertMatch = bytesToHex(pinned) === bytesToHex(own);
+        } catch (e) { out.essCertMatch = false; }
+      }
     }
+    out.integrity = digestOk ? committed() : false;
     const set = A.create(A.Class.UNIVERSAL, A.Type.SET, true, signedAttrs.value);
     signedContent = binaryToBytes(A.toDer(set).getBytes());
   } else {
-    signedContent = signedBytes;
-    out.integrity = null;
+    out.integrity = null;                      // known once the signature verifies
   }
-  out.hasTimestamp = unsigned.some((attr) => A.derToOid(attr.value[0].value) === OID.timeStampToken);
 
-  // signature over the signed attributes, with the signer's public key
   if (signer) {
+    // the signature over the signed attributes (or the content), with the
+    // signer's public key
     try {
-      out.signatureValid = await webcryptoVerify(signer.info.spki, signer.info.keyAlg, signer.info.curve, sigAlgOid, hash, signature, signedContent);
-      if (!signedAttrs && out.signatureValid) out.integrity = true;
+      out.signatureValid = await webcryptoVerify(signer.info, sigAlgNode, hash, signature, signedContent);
+      if (!signedAttrs && out.signatureValid) out.integrity = committed();
     } catch (err) {
       out.signatureValid = null;
       out.verifyNote = String(err && err.message || err);
     }
-    const t = out.cmsTime || new Date();
-    out.certValidAtSigning = t >= signer.info.notBefore && t <= signer.info.notAfter;
+    // the certificate path, at the time the signature claims; then the
+    // signer's own certificate must be one meant for this kind of signing
+    try {
+      out.chain = await buildChain(signer, parsed, out.cmsTime || opts.claimedTime || null);
+      const why = signerProblem(signer.info, !!content.tstInfo);
+      if (why && out.chain.trusted) out.chain = { trusted: false, reason: why, path: out.chain.path };
+    } catch (e) { out.chain = { trusted: false, reason: "error", path: [] }; }
+  }
+
+  if (!opts.nested) {
+    const token = unsigned.find((attr) => A.derToOid(attr.value[0].value) === OID.timeStampToken);
+    out.hasTimestamp = !!token;
+    if (token) out.timestamp = await verifyTimestampToken(token, signature);
   }
   return out;
 }
 
-async function webcryptoVerify(spki, keyAlg, curve, sigAlgOid, hash, signature, data) {
-  if (keyAlg === OID.rsaEncryption) {
-    const key = await crypto.subtle.importKey("spki", spki, { name: "RSASSA-PKCS1-v1_5", hash }, false, ["verify"]);
-    return crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, signature, data);
+// What the CMS commits to. A detached CMS (PAdES, adbe.pkcs7.detached) signs
+// the covered bytes themselves. Otherwise the content travels inside the CMS
+// and names the covered bytes in its own way: a TSTInfo (document timestamp,
+// or a timestamp token) by its messageImprint, adbe.pkcs7.sha1 as their
+// SHA-1. rangeOk is true or false, or null for content that cannot be
+// related to the covered bytes.
+async function encapsulatedContent(eci, covered, subFilter) {
+  const A = forge().asn1;
+  const type = A.derToOid(eci.value[0].value);
+  const wrapper = eci.value[1];
+  if (!wrapper) return { bytes: covered, rangeOk: true };
+  const bytes = binaryToBytes(octetString(wrapper.value[0]));
+  if (type === OID.tstInfo) {
+    const tst = A.fromDer(bytesToBinary(bytes)).value;
+    const imprint = tst[2].value;
+    const imprintHash = HASH_BY_OID[A.derToOid(imprint[0].value[0].value)];
+    if (!imprintHash) throw new Error("Zaman damgasında bilinmeyen özet algoritması.");
+    const rangeOk = bytesToHex(binaryToBytes(imprint[1].value)) === bytesToHex(await digest(imprintHash, covered));
+    return { bytes, rangeOk, tstInfo: { genTime: A.generalizedTimeToDate(tst[4].value) } };
   }
-  if (keyAlg === OID.ecPublicKey && CURVES[curve]) {
-    const [namedCurve, size] = CURVES[curve];
-    const key = await crypto.subtle.importKey("spki", spki, { name: "ECDSA", namedCurve }, false, ["verify"]);
-    return crypto.subtle.verify({ name: "ECDSA", hash }, key, derToRawEcdsa(signature, size), data);
+  if (/adbe\.pkcs7\.sha1/.test(subFilter)) {
+    return { bytes, rangeOk: bytesToHex(bytes) === bytesToHex(await digest("SHA-1", covered)) };
   }
-  throw new Error("Bu anahtar türü tarayıcıda doğrulanamıyor.");
+  return { bytes, rangeOk: null };
 }
 
-function derToRawEcdsa(der, size) {
-  const f = forge();
-  const seq = f.asn1.fromDer(bytesToBinary(der));
-  const part = (v) => {
-    let b = binaryToBytes(v.value);
-    while (b.length > size && b[0] === 0) b = b.subarray(1);
-    const out = new Uint8Array(size);
-    out.set(b, size - b.length);
-    return out;
+// An OCTET STRING's content, also in BER's constructed (chunked) form.
+function octetString(node) {
+  return Array.isArray(node.value) ? node.value.map(octetString).join("") : node.value;
+}
+
+// The certificate the SignerInfo names: by issuer and serial (a unique
+// serial is enough when only the name's string encoding differs), or by
+// subjectKeyIdentifier. No match means no signer — guessing the first
+// certificate would check the signature against, say, a CA's key.
+function findSigner(sid, parsed) {
+  const A = forge().asn1;
+  if (sid.tagClass === A.Class.UNIVERSAL && sid.type === A.Type.SEQUENCE) {
+    const issuer = bytesToHex(der(sid.value[0]));
+    const serial = bytesToHex(binaryToBytes(sid.value[1].value));
+    const bySerial = parsed.filter((p) => p.info.serialHex === serial);
+    return bySerial.find((p) => p.info.issuerDerHex === issuer) || (bySerial.length === 1 ? bySerial[0] : null);
+  }
+  if (sid.tagClass === A.Class.CONTEXT_SPECIFIC && sid.type === 0) {
+    const ski = bytesToHex(binaryToBytes(sid.value));
+    return parsed.find((p) => p.info.skiHex === ski) || null;
+  }
+  return null;
+}
+
+// A path to a pinned root does not make any certificate a signer: a CA's
+// certificate is not one, keyUsage has to allow signatures, and a
+// timestamp's signer has to be a TSA (extendedKeyUsage timeStamping).
+function signerProblem(info, timestamp) {
+  if (info.ca === true) return "ca-signer";
+  if (info.keyUsage && !info.keyUsage.digitalSignature && !info.keyUsage.nonRepudiation) return "key-usage";
+  if (timestamp && !(info.extKeyUsage || []).includes(OID.timeStamping)) return "not-tsa";
+  return null;
+}
+
+// An RFC 3161 token in a signature's unsigned attributes. Those sit outside
+// the signature (and the whole CMS outside the ByteRange), so anyone can add
+// one: it counts only when its imprint is the hash of this signature value,
+// its own CMS verifies and its TSA chains to a pinned root.
+async function verifyTimestampToken(attr, signatureValue) {
+  try {
+    const tv = await verifyCms(der(attr.value[1].value[0]), signatureValue, { nested: true });
+    if (tv.imprintMatch === undefined) throw new Error("Zaman damgası TSTInfo içermiyor.");
+    return {
+      trusted: tv.integrity === true && tv.signatureValid === true && !!(tv.chain && tv.chain.trusted),
+      imprintMatch: tv.imprintMatch,
+      signatureValid: tv.signatureValid,
+      genTime: tv.cmsTime || null,
+      tsa: tv.certificate ? tv.certificate.name : null,
+      chain: tv.chain || null,
+    };
+  } catch (err) {
+    return { trusted: false, imprintMatch: null, signatureValid: null, error: String(err && err.message || err) };
+  }
+}
+
+/* ------------------------------ Chain building ---------------------------- */
+// Path from the signer's certificate up to a pinned anchor (trust.js), each
+// link checked with WebCrypto, each issuer checked as an issuer: a CA by
+// basicConstraints, keyCertSign when keyUsage is present, within its
+// pathLenConstraint, and (unless pinned) valid at the signing time.
+// Certificates are matched to anchors by their DER, so a chain that carries
+// its own copy of a pinned root still ends at that root. Revocation
+// (CRL/OCSP) is out of reach for a static page and is not checked.
+//
+// chain: { trusted, anchor?, path: issuer names, reason? } where reason is
+// "untrusted-root" (ends at a root Mühür does not pin), "incomplete" (no
+// issuer found), "not-ca" (the issuer is not allowed to issue
+// certificates), "path-length", "expired" (an issuing CA was outside its
+// validity), "too-long", "error"; and for a signer, "ca-signer",
+// "key-usage" and "not-tsa" (see signerProblem).
+let anchorPool = null;
+async function anchors() {
+  if (!anchorPool) {
+    const A = forge().asn1;
+    anchorPool = (async () => {
+      const out = [];
+      for (const a of ANCHORS) {
+        const raw = binaryToBytes(atob(a.der));
+        if (bytesToHex(await digest("SHA-384", raw)).toLowerCase() !== a.sha384) continue; // pin
+        const asn1 = A.fromDer(bytesToBinary(raw));
+        out.push({ asn1, info: parseCertificate(asn1), der: raw, derHex: bytesToHex(der(asn1)), root: a.root, name: a.name, anchor: true });
+      }
+      return out;
+    })();
+  }
+  return anchorPool;
+}
+
+function certParts(certAsn1) {
+  const A = forge().asn1;
+  const tbs = certAsn1.value[0];
+  const i = tbs.value[0].tagClass === A.Class.CONTEXT_SPECIFIC ? 1 : 0;
+  const bits = certAsn1.value[2];
+  const raw = bits.bitStringContents !== undefined ? bits.bitStringContents : bits.value;
+  return {
+    tbs: der(tbs),
+    issuer: bytesToHex(der(tbs.value[i + 2])),
+    subject: bytesToHex(der(tbs.value[i + 4])),
+    sigAlgNode: certAsn1.value[1],
+    sigAlg: A.derToOid(certAsn1.value[1].value[0].value),
+    signature: binaryToBytes(raw).subarray(1),
   };
-  return concatBytes([part(seq.value[0]), part(seq.value[1])]);
+}
+
+const partsOf = (entry) => entry.parts || (entry.parts = certParts(entry.asn1));
+
+async function signedBy(parts, issuerInfo) {
+  try {
+    const hash = parts.sigAlg === OID.rsaPss ? pssParams(parts.sigAlgNode).hash : HASH_BY_OID[parts.sigAlg];
+    if (!hash) return false;
+    return await webcryptoVerify(issuerInfo, parts.sigAlgNode, hash, parts.signature, parts.tbs);
+  } catch (e) { return false; }
+}
+
+// Why `cand` may not issue the certificate below it; `below` counts the CA
+// certificates between it and the signer.
+function issuerProblem(cand, below, when) {
+  const c = cand.info;
+  if (c.ca !== true || (c.keyUsage && !c.keyUsage.keyCertSign)) return "not-ca";
+  if (c.pathLen != null && below > c.pathLen) return "path-length";
+  if (!cand.anchor && (when < c.notBefore || when > c.notAfter)) return "expired";
+  return null;
+}
+
+async function buildChain(signer, parsed, at) {
+  const when = at instanceof Date && !isNaN(at) ? at : new Date();
+  const pinned = await anchors();
+  const byDer = new Map(pinned.map((a) => [a.derHex, a]));
+  // anchors first; a certificate from the CMS that is byte-identical to one
+  // is the anchor
+  const pool = pinned.slice();
+  for (const p of parsed) {
+    const derHex = bytesToHex(der(p.asn1));
+    if (!byDer.has(derHex) && !pool.some((e) => e.derHex === derHex)) pool.push({ asn1: p.asn1, info: p.info, derHex });
+  }
+  const start = byDer.get(bytesToHex(der(signer.asn1))) || { asn1: signer.asn1, info: signer.info };
+
+  // Depth-first, so a refused or dead-end issuer does not hide another one.
+  // Every step costs a signature check, and the certificates come from the
+  // signer, so the number of checks is capped: a CMS stuffed with CA
+  // certificates of the same names must not stall the page.
+  const RANK = ["incomplete", "too-long", "expired", "path-length", "not-ca", "untrusted-root"];
+  let failure = "incomplete";
+  let checks = 0;
+  const fail = (why) => { if (RANK.indexOf(why) > RANK.indexOf(failure)) failure = why; return null; };
+  const walk = async (cur, path, below, seen) => {
+    const parts = partsOf(cur);
+    if (parts.issuer === parts.subject) {
+      return cur.anchor && cur.root ? { trusted: true, anchor: cur.name, path } : fail("untrusted-root");
+    }
+    if (path.length >= MAX_CHAIN) return fail("too-long");
+    for (const cand of pool) {
+      if (seen.has(cand) || partsOf(cand).subject !== parts.issuer) continue;
+      if (++checks > MAX_CHAIN_CHECKS) return fail("too-long");
+      if (!(await signedBy(parts, cand.info))) continue;
+      const why = issuerProblem(cand, below, when);
+      if (why) { fail(why); continue; }
+      const next = path.concat(cand.info.name);
+      if (cand.anchor && cand.root) return { trusted: true, anchor: cand.name, path: next };
+      const found = await walk(cand, next, below + 1, new Set(seen).add(cand));
+      if (found) return found;
+    }
+    return null;
+  };
+  return (await walk(start, [], 0, new Set([start]))) || { trusted: false, reason: failure, path: [] };
+}
+
+// Public: path for any certificate (DER), with optional extra CA
+// certificates, checked at `at` (default: now).
+export async function certificateChain(certDer, extraDers, at) {
+  const A = forge().asn1;
+  const toEntry = (d) => { const asn1 = A.fromDer(bytesToBinary(d)); return { asn1, info: parseCertificate(asn1) }; };
+  const leaf = toEntry(certDer);
+  return buildChain(leaf, (extraDers || []).map(toEntry), at);
+}
+
+// One signature check with WebCrypto, dispatched on the signature algorithm
+// and not only on the key: RSA PKCS#1 v1.5, RSA-PSS and ECDSA. A signature
+// value that does not decode, or an algorithm of the other key family, is a
+// failed signature (false). A key, curve or parameter set WebCrypto cannot
+// handle throws, which callers report as "could not verify" (null).
+async function webcryptoVerify(key, sigAlgNode, hash, signature, data) {
+  const A = forge().asn1;
+  const alg = A.derToOid(sigAlgNode.value[0].value);
+  const keyFamily = key.keyAlg === OID.rsaEncryption || key.keyAlg === OID.rsaPss ? "rsa" : key.keyAlg === OID.ecPublicKey ? "ec" : null;
+  const algFamily = alg.startsWith("1.2.840.113549.1.1.") ? "rsa" : alg.startsWith("1.2.840.10045.") ? "ec" : null;
+  if (!keyFamily) throw new Error("Bu anahtar türü tarayıcıda doğrulanamıyor.");
+  if (algFamily && algFamily !== keyFamily) return false;
+  if (keyFamily === "rsa" && alg === OID.rsaPss) {
+    const p = pssParams(sigAlgNode);
+    // WebCrypto ties MGF1's hash to the message hash
+    if (!p.hash || p.mgfHash !== p.hash) throw new Error("Bu RSA-PSS parametreleri tarayıcıda doğrulanamıyor.");
+    const k = await crypto.subtle.importKey("spki", rsaSpki(key), { name: "RSA-PSS", hash: p.hash }, false, ["verify"]);
+    return crypto.subtle.verify({ name: "RSA-PSS", saltLength: p.salt }, k, signature, data);
+  }
+  if (keyFamily === "rsa" && RSA_PKCS1_SIG.has(alg)) {
+    const k = await crypto.subtle.importKey("spki", rsaSpki(key), { name: "RSASSA-PKCS1-v1_5", hash: RSA_PKCS1_SIG.get(alg) || hash }, false, ["verify"]);
+    return crypto.subtle.verify("RSASSA-PKCS1-v1_5", k, signature, data);
+  }
+  if (keyFamily === "ec" && ECDSA_SIG.has(alg)) {
+    if (!CURVES[key.curve]) throw new Error("Bu eğri tarayıcıda doğrulanamıyor.");
+    const [namedCurve, size] = CURVES[key.curve];
+    const raw = derToRawEcdsa(signature, size);
+    if (!raw) return false;
+    const k = await crypto.subtle.importKey("spki", key.spki, { name: "ECDSA", namedCurve }, false, ["verify"]);
+    return crypto.subtle.verify({ name: "ECDSA", hash: ECDSA_SIG.get(alg) || hash }, k, raw, data);
+  }
+  throw new Error("Bu imza algoritması tarayıcıda doğrulanamıyor: " + alg);
+}
+
+// RFC 4055 RSASSA-PSS-params; absent fields mean SHA-1, MGF1 with SHA-1 and
+// a 20-byte salt.
+function pssParams(algId) {
+  const A = forge().asn1;
+  let hash = "SHA-1", mgfHash = "SHA-1", salt = 20;
+  const p = algId.value[1];
+  if (p && p.type === A.Type.SEQUENCE) {
+    for (const field of p.value) {
+      if (field.tagClass !== A.Class.CONTEXT_SPECIFIC) continue;
+      const inner = field.value[0];
+      if (field.type === 0) hash = HASH_BY_OID[A.derToOid(inner.value[0].value)];
+      else if (field.type === 1) mgfHash = inner.value[1] ? HASH_BY_OID[A.derToOid(inner.value[1].value[0].value)] : undefined;
+      else if (field.type === 2) salt = A.derToInteger(inner.value);
+    }
+  }
+  return { hash, mgfHash, salt };
+}
+
+// WebCrypto imports RSA keys under rsaEncryption only; an id-RSASSA-PSS key
+// holds the same RSAPublicKey, so its SubjectPublicKeyInfo is rewritten.
+function rsaSpki(key) {
+  if (key.keyAlg !== OID.rsaPss) return key.spki;
+  const A = forge().asn1;
+  const C = A.Class.UNIVERSAL, T = A.Type;
+  const bits = A.fromDer(bytesToBinary(key.spki)).value[1];
+  const raw = bits.bitStringContents !== undefined ? bits.bitStringContents : bits.value;
+  return der(A.create(C, T.SEQUENCE, true, [
+    A.create(C, T.SEQUENCE, true, [A.create(C, T.OID, false, A.oidToDer(OID.rsaEncryption).getBytes()), A.create(C, T.NULL, false, "")]),
+    A.create(C, T.BITSTRING, false, raw),
+  ]));
+}
+
+// ECDSA-Sig-Value (DER SEQUENCE of r, s) -> the fixed-size r||s WebCrypto
+// wants. Anything that is not exactly that gives null: a malformed value is
+// a signature that does not verify, not one that cannot be checked.
+function derToRawEcdsa(sig, size) {
+  try {
+    const A = forge().asn1;
+    const seq = A.fromDer(bytesToBinary(sig));
+    if (seq.type !== A.Type.SEQUENCE || seq.value.length !== 2) return null;
+    const part = (v) => {
+      if (v.type !== A.Type.INTEGER) throw new Error("ECDSA");
+      let b = binaryToBytes(v.value);
+      while (b.length > size && b[0] === 0) b = b.subarray(1);
+      if (b.length > size) throw new Error("ECDSA");
+      const out = new Uint8Array(size);
+      out.set(b, size - b.length);
+      return out;
+    };
+    return concatBytes([part(seq.value[0]), part(seq.value[1])]);
+  } catch (e) {
+    return null;
+  }
 }
 
 function decodeAsn1String(node) {
@@ -804,6 +1249,47 @@ function parseTime(node) {
   return node.type === A.Type.UTCTIME ? A.utcTimeToDate(node.value) : A.generalizedTimeToDate(node.value);
 }
 
+// The extensions path building and signer checks need. An extension that
+// does not decode counts as its most restrictive reading.
+function readExtensions(extensions) {
+  const A = forge().asn1;
+  const out = { qualified: false, qc5070: false, ca: false, pathLen: null, keyUsage: null, extKeyUsage: null, skiHex: null };
+  for (const ext of extensions) {
+    const oid = A.derToOid(ext.value[0].value);
+    const inner = () => A.fromDer(ext.value[ext.value.length - 1].value);   // extnValue
+    try {
+      if (oid === OID.basicConstraints) {
+        for (const n of inner().value) {
+          if (n.type === A.Type.BOOLEAN) out.ca = n.value.charCodeAt(0) !== 0;
+          else if (n.type === A.Type.INTEGER) out.pathLen = A.derToInteger(n.value);
+        }
+      } else if (oid === OID.keyUsage) {
+        out.keyUsage = { digitalSignature: false, nonRepudiation: false, keyCertSign: false };
+        const bits = inner();
+        const raw = bits.bitStringContents !== undefined ? bits.bitStringContents : bits.value;
+        const b = raw.charCodeAt(1) || 0;      // after the unused-bits octet
+        out.keyUsage = { digitalSignature: !!(b & 0x80), nonRepudiation: !!(b & 0x40), keyCertSign: !!(b & 0x04) };
+      } else if (oid === OID.extKeyUsage) {
+        out.extKeyUsage = [];
+        out.extKeyUsage = inner().value.map((n) => A.derToOid(n.value));
+      } else if (oid === OID.subjectKeyIdentifier) {
+        out.skiHex = bytesToHex(binaryToBytes(inner().value));
+      } else if (oid === OID.qcStatements) {
+        // ETSI QcCompliance, or BTK's "nitelikli elektronik sertifika (5070)"
+        const bin = A.toDer(ext).getBytes();
+        out.qc5070 = bin.includes(A.oidToDer("2.16.792.1.61.0.1.5070.1.1").getBytes());
+        out.qualified = out.qc5070 || bin.includes(A.oidToDer("0.4.0.1862.1.1").getBytes());
+      }
+    } catch (e) {
+      if (oid === OID.basicConstraints) { out.ca = false; out.pathLen = null; }
+    }
+  }
+  return out;
+}
+
+// Also returned, for path building and signer checks: ca, pathLen,
+// keyUsage { digitalSignature, nonRepudiation, keyCertSign } or null,
+// extKeyUsage (OIDs) or null, skiHex, issuerDerHex.
 export function parseCertificate(certAsn1) {
   const A = forge().asn1;
   const tbs = certAsn1.value[0].value;
@@ -811,24 +1297,22 @@ export function parseCertificate(certAsn1) {
   if (tbs[0].tagClass === A.Class.CONTEXT_SPECIFIC) i++;
   const serialHex = bytesToHex(binaryToBytes(tbs[i++].value));
   i++; // signature algorithm
-  const issuer = parseName(tbs[i++]);
+  const issuerNode = tbs[i++];
+  const issuer = parseName(issuerNode);
   const validity = tbs[i++].value;
   const subject = parseName(tbs[i++]);
   const spkiNode = tbs[i++];
   const keyAlg = A.derToOid(spkiNode.value[0].value[0].value);
   const params = spkiNode.value[0].value[1];
   const curve = params && params.type === A.Type.OID ? A.derToOid(params.value) : null;
-  let qualified = false;
+  let ext = readExtensions([]);
   for (; i < tbs.length; i++) {
-    if (tbs[i].tagClass === A.Class.CONTEXT_SPECIFIC && tbs[i].type === 3) {
-      for (const ext of tbs[i].value[0].value) {
-        if (A.derToOid(ext.value[0].value) === OID.qcStatements) qualified = true;
-      }
-    }
+    if (tbs[i].tagClass === A.Class.CONTEXT_SPECIFIC && tbs[i].type === 3) ext = readExtensions(tbs[i].value[0].value);
   }
   const sameName = JSON.stringify(issuer) === JSON.stringify(subject);
   return {
     subject, issuer, serialHex,
+    issuerDerHex: bytesToHex(der(issuerNode)),
     name: subject.CN || [subject.givenName, subject.surname].filter(Boolean).join(" ") || subject.O || "Bilinmeyen",
     email: subject.email || null,
     organization: subject.O || null,
@@ -836,7 +1320,13 @@ export function parseCertificate(certAsn1) {
     notBefore: parseTime(validity[0]),
     notAfter: parseTime(validity[1]),
     selfSigned: sameName,
-    qualified,
+    qualified: ext.qualified,
+    qc5070: ext.qc5070,
+    ca: ext.ca,
+    pathLen: ext.pathLen,
+    keyUsage: ext.keyUsage,
+    extKeyUsage: ext.extKeyUsage,
+    skiHex: ext.skiHex,
     keyAlg, curve,
     keyLabel: keyAlg === OID.rsaEncryption ? "RSA" : keyAlg === OID.ecPublicKey ? "ECDSA" : keyAlg === OID.rsaPss ? "RSA-PSS" : keyAlg,
     spki: binaryToBytes(A.toDer(spkiNode).getBytes()),

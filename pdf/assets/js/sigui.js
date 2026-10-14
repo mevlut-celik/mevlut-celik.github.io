@@ -16,6 +16,7 @@ import { uid, formatDateTime, formatDate, downloadBytes, safeFileName, base64ToB
 import { createSelfSignedIdentity, importP12, describeIdentity, identityCertDer, signPdf } from "./sign.js";
 import { isPristine, auditInfo, displayToPdf, apply } from "./pdfwork.js";
 import { addVersion } from "./docs.js";
+import * as kart from "./kart.js";
 
 const INKS = [["#111111", "Siyah"], ["#1d3fbf", "Mavi"], ["#0b4d2c", "Yeşil"]];
 const SCRIPTS = [["Dancing Script", 600], ["Great Vibes", 400], ["Caveat", 500], ["Allura", 400]];
@@ -427,7 +428,7 @@ export async function openIdentity() {
           h("button.btn.btn--primary", { type: "button", html: icon("fingerprint") + "Öz-imzalı kimlik oluştur", onclick: () => makeSelf(false) }),
           h("button.btn", { type: "button", html: icon("file-key") + ".p12/.pfx içe aktar", onclick: importFile })));
     }
-    body.append(h("div.tip.tip--warn", { html: icon("triangle-alert") + "<span>5070 sayılı Kanun kapsamındaki <strong>nitelikli elektronik imza</strong> (e-imza kartı / USB token) tarayıcıdan doğrudan kullanılamaz. Mühür, NES ile imzalanmış PDF'leri doğrulayabilir; NES ile imzalamak için sağlayıcının imzalama yazılımını kullan.</span>" }));
+    body.append(h("div.tip", { html: icon("credit-card") + "<span>5070 sayılı Kanun kapsamındaki <strong>nitelikli elektronik sertifikan</strong> (Kamu SM / TÜBİTAK e-imza kartı ya da token) varsa: <em>Dijital olarak imzala</em> penceresinde <strong>e-İmza kartı</strong>'nı seç. Kart, bilgisayarında çalışan Mühür İmza Köprüsü üzerinden kullanılır; özel anahtar kartın dışına çıkmaz.</span>" }));
   };
   const makeSelf = async (replace) => {
     if (replace && !(await confirmDialog({ title: "Kimlik değiştirilsin mi?", message: "Yeni bir anahtar çifti oluşturulur. Eski kimlikle atılmış imzalar geçerli kalır ama bu cihazda o kimlikle imza atamazsın.", confirm: "Oluştur" }))) return;
@@ -478,10 +479,15 @@ const REASONS = ["Bu belgeyi onaylıyorum", "Bu belgenin yazarıyım", "Bu belge
 export async function openDigitalSign(saved) {
   await Promise.all([forge(), pdflib()]);
   const user = store.currentUser();
+  // the dialog reopens after the field is drawn; it must be the same document
+  const docId = E.doc && E.doc.id;
   let identity = await getIdentity();
   const st = saved || {
     reason: REASONS[0], location: "", contact: user.email, visible: true, field: null, sigId: (E.signatures.find((s) => s.kind !== "initials") || {}).id || null,
-    audit: true,
+    audit: true, source: lastSource(),
+    // redraw: draws the card box of the dialog showing it now (null once the signing ends)
+    // tokens/slot: the cards the bridge sees, and the one the PIN goes to
+    card: { stage: "idle", certs: [], selected: null, pin: "", status: null, error: null, tokens: [], slot: null, redraw: null },
   };
   const existing = (E.verification || []).length;
   const pristine = isPristine(E.state);
@@ -511,6 +517,43 @@ export async function openDigitalSign(saved) {
   };
   await drawId();
 
+  // The subtitle names the digest of the key that will sign: browser
+  // identities are RSA with SHA-256; a card's EC P-384 key signs with SHA-384.
+  let d = null;
+  const subText = () => {
+    const hash = st.source !== "card" ? "SHA-256" : st.card.selected ? kart.cardHash(st.card.selected) : null;
+    return `PAdES temel profil (ETSI.CAdES.detached${hash ? ", " + hash : ""}) kriptografik imza`;
+  };
+  const syncSub = () => {
+    const el = d && d.el.querySelector(".dialog__sub");
+    if (el) el.textContent = subText();
+  };
+
+  // where the signature comes from: this browser's key, or an e-signature card
+  const sourceSeg = h("div.segment", { role: "radiogroup", "aria-label": "İmza aracı" });
+  const sourceBody = h("div");
+  const cardBox = h("div.cardbox");
+  const drawSource = () => {
+    sourceBody.textContent = "";
+    sourceBody.append(st.source === "card" ? cardBox : idBox);
+    if (st.source === "card") drawCard();
+    syncSub();
+  };
+  for (const [k, label] of [["browser", "Bu tarayıcıdaki kimlik"], ["card", "e-İmza kartı"]]) {
+    sourceSeg.append(h("button.segment__btn", { type: "button", role: "radio", "aria-checked": String(st.source === k), class: "segment__btn" + (st.source === k ? " is-active" : ""), html: icon(k === "card" ? "credit-card" : "fingerprint", "icon--sm") + " " + label, onclick: (e) => {
+      st.source = k;
+      saveSource(k);
+      checkSegment(sourceSeg, e.currentTarget);
+      drawSource();
+    } }));
+  }
+  // Requests to the card finish later; they draw into whichever dialog
+  // shows the card by then (a new one after the field is drawn), not the
+  // one that started them.
+  const drawCard = () => { drawCardBox(cardBox, st.card); syncSub(); };
+  st.card.redraw = drawCard;
+  drawSource();
+
   const reasonSel = h("select.select");
   for (const r of REASONS) reasonSel.append(h("option", { value: r, text: r, selected: r === st.reason }));
   reasonSel.append(h("option", { value: "__custom", text: "Diğer…", selected: !REASONS.includes(st.reason) }));
@@ -519,7 +562,7 @@ export async function openDigitalSign(saved) {
   const loc = h("input.input", { type: "text", value: st.location, placeholder: "Ör. Ankara" });
   const contact = h("input.input", { type: "text", value: st.contact });
 
-  const visSeg = h("div.segment.segment--sm");
+  const visSeg = h("div.segment.segment--sm", { role: "radiogroup", "aria-label": "Görünüm" });
   const fieldBox = h("div", { style: { display: "grid", gap: "10px" } });
   const drawField = () => {
     fieldBox.textContent = "";
@@ -543,9 +586,9 @@ export async function openDigitalSign(saved) {
     fieldBox.append(h("span.field__label", { text: "Kutuda görünecek imza" }), tiles);
   };
   for (const [k, label] of [[false, "Görünmez"], [true, "Sayfada göster"]]) {
-    visSeg.append(h("button.segment__btn", { type: "button", class: "segment__btn" + (st.visible === k ? " is-active" : ""), text: label, onclick: (e) => {
+    visSeg.append(h("button.segment__btn", { type: "button", role: "radio", "aria-checked": String(st.visible === k), class: "segment__btn" + (st.visible === k ? " is-active" : ""), text: label, onclick: (e) => {
       st.visible = k;
-      $$(".segment__btn", visSeg).forEach((b) => b.classList.toggle("is-active", b === e.currentTarget));
+      checkSegment(visSeg, e.currentTarget);
       drawField();
     } }));
   }
@@ -558,7 +601,8 @@ export async function openDigitalSign(saved) {
   notes.append(h("div.tip", { html: icon("info") + "<span>İmzalı hali yeni bir sürüm olarak kaydedilir. Sonradan yapılan her değişiklik imzayı geçersiz kılar; değişiklik yapıp yeniden imzalayabilirsin.</span>" }));
 
   body.append(
-    idBox,
+    h("div.field", {}, h("span.field__label", { text: "İmza aracı" }), sourceSeg),
+    sourceBody,
     h("label.field", {}, h("span.field__label", { text: "İmza nedeni" }), reasonSel, reasonCustom),
     h("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" } },
       h("label.field", {}, h("span.field__label", { text: "Konum" }), loc),
@@ -574,42 +618,302 @@ export async function openDigitalSign(saved) {
     st.contact = contact.value.trim();
     st.audit = auditCb.checked;
   };
-  let d = null;
   const pickField = async () => {
+    if (st.source === "card" && (st.card.stage === "connecting" || st.card.stage === "loading")) {
+      toast("Kart işlemi bitene kadar bekle.", "warn");
+      return;
+    }
     collect();
     d.close("pick");
   };
   d = dialog({
     title: "Dijital olarak imzala",
-    sub: "PAdES uyumlu kriptografik imza (adbe.pkcs7.detached, SHA-256)",
+    sub: subText(),
     body,
     size: "md",
     actions: [
       { label: "Vazgeç", value: null },
       { label: "İmzala ve kaydet", kind: "seal", icon: "file-pen-line", onClick: () => {
         collect();
-        if (!identity) { toast("Önce bir dijital kimlik oluştur ya da içe aktar.", "warn"); return false; }
+        if (st.source === "card") {
+          if (!st.card.selected || !cardPinReady(st.card)) { toast("Önce kartı bağla, PIN'i gir ve imzalayacak sertifikayı seç.", "warn"); return false; }
+        } else if (!identity) { toast("Önce bir dijital kimlik oluştur ya da içe aktar.", "warn"); return false; }
         if (st.visible && !st.field) { pickField(); return undefined; }
+        // Safari: if the relay window was closed meanwhile, reopen it now,
+        // while this click still allows a popup; signing waits for it
+        if (st.source === "card" && kart.isSafari()) kart.openRelay().catch(() => { /* signing reports it */ });
         return "sign";
       } },
     ],
   });
   const r = await d.result;
   if (r === "pick") {
-    const field = await E.drawSigField();
+    const field = await drawFieldOn(docId);
+    // the editor was closed (Back, lock, sign-out) or another document opened
+    // meanwhile: drop the signing, with its PIN and relay window
+    if (!E.open || !E.doc || E.doc.id !== docId) { endCardSession(st.card); return; }
     if (field) st.field = field;
     return openDigitalSign(st);
   }
-  if (r !== "sign") return;
-  await performSign(st, identity, user, { incremental });
+  if (r !== "sign") {
+    endCardSession(st.card);
+    return;
+  }
+  let who;
+  if (st.source === "card") {
+    const c = st.card.selected;
+    who = { signer: kart.cardSigner(c, st.card.pin), info: c.info, name: c.info.name, card: true };
+  } else {
+    who = { identity, info: await describeIdentity(identity), name: user.name, card: false };
+  }
+  try {
+    await performSign(st, who, user, { incremental });
+  } finally {
+    endCardSession(st.card);
+  }
 }
 
-async function performSign(st, identity, user, { incremental }) {
+// The PIN lives only as long as one signing; the Safari relay window too.
+function endCardSession(c) {
+  c.pin = "";
+  c.redraw = null;
+  kart.closeRelay();
+}
+
+// Signing needs the PIN typed here, unless the reader takes it on its own
+// keypad (the bridge reports such a token as pinpad).
+function cardPinReady(c) {
+  return !!c.pin || !!(c.status && c.status.pinpad);
+}
+
+// The editor's field picker settles when a field is drawn or the tool
+// changes; leaving the editor (Back, lock, sign-out) does neither, so it is
+// watched here too, and the wait ends with null when the document goes.
+function drawFieldOn(docId) {
+  return new Promise((resolve) => {
+    const gone = () => !E.open || !E.doc || E.doc.id !== docId;
+    const t = setInterval(() => { if (gone()) { clearInterval(t); resolve(null); } }, 400);
+    E.drawSigField().then((field) => { clearInterval(t); resolve(field); }, () => { clearInterval(t); resolve(null); });
+  });
+}
+
+// Marks one segment button as the chosen one, for sight and for screen readers.
+function checkSegment(seg, btn) {
+  for (const b of $$(".segment__btn", seg)) {
+    b.classList.toggle("is-active", b === btn);
+    b.setAttribute("aria-checked", String(b === btn));
+  }
+}
+
+/* -------------------------- e-signature card box ------------------------- */
+const SOURCE_KEY = "muhur.signSource";
+function lastSource() { try { return localStorage.getItem(SOURCE_KEY) || "browser"; } catch (e) { return "browser"; } }
+function saveSource(v) { try { localStorage.setItem(SOURCE_KEY, v); } catch (e) { /* storage blocked */ } }
+
+// The card box has one state object (c) for the whole signing, which
+// outlives the dialog: picking the field closes the dialog and opens a new
+// one. Requests to the card therefore finish through c.redraw (the dialog
+// showing the card now) and are guarded by c.stage, so that one PIN is never
+// sent twice — every PIN check is a login on the card, and AKİS cards lock
+// after three wrong ones.
+function drawCardBox(box, c) {
+  const repaint = () => { if (c.redraw) c.redraw(); };
+  // Safari reaches the bridge through a relay window, which may only be
+  // opened from a click or key press: open it (or reuse it) before any await
+  const relayReady = () => (kart.isSafari() ? kart.openRelay() : Promise.resolve());
+  box.textContent = "";
+  const head = h("div.idcard__head", {}, h("span.idcard__seal", { html: icon("credit-card") }),
+    h("div", {}, h("div", { style: { fontWeight: 650 }, text: "e-İmza kartı ile imzala" }),
+      h("div.fineprint", { text: "Kamu SM (TÜBİTAK) AKİS ve PKCS#11 destekli diğer kartlar · Mühür İmza Köprüsü ile" })));
+  const card = h("div.idcard", {}, head);
+  box.append(card);
+
+  const connect = async () => {
+    if (c.stage === "connecting" || c.stage === "loading") return;
+    const ready = relayReady();
+    const run = (c.run || 0) + 1;
+    c.run = run;
+    c.stage = "connecting";
+    c.error = null;
+    repaint();
+    try {
+      await ready;
+      const status = await kart.status();
+      if (c.run !== run) return;   // a newer attempt took over
+      c.status = status;
+      // with several cards in, the user names the one the PIN is for
+      c.tokens = Array.isArray(status.tokens) ? status.tokens.filter((t) => t && typeof t.slot === "number") : [];
+      if (!c.tokens.some((t) => t.slot === c.slot)) c.slot = c.tokens.length === 1 ? c.tokens[0].slot : null;
+      if (c.status.card === "yok") { c.stage = "error"; c.error = { code: "KART_YOK", message: "Köprü çalışıyor ama takılı bir kart bulunamadı. Kartı okuyucuya ya da token'ı USB'ye takıp tekrar dene." }; }
+      else if (String(c.status.card).startsWith("hata")) { c.stage = "error"; c.error = { code: "SURUCU", message: "Kart sürücüsü yanıt vermedi: " + c.status.card.slice(5) }; }
+      else if (!c.status.library && c.status.mode === "pkcs11") { c.stage = "error"; c.error = { code: "SURUCU_YOK", message: "Köprü kart sürücüsünü (akisp11) bulamadı. Akia sürücüsünü kur ya da köprüyü --lib <yol> ile başlat." }; }
+      else c.stage = "pin";
+    } catch (err) {
+      if (c.run !== run) return;
+      c.stage = "error";
+      c.error = { code: err.code || "HATA", message: err.message || String(err) };
+      // the bridge was not reached (no answer, window closed, relay failed):
+      // drop the relay window, so that "Tekrar dene" opens a fresh one
+      if (!err.status && c.redraw) kart.closeRelay();
+    }
+    repaint();
+  };
+
+  if (c.stage === "idle" || c.stage === "connecting") {
+    const connecting = c.stage === "connecting";
+    card.append(
+      h("p.fineprint", { text: "Kartın bu bilgisayarda çalışan küçük bir Java programı (İmza Köprüsü) üzerinden kullanılır. PIN yalnızca o programa iletilir; imza belgenin hazırlanan özetine kartın içinde atılır." }),
+      h("div.pactions", {},
+        h("button.btn.btn--sm.btn--primary", { type: "button", disabled: connecting, html: icon(connecting ? "loader-circle" : "plug-zap", connecting ? "spin" : "") + (connecting ? "Bağlanıyor…" : "Kartı bağla"), onclick: connect }),
+        h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("info") + "Kurulum", onclick: () => { c.stage = "error"; c.error = null; repaint(); } })));
+    if (connecting) {
+      card.append(h("p.fineprint", { role: "status", text: (kart.isSafari() ? "Açılan küçük köprü penceresini kapatma." : "Tarayıcı 'bu cihazdaki uygulamalara erişim' izni isterse İzin ver'i seç.") +
+        " Okuyucunun tuş takımı PIN isterse PIN'i okuyucudan gir." }));
+    }
+    return;
+  }
+
+  if (c.stage === "error") {
+    if (c.error) card.append(h("div.tip.tip--warn", { role: "alert", html: icon("triangle-alert") + `<span>${esc(c.error.message)}</span>` }));
+    card.append(setupGuide());
+    card.append(h("div.pactions", {}, h("button.btn.btn--sm.btn--primary", { type: "button", html: icon("plug-zap") + "Tekrar dene", onclick: connect })));
+    return;
+  }
+
+  const s = c.status || {};
+  const pinpad = !!s.pinpad;
+  card.append(h("div.fineprint", { html: icon("circle-check", "icon--sm") + ` Köprü ${esc(s.version || "")} · ${s.mode === "p12" ? "deneme modu" : "kart takılı"}${pinpad ? " · tuş takımlı okuyucu" : ""} · Java ${esc(s.java || "?")}` }));
+
+  if (c.stage === "pin" || c.stage === "loading") {
+    const loading = c.stage === "loading";
+    const tokens = c.tokens || [];
+    const several = tokens.length > 1;
+    const tokenName = (t) => t.label || "Kart " + (t.slot + 1);
+    const chosen = tokens.find((t) => t.slot === c.slot);
+    const errId = uid("kart-err");
+    const showError = c.error && !loading;
+    // A pinpad reader takes the PIN on its own keypad: nothing to type here.
+    // Otherwise the field is not a site password: keep password managers
+    // from saving the PIN or filling the account password into it. The PIN
+    // is never written back into the field.
+    const pin = pinpad ? null : h("input.input", {
+      type: "password", inputmode: "numeric", disabled: loading,
+      autocomplete: "one-time-code", "data-1p-ignore": true, "data-lpignore": "true", "data-bwignore": true, "data-form-type": "other",
+      placeholder: "Kart PIN'i", "aria-label": "Kart PIN'i", "aria-describedby": showError ? errId : null,
+    });
+    const go = async () => {
+      if (c.stage !== "pin") return;   // a check is already running
+      if (several && c.slot == null) { toast("Önce PIN'in gideceği kartı seç.", "warn"); return; }
+      if (pin && !pin.value) { pin.focus(); return; }
+      const ready = relayReady();
+      c.pin = pin ? pin.value : "";
+      c.stage = "loading";
+      c.error = null;
+      repaint();
+      try {
+        await ready;
+        c.certs = await kart.certificates(c.pin, c.slot);
+        if (!c.certs.length) throw new kart.CardError("SERTIFIKA_YOK", "Kartta imza için kullanılabilecek bir sertifika bulunamadı.");
+        c.selected = c.certs.find((x) => x.signing) || c.certs[0];
+        c.stage = "certs";
+      } catch (err) {
+        c.pin = "";
+        // the bridge or the card is gone, or another card was plugged in: connect again
+        c.stage = ["KOPRU_YOK", "IZIN", "POPUP", "KART_YOK", "KART_SEC"].includes(err.code) ? "error" : "pin";
+        c.error = { code: err.code, message: err.message };
+      }
+      repaint();
+    };
+    if (pin) {
+      pin.addEventListener("keydown", (e) => {
+        e.stopPropagation();
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        if (!e.repeat) go();   // a held-down Enter must not send the PIN again
+      });
+    }
+    if (showError) card.append(h("div.tip.tip--danger", { id: errId, role: "alert", html: icon("circle-alert") + `<span>${esc(c.error.message)}</span>` }));
+    const pinLabel = h("span.field__label", { text: several && chosen ? "PIN · " + tokenName(chosen) : "PIN" });
+    if (several) {
+      // no redraw on a choice: that would throw away a PIN already typed
+      const which = h("div.segment.segment--sm", { role: "radiogroup", "aria-label": "PIN'in gideceği kart" });
+      for (const t of tokens) {
+        const on = t.slot === c.slot;
+        which.append(h("button.segment__btn", { type: "button", role: "radio", "aria-checked": String(on), disabled: loading, class: "segment__btn" + (on ? " is-active" : ""), text: tokenName(t), onclick: (e) => {
+          c.slot = t.slot;
+          checkSegment(which, e.currentTarget);
+          pinLabel.textContent = "PIN · " + tokenName(t);
+          if (pin) pin.focus();
+        } }));
+      }
+      card.append(h("div.field", {}, h("span.field__label", { text: "Birden fazla kart takılı: PIN'in gideceği kartı seç" }), which));
+    }
+    if (pin) {
+      card.append(h("label.field", {}, pinLabel, pin,
+        h("span.field__hint", { text: "AKİS kartlar art arda 3 yanlış PIN'de kilitlenir. PIN tarayıcıda saklanmaz." })));
+    } else {
+      card.append(h("p.fineprint", { text: "Bu okuyucu PIN'i kendi tuş takımından alır; PIN bu sayfaya yazılmaz. Sertifikalar okunurken okuyucu PIN isteyecek." }));
+    }
+    if (loading) card.append(h("p.fineprint", { role: "status", text: pinpad ? "Kart okunuyor… PIN'i okuyucunun tuş takımından gir." : "Kart okunuyor… Okuyucunun tuş takımı PIN isterse PIN'i okuyucudan gir." }));
+    card.append(h("div.pactions", {}, h("button.btn.btn--sm.btn--primary", { type: "button", disabled: loading, html: icon(loading ? "loader-circle" : "key-round", loading ? "spin" : "") + (loading ? "Kart okunuyor…" : "Sertifikaları göster"), onclick: go })));
+    if (pin && !loading) setTimeout(() => { if (pin.isConnected) { pin.focus(); pin.select(); } }, 30);
+    return;
+  }
+
+  // certificates on the card: a radio group (arrow keys move the choice)
+  const list = h("div.certlist", { role: "radiogroup", "aria-label": "İmzalayacak sertifika" });
+  const choose = (cert) => {
+    c.selected = cert;
+    repaint();
+    // the list was rebuilt: keep the keyboard on the chosen certificate
+    const on = box.querySelector('.certopt[aria-checked="true"]');
+    if (on) on.focus();
+  };
+  const current = c.certs.includes(c.selected) ? c.selected : c.certs[0];
+  for (const cert of c.certs) {
+    const i = cert.info;
+    const on = c.selected === cert;
+    list.append(h("button.certopt", {
+      type: "button", role: "radio", "aria-checked": String(on), tabindex: cert === current ? "0" : "-1", class: "certopt" + (on ? " is-active" : ""),
+      onclick: () => choose(cert),
+    },
+    h("span.certopt__name", {}, i.name, i.qualified ? h("span.badge.badge--ok", { html: icon("badge-check") + "Nitelikli" }) : null),
+    h("span.certopt__sub", { text: `${i.issuerName} · ${formatDate(i.notBefore)} – ${formatDate(i.notAfter)} · ${i.keyLabel} · ${kart.cardHash(cert)}` + (cert.signing ? "" : " · imza amaçlı değil") })));
+  }
+  list.addEventListener("keydown", (e) => {
+    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+    if (!step || !c.certs.length) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const at = Math.max(0, c.certs.indexOf(c.selected));
+    choose(c.certs[(at + step + c.certs.length) % c.certs.length]);
+  });
+  card.append(h("span.field__label", { text: "İmzalayacak sertifika" }), list,
+    h("div.pactions", {}, h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("key-round") + "PIN'i değiştir", onclick: () => { c.pin = ""; c.certs = []; c.selected = null; c.stage = "pin"; c.error = null; repaint(); } })));
+}
+
+function setupGuide() {
+  const os = kart.platform();
+  const cmd = kart.runCommand(os);
+  const copy = h("button.btn.btn--sm.btn--ghost", { type: "button", html: icon("copy") + "Kopyala", onclick: () => navigator.clipboard.writeText(cmd).then(() => toast("Komut kopyalandı.", "ok")) });
+  return h("ol.steps", {},
+    h("li", { html: `<strong>Kart sürücüsünü kur.</strong> Kamu SM (TÜBİTAK) kartı için <a href="${kart.DRIVER_URL}" target="_blank" rel="noopener">Akia sürücüsü</a>${os === "mac" ? " — Apple Silicon (M1–M5) ya da Intel paketini seç" : ""}. Başka bir sağlayıcının kartıysa o sağlayıcının sürücüsü.` }),
+    h("li", { html: `<strong>Java kur</strong> (yoksa): Java 8 ya da üstü, örneğin <a href="https://adoptium.net/" target="_blank" rel="noopener">Temurin</a>.` }),
+    h("li", { html: `<strong>İmza Köprüsü'nü indir:</strong> <a href="${kart.JAR_URL}" download>MuhurImzaKoprusu.jar</a> (16 KB, <a href="${kart.SOURCE_URL}" target="_blank" rel="noopener">kaynak kodu</a>).` }),
+    h("li", {}, h("strong", { text: "Terminalde çalıştır" }), os === "windows" ? " (Komut İstemi):" : ":",
+      h("div.cmd", {}, h("code", { text: cmd }), copy),
+      h("span.fineprint", { text: "Pencere açık kaldığı sürece köprü çalışır. Sürücü farklı bir yerdeyse sona --lib <yol> ekle." })),
+    h("li", { html: kart.isSafari()
+      ? "<strong>Safari:</strong> Bağlanırken küçük bir köprü penceresi açılır; imzalama bitene kadar kapatma. Açılır pencere engellenirse bu site için izin ver."
+      : "<strong>Tarayıcı izni:</strong> İlk bağlantıda tarayıcı bu sitenin <em>cihazdaki uygulamalara</em> erişmesine izin isteyebilir; İzin ver'i seç." }));
+}
+
+async function performSign(st, who, user, { incremental }) {
   const P = await pdflib();
   await forge();
   const b = busy("Belge imzalanıyor…");
   try {
-    const info = await describeIdentity(identity);
+    const info = who.info;
     const now = new Date();
     const visual = [];
     E.state.items.forEach((it) => { if (it.type === "image" && (it.kind === "signature" || it.kind === "initials")) visual.push(E.pageIndex(it.page) + 1); });
@@ -623,7 +927,8 @@ async function performSign(st, identity, user, { incremental }) {
         b.set("İçerik özeti hesaplanıyor…");
         const content = await E.buildBytes({ force: true });
         audit = await auditInfo({
-          docName: E.doc.name, docId: E.doc.id, pageCount: E.state.pages.length, contentBytes: content, user,
+          docName: E.doc.name, docId: E.doc.id, pageCount: E.state.pages.length, contentBytes: content,
+          user: { name: who.name, email: info.email || user.email },
           identityInfo: info, reason: st.reason, location: st.location, visualSignatures: visualLabel,
         });
       }
@@ -648,18 +953,23 @@ async function performSign(st, identity, user, { incremental }) {
         const sig = E.signatures.find((s) => s.id === st.sigId);
         appearance = {
           imagePng: sig ? base64ToBytes(sig.url.split(",")[1]) : null,
-          lines: ["Dijital olarak imzalayan:", user.name, formatDateTime(now) + " " + tzLabel(now), st.reason ? "Neden: " + st.reason : null].filter(Boolean),
+          lines: ["Dijital olarak imzalayan:", who.name, formatDateTime(now) + " " + tzLabel(now), st.reason ? "Neden: " + st.reason : null].filter(Boolean),
           fontBytes: await fontBytes("LiberationSans-Regular.ttf"),
         };
       }
     }
-    b.set("İmza oluşturuluyor…");
+    b.set(who.card ? "Kart imzalıyor… (pinpad okuyucuda PIN'i okuyucudan gir)" : "İmza oluşturuluyor…");
     const signed = await signPdf(base, {
-      identity, name: user.name, reason: st.reason, location: st.location, contact: st.contact,
+      identity: who.identity, signer: who.signer, name: who.name, reason: st.reason, location: st.location, contact: st.contact,
       page: Math.max(0, page), rect, appearance, date: now,
     });
+    if (who.card) {
+      // remember this card's certificate so the signature panel can say "yours"
+      const known = await store.getVault("cards", []);
+      if (!known.includes(info.fingerprint)) await store.putVault("cards", known.concat(info.fingerprint).slice(-8));
+    }
     b.set("Sürüm kaydediliyor…");
-    await addVersion(E.doc, signed, `İmzalı · ${user.name} · ${formatDateTime(now)}`, { signed: true });
+    await addVersion(E.doc, signed, `İmzalı · ${who.name} · ${formatDateTime(now)}`, { signed: true });
     await store.deleteState(E.doc.id);
     await E.reloadVersion();
     import("./panels.js").then((p) => p.showPanel("signatures"));
@@ -673,13 +983,24 @@ async function performSign(st, identity, user, { incremental }) {
 }
 
 /* ============================= Verification ============================= */
+// The content digest alone proves nothing: whoever built the CMS chose it.
+// Only a signature value that verifies with the certificate's key makes it
+// (and the certificate's identity) a guarantee, so nothing is green until
+// both the digest and the signature check out. The same goes for what the
+// certificate claims (a chain, a QC statement) and for a timestamp: shown
+// as a guarantee only once it was checked. Fields: see sign.js verifyPdf.
 export function verificationCard(r) {
-  const ok = r.integrity && r.signatureValid === true;
+  const signed = r.signatureValid === true;
+  const ok = r.integrity === true && signed;
   const bad = r.integrity === false || r.signatureValid === false;
-  const status = bad ? "bad" : ok && !r.laterChanges ? "ok" : "warn";
+  const ts = r.timestamp || null;
+  const tsWrong = !!(ts && ts.imprintMatch === false);   // a token that belongs to something else
+  const status = bad ? "bad" : ok && !r.laterChanges && !tsWrong ? "ok" : "warn";
   const iconName = { ok: "shield-check", warn: "shield-alert", bad: "shield-x" }[status];
   const c = r.certificate || {};
-  const who = c.name || r.nameEntry || "Bilinmeyen imzalayan";
+  const trustedChain = !!(r.chain && r.chain.trusted);
+  // a document timestamp is a TSA's token over the file, not a person's signature
+  const who = r.documentTimestamp ? "Belge zaman damgası" : c.name || r.nameEntry || "Bilinmeyen imzalayan";
   const card = h("div.sigcard");
   card.append(h("div.sigcard__head", {},
     h("span.sigcard__icon.sigcard__icon--" + status, { class: "sigcard__icon sigcard__icon--" + status, html: icon(iconName) }),
@@ -688,17 +1009,41 @@ export function verificationCard(r) {
   const add = (kind, text) => checks.append(h("li", { class: "is-" + kind, html: icon(kind === "ok" ? "circle-check" : kind === "bad" ? "circle-x" : "circle-alert") + `<span>${text}</span>` }));
   if (r.error) add("bad", "İmza okunamadı: " + esc(r.error));
   else {
-    add(r.integrity ? "ok" : "bad", r.integrity ? "İmzalanan içerik değiştirilmemiş" : "İmzalanan içerik değiştirilmiş!");
-    if (r.signatureValid === true) add("ok", `İmza matematiksel olarak geçerli (${esc(c.keyLabel || "")}, ${esc(r.digestAlgorithm || "")})`);
+    if (r.integrity === false) add("bad", "İmzalanan içerik değiştirilmiş!");
+    else if (ok) add("ok", "İmzalanan içerik değiştirilmemiş");
+    else if (r.integrity === true) add("warn", r.signatureValid === false
+      ? "İçerik özeti eşleşiyor, ancak imza geçersiz olduğu için içeriğin değişmediği kanıtlanamıyor"
+      : "İçerik özeti eşleşiyor, ancak imza doğrulanamadığı için içeriğin değişmediği kanıtlanamıyor");
+    else add("warn", "Bu imza türünün kapsadığı içerik doğrulanamadı");
+    if (signed) add("ok", `İmza matematiksel olarak geçerli (${esc(c.keyLabel || "")}, ${esc(r.digestAlgorithm || "")})`);
     else if (r.signatureValid === false) add("bad", "İmza değeri sertifikayla doğrulanamadı");
-    else add("warn", "İmza algoritması bu tarayıcıda doğrulanamadı");
+    else if (r.signerMissing) add("warn", "İmzalayan sertifika imza verisinde bulunamadı; imza doğrulanamadı");
+    else add("warn", "İmza doğrulanamadı: imza değeri bu sertifikanın anahtarıyla kontrol edilemedi");
     add(r.coversWholeDocument ? "ok" : "warn", r.coversWholeDocument ? "Belgenin tamamını kapsıyor" : "Bu imzadan sonra belgeye eklemeler yapılmış (ör. başka bir imza)");
-    if (r.known) add("ok", "Bu senin dijital kimliğin");
-    else if (c.selfSigned) add("warn", "Kimlik bir sertifika otoritesince doğrulanmamış (öz-imzalı)");
-    else add("warn", `Sertifika “${esc(c.issuerName || "?")}” tarafından verilmiş; güven zinciri burada denetlenmedi`);
-    if (c.qualified) add("ok", "Nitelikli elektronik sertifika (QC) beyanı içeriyor");
-    if (r.certValidAtSigning === false) add("warn", "İmza anında sertifika geçerlilik süresi dışındaydı");
-    if (r.hasTimestamp) add("ok", "Güvenilir zaman damgası içeriyor");
+    if (!signed) {
+      // anyone can attach someone else's certificate; without a verified
+      // signature, its chain, ESS link or QC statement say nothing about the signer
+      if (!r.signerMissing) add("warn", "İmza doğrulanmadığı için sertifikadaki kimlik bu imzayı atanı kanıtlamaz");
+    } else {
+      if (r.essCertMatch === true) add("ok", "İmzalayan sertifika imzaya bağlı (ESS signing-certificate)");
+      else if (r.essCertMatch === false) add("bad", "İmzadaki sertifika bağı eşleşmiyor");
+      if (r.known) add("ok", "Bu senin dijital kimliğin ya da kartın");
+      if (trustedChain) add("ok", `Sertifika zinciri “${esc(r.chain.anchor)}” köküne bağlandı (iptal durumu çevrimdışı denetlenmedi)`);
+      else if (c.selfSigned) add("warn", "Kimlik bir sertifika otoritesince doğrulanmamış (öz-imzalı)");
+      else add("warn", `Sertifikayı “${esc(c.issuerName || "?")}” vermiş; zinciri Mühür'ün tanıdığı bir köke bağlanamadı`);
+      // anyone can write a QC statement into their own certificate
+      if (c.qc5070 || c.qualified) {
+        const what = c.qc5070 ? "Nitelikli elektronik sertifika (5070 sayılı Kanun)" : "Nitelikli elektronik sertifika (QC) beyanı içeriyor";
+        if (trustedChain) add("ok", what);
+        else add("warn", "Sertifikada nitelikli sertifika beyanı var, ancak zinciri doğrulanmadığı için bu beyan güvence değil");
+      }
+      if (ts && ts.trusted) add("ok", "Güvenilir zaman damgası" + (ts.genTime ? ": " + esc(formatDateTime(ts.genTime)) : ""));
+      else if (tsWrong) add("bad", "Zaman damgası bu imzaya ait değil");
+      else if (r.hasTimestamp) add("warn", "Zaman damgası var (doğrulanmadı)");
+    }
+    const provenTime = !!(ts && ts.trusted) || (r.documentTimestamp && ok);
+    if (r.certValidAtSigning === false) add("warn", "Beyan edilen imza zamanında sertifika geçerlilik süresi dışındaydı");
+    else if (r.certExpiredNow && !provenTime) add("warn", "Sertifikanın geçerlilik süresi şu an dışında; güvenilir zaman damgası olmadığından imza zamanı kanıtlanamıyor");
   }
   card.append(checks);
   const kv = h("dl.kv");
@@ -707,7 +1052,7 @@ export function verificationCard(r) {
   row("Konum", r.location);
   row("E-posta", c.email);
   row("Kurum", c.organization);
-  row("Veren", c.issuerName);
+  row(r.documentTimestamp ? "Zaman damgası veren" : "Veren", r.documentTimestamp ? c.name : c.issuerName);
   row("Sayfa", r.page != null ? String(r.page + 1) + (r.rect && r.rect[2] - r.rect[0] > 1 ? " (görünür)" : " (görünmez)") : null);
   row("Alan", r.fieldName);
   row("Parmak izi", c.fingerprint ? c.fingerprint.slice(0, 23) + "…" : null);

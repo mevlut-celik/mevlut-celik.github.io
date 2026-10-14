@@ -12,11 +12,27 @@ Done and committed:
 - `convert/to-docx.js` (FlowDocument → .docx) — written, smoke-tested
   (python-docx and textutil open it), not yet reviewed in depth.
 
-Not started yet (the build run hit the usage limit): modules A
-`pdf-analyze.js`, B `layout.js`, D `xlsx.js`, E `pptx.js`, F `from-docx.js`,
-G `text-formats.js`, H `ocr.js`, I UI integration (`convert/index.js`,
-`convertui.js`, edits to main/editor/index.html/css). None of the new code is
-wired into the UI yet, so the live app is unaffected.
+Done since (13 Ekim 2026, OCR + e-imza kartı oturumu):
+- H `js/ocr.js` — as specified below, plus `removeRules(canvas)`: long
+  horizontal/vertical rules are painted white on the copy sent to tesseract
+  (ruled table cells were otherwise skipped), and PSM 3 is set explicitly
+  (tesseract.js defaults to 6). Tests: `tests/ocr.mjs`, `tests/ocrtext.mjs`,
+  `tests/ocr-overlay.mjs`, `tests/rules.mjs`.
+- The OCR part of I: `js/ocrui.js` (dialog: language / pages / dpi, progress
+  + cancel, result saved as version "OCR uygulandı"; `#ocr-banner` for
+  scanned documents), toolbar button `data-action="ocr"`, page menu entry.
+  The conversion part of I (`convert/index.js`, `convertui.js`) is still open.
+- E-imza kartı (Kamu SM / TÜBİTAK AKİS, any PKCS#11): `kopru/` local bridge
+  (Java 8+, SunPKCS11 + httpserver, 127.0.0.1:21730, origin allow-list),
+  `js/kart.js` (fetch, or a relay window for Safari), `js/trust.js` (pinned
+  Kamu SM NES roots/sub-CAs v6+v7), `sign.js` now writes PAdES B-B
+  (ETSI.CAdES.detached, ESS signing-certificate-v2, digest by key: P-384 →
+  SHA-384) with a pluggable signer, and verifies chains to the anchors.
+  Tests: `tests/sign-cades.mjs`, `tests/kart-sign.mjs`, `tests/chain.mjs`.
+
+Not started yet: modules A `pdf-analyze.js`, B `layout.js`, D `xlsx.js`,
+E `pptx.js`, F `from-docx.js`, G `text-formats.js`, and the conversion UI
+(`convert/index.js`, `convertui.js`).
 
 Testing on any machine: `cd pdf/dev && npm install`, then e.g.
 `node tests/quick-docx.mjs` or `node tests/smoke.mjs` (needs poppler, gs,
