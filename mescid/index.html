@@ -16,24 +16,30 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23cc0000'/%3E%3Cpath d='M16 6c-4 3-7 6-7 10v8h14v-8c0-4-3-7-7-10z' fill='%23fff'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/img/favicon-48.png">
+<link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png">
 <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-dome" viewBox="0 0 24 24"><path d="M12 3c-3.2 2.4-6 4.8-6 8v8h12v-8c0-3.2-2.8-5.6-6-8zM4 21h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
-  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></g></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 003.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0119 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+  <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M2 5h6a4 4 0 014 4v11a3 3 0 00-3-3H2zM22 5h-6a4 4 0 00-4 4v11a3 3 0 013-3h7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5zM4 19.5A2.5 2.5 0 006.5 22H20v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
 <!-- ============================== NAV ============================== -->
 <header class="nav">
   <div class="nav__inner">
     <a class="nav__brand" href="#top">
-      <span class="nav__mark"><svg><use href="#i-dome"/></svg></span>
+      <img class="nav__logo" src="./assets/img/logo.png" width="34" height="34" alt="">
       ODTÜ Mescid
     </a>
     <ul class="nav__list">
@@ -42,7 +48,12 @@
       <li class="nav__item--text"><a class="nav__link" href="#ozellikler">Özellikler</a></li>
       <li class="nav__item--text"><a class="nav__link" href="#saat">Galaxy Watch</a></li>
       <li class="nav__item--text"><a class="nav__link" href="#kurulum">Kurulum</a></li>
-      <li><a class="btn btn--sm" href="./downloads/odtu-mescid.apk" download>APK İndir</a></li>
+      <li>
+        <a class="btn btn--sm" href="./downloads/odtu-mescid.apk" download>
+          <svg aria-hidden="true"><use href="#i-down"/></svg>
+          APK İndir
+        </a>
+      </li>
     </ul>
   </div>
 </header>
@@ -52,31 +63,29 @@
   <section class="band hero">
     <div class="band__inner hero__inner">
       <div class="hero__text">
-        <p class="eyebrow">Android &middot; Sürüm 2.5 &middot; Yeni: İmsakiye</p>
+        <p class="hero__badge"><strong>Yeni &middot; Sürüm 2.5</strong> Aylık ve yıllık imsakiye</p>
         <h1 class="display display--xl">Namaz vakitleri, imsakiye ve <span class="accent">kampüs mescitleri</span> tek uygulamada</h1>
         <p class="lead">
-          Diyanet'in ilçe bazlı vakitleri, sonraki namaza geri sayım, aylık ve yıllık imsakiye, ana ekran widget'ı,
-          kıble, kampüs mescid haritası, Kur'ân-ı Kerim ve Riyazü's-Salihin &mdash; karanlık temalı, sade ve hızlı
-          tek bir uygulamada.
+          ODTÜ Mescid; Diyanet'in ilçe bazlı vakitlerini, sonraki namaza geri sayımı, imsakiyeyi, kıbleyi,
+          kampüs mescid haritasını, Kur'ân-ı Kerim'i ve Riyazü's-Salihin'i sade bir karanlık temada bir araya getirir.
         </p>
         <div class="hero__actions">
           <a class="btn" href="./downloads/odtu-mescid.apk" download>
             <svg aria-hidden="true"><use href="#i-down"/></svg>
-            APK İndir <span class="btn__meta">&middot; 6,7 MB</span>
+            Android için indir <span class="btn__meta">6,7 MB</span>
           </a>
           <a class="btn btn--ghost" href="#yenilikler">Neler yeni?</a>
         </div>
-        <p class="hero__note">Android 8.0 ve üzeri &middot; Vakitler Diyanet İşleri Başkanlığı'ndan &middot; <a class="footer__link" href="#kurulum">Kurulum adımları</a></p>
+        <ul class="hero__meta">
+          <li>Sürüm 2.5</li>
+          <li>Android 8.0 ve üzeri</li>
+          <li>Vakitler: Diyanet İşleri Başkanlığı</li>
+        </ul>
       </div>
-
-      <figure>
-        <div class="phone">
-          <div class="phone__screen">
-            <img src="./assets/img/home.webp" width="540" height="1138" alt="Uygulamanın ana ekranı: sıradaki namaz Öğle, geri sayım ve günün altı vakti">
-          </div>
-        </div>
-        <figcaption class="phone__caption">Uygulamanın ana ekranı &mdash; Ankara / Çankaya.</figcaption>
-      </figure>
+      <div class="hero__phones" aria-hidden="true">
+        <div class="phone phone--back"><div class="phone__screen"><img src="./assets/img/imsakiye-aylik.webp" width="540" height="1138" alt=""></div></div>
+        <div class="phone phone--front"><div class="phone__screen"><img src="./assets/img/home.webp" width="540" height="1138" alt=""></div></div>
+      </div>
     </div>
   </section>
 
@@ -89,41 +98,32 @@
         Ana ekrandaki &ldquo;İmsakiye&rdquo; bağlantısından ya da menüden açılır. Vakitler hicri tarihle birlikte gelir,
         bir kez yüklendikten sonra internet olmadan da görüntülenir.
       </p>
-
       <div class="shots">
         <figure class="shot">
-          <div class="phone phone--sm"><div class="phone__screen">
-            <img src="./assets/img/imsakiye-aylik.webp" width="540" height="1138" loading="lazy" alt="Aylık imsakiye: her günün altı vakti, bugün kırmızı çerçeveyle vurgulu">
-          </div></div>
+          <div class="phone"><div class="phone__screen"><img src="./assets/img/imsakiye-aylik.webp" width="540" height="1138" loading="lazy" alt="Aylık imsakiye: her günün altı vakti, bugün kırmızı çerçeveyle vurgulu"></div></div>
           <figcaption>
             <h3 class="display display--sm">Aylık tablo</h3>
             <p>Günler satır satır; bugün vurgulu, cumalar işaretli, hicri ay başları ince bir ayraçla gösterilir.</p>
           </figcaption>
         </figure>
         <figure class="shot">
-          <div class="phone phone--sm"><div class="phone__screen">
-            <img src="./assets/img/imsakiye-yillik.webp" width="540" height="1138" loading="lazy" alt="Yıllık imsakiye: yıl boyunca imsak, güneş, akşam ve yatsı vakitlerini gösteren grafik">
-          </div></div>
+          <div class="phone"><div class="phone__screen"><img src="./assets/img/imsakiye-yillik.webp" width="540" height="1138" loading="lazy" alt="Yıllık imsakiye: yıl boyunca imsak, güneş, akşam ve yatsı vakitlerini gösteren grafik"></div></div>
           <figcaption>
             <h3 class="display display--sm">Yıllık görünüm</h3>
             <p>Vakitlerin yıl boyunca nasıl değiştiğini gösteren grafik; parmağınızı kaydırdıkça o günün vakitleri yazar. Altında 12 ayın özeti.</p>
           </figcaption>
         </figure>
         <figure class="shot">
-          <div class="phone phone--sm"><div class="phone__screen">
-            <img src="./assets/img/imsakiye-ramazan.webp" width="540" height="1138" loading="lazy" alt="Ramazan ayı: imsak ve akşam vakitleri amber renkte">
-          </div></div>
+          <div class="phone"><div class="phone__screen"><img src="./assets/img/imsakiye-ramazan.webp" width="540" height="1138" loading="lazy" alt="Ramazan ayı: imsak ve akşam vakitleri amber renkte"></div></div>
           <figcaption>
             <h3 class="display display--sm">Ramazan</h3>
             <p>Ramazan günlerinde sahurun bittiği imsak ve iftar vakti olan akşam öne çıkar; Ramazan ayları rozetle işaretlenir.</p>
           </figcaption>
         </figure>
       </div>
-
       <p class="note">
-        <strong>Not:</strong> İmsakiye, Diyanet'in yayımladığı tabloları gösterir. Diyanet yıl sonuna doğru bir sonraki yılın
-        tablosunu yayımladığında içinde bulunulan yılın son haftaları geçici olarak eksik kalabilir; yayımlandığında uygulamada
-        kendiliğinden görünür.
+        <strong>Not:</strong> İmsakiye, Diyanet'in yayımladığı tabloları gösterir. Diyanet yıl sonuna doğru bir sonraki yılın tablosunu
+        yayımladığında içinde bulunulan yılın son haftaları geçici olarak eksik kalabilir; yayımlandığında uygulamada kendiliğinden görünür.
       </p>
     </div>
   </section>
@@ -131,9 +131,7 @@
   <!-- ============================ WIDGET =========================== -->
   <section class="band" id="widget">
     <div class="band__inner split">
-      <div class="frame">
-        <img src="./assets/img/widget.webp" width="540" height="624" loading="lazy" alt="Ana ekranda ODTÜ Mescid widget'ları: sıradaki vakit, geri sayım ve günün altı vakti">
-      </div>
+      <div class="frame"><img src="./assets/img/widget.webp" width="540" height="624" loading="lazy" alt="Ana ekranda ODTÜ Mescid widget'ları: sıradaki vakit, geri sayım ve günün altı vakti"></div>
       <div class="split__text">
         <p class="eyebrow">Ana ekran widget'ı</p>
         <h2 class="display display--lg">Uygulamayı açmadan sıradaki vakit</h2>
@@ -152,94 +150,96 @@
   <section class="band" id="ozellikler">
     <div class="band__inner">
       <p class="eyebrow">Özellikler</p>
-      <h2 class="display display--lg">Kampüste ihtiyacın olan her şey</h2>
-
+      <h2 class="display display--lg">Günlük ibadet için ihtiyacınız olan her şey</h2>
       <div class="features">
         <article class="feature">
-          <p class="feature__index">01</p>
-          <h3 class="display display--sm">Namaz Vakitleri</h3>
-          <p>Diyanet'ten il ve ilçe bazlı vakitler, sonraki namaza geri sayım ve &ldquo;en yakın konumu kullan&rdquo; seçeneği.</p>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <h3 class="display display--sm">Namaz vakitleri</h3>
+          <p>Diyanet'ten il ve ilçe bazlı vakitler, sonraki namaza geri sayım, &ldquo;en yakın konumu kullan&rdquo; seçeneği.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">02 <span class="feature__tag">Yeni</span></p>
-          <h3 class="display display--sm">İmsakiye</h3>
-          <p>Hicri tarihli aylık tablo, yıllık vakit grafiği ve ay özetleri; çevrimdışı da açılır.</p>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-calendar"/></svg></span>
+          <h3 class="display display--sm">İmsakiye <span class="feature__tag">YENİ</span></h3>
+          <p>Hicri tarihli aylık tablo, yıllık grafik ve ay özetleri; çevrimdışı da açılır.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">03</p>
-          <h3 class="display display--sm">Widget</h3>
-          <p>İki boyutta ana ekran widget'ı: sıradaki vakit, geri sayım ve günün altı vakti.</p>
-        </article>
-        <article class="feature">
-          <p class="feature__index">04</p>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-bell"/></svg></span>
           <h3 class="display display--sm">Bildirimler</h3>
           <p>Vakit bazında ezan bildirimi, ezan öncesi hatırlatma ve durum çubuğunda kalıcı vakit özeti.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">05</p>
-          <h3 class="display display--sm">Kıble Bulucu</h3>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
+          <h3 class="display display--sm">Kıble</h3>
           <p>Konum ve pusula sensörüyle kıble yönü; sensörü olmayan cihazlarda kuzeye göre açı.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">06</p>
-          <h3 class="display display--sm">Mescid Haritası</h3>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <h3 class="display display--sm">Mescid haritası</h3>
           <p>Kampüsteki ve yakındaki mescitler, filtreler ve yol tarifi.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">07</p>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-book-open"/></svg></span>
           <h3 class="display display--sm">Kur'ân-ı Kerim</h3>
           <p>114 sure, Arapça metin ve Türkçe meal, Kur'ân içinde arama, sure ve sayfa görünümü.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">08</p>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-book"/></svg></span>
           <h3 class="display display--sm">Riyazü's-Salihin</h3>
           <p>18 kitap ve 349 bab halinde hadisler, metin içinde arama ve isteğe bağlı günlük hadis bildirimi.</p>
         </article>
         <article class="feature">
-          <p class="feature__index">09</p>
-          <h3 class="display display--sm">Muhasebe ve Sohbetler</h3>
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+          <h3 class="display display--sm">Muhasebe ve sohbetler</h3>
           <p>Günlük ibadet görevleri, seri takibi ve istatistikler; yaklaşan sohbetler ve takvime ekleme.</p>
         </article>
       </div>
+    </div>
+  </section>
 
+  <!-- ============================ READING ========================== -->
+  <section class="band">
+    <div class="band__inner split">
+      <div class="split__text">
+        <p class="eyebrow">Okuma</p>
+        <h2 class="display display--lg">Kur'ân ve hadis, cebinizde</h2>
+        <p class="lead">
+          Kur'ân-ı Kerim'de sure listesi, Arapça metin ve meal; Riyazü's-Salihin'de kitap ve bab gezintisi.
+          Ana ekrandaki kartlar kaldığınız yeri hatırlar.
+        </p>
+      </div>
       <div class="duo">
-        <div class="phone phone--sm"><div class="phone__screen">
-          <img src="./assets/img/kuran.webp" width="540" height="1138" loading="lazy" alt="Kur'ân-ı Kerim sure listesi">
-        </div></div>
-        <div class="phone phone--sm"><div class="phone__screen">
-          <img src="./assets/img/riyazus.webp" width="540" height="1138" loading="lazy" alt="Riyazü's-Salihin kitap listesi">
-        </div></div>
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/kuran.webp" width="540" height="1138" loading="lazy" alt="Kur'ân-ı Kerim sure listesi"></div></div>
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/riyazus.webp" width="540" height="1138" loading="lazy" alt="Riyazü's-Salihin kitap listesi"></div></div>
       </div>
     </div>
   </section>
 
   <!-- ============================ WATCH ============================ -->
   <section class="band" id="saat">
-    <div class="band__inner split">
-      <div class="split__text">
-        <p class="eyebrow">Galaxy Watch &middot; Wear OS</p>
-        <h2 class="display display--lg">Vakitler bileğinde</h2>
-        <p class="lead">
-          Saat uygulaması telefondaki konum ve vakitleri kendiliğinden alır. Kaydırarak Kıble, Vakitler ve Günün Hadisi
-          ekranları arasında geçilir; kadran için kutucuk (tile) ve komplikasyon da vardır.
-        </p>
-        <ul class="checks">
-          <li>Wear OS 3 ve üzeri saatler (Galaxy Watch 4 ve sonrası)</li>
-          <li>Telefonda ODTÜ Mescid uygulamasının kurulu olması gerekir</li>
-          <li>Saate yüklemek için ADB veya bir Wear OS APK yükleyici kullanılır</li>
-        </ul>
-        <div class="hero__actions">
-          <a class="btn btn--ghost" href="./downloads/odtu-mescid-saat.apk" download>
-            <svg aria-hidden="true"><use href="#i-down"/></svg>
-            Saat uygulaması <span class="btn__meta">&middot; 3,6 MB</span>
-          </a>
+    <div class="band__inner">
+      <div class="watch">
+        <div class="watch__text">
+          <p class="eyebrow">Galaxy Watch &middot; Wear OS</p>
+          <h2 class="display display--lg">Vakitler bileğinizde</h2>
+          <p class="lead">
+            Saat uygulaması telefondaki konum ve vakitleri otomatik alır. Kaydırarak Kıble, Vakitler ve Günün Hadisi ekranları
+            arasında geçilir; kadran için kutucuk (tile) ve komplikasyon da vardır.
+          </p>
+          <ul class="checks">
+            <li>Wear OS 3 ve üzeri saatler (Galaxy Watch 4 ve sonrası)</li>
+            <li>Telefonda ODTÜ Mescid uygulamasının kurulu olması gerekir</li>
+            <li>Saate yüklemek için ADB veya bir Wear OS APK yükleyici kullanılır</li>
+          </ul>
+          <div class="hero__actions">
+            <a class="btn btn--ghost" href="./downloads/odtu-mescid-saat.apk" download>Saat uygulamasını indir <span class="btn__meta">3,6 MB</span></a>
+          </div>
         </div>
-      </div>
-      <div class="watch" aria-hidden="true">
-        <p class="watch__label">Sonraki</p>
-        <p class="watch__prayer">Öğle</p>
-        <p class="watch__time">12:38</p>
-        <p class="watch__timer">1:33:12</p>
+        <div class="watch__face" aria-hidden="true">
+          <span class="watch__label">SONRAKİ</span>
+          <span class="watch__prayer">Öğle</span>
+          <span class="watch__time">12:38</span>
+          <span class="watch__timer">1:33:12</span>
+        </div>
       </div>
     </div>
   </section>
@@ -248,48 +248,33 @@
   <section class="band" id="kurulum">
     <div class="band__inner">
       <p class="eyebrow">Kurulum</p>
-      <h2 class="display display--lg">Üç adımda telefonunda</h2>
-
+      <h2 class="display display--lg">Üç adımda kurun</h2>
       <ol class="steps">
         <li class="step">
-          <h3 class="display display--sm">APK'yı indir</h3>
-          <p>Bu sayfadaki &ldquo;APK İndir&rdquo; düğmesiyle <code>odtu-mescid.apk</code> dosyasını telefonuna indir.</p>
+          <h3 class="display display--sm">APK'yı indirin</h3>
+          <p>Bu sayfadaki &ldquo;Android için indir&rdquo; düğmesine telefonunuzdan dokunun.</p>
         </li>
         <li class="step">
-          <h3 class="display display--sm">Kuruluma izin ver</h3>
-          <p>İndirilen dosyayı açınca Android izin isterse, tarayıcına &ldquo;bilinmeyen uygulamaları yükleme&rdquo; izni ver.</p>
+          <h3 class="display display--sm">Kuruluma izin verin</h3>
+          <p>Android, tarayıcınıza &ldquo;bilinmeyen uygulamaları yükleme&rdquo; izni vermenizi isteyebilir; bu izin yalnızca bu kurulum için gereklidir.</p>
         </li>
         <li class="step">
-          <h3 class="display display--sm">Konumunu seç</h3>
-          <p>Ayarlar &rsaquo; Konum'dan il ve ilçeni seç ya da &ldquo;en yakın konumu kullan&rdquo;a dokun.</p>
+          <h3 class="display display--sm">Açın ve konumu seçin</h3>
+          <p>Ayarlar &rsaquo; Konum'dan il ve ilçenizi seçin ya da &ldquo;en yakın konumu kullan&rdquo;a dokunun.</p>
         </li>
       </ol>
-
       <p class="note">
-        <strong>Güncelleme:</strong> Yeni sürümü eskisinin üzerine kurman yeterli; uygulamayı silmene gerek yok,
-        ayarların ve kayıtların korunur.
+        <strong>Güncelleme:</strong> Yeni sürümü eskisinin üzerine kurmanız yeterlidir; uygulamayı silmenize gerek yoktur, ayarlarınız ve kayıtlarınız korunur.
       </p>
-
       <details class="checksums">
         <summary>Dosya doğrulama (SHA-256)</summary>
         <dl>
-          <dt>odtu-mescid.apk &middot; 2.5</dt>
+          <dt>odtu-mescid.apk (2.5)</dt>
           <dd>86dc38ded5c34c77fe666e278fc145d33ef72c801949c78eacab62da5b4d00d9</dd>
-          <dt>odtu-mescid-saat.apk &middot; 2.3</dt>
+          <dt>odtu-mescid-saat.apk (2.3)</dt>
           <dd>8f1801205b577059aa3e897bc0660a529a408c36a1dbdf08936c1956a537e439</dd>
         </dl>
       </details>
-
-      <div class="cta">
-        <div>
-          <h2 class="display display--sm">ODTÜ Mescid &middot; Android APK</h2>
-          <p>Sürüm 2.5 &middot; tek dosya, 6,7 MB &middot; Android 8.0 ve üzeri.</p>
-        </div>
-        <a class="btn" href="./downloads/odtu-mescid.apk" download>
-          <svg aria-hidden="true"><use href="#i-down"/></svg>
-          APK İndir
-        </a>
-      </div>
     </div>
   </section>
 
@@ -298,7 +283,6 @@
     <div class="band__inner">
       <p class="eyebrow">Sürüm notları</p>
       <h2 class="display display--lg">Neler yeni?</h2>
-
       <ol class="releases">
         <li class="release release--latest">
           <p class="release__version">2.5 <span class="release__date">Ekim 2026 &middot; güncel</span></p>
@@ -327,12 +311,27 @@
       </ol>
     </div>
   </section>
+
+  <!-- ============================== CTA ============================ -->
+  <section class="band">
+    <div class="band__inner cta">
+      <h2 class="display display--lg">ODTÜ Mescid'i hemen deneyin</h2>
+      <p>Sürüm 2.5 &middot; Android 8.0 ve üzeri</p>
+      <div class="hero__actions">
+        <a class="btn" href="./downloads/odtu-mescid.apk" download>
+          <svg aria-hidden="true"><use href="#i-down"/></svg>
+          Android için indir <span class="btn__meta">6,7 MB</span>
+        </a>
+        <a class="btn btn--ghost" href="./downloads/odtu-mescid-saat.apk" download>Galaxy Watch</a>
+      </div>
+    </div>
+  </section>
 </main>
 
 <!-- ============================= FOOTER ============================= -->
 <footer class="footer">
   <div class="footer__inner">
-    <p>&copy; <span data-year>2026</span> ODTÜ Mescid &middot; Vakitler Diyanet İşleri Başkanlığı'ndan alınır.</p>
+    <p>&copy; <span data-year>2026</span> ODTÜ Mescid &middot; Namaz vakitleri Diyanet İşleri Başkanlığı'ndan alınır.</p>
     <p>Geliştiren <a class="footer__link" href="../">Mevlüt Çelik</a></p>
   </div>
 </footer>
