@@ -452,6 +452,19 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cta p { color: var(--ink-mute); }
 .cta .hero__actions { justify-content: center; margin-top: 18px; }
 
+/* --------------------------------- Prose --------------------------------- */
+.prose { max-width: 760px; }
+.prose p { color: #d6d6d6; }
+.prose .lead { color: var(--ink-mute); }
+.prose > .checks { margin-top: 28px; }
+.prose > h2 { margin-top: 40px; }
+.prose strong { color: var(--ink); }
+.prose__list { display: grid; gap: 8px; color: #d6d6d6; }
+.prose__list li { position: relative; padding-left: 16px; }
+.prose__list li::before { content: "•"; position: absolute; left: 2px; color: var(--accent-soft); }
+.prose__link { color: var(--accent-soft); text-underline-offset: 3px; }
+.prose__link:hover { color: var(--ink); }
+
 /* -------------------------------- Footer --------------------------------- */
 .footer { border-top: 1px solid #1d1d1d; }
 .footer__inner {

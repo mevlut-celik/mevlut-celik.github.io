@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gizlilik Politikası — ODTÜ Mescid</title>
+<meta name="description" content="ODTÜ Mescid Android ve Galaxy Watch uygulamasının gizlilik politikası: hangi veriler cihazda tutulur, konum nasıl kullanılır, uygulama hangi hizmetlere bağlanır.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="canonical" href="https://mevlut-celik.github.io/mescid/gizlilik.html">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/img/favicon-48.png">
+<link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="./">
+      <img class="nav__logo" src="./assets/img/logo.png" width="34" height="34" alt="">
+      ODTÜ Mescid
+    </a>
+    <ul class="nav__list">
+      <li>
+        <a class="btn btn--sm btn--ghost" href="./">
+          <svg aria-hidden="true"><use href="#i-back"/></svg>
+          Tanıtım sayfası
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ============================ INTRO =========================== -->
+  <section class="band">
+    <div class="band__inner prose">
+      <p class="eyebrow">Son güncelleme: 27 Ekim 2026</p>
+      <h1 class="display display--xl">Gizlilik Politikası</h1>
+      <p class="lead">
+        ODTÜ Mescid hesap açtırmaz, reklam ya da analiz aracı içermez ve sizinle ilgili hiçbir veriyi
+        geliştiricinin sunucusuna göndermez; böyle bir sunucu yoktur. Bu sayfa, telefon uygulamasının ve
+        Galaxy Watch (Wear OS) uygulamasının hangi verileri nasıl kullandığını ve hangi hizmetlere bağlandığını açıklar.
+      </p>
+
+      <ul class="checks">
+        <li>Hesap, kayıt, reklam, analiz ya da izleme yok</li>
+        <li>Kişisel verileriniz satılmaz, kimseyle paylaşılmaz</li>
+        <li>Konum isteğe bağlıdır; arka planda konum izni istenmez</li>
+        <li>Muhasebe kayıtlarınız yalnızca telefonunuzda durur</li>
+      </ul>
+
+      <h2 class="display display--sm">Cihazınızda saklanan veriler</h2>
+      <ul class="prose__list">
+        <li>Ayarlarınız: seçtiğiniz il ve ilçe, bildirim tercihleri, yazı boyutu gibi seçenekler.</li>
+        <li>İndirilen namaz vakitleri, imsakiye ve Kur'ân metni (çevrimdışı kullanım için).</li>
+        <li>Günlük muhasebe kayıtlarınız ve en son okuduğunuz sure ya da hadis.</li>
+      </ul>
+      <p>
+        Bu veriler uygulamanın kendi depolama alanındadır ve uygulamayı kaldırdığınızda silinir. Telefonunuzda
+        Android yedeklemesi açıksa bazı uygulama tercihleri Google hesabınızdaki Android yedeğine dahil edilebilir;
+        muhasebe kayıtları buluta yedeklenmez. Yeni bir telefona cihazdan cihaza aktarım yaparsanız uygulama verileri
+        de taşınabilir. Yedeklemeyi telefonunuzun ayarlarından yönetirsiniz.
+      </p>
+
+      <h2 class="display display--sm">Konum</h2>
+      <p>
+        Konum izni isteğe bağlıdır; vermezseniz il ve ilçenizi listeden seçersiniz. İzin verirseniz konumunuz
+        yalnızca şunlar için kullanılır:
+      </p>
+      <ul class="prose__list">
+        <li>
+          <strong>En yakın ilçeyi bulmak.</strong> Koordinatlar, Android'in adres çözümleme hizmetiyle (Geocoder)
+          ilçe adına çevrilir. Google cihazlarında bu hizmeti Google sağlar.
+        </li>
+        <li><strong>Kıble yönü.</strong> Yön, telefonunuzda hesaplanır.</li>
+        <li><strong>Mescid haritası.</strong> Kampüs mescitlerine uzaklık, telefonunuzda hesaplanır.</li>
+        <li>
+          <strong>Galaxy Watch.</strong> Telefon, kıble için yaklaşık 1 km hassasiyete yuvarlanmış konumu eşleştirilmiş
+          saatinize Google Play hizmetlerinin Wearable veri katmanı üzerinden gönderir. Telefon konum göndermediyse saat,
+          kıble için kendi konumunu kullanır.
+        </li>
+      </ul>
+      <p>
+        Uygulama arka planda konum izni istemez; Android bu izin olmadan uygulamanın arka planda yeni konum almasına
+        izin vermez. Konum geçmişi tutulmaz.
+      </p>
+
+      <h2 class="display display--sm">Bağlanılan hizmetler</h2>
+      <p>Uygulama, içerik almak için yalnızca şu adreslere doğrudan bağlanır:</p>
+      <ul class="prose__list">
+        <li><strong>namazvakitleri.diyanet.gov.tr</strong>: seçili ilçenin namaz vakitleri ve imsakiye.</li>
+        <li><strong>ezanvakti.emushaf.net</strong>: il ve ilçe listesi.</li>
+        <li><strong>api.alquran.cloud</strong>: Kur'ân-ı Kerim'in Arapça metni ve Diyanet meali.</li>
+        <li><strong>tile.openstreetmap.org</strong>: mescid haritasının harita görüntüleri (OpenStreetMap).</li>
+      </ul>
+      <p>
+        Her internet isteğinde olduğu gibi bu hizmetler IP adresinizi ve isteğin içeriğini (örneğin ilçe numarası ya
+        da haritada görüntülenen bölge) görebilir; kendi gizlilik politikaları geçerlidir. Uygulama bu isteklere
+        kimliğinizi ya da konumunuzu eklemez.
+      </p>
+
+      <h2 class="display display--sm">İzinler</h2>
+      <ul class="prose__list">
+        <li><strong>Bildirimler:</strong> ezan vakti, vakit öncesi hatırlatma, günün hadisi ve kalıcı vakit bildirimi.</li>
+        <li><strong>Alarmlar ve hatırlatıcılar:</strong> ezan bildirimlerinin tam vaktinde gösterilmesi.</li>
+        <li><strong>Konum (isteğe bağlı):</strong> yukarıda açıklanan amaçlar.</li>
+        <li><strong>Açılışta çalışma:</strong> telefon yeniden başladığında ya da saat değiştiğinde bildirim alarmlarını yeniden kurmak.</li>
+        <li><strong>İnternet:</strong> vakitleri, imsakiyeyi, Kur'ân metnini ve harita görüntülerini indirmek.</li>
+      </ul>
+
+      <h2 class="display display--sm">Başka uygulamalara geçişler</h2>
+      <p>
+        "Haritada aç" Google Haritalar'ı, "Takvime ekle" takvim uygulamanızı, "Geri bildirim gönder" ise e-posta ya da
+        paylaşım uygulamanızı açar. Bu adımlar yalnızca siz dokunduğunuzda gerçekleşir; o uygulamalarda paylaştığınız
+        bilgiler o uygulamaların politikalarına tabidir.
+      </p>
+
+      <h2 class="display display--sm">Çocuklar</h2>
+      <p>
+        Uygulama genel kitleye yöneliktir. Kimseden, çocuklar dahil, kişisel veri toplamaz.
+      </p>
+
+      <h2 class="display display--sm">Değişiklikler ve iletişim</h2>
+      <p>
+        Bu politika değişirse bu sayfa güncellenir ve üstteki tarih değişir. Sorularınız için Google Play'deki
+        mağaza sayfasında yer alan geliştirici e-posta adresine yazabilir ya da
+        <a class="prose__link" href="https://github.com/mevlut-celik">github.com/mevlut-celik</a> üzerinden ulaşabilirsiniz.
+      </p>
+    </div>
+  </section>
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="footer__inner">
+    <p>&copy; <span data-year>2026</span> ODTÜ Mescid &middot; ODTÜ'nün resmî uygulaması değildir. Namaz vakitleri Diyanet İşleri Başkanlığı'ndan alınır.</p>
+    <p>Geliştiren <a class="footer__link" href="../">Mevlüt Çelik</a></p>
+  </div>
+</footer>
+
+<script src="./assets/js/main.js" defer></script>
+</body>
+</html>
