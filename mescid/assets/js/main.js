@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ODTÜ Mescid — main.js
+   Nasûhî — main.js
    Same shape in every project on this site: helpers, then one initX()
    per feature (query its own nodes, bail out if they are missing, bind its
    own listeners), then a single boot().

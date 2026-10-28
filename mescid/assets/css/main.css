@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ODTÜ Mescid — main.css
+   Nasûhî — main.css
    Character: the app's own brand. Near-black #0D0D0D, one red #CC0000 with a
    soft red glow, tilted phones that show the app's real screens.
    ========================================================================== */
@@ -144,6 +144,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .btn--sm { padding: 9px 14px; border-radius: var(--radius-sm); font-size: 14px; box-shadow: none; }
 
+/* Not a link yet: the app is in closed testing on Google Play. */
+.btn--soon {
+  border-color: #5a0000;
+  background: var(--accent-deep);
+  box-shadow: none;
+  color: #ffd6d6;
+  cursor: default;
+}
+.btn--soon:hover { background: var(--accent-deep); transform: none; }
+
 /* ---------------------------------- Nav ---------------------------------- */
 .nav {
   position: sticky;
@@ -285,6 +295,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
 }
 .frame img { width: 100%; height: auto; }
+.frame--card { border-radius: 18px; }
+
+.stack { display: grid; gap: var(--space-md); }
+.split > .phone--single { width: min(300px, 100%); margin: 0 auto; }
 
 .checks { display: grid; gap: var(--space-sm); }
 .split__text > .checks { margin-top: 22px; }
