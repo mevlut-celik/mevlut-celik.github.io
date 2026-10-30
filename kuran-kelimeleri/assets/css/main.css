@@ -451,7 +451,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 @media (max-width: 480px) {
-  .features, .stats { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr; }
+  /* Dar ekranda marka adı tek satırda kalsın; Play rozeti zaten hero'da var. */
+  .nav__brand { white-space: nowrap; }
+  .nav__list .btn--soon { display: none; }
   .hero__phones { height: 400px; }
   .hero__phones .phone { width: 178px; }
 }
