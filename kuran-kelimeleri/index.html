@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kur'an Kelimeleri — Kur'an'daki kelimeleri aralıklı tekrarla öğrenin</title>
+<meta name="description" content="Kur'an Kelimeleri: Kur'an'da geçen 4.858 kelimeyi en sık geçenden başlayarak FSRS aralıklı tekrar algoritmasıyla öğreten Android uygulaması. Örnek ayetler, el-Müfredât açıklamaları, metin kapsamı ve çevrimdışı çalışma.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="canonical" href="https://mevlut-celik.github.io/kuran-kelimeleri/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://mevlut-celik.github.io/kuran-kelimeleri/">
+<meta property="og:title" content="Kur'an Kelimeleri — Android uygulaması">
+<meta property="og:description" content="Kur'an'daki kelimeleri aralıklı tekrarla öğrenin: FSRS zamanlama, örnek ayetler, el-Müfredât açıklamaları, çevrimdışı çalışma. Yakında Google Play'de.">
+<meta property="og:image" content="https://mevlut-celik.github.io/kuran-kelimeleri/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/img/kelimeler-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/img/kelimeler-favicon-48.png">
+<link rel="apple-touch-icon" href="./assets/img/kelimeler-apple-touch-icon.png">
+<link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></g></symbol>
+  <symbol id="i-cards" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="13" height="17" rx="2.5"/><path d="M4 7.5V18a3 3 0 003 3h8"/></g></symbol>
+  <symbol id="i-offline" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M8.5 16.4a5 5 0 017 0M5 12.9a10 10 0 013.6-2.3M19 12.9a10 10 0 00-4.3-2.6M2 9.3a15 15 0 014-2.6M22 9.3A15 15 0 0011 5.1"/><path d="M12 20h.01"/></g></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 01-15.5 6.2L3 16M3 12a9 9 0 0115.5-6.2L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></g></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></g></symbol>
+  <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M2 5h6a4 4 0 014 4v11a3 3 0 00-3-3H2zM22 5h-6a4 4 0 00-4 4v11a3 3 0 013-3h7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5zM4 19.5A2.5 2.5 0 006.5 22H20v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ============================== NAV ============================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top">
+      <img class="nav__logo" src="./assets/img/kelimeler-logo.png" width="34" height="34" alt="">
+      Kur'an Kelimeleri
+    </a>
+    <ul class="nav__list">
+      <li class="nav__item--text"><a class="nav__link" href="#calisma">Çalışma</a></li>
+      <li class="nav__item--text"><a class="nav__link" href="#kelime">Kelime sayfası</a></li>
+      <li class="nav__item--text"><a class="nav__link" href="#ilerleme">İlerleme</a></li>
+      <li class="nav__item--text"><a class="nav__link" href="#ozellikler">Özellikler</a></li>
+      <li>
+        <span class="btn btn--sm btn--soon">
+          <svg aria-hidden="true"><use href="#i-clock"/></svg>
+          Yakında Google Play'de
+        </span>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ============================ HERO ============================ -->
+  <section class="band hero">
+    <div class="band__inner hero__inner">
+      <div class="hero__text">
+        <p class="hero__badge"><strong>Sürüm 1.0</strong> Google Play'e hazırlanıyor</p>
+        <h1 class="display display--xl">Kur'an'daki kelimeleri <span class="accent">aralıklı tekrarla</span> öğrenin</h1>
+        <p class="lead">
+          Kur'an Kelimeleri, Kur'an'da geçen 4.858 kelimeyi en sık geçenden başlayarak öğretir. Anki'nin de kullandığı
+          FSRS algoritması her kelimeyi tam unutmak üzereyken yeniden karşınıza çıkarır; böylece günde birkaç dakikayla
+          kalıcı olarak öğrenirsiniz.
+        </p>
+        <div class="hero__actions">
+          <span class="btn btn--soon">
+            <svg aria-hidden="true"><use href="#i-clock"/></svg>
+            Yakında Google Play'de
+          </span>
+          <a class="btn btn--ghost" href="#calisma">Nasıl çalışır?</a>
+        </div>
+        <ul class="hero__meta">
+          <li>Sürüm 1.0</li>
+          <li>Android 8.0 ve üzeri</li>
+          <li>Çevrimdışı çalışır</li>
+          <li>Reklamsız, açık kaynak</li>
+        </ul>
+      </div>
+      <div class="hero__phones" aria-hidden="true">
+        <div class="phone phone--back"><div class="phone__screen"><img src="./assets/img/calisma.webp" width="540" height="1167" alt=""></div></div>
+        <div class="phone phone--front"><div class="phone__screen"><img src="./assets/img/home.webp" width="540" height="1167" alt=""></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ STATS =========================== -->
+  <section class="band" id="kapsam">
+    <div class="band__inner">
+      <p class="eyebrow">Neden en sık kelimelerden?</p>
+      <h2 class="display display--lg">Birkaç yüz kelime, metnin büyük kısmı</h2>
+      <p class="lead">
+        Kelimeler Kur'an'da kaç kez geçtiklerine göre sıralanır. En sık geçenleri öğrendikçe okuduğunuz ayetlerde
+        tanıdığınız kelimeler hızla artar.
+      </p>
+      <div class="stats">
+        <div class="stat"><p class="stat__value">%34</p><p class="stat__label">En sık 10 kelime</p></div>
+        <div class="stat"><p class="stat__value">%71</p><p class="stat__label">En sık 100 kelime</p></div>
+        <div class="stat"><p class="stat__value">%88</p><p class="stat__label">En sık 500 kelime</p></div>
+        <div class="stat"><p class="stat__value">%93</p><p class="stat__label">En sık 1.000 kelime</p></div>
+      </div>
+      <p class="note">
+        <strong>Nasıl hesaplanır?</strong> Yüzdeler, Kur'an metnindeki kelime geçişlerinin ne kadarını bu kelimelerin
+        oluşturduğunu gösterir. Quranic Arabic Corpus'un ayrımına göre ön ekler ve bitişik zamirler (وَ، الْ، ـهُ gibi)
+        ayrı kelime sayılır. Uygulamadaki &ldquo;metin kapsamı&rdquo; da aynı yolla hesaplanır.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ STUDY =========================== -->
+  <section class="band" id="calisma">
+    <div class="band__inner split">
+      <div class="duo">
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/calisma.webp" width="540" height="1167" loading="lazy" alt="Çalışma kartının ön yüzü: mihrap kemerinin içinde Arapça kelime ve türü"></div></div>
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/cevap.webp" width="540" height="1167" loading="lazy" alt="Kartın arka yüzü: anlam, örnek ayetler ve Tekrar, Zor, İyi, Kolay düğmeleri"></div></div>
+      </div>
+      <div class="split__text">
+        <p class="eyebrow">Çalışma</p>
+        <h2 class="display display--lg">Önce hatırlamaya çalışın, sonra çevirin</h2>
+        <p class="lead">
+          Kartın önünde yalnızca kelime ve türü vardır. Dokununca anlamı, kelimenin geçtiği ayetler ve
+          el-Müfredât açıklaması açılır; ne kadar iyi hatırladığınızı dört düğmeden biriyle söylersiniz.
+        </p>
+        <ul class="checks">
+          <li>Tekrar, Zor, İyi, Kolay: her düğmenin altında kelimenin ne zaman yeniden geleceği yazar</li>
+          <li>Yanlış düğmeye bastıysanız son cevabı geri alırsınız</li>
+          <li>Günlük yeni kelime sayısını ve hedef hatırlama oranını Ayarlar'dan siz seçersiniz</li>
+          <li>Yarım bıraktığınız oturum kaldığı yerden devam eder</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ WORD ============================ -->
+  <section class="band" id="kelime">
+    <div class="band__inner split">
+      <div class="split__text">
+        <p class="eyebrow">Kelime sayfası</p>
+        <h2 class="display display--lg">Her kelime, geçtiği ayetlerle birlikte</h2>
+        <p class="lead">
+          Listeden ya da kartın arkasından açılan kelime sayfası, kelimeyi bağlamında gösterir. Örnek ayetlerde
+          kelime renkle işaretlenir, altında Türkçe meali yer alır.
+        </p>
+        <ul class="checks">
+          <li>Kök, Kur'an'da kaç kez geçtiği ve sıklık sırası</li>
+          <li>Örnek ayetler; meal Elmalılı Hamdi Yazır'ın sadeleştirilmiş Hak Dini Kur'an Dili mealinden</li>
+          <li>Râğıb el-İsfahânî'nin el-Müfredât'ından kelimeyle ilgili bölüm ve Türkçe çevirisi</li>
+          <li>Bu kelimedeki kendi ilerlemeniz: son tekrarlar ve şu an hatırlama ihtimaliniz</li>
+        </ul>
+      </div>
+      <div class="phone phone--single"><div class="phone__screen"><img src="./assets/img/kelime.webp" width="540" height="1167" loading="lazy" alt="Kelime sayfası: Allah lafzı, anlamı, kökü, Kur'an'da 2699 kez geçtiği ve örnek ayetler"></div></div>
+    </div>
+  </section>
+
+  <!-- ========================== PROGRESS ========================== -->
+  <section class="band" id="ilerleme">
+    <div class="band__inner split">
+      <div class="phone phone--single"><div class="phone__screen"><img src="./assets/img/liste.webp" width="540" height="1167" loading="lazy" alt="Kelime listesi: sıklık sırası, anlam, Arapça kelime ve her kelimenin bir sonraki tekrar zamanı"></div></div>
+      <div class="split__text">
+        <p class="eyebrow">İlerleme</p>
+        <h2 class="display display--lg">Ne kadar yol aldığınızı görün</h2>
+        <p class="lead">
+          Ana sayfa bugünkü çalışmanızı ve genel ilerlemenizi bir arada gösterir. Kelime listesinde her kelimenin
+          durumu ve bir sonraki tekrar zamanı yazar.
+        </p>
+        <ul class="checks">
+          <li>Öğrenilen kelime yüzdesi ve metin kapsamı: öğrendiklerinizin Kur'an metnindeki payı</li>
+          <li>Son 30 günün tekrar grafiği ve çalışma serisi</li>
+          <li>Listede Arapça, Türkçe anlam ya da köke göre arama; yeni, öğreniliyor ve öğrenildi filtreleri</li>
+          <li>Bugünkü yeni kelime, öğrenme ve tekrar sayıları, tahmini süreyle</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== FEATURES ========================== -->
+  <section class="band" id="ozellikler">
+    <div class="band__inner">
+      <p class="eyebrow">Özellikler</p>
+      <h2 class="display display--lg">Kelime öğrenmek için ihtiyacınız olan her şey</h2>
+      <div class="features">
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-cards"/></svg></span>
+          <h3 class="display display--sm">FSRS zamanlama</h3>
+          <p>Anki'nin de kullandığı FSRS-6 algoritması; hedef hatırlama oranını siz belirlersiniz.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-offline"/></svg></span>
+          <h3 class="display display--sm">Çevrimdışı</h3>
+          <p>Kelime listesi uygulamayla gelir; çalışmak için internet gerekmez.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-refresh"/></svg></span>
+          <h3 class="display display--sm">Güncel deste</h3>
+          <p>Liste düzeltilip genişledikçe yenisi uygulama güncellemesi beklemeden iner; ilerlemeniz korunur.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-save"/></svg></span>
+          <h3 class="display display--sm">Yedek</h3>
+          <p>İlerlemenizi dosyaya kaydedip başka bir telefona taşırsınız; Android yedeği de ilerlemenizi saklar.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-book-open"/></svg></span>
+          <h3 class="display display--sm">Örnek ayetler</h3>
+          <p>Her kelime geçtiği ayetlerle; kelime ayette işaretli, altında meali.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-book"/></svg></span>
+          <h3 class="display display--sm">el-Müfredât</h3>
+          <p>Râğıb el-İsfahânî'nin Kur'an sözlüğünden kelimenin anlam ayrıntıları, Türkçe çevirisiyle.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+          <h3 class="display display--sm">Arama</h3>
+          <p>Harekeli ya da harekesiz Arapça, Türkçe anlam veya kökle arayın.</p>
+        </article>
+        <article class="feature">
+          <span class="feature__icon"><svg aria-hidden="true"><use href="#i-code"/></svg></span>
+          <h3 class="display display--sm">Açık kaynak</h3>
+          <p>Reklam ve izleme yok. Kaynak kodu ve kelime destesi <a class="prose__link" href="https://github.com/fatihyaman661/kuran-kelimeleri-flashcard">GitHub'da</a>, GPLv3 lisanslı.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== SOURCES =========================== -->
+  <section class="band" id="kaynaklar">
+    <div class="band__inner">
+      <p class="eyebrow">Kaynaklar</p>
+      <h2 class="display display--lg">İçerik nereden geliyor?</h2>
+      <ul class="sources">
+        <li><strong>Kur'an metni:</strong> <a href="https://tanzil.net">Tanzil Project</a>, Tanzil Quran Text (Uthmani, sürüm 1.0.2), CC BY-ND 3.0. Metin değiştirilmeden kullanılmıştır.</li>
+        <li><strong>Morfoloji:</strong> <a href="https://corpus.quran.com">Quranic Arabic Corpus</a> (GNU GPL); düzeltilmiş ve Arapça harfe çevrilmiş <a href="https://github.com/mustafa0x/quran-morphology">mustafa0x/quran-morphology</a> sürümü.</li>
+        <li><strong>Meal:</strong> Elmalılı Muhammed Hamdi Yazır, <em>Hak Dini Kur'an Dili</em> (sadeleştirilmiş).</li>
+        <li><strong>Kelime açıklamaları:</strong> Râğıb el-İsfahânî, <em>el-Müfredât fî Garîbi'l-Kur'ân</em>, thk. Safvân Adnân ed-Dâvûdî.</li>
+        <li><strong>Yazı tipleri:</strong> Amiri ve Amiri Quran (Khaled Hosny), SIL Open Font License 1.1.</li>
+        <li>Kelimelerin Türkçe anlamları, çekim bilgileri ve el-Müfredât alıntılarının Türkçe çevirileri yapay zekâ (Claude) ile hazırlanmıştır. Hata görürseniz <a href="https://github.com/fatihyaman661/kuran-kelimeleri-flashcard/issues">GitHub üzerinden bildirebilirsiniz</a>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================= PLAY ============================ -->
+  <section class="band" id="play">
+    <div class="band__inner">
+      <p class="eyebrow">Google Play</p>
+      <h2 class="display display--lg">Kur'an Kelimeleri yakında Google Play'de</h2>
+      <p class="lead">
+        Uygulama Google Play'de kapalı teste hazırlanıyor. Herkese açıldığında bu sayfadaki düğme doğrudan
+        Play mağazasına götürecek.
+      </p>
+      <p class="note">
+        <strong>Anki kullanıyorsanız:</strong> Aynı deste Anki için de yayında kalmaya devam ediyor. En güncel sürümü
+        <a class="prose__link" href="https://github.com/fatihyaman661/kuran-kelimeleri-flashcard/blob/main/data/kelimeler.apkg">GitHub'daki kelimeler.apkg</a>
+        dosyasından indirip Anki'ye aktarabilirsiniz.
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================== RELEASES ========================== -->
+  <section class="band" id="yenilikler">
+    <div class="band__inner">
+      <p class="eyebrow">Sürüm notları</p>
+      <h2 class="display display--lg">Neler var?</h2>
+      <ol class="releases">
+        <li class="release release--latest">
+          <p class="release__version">1.0 <span class="release__date">Ekim 2026 &middot; ilk sürüm</span></p>
+          <ul class="release__list">
+            <li>Kur'an'daki 4.858 kelime, sıklık sırasıyla</li>
+            <li>FSRS-6 zamanlama; ayarlanabilir hedef hatırlama oranı ve günlük yeni kelime sayısı</li>
+            <li>Örnek ayetler, meal ve el-Müfredât açıklamaları</li>
+            <li>Öğrenilen kelime yüzdesi, metin kapsamı, son 30 günün grafiği ve çalışma serisi</li>
+            <li>Deste güncellemeleri uygulama güncellemesi beklemeden gelir</li>
+            <li>İlerlemeyi dosyaya dışa ve içe aktarma</li>
+          </ul>
+        </li>
+        <li class="release">
+          <p class="release__version">Sırada <span class="release__date">planlanan</span></p>
+          <ul class="release__list">
+            <li>Anki'deki çalışma geçmişini içe aktarma</li>
+            <li>Google hesabıyla cihazlar arası senkron</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================== CTA ============================ -->
+  <section class="band">
+    <div class="band__inner cta">
+      <h2 class="display display--lg">Kur'an Kelimeleri yakında Google Play'de</h2>
+      <p>Sürüm 1.0 &middot; Android 8.0 ve üzeri &middot; Çevrimdışı</p>
+      <div class="hero__actions">
+        <span class="btn btn--soon">
+          <svg aria-hidden="true"><use href="#i-clock"/></svg>
+          Yakında Google Play'de
+        </span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="footer__inner">
+    <p>&copy; <span data-year>2026</span> Kur'an Kelimeleri &middot; Kur'an metni Tanzil Project'ten değiştirilmeden alınmıştır.</p>
+    <p><a class="footer__link" href="./gizlilik.html">Gizlilik politikası</a> &middot; <a class="footer__link" href="https://github.com/fatihyaman661/kuran-kelimeleri-flashcard">Kaynak kodu</a> &middot; Geliştiren <a class="footer__link" href="../">Mevlüt Çelik</a></p>
+  </div>
+</footer>
+
+<script src="./assets/js/main.js" defer></script>
+</body>
+</html>
