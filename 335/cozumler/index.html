@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PHYS 335 Çözüm Defteri</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PHYS 335 soru kitabından seçilmiş soruların Türkçe, adım adım çözümleri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas', 'select', 'option'] },
+  startup: { typeset: true, pageReady: () => MathJax.startup.defaultPageReady().then(fitMath) }
+};
+/* Dar ekranda sütuna sığmayan satır içi formülü kendi satırına alıp yatay kaydırılabilir yapar */
+function fitMath() {
+  const els = [...document.querySelectorAll('mjx-container:not([display="true"])')];
+  els.forEach(el => el.classList.remove('mj-wide'));
+  const wide = [];
+  els.forEach(el => {
+    let b = el.parentElement;
+    while (b && getComputedStyle(b).display === 'inline') b = b.parentElement;
+    if (!b) return;
+    const cs = getComputedStyle(b);
+    const avail = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (el.getBoundingClientRect().width > avail + 1) wide.push(el);
+  });
+  wide.forEach(el => el.classList.add('mj-wide'));
+}
+let fitW = window.innerWidth, fitT = 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === fitW) return;
+  fitW = window.innerWidth; clearTimeout(fitT); fitT = setTimeout(fitMath, 200);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<style>
+/* Düzen: üstte milimetrik kâğıt bandı; altında sol yapışkan içindekiler + 48rem okuma sütunu.
+   Laboratuvarlar sütun genişliğinde "deney tezgâhı" panelleri; renkler fiziksel anlam taşır
+   (kuvvet kırmızı, hız mavi, ivme mor, enerji amber). */
+:root {
+  --bg: #F0F6F3;
+  --panel: #FFFFFF;
+  --panel-2: #E6F0EC;
+  --canvas: #FAFDFB;
+  --ink: #10201A;
+  --muted: #52675E;
+  --rule: #CFDDD6;
+  --grid: #DFECE6;
+  --accent: #0E7A62;
+  --accent-soft: #D9F3E9;
+  --on-accent: #FFFFFF;
+  --force: #C7372C;
+  --vel: #0A78BC;
+  --acc: #7B3FB3;
+  --energy: #B67400;
+  --good: #2E7D32;
+  --bad: #B3261E;
+  --good-soft: #E3F2DF;
+  --bad-soft: #F8E3E1;
+  --font-display: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-body: 1.0625rem;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1411; --panel: #111D19; --panel-2: #17261F; --canvas: #0E1814;
+    --ink: #E2F0EA; --muted: #8DA89C; --rule: #24372F; --grid: #182821;
+    --accent: #6EE2B4; --accent-soft: #123A2C; --on-accent: #06140F;
+    --force: #FF6F61; --vel: #4BB4F2; --acc: #C29BFF; --energy: #F0B43C;
+    --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1411; --panel: #111D19; --panel-2: #17261F; --canvas: #0E1814;
+  --ink: #E2F0EA; --muted: #8DA89C; --rule: #24372F; --grid: #182821;
+  --accent: #6EE2B4; --accent-soft: #123A2C; --on-accent: #06140F;
+  --force: #FF6F61; --vel: #4BB4F2; --acc: #C29BFF; --energy: #F0B43C;
+  --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+mjx-container { color: inherit; position: relative; }
+mjx-assistive-mml { max-width: 100% !important; }
+mjx-container.mj-wide { display: block !important; max-width: 100%; overflow-x: auto; overflow-y: hidden; margin: .3rem 0; padding-bottom: .15rem; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .25rem; margin: .6rem 0 !important; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Üst bant ---------- */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.hero-in {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.75rem 2.25rem;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.5rem; align-items: end;
+}
+.eyebrow {
+  font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: 0 0 .75rem;
+}
+.hero h1 {
+  font: 600 clamp(2.4rem, 6vw, 3.9rem)/1.02 var(--font-display);
+  letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+.hero h1 i { font-style: italic; font-weight: 500; color: var(--accent); }
+.hero .lede { font-size: 1.12rem; color: var(--ink); max-width: 38rem; margin: 0; }
+.hero-card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: grid; gap: .85rem;
+}
+.hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero-stats div { display: grid; }
+.hero-stats b { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.hero-stats span { font: 500 .72rem/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend i { width: 1.4rem; height: 3px; border-radius: 2px; display: inline-block; position: relative; }
+.legend i::after { content: ""; position: absolute; right: -2px; top: -3px; border-left: 6px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+.hero-how { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .92rem; }
+.hero-how li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .6rem; }
+.hero-how b { font: 500 .72rem/1.9 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+
+/* ---------- İskelet ---------- */
+.shell {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3.25rem;
+}
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 2rem 2rem; }
+.side summary { display: none; }
+.toc-title { font: 500 .72rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem; }
+.progress { height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; margin: .2rem 0 .45rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.progress-txt { font: 400 .8rem/1.4 var(--font-mono); color: var(--muted); margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.toc a {
+  display: grid; grid-template-columns: 1.6rem 1fr 1rem; gap: .35rem; align-items: baseline;
+  text-decoration: none; color: var(--muted); padding: .38rem .5rem; border-radius: 5px; font-size: .9rem; line-height: 1.35;
+}
+.toc a:hover { background: var(--panel-2); color: var(--ink); }
+.toc a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.toc .n { font: 500 .78rem/1.5 var(--font-mono); color: var(--accent); }
+.toc .ok { color: var(--good); font-size: .85rem; visibility: hidden; }
+.toc a.is-done .ok { visibility: visible; }
+.side-foot { margin-top: 1.2rem; display: grid; gap: .5rem; font-size: .82rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
+
+main { min-width: 0; max-width: 48rem; padding-block: 1rem 6rem; }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side {
+    max-height: none; overflow: visible; z-index: 30; padding-block: 0;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .side summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    list-style: none; cursor: pointer; padding-block: .75rem; font-weight: 500;
+  }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary .sum-prog { font: 400 .8rem var(--font-mono); color: var(--muted); }
+  .side details[open] .toc-wrap { padding-bottom: 1rem; max-height: 70vh; overflow-y: auto; }
+  .toc-title { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem 1.75rem; }
+}
+
+/* ---------- Bölümler ---------- */
+.chapter { padding-top: 3.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
+.ch-head .eyebrow .sess { color: var(--accent); }
+.chapter h2 { font: 600 clamp(1.8rem, 4vw, 2.45rem)/1.12 var(--font-display); margin: 0 0 .8rem; text-wrap: balance; letter-spacing: -.005em; }
+.ch-lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 42rem; }
+.chapter h3 { font: 600 1.42rem/1.25 var(--font-display); margin: 2.6rem 0 .6rem; text-wrap: balance; }
+.chapter h3 .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-left: .5rem; vertical-align: .25em; white-space: nowrap; }
+.chapter p, .chapter li { max-width: 44rem; }
+.chapter ul, .chapter ol { padding-left: 1.3rem; }
+.chapter li + li { margin-top: .3rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 1rem 0; }
+.kv dt { font: 500 .78rem/1.9 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 0; }
+
+/* Kutular: sonuç / örnek / sınav */
+.box {
+  --lbl: var(--accent);
+  position: relative; margin: 1.9rem 0 1.4rem; padding: 1.15rem 1.2rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--lbl) 38%, var(--rule)); border-radius: var(--radius); background: var(--panel);
+}
+.box-label {
+  position: absolute; top: -.72em; left: .85rem; padding: 0 .45rem;
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--panel) 50%);
+  font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--lbl);
+}
+.box > :first-child:not(.box-label), .box > .box-label + * { margin-top: 0; }
+.box > :last-child { margin-bottom: .2rem; }
+.box.ex { --lbl: var(--energy); }
+.box.exam { --lbl: var(--force); }
+.box.ext { --lbl: var(--acc); }
+.box p { margin: .5rem 0; }
+
+/* Adım adım türetim */
+.derive { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.derive-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .85rem 1.15rem .2rem; }
+.derive-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.derive-head h4 { margin: 0; font: 600 1.05rem/1.35 var(--font-body); }
+.steps { list-style: none; margin: .5rem 0 0; padding: .3rem 1.15rem .2rem; counter-reset: st; }
+.step { counter-increment: st; position: relative; padding: .1rem 0 1.05rem 2.55rem; max-width: none !important; }
+.step + .step { margin-top: 0 !important; }
+.step::before {
+  content: counter(st); position: absolute; left: 0; top: .12rem; width: 1.7rem; height: 1.7rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--panel);
+  font: 600 .8rem/1.55rem var(--font-mono); text-align: center; z-index: 1;
+}
+.step::after { content: ""; position: absolute; left: .82rem; top: 1.9rem; bottom: .15rem; width: 1.5px; background: var(--rule); }
+.step.tail::after, .step:last-child::after { display: none; }
+.step > p:first-child { margin-top: .1rem; }
+.step p { margin: .35rem 0; }
+.step.locked { visibility: hidden; max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.step.rev { animation: rise .4s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .step.rev { animation: none; } }
+.derive-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); border-radius: 0 0 var(--radius) var(--radius); }
+.derive-count { margin-left: auto; font: 500 .82rem var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Düğmeler */
+.btn {
+  font: 500 .88rem/1.2 var(--font-body); padding: .5rem .85rem; border-radius: 5px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--panel); color: var(--accent);
+  min-height: 2.25rem;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--panel); }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+.btn-primary:disabled { background: var(--accent); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+
+/* Laboratuvar */
+.lab { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.lab-head { padding: .95rem 1.15rem .7rem; }
+.lab-tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--vel); }
+.lab-head h4 { margin: .15rem 0 .25rem; font: 600 1.12rem/1.3 var(--font-body); }
+.lab-head p { margin: 0; color: var(--muted); font-size: .94rem; }
+.view { position: relative; overflow: hidden; background: var(--canvas); border-block: 1px solid var(--rule); }
+.view canvas { display: block; width: 100%; touch-action: pan-y; }
+.view .hint { position: absolute; right: .6rem; top: .45rem; font: 500 .72rem var(--font-mono); color: var(--muted); pointer-events: none; }
+.ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .7rem 1.4rem; padding: .95rem 1.15rem .35rem; }
+.ctrl { display: grid; gap: .15rem; min-width: 0; }
+.ctrl label { display: flex; justify-content: space-between; gap: .6rem; font-size: .86rem; color: var(--ink); }
+.ctrl output { font: 500 .84rem var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); margin: .25rem 0; min-height: 1.4rem; }
+.ctrl select, .ctrl input[type="number"] {
+  font: 400 .9rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .4rem .5rem; width: 100%; min-height: 2.25rem;
+}
+.ctrl.check label { justify-content: flex-start; align-items: center; gap: .5rem; padding-top: 1.2rem; }
+.ctrl.check input { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: .55rem 1.15rem .3rem; }
+.readout { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .45rem; padding: .65rem 1.15rem .9rem; margin: 0; }
+.readout > div { background: var(--panel-2); border-radius: 5px; padding: .42rem .65rem .48rem; min-width: 0; }
+.readout dt { font: 500 .74rem/1.35 var(--font-mono); color: var(--muted); }
+.readout dd { margin: .1rem 0 0; font: 500 .95rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.readout > div.wide { grid-column: 1 / -1; }
+.chip { display: inline-block; font: 600 .74rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .5rem; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.warn { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.lab-try { margin: 0; padding: .1rem 1.15rem 1.05rem; font-size: .9rem; color: var(--muted); }
+.lab-try b { color: var(--ink); font-weight: 600; }
+.lab-note { font-size: .86rem; color: var(--muted); padding: 0 1.15rem .8rem; margin: 0; }
+
+/* Tablolar */
+.tbl-wrap { overflow-x: auto; margin: 1.2rem 0; }
+table.tbl { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.tbl th, .tbl td { padding: .5rem .7rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+.tbl th { font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.tbl td.c, .tbl th.c { text-align: center; }
+.tbl td.num { font-family: var(--font-mono); }
+
+/* Sorular */
+.quiz-set { margin: 2.4rem 0 1rem; }
+.quiz-set > h3 { margin-top: 0; }
+.quiz { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 1rem 1.15rem 1rem; margin: .9rem 0; }
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+.quiz-opts { display: grid; gap: .45rem; }
+.quiz-opts button {
+  display: grid; grid-template-columns: 1.7rem 1fr; gap: .55rem; align-items: center; text-align: left;
+  font: 400 .95rem/1.45 var(--font-body); color: var(--ink); background: var(--panel); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 5px; padding: .5rem .65rem; min-height: 2.6rem;
+}
+.quiz-opts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-opts button:disabled { cursor: default; }
+.quiz-opts button > span:last-child { min-width: 0; }
+.opt-k { font: 600 .78rem/1 var(--font-mono); color: var(--muted); width: 1.55rem; height: 1.55rem; border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; }
+.quiz-opts button.ok { border-color: var(--good); background: var(--good-soft); }
+.quiz-opts button.ok .opt-k { background: var(--good); color: var(--panel); border-color: var(--good); }
+.quiz-opts button.no { border-color: var(--bad); background: var(--bad-soft); }
+.quiz-opts button.no .opt-k { background: var(--bad); color: var(--panel); border-color: var(--bad); }
+.quiz-why { margin: .75rem 0 0; font-size: .93rem; }
+.quiz:not(.done) .quiz-why { visibility: hidden; max-height: 0; overflow: hidden; margin: 0; }
+.quiz-why .verdict { font-weight: 600; margin-right: .3rem; }
+.quiz.is-right .verdict { color: var(--good); }
+.quiz.is-wrong .verdict { color: var(--bad); }
+
+.ch-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--rule); }
+.ch-foot .btn.is-done { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.ch-foot a { font-size: .92rem; }
+
+/* Formül kartı */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1.2rem; }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.card h5 { margin: 0; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.card mjx-container[display="true"] { margin: .35rem 0 !important; }
+
+footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* Çözüm defteri eklemeleri */
+.topic { padding-top: 3.2rem; }
+.topic + .topic { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.topic h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.prob { padding-top: 2.2rem; }
+.prob + .prob { border-top: 1px dashed var(--rule); margin-top: 2.2rem; }
+.prob-head { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: center; }
+.pid { font: 600 .78rem/1.5 var(--font-mono); color: var(--accent); background: var(--accent-soft); padding: .05rem .5rem; border-radius: 4px; }
+.lvl { font: 500 .76rem/1.5 var(--font-mono); color: var(--muted); }
+.prob h3 { margin: .35rem 0 .2rem; font: 600 1.4rem/1.25 var(--font-display); text-wrap: balance; }
+.box.q { --lbl: var(--vel); }
+.box.q p { margin: .4rem 0; }
+.tip { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); max-width: 44rem; }
+.tip b { color: var(--force); font-weight: 600; }
+.solved { display: inline-flex; gap: .55rem; align-items: center; font-size: .92rem; color: var(--muted); margin-top: 1rem; cursor: pointer; padding: .35rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.solved input { accent-color: var(--good); width: 1.05rem; height: 1.05rem; }
+.solved:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 0; }
+.toc .grp { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .9rem 0 .25rem .5rem; list-style: none; }
+.toc .grp:first-child { margin-top: 0; }
+.toc a { grid-template-columns: 3.6rem 1fr 1rem; }
+.toc .n { font-size: .72rem; }
+.toc a.is-done .ok { visibility: visible; }
+.mini { margin: 1rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.mini .ctrls { padding-top: .7rem; }
+.note-src { font-size: .85rem; color: var(--muted); }
+
+
+/* ---------- Site menüsü (hamburger) ---------- */
+.nav-btn {
+  position: fixed; z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  right: calc(max(16px, env(safe-area-inset-right, 0px)) - 4px);
+  width: 44px; height: 44px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  display: grid; place-content: center; gap: 4px; padding: 0;
+}
+.nav-btn:hover { border-color: var(--accent); }
+.nav-btn span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.site-nav.open .nav-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav.open .nav-btn span:nth-child(2) { opacity: 0; }
+.site-nav.open .nav-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* kapalı çekmece ekran dışına itildiğinde sayfayı genişletmesin diye kırpan katman */
+.nav-layer { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.site-nav.open .nav-layer { pointer-events: auto; }
+.nav-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 38%, transparent); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+.nav-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 86vw); overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--rule);
+  padding: calc(env(safe-area-inset-top, 0px) + 68px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) 18px;
+  transform: translateX(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+}
+.site-nav.open .nav-drawer { transform: none; visibility: visible; }
+.site-nav.open .nav-scrim { opacity: 1; visibility: visible; }
+.nav-title { font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem .8rem; }
+.nav-drawer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.nav-drawer li a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 6px; text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+.nav-drawer li a b { font-weight: 600; font-size: 1rem; }
+.nav-drawer li a span { font-size: .85rem; color: var(--muted); }
+.nav-drawer li a:hover { background: var(--panel-2); }
+.nav-drawer li a[aria-current="page"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); }
+.nav-drawer li a[aria-current="page"] b { color: var(--accent); }
+.nav-foot { margin: 1.4rem 0 0 .8rem; font-size: .85rem; color: var(--muted); }
+.nav-foot a { color: var(--muted); }
+body.nav-lock { overflow: hidden; }
+.hero-in { padding-top: 4.2rem; }
+@media (max-width: 1000px) {
+  .hero-in { padding-top: 4rem; }
+  .side summary { padding-right: 52px; }
+  .nav-btn { width: 40px; height: 40px; top: calc(env(safe-area-inset-top, 0px) + 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .nav-drawer, .nav-scrim, .nav-btn span { transition: none; } }
+
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav" data-current="cozumler" aria-label="PHYS 335 sayfaları">
+  <button type="button" class="nav-btn" id="nav-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
+  <div class="nav-layer">
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <p class="nav-title">PHYS 335 · Klasik Mekanik I</p>
+    <ul>
+      <li><a href="../" data-key="home"><b>Giriş</b><span>Üç sayfanın özeti</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Klasik Mekanik Defteri</b><span>Ders notları · 19 simülasyon</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>51 soru · çıkmış sınavlar</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>16 yöntem · çalışma planı</span></a></li>
+    </ul>
+    <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
+  </div>
+  </div>
+</nav>
+
+
+<header class="hero" lang="tr">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow"><span>ODTÜ PHYS 335</span><span>Güz 2026–27</span><span>Thornton &amp; Marion</span></p>
+      <h1>PHYS 335 <i>Çözüm Defteri</i></h1>
+      <p class="lede">“Complete Problem Book” içindeki her konudan seçilmiş sorular ve 2024–2025 çıkmış ara sınav soruları, Türkçe ve adım adım çözümleriyle. Kitap çözümleri bilerek vermiyor; buradakileri ben yazdım ve sayısal sonuçları ayrıca kontrol ettim.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div><b id="st-p">0</b><span>çözümlü soru</span></div>
+        <div><b id="st-t">0</b><span>konu + çıkmışlar</span></div>
+        <div><b id="st-s">0</b><span>çözdüğün</span></div>
+      </div>
+      <ul class="hero-how">
+        <li><b>1 · Dene</b><span>Soruyu oku, kâğıtta kendin başla.</span></li>
+        <li><b>2 · Adım</b><span>Takılınca “Sonraki adım” ile yalnızca bir satır aç.</span></li>
+        <li><b>3 · Kontrol</b><span>Sonuç kutusuyla karşılaştır, “Çözdüm” diye işaretle.</span></li>
+      </ul>
+      <p class="note-src" style="margin:0">Kitabın notu: 2 Kasım ve 14 Aralık önerilen sınav tarihleri; ara sınav kapsamı resmî olarak belirtilmemiş.</p>
+    </div>
+  </div>
+</header>
+
+<div class="shell" lang="tr">
+  <aside class="side">
+    <details id="toc-details" open>
+      <summary><span>Sorular</span><span class="sum-prog" id="sum-prog">0 çözüldü</span></summary>
+      <div class="toc-wrap">
+        <p class="toc-title">Sorular</p>
+        <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
+        <p class="progress-txt" id="prog-txt">0 / 0 çözüldü</p>
+        <ol class="toc" id="toc"></ol>
+        <div class="side-foot">
+          <button type="button" class="linkbtn" id="reset-progress">İşaretleri sıfırla</button>
+        </div>
+      </div>
+    </details>
+  </aside>
+
+  <main id="main">
+    <div class="toolbar">
+      <button type="button" class="btn" id="open-all">Tüm çözümleri aç</button>
+      <button type="button" class="btn btn-ghost" id="close-all">Hepsini başa sar</button>
+    </div>
+
+<!-- ================================================= ÇIKMIŞ SORULAR -->
+<section class="topic exam-sec" id="cikmis" data-topic="Ara sınavlar 2024–2025">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Çıkmış sorular</span><span class="sess">2025 Sarıoğlu · 2024 Rafatov · Sarıoğlu roket/atlıkarınca</span></p>
+    <h2>Çıkmış ara sınav soruları</h2>
+    <p class="ch-lede">Taranmış çözüm anahtarlarındaki sorular; her adım kontrol edilip Türkçe açıklandı. Puanlar parantez içinde.</p>
+  </header>
+  <div class="box exam"><span class="box-label">Sınav öncesi okuyun</span>
+    <p><b>2025 sınavını bu yılın hocası B. Özgür Sarıoğlu hazırlamış ve 6 sorusundan 4'ü T&amp;M eğitmen listesinden geliyor:</b> S2 ≈ 2-8 (aynı yükseklikte iki nokta), S3 = 2-27 (ip işi), S5 = 3-6 (yayla bağlı iki kütle), S6 = 8-5 (radyal çökme). Bu yüzden listedeki sorular en iyi hazırlık. Anahtarda en çok puan; zincir kuralı, \(dU/dx\) ve \(d^2U/dx^2\) ile kararlılık, boyut analizi ve indirgenmiş kütleye verilmiş.</p>
+  </div>
+
+  <article class="prob" id="ex25-1" data-short="Çerçeve dönüşümü x′ = f(x,t)">
+    <div class="prob-head"><span class="pid">2025 · S1</span><span class="lvl">10 + 5 puan · Sarıoğlu 1. ara sınav, 6 Kasım 2025</span></div>
+    <h3>Genel çerçeve dönüşümü ve eylemsizlik</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Bir boyutta \(S\) ve \(S'\) çerçeveleri: \(t'=t\), \(x'=f(x,t)\). \(S\)'de yörünge \(x(t)\), hız \(v=dx/dt\), ivme \(a=d^2x/dt^2\). (a) \(S'\)'deki \(v'\) ve \(a'\)'yü bulun. (b) \(S\) ve \(S'\)'nin ikisi de eylemsiz olacak şekilde \(f\)'nin en genel biçimi nedir?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Zincir kuralı ve ikinci türevlerin sıfırlanması</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(x'=f(x(t),t)\), zincir kuralı:</p>\[ v'=\frac{dx'}{dt}=\frac{\partial f}{\partial x}\frac{dx}{dt}+\frac{\partial f}{\partial t}=v\,f_x+f_t . \]</li>
+        <li class="step"><p>Bir kez daha \(d/dt\). Hem \(v\) hem \(f_x\), \(f_t\) zamana bağlı; \(f_x\)'in türevi \(vf_{xx}+f_{xt}\) olur:</p>\[ a'=a\,f_x+v\big(vf_{xx}+f_{xt}\big)+\big(vf_{xt}+f_{tt}\big)=\boxed{a\,f_x+v^2f_{xx}+2v\,f_{xt}+f_{tt}}. \]</li>
+        <li class="step"><p><b>(b)</b> İkisi de eylemsiz: \(S\)'de serbest parçacık (\(a=0\), herhangi bir sabit \(v\)) \(S'\)'de de \(a'=0\) olmalı. \(a'=v^2f_{xx}+2vf_{xt}+f_{tt}\) her \(v\) için sıfır ise:</p>\[ f_{xx}=f_{xt}=f_{tt}=0 . \]</li>
+        <li class="step"><p>Bu durumda \(f_x=c_1\), \(f_t=c_2\) sabit, yani \(v'=c_1v+c_2\), \(a'=c_1a\):</p>\[ \boxed{f(x,t)=c_1x+c_2t+c_3}. \]<p>Anahtardaki not: I. yasanın sağlanması için \(c_1=1\) olması gerekmez (sabit hız yine sabit hız olarak kalır). \(c_1=1\) ise Galile dönüşümü elde edilir.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex25-2" data-short="İki nokta arası en büyük uzaklık">
+    <div class="prob-head"><span class="pid">2025 · S2</span><span class="lvl">5 + 5 + 10 puan · ≈ T&amp;M 2-8</span></div>
+    <h3>Aynı yükseklikteki \(P\) ve \(Q\): \(|PQ|\) ve onu en büyük yapan açı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Mermi \(v\) hızıyla, yerle \(\theta\) açısı yaparak atılıyor ve yerden \(h\) yüksekteki \(P\) ve \(Q\) noktalarından geçiyor. (a) \(|PQ|\)? (b) \(|PQ|\)'yu en büyük yapan \(\theta\)? (c) \(|PQ|_{\max}\)?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki kesişme zamanı, sonra türev</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(y(t)=v\sin\theta\,t-\tfrac12gt^2=h\):</p>\[ t_\pm=\frac{v\sin\theta}{g}\pm\sqrt{\frac{v^2\sin^2\theta}{g^2}-\frac{2h}{g}},\qquad t_+-t_-=\frac2g\sqrt{v^2\sin^2\theta-2gh}. \]</li>
+        <li class="step"><p>Yatay hız sabit \(v\cos\theta\):</p>\[ |PQ|=v\cos\theta\,(t_+-t_-)=\boxed{\frac{2}{g}\,v\cos\theta\sqrt{v^2\sin^2\theta-2gh}}. \]</li>
+        <li class="step"><p><b>(b)</b> \(d|PQ|/d\theta=0\):</p>\[ -\sin\theta\sqrt{S}+\cos\theta\frac{v^2\sin\theta\cos\theta}{\sqrt S}=\frac{\sin\theta}{\sqrt S}\big(v^2\cos^2\theta-S\big)=0,\quad S=v^2\sin^2\theta-2gh . \]<p>\(\sin\theta=0\) fiziksel değil, yani \(v^2\cos^2\theta=v^2\sin^2\theta-2gh\):</p>\[ v^2\cos2\theta=-2gh\ \Rightarrow\ \boxed{\theta=\tfrac12\cos^{-1}\!\Big(-\frac{2gh}{v^2}\Big)}>\frac\pi4 . \]</li>
+        <li class="step"><p><b>(c)</b> \(\cos^2\theta=\tfrac12(1+\cos2\theta)=\tfrac12-\dfrac{gh}{v^2}\), \(\sin^2\theta=\tfrac12+\dfrac{gh}{v^2}\). Böylece \(v^2\sin^2\theta-2gh=\dfrac{v^2}2-gh\) ve \(v\cos\theta=\sqrt{\dfrac{v^2}{2}-gh}\):</p>\[ |PQ|_{\max}=\frac2g\Big(\frac{v^2}{2}-gh\Big)=\boxed{\frac{v^2}{g}-2h}. \]<p>Kontrol: \(h=0\) ⇒ \(\theta=\pi/4\), en büyük menzil \(v^2/g\) ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex25-3" data-short="Masadaki ip (iş)">
+    <div class="prob-head"><span class="pid">2025 · S3</span><span class="lvl">15 puan · = T&amp;M 2-27</span></div>
+    <h3>Sarkan ipi masaya çekme işi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kütlesi \(m\), uzunluğu \(L\) olan ipin \(h\lt L/4\) kadarı masadan düşey sarkıyor. İpin tamamını masaya almak için gereken iş? (Kütle düzgün dağılmış.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(dW=(dm)\,g\,x\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\lambda=m/L\). Kenardan \(x\) aşağıdaki \(dm=\lambda dx\) parçasını kenara çıkarmak için \(dW=(\lambda dx)gx\):</p>\[ W=\int_0^h\lambda gx\,dx=\lambda g\frac{h^2}{2}=\boxed{\frac12\frac mL\,gh^2}. \]</li>
+        <li class="step"><p><b>İkinci yol (anahtarda da var):</b> Sarkan kısmın kütlesi \(\tilde m=\lambda h\), kütle merkezi \(h/2\) aşağıda. \(W=\tilde mg\,h/2\), aynı sonuç.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex25-4" data-short="U = b/x² − a/x">
+    <div class="prob-head"><span class="pid">2025 · S4</span><span class="lvl">5 + 5 + 5 + 5 puan</span></div>
+    <h3>\(F=\frac{2b}{x^3}-\frac{a}{x^2}\): potansiyel, denge ve kaçış hızı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Pozitif \(x\) ekseninde \(m\) kütleli parçacığa \(\vec F=\hat{\mathbf x}\big(\frac{2b}{x^3}-\frac{a}{x^2}\big)\) etkiyor (\(a,b>0\)). (a) \(U(x)\) (\(U\to0\), \(x\to\infty\)); korunumlu mu? (b) \(U\)'yu çizin, \(U=0\) olan \(x\)? (c) Denge noktaları ve türleri? (d) \(x=2b/a\)'dan başlayan parçacığın sonsuza kaçması için en küçük hız?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Ders notlarındaki potansiyel analizinin aynısı</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(F=-dU/dx\):</p>\[ U(x)=-\int F\,dx=\frac{b}{x^2}-\frac{a}{x}+C,\quad U(\infty)=0\Rightarrow C=0:\qquad \boxed{U=\frac{b}{x^2}-\frac ax}. \]<p>Potansiyel var ⇒ korunumlu. Ayrıca \(\vec\nabla\times\vec F=-\vec\nabla\times\vec\nabla U=0\) kendiliğinden sağlanır.</p></li>
+        <li class="step"><p><b>(b)</b> \(U=0\Rightarrow\dfrac{b}{x^2}=\dfrac ax\Rightarrow\boxed{x=b/a}\) (ve \(x\to\infty\)). Çizim: \(x\to0^+\)'da \(+\infty\), \(b/a\)'da sıfırı keser, \(2b/a\)'da minimum, sonra alttan sıfıra yaklaşır (molekül potansiyeli biçimi).</p></li>
+        <li class="step"><p><b>(c)</b> \(U'=-\dfrac{2b}{x^3}+\dfrac{a}{x^2}=0\Rightarrow x_0=\dfrac{2b}{a}\). İkinci türev:</p>\[ U''=\frac{6b}{x^4}-\frac{2a}{x^3}\ \Rightarrow\ U''(x_0)=\frac{6b\,a^4}{16b^4}-\frac{2a\,a^3}{8b^3}=\frac{a^4}{8b^3}>0\ \Rightarrow\ \textbf{kararlı}. \]<p>\(x\to\infty\)'da \(F\to0\) ve tüm türevler sıfıra gider: anahtar bunu “nötr denge” sayıyor.</p></li>
+        <li class="step"><p><b>(d)</b> \(U(2b/a)=\dfrac{a^2}{4b}-\dfrac{a^2}{2b}=-\dfrac{a^2}{4b}\). Kaçış için \(E=T+U\ge0\) (sonsuzda \(U=0\)):</p>\[ \tfrac12mv^2\ge\frac{a^2}{4b}\ \Rightarrow\ \boxed{v_{\min}=\frac{a}{\sqrt{2mb}}}. \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex25-5" data-short="Yayla bağlı iki kütle">
+    <div class="prob-head"><span class="pid">2025 · S5</span><span class="lvl">15 puan · = T&amp;M 3-6</span></div>
+    <h3>Yayla bağlı iki kütlenin açısal frekansı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m_1\) ve \(m_2\), sabiti \(k\) olan ideal yayla bağlı; sürtünmesiz yatay rayda kayıyor. Küçük salınımların açısal frekansı \(\omega\)? (\(x_1,x_2\): yay gevşekken denge konumlarından küçük yer değiştirmeler.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Kütle merkezini ayır, göreli koordinatı salındır</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yay kuvveti yalnızca \(x_1-x_2\)'ye bağlı (5 + 5 puan):</p>\[ m_1\ddot x_1=-k(x_1-x_2),\qquad m_2\ddot x_2=k(x_1-x_2). \]</li>
+        <li class="step"><p>Toplam: \(m_1\ddot x_1+m_2\ddot x_2=(m_1+m_2)\ddot X=0\). Kütle merkezi sabit hızla gider; öteleme hareketini atarız.</p></li>
+        <li class="step"><p>\(u:=x_1-x_2\) için:</p>\[ \ddot u=-ku\Big(\frac1{m_1}+\frac1{m_2}\Big)=-\frac{k}{\mu}u,\qquad \mu=\frac{m_1m_2}{m_1+m_2}\ \Rightarrow\ \boxed{\omega=\sqrt{\frac k\mu}=\sqrt{\frac{k(m_1+m_2)}{m_1m_2}}}. \]<p>Anahtarın notu: merkezi kuvvet probleminde yaptığımız gibi, indirgenmiş kütle.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-5"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex25-6" data-short="Düşen uydu: boyut analizi">
+    <div class="prob-head"><span class="pid">2025 · S6</span><span class="lvl">5 + 10 + bonus 20 puan · = T&amp;M 8-5</span></div>
+    <h3>Durgundan Dünya'ya düşen uydu</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Dünya, eylemsiz çerçevenin orijininde durgun bir noktasal kütle \(M\). \(m\) kütleli uydu \(R\) uzaklığından durgundan serbest düşüyor. (a) Hareket denklemi? (b) Boyut analiziyle Dünya'ya ulaşma süresi \(T\) (boyutsuz sabit kalabilir). (c) Bonus: sabiti bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Boyut analizi + Kepler hilesi</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(m\ddot r=-\dfrac{GMm}{r^2}\Rightarrow\ddot r=-\dfrac{GM}{r^2}\), \(r(0)=R\), \(\dot r(0)=0\).</p></li>
+        <li class="step"><p><b>(b)</b> İlgili büyüklükler yalnızca \(G,M,R\). \([G]=M^{-1}L^3T^{-2}\). \(T=c\,G^\alpha M^\beta R^\gamma\):</p>\[ M^{-\alpha+\beta}L^{3\alpha+\gamma}T^{-2\alpha}=T^1\ \Rightarrow\ \alpha=-\tfrac12,\ \beta=\alpha=-\tfrac12,\ \gamma=-3\alpha=\tfrac32 . \]\[ \boxed{T=c\Big(\frac{R^3}{GM}\Big)^{1/2}} \]</li>
+        <li class="step"><p><b>(c) Bonus.</b> Radyal düşüş, büyük yarı ekseni \(R/2\) olan dejenere bir elipsin yarım periyodu:</p>\[ T=\frac12\cdot2\pi\sqrt{\frac{(R/2)^3}{GM}}=\frac{\pi}{2\sqrt2}\sqrt{\frac{R^3}{GM}}\ \Rightarrow\ \boxed{c=\frac{\pi}{2\sqrt2}}. \]<p>İntegralli doğrulama Merkezi kuvvetler bölümündeki T&amp;M 8-5 çözümünde.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex25-6"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex24-1" data-short="U = 5/x + x/5">
+    <div class="prob-head"><span class="pid">2024 · S1</span><span class="lvl">5 + 8 + 7 puan · Rafatov 1. ara sınav, 11 Kasım 2024</span></div>
+    <h3>\(U=\frac5x+\frac x5\): kuvvet, dönüm noktaları, denge</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(x>0\) bölgesinde \(U(x)=\frac5x+\frac x5\). (i) \(F(x)\)? (ii) \(E=10\) için dönüm noktaları ve çizim. (iii) Denge noktaları ve kararlılık.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(F=-U'\), \(U=E\), \(U'=0\), \(U''\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(i)</b> \(F=-\dfrac{dU}{dx}=-\Big(-\dfrac5{x^2}+\dfrac15\Big)=\boxed{\dfrac{5}{x^2}-\dfrac15}\).</p></li>
+        <li class="step"><p><b>(ii)</b> \(U=E=10\Rightarrow\dfrac5x+\dfrac x5=10\Rightarrow x^2-50x+25=0\):</p>\[ x_{1,2}=25\pm\sqrt{600}=\boxed{5\big(5\pm2\sqrt6\big)}\approx0{,}505\ \text{ve}\ 49{,}5 . \]<p>Çizim: \(x\ll1\)'de \(U\approx5/x\to+\infty\), \(x\gg1\)'de \(U\approx x/5\) doğrusu. Arada \(x_0=5\)'te minimum \(U=2\). Parçacık \([x_1,x_2]\)'de salınır.</p></li>
+        <li class="step"><p><b>(iii)</b> \(U'=-\dfrac5{x^2}+\dfrac15=0\Rightarrow x^2=25\Rightarrow x_0=5\) (\(x>0\)). \(U''=\dfrac{10}{x^3}\Rightarrow U''(5)=\dfrac{10}{125}>0\): \(\boxed{x_0=5\ \text{kararlı}}\).</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex24-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex24-2" data-short="Yukarı atış, doğrusal direnç">
+    <div class="prob-head"><span class="pid">2024 · S2</span><span class="lvl">5 + 10 + 5 + 10 puan</span></div>
+    <h3>Doğrusal dirençle düşey yukarı atış</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m\) kütleli mermi \(v_0\) ile düşey yukarı atılıyor; direnç \(F_r=kmv\). (i) Hareket denklemi (ii) \(v(t)\) (iii) limit hız (iv) \(y(t)\).</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Ders notlarındaki serbest düşme türetiminin aynısı (\(h=0\))</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(i)</b> \(m\ddot{\vec r}=m\vec g-kmv\,\hat{\vec v}\). \(y\) yukarı: \(m\ddot y=-mg-kmv\). (Doğrusal dirençte \(-kmv\) her iki yönde doğru işareti verir.)</p></li>
+        <li class="step"><p><b>(ii)</b> \(\dfrac{dv}{g+kv}=-dt\Rightarrow\dfrac1k\ln(g+kv)=-t+C\). \(t=0\)'da \(v_0\):</p>\[ g+kv=(g+kv_0)e^{-kt}\ \Rightarrow\ \boxed{v(t)=-\frac gk+\Big(\frac gk+v_0\Big)e^{-kt}}. \]</li>
+        <li class="step"><p><b>(iii)</b> \(t\to\infty\): \(v\to-g/k\). Limit hız (büyüklük) \(\boxed{g/k}\), aşağı yönde.</p></li>
+        <li class="step"><p><b>(iv)</b> İntegral ve \(y(0)=0\):</p>\[ \boxed{y(t)=-\frac{g}{k}t+\frac1k\Big(\frac gk+v_0\Big)\big(1-e^{-kt}\big)}. \]<p>Ek: tepe zamanı \(v=0\Rightarrow t_{\text{tepe}}=\frac1k\ln\big(1+\frac{kv_0}{g}\big)\).</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex24-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ex24-3" data-short="Sönümlü sarkaç">
+    <div class="prob-head"><span class="pid">2024 · S3</span><span class="lvl">7 + 8 + 5 + 5 puan</span></div>
+    <h3>Viskoz ortamda sarkaç: rejimler ve faz portresi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Uzunluğu \(l\) olan hafif çubukta \(m\) kütlesi; geciktirici kuvvet \(bl\dot\theta\). (i) Hareket denklemi; \(\sin\theta\approx\theta\), \(\beta=b/2m\), \(\omega_0^2=g/l\). (ii) \(\theta(0)=\theta_0\), \(\dot\theta(0)=0\) ile \(\theta(t)\). (iii) Az/kritik/aşırı sönüm ve \(\theta(t)\). (iv) \((\theta,\dot\theta)\) düzleminde tipik yörüngeler.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Karakteristik denklem ve başlangıç koşulları</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(i)</b> Yay boyu \(s=l\theta\): \(ml\ddot\theta=-mg\sin\theta-bl\dot\theta\):</p>\[ \ddot\theta+\frac bm\dot\theta+\frac gl\sin\theta=0\ \xrightarrow{\sin\theta\approx\theta}\ \ddot\theta+2\beta\dot\theta+\omega_0^2\theta=0 . \]</li>
+        <li class="step"><p><b>(ii)</b> \(\theta=e^{rt}\Rightarrow r^2+2\beta r+\omega_0^2=0\Rightarrow r=-\beta\pm\omega_1\), \(\omega_1=\sqrt{\beta^2-\omega_0^2}\). \(\theta=e^{-\beta t}\big(C_1e^{\omega_1t}+C_2e^{-\omega_1t}\big)\) ve</p>\[ C_1+C_2=\theta_0,\quad C_1(-\beta+\omega_1)+C_2(-\beta-\omega_1)=0\ \Rightarrow\ C_1=\frac{\theta_0(\beta+\omega_1)}{2\omega_1},\ C_2=\frac{\theta_0(\omega_1-\beta)}{2\omega_1}. \]</li>
+        <li class="step"><p><b>(iii) Az sönümlü</b> \(\beta\lt\omega_0\): \(\omega_1=i\omega_2\), \(\omega_2=\sqrt{\omega_0^2-\beta^2}\):</p>\[ \theta=\theta_0e^{-\beta t}\Big(\cos\omega_2t+\frac{\beta}{\omega_2}\sin\omega_2t\Big)=Re^{-\beta t}\cos(\omega_2t-\delta). \]</li>
+        <li class="step"><p><b>Kritik</b> \(\beta=\omega_0\): \(\theta=\theta_0(1+\beta t)e^{-\beta t}\). <b>Aşırı</b> \(\beta>\omega_0\):</p>\[ \theta=\frac{\theta_0}{2\omega_1}e^{-\beta t}\Big[(\beta+\omega_1)e^{\omega_1t}+(\omega_1-\beta)e^{-\omega_1t}\Big]. \]</li>
+        <li class="step"><p><b>(iv)</b> Faz düzleminde: az sönümde orijine saat yönünde dolanan <b>spiral</b>; kritik ve aşırı sönümde orijine dolanmadan giren eğriler (asimptot doğruları boyunca). Etkileşimli hâlini Klasik Mekanik Defteri'ndeki 8.1 laboratuvarında görebilirsiniz.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-ex24-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="exS-5" data-short="Dirençli roket">
+    <div class="prob-head"><span class="pid">Sarıoğlu · S5</span><span class="lvl">5 + 5 + 10 + 5 puan · sınav tarihi taramada yok</span></div>
+    <h3>Hava direnciyle yükselen roket</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Roket \(t=0\)'da durgundan, düzgün yerçekiminde, rokete göre sabit \(u\) hızıyla gaz atarak yükseliyor. \(dm/dt=\gamma m\) (\(\gamma\lt0\) sabit); hava direnci \(bm(t)v(t)\). (a) \(v(t)\)'nin diferansiyel denklemi (b) kalkış koşulu (c) \(v(t)\) (d) \(h(t)\).</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Roket denklemi + dış kuvvetler</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> Derste türettiğimiz roket denklemi \(m\dfrac{dv}{dt}=F_{\text{dış}}-u\dfrac{dm}{dt}\). Dış kuvvet yerçekimi + direnç, ikisi de aşağı: \(F_{\text{dış}}=-mg-bmv\). \(dm/dt=\gamma m\) koyup \(m\)'yi sadeleştirelim:</p>\[ \boxed{\frac{dv}{dt}=-u\gamma-g-bv},\qquad \gamma\lt0 . \]</li>
+        <li class="step"><p><b>(b)</b> Kalkış için itme (birim kütle başına \(-u\gamma\)) yerçekimini aşmalı: \(\boxed{-u\gamma>g}\). Aksi hâlde roket yerde kalır.</p></li>
+        <li class="step"><p><b>(c)</b> \(\dot v+bv=-(u\gamma+g)\) sabit sağ taraflı. \(e^{bt}\) integral çarpanıyla \(\frac{d}{dt}(ve^{bt})=-(u\gamma+g)e^{bt}\). \(v(0)=0\):</p>\[ \boxed{v(t)=-\frac{u\gamma+g}{b}\big(1-e^{-bt}\big)}\qquad(-u\gamma>g\ \text{olduğundan}\ v>0). \]<p>Limit hız \(-(u\gamma+g)/b\): itme = yerçekimi + direnç.</p></li>
+        <li class="step"><p><b>(d)</b> \(h(0)=0\) ile integral:</p>\[ \boxed{h(t)=-\frac{u\gamma+g}{b}\Big[t-\frac{1-e^{-bt}}{b}\Big]}. \]<p>Kontrol: \(\dot h=v\) ✓, \(h(0)=0\) ✓. (Anahtarda köşeli parantez içindeki işaretler el yazısında karışık görünüyor; doğru biçim budur.)</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-exS-5"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="exS-6" data-short="Atlıkarınca: Euler kuvveti">
+    <div class="prob-head"><span class="pid">Sarıoğlu · S6</span><span class="lvl">15 puan · eylemsiz olmayan çerçeve</span></div>
+    <h3>Hızlanan atlıkarıncada topu tutmak</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(R\) yarıçaplı atlıkarınca durgundan başlayıp \(z\) ekseni etrafında sabit açısal ivme \(\alpha\) ile dönüyor. Merkezden \(r\lt R\) uzaklıkta sabit sandalyede oturan çocuk elinde \(m\) kütleli top tutuyor. Topu (atlıkarıncaya göre) durgun tutmak için uygulaması gereken kuvvet? (Dünya'nın dönmesi ihmal.) İpucu:</p>\[ m\ddot{\vec r}\big|_{S'}=\vec F-m\vec\omega\times(\vec\omega\times\vec r)-2m\vec\omega\times\dot{\vec r}\big|_{S'}-m\dot{\vec\omega}\times\vec r . \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Dönen çerçevede kuvvet dengesi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Silindirik koordinatlar \((\rho,\varphi,z)\), orijin merkezde. \(\vec\omega=\alpha t\,\hat{\mathbf z}\), \(\dot{\vec\omega}=\alpha\hat{\mathbf z}\), top \(\vec r=r\hat{\rho}\)'da. \(\hat{\mathbf z}\times\hat{\rho}=\hat{\varphi}\), \(\hat{\mathbf z}\times\hat{\varphi}=-\hat{\rho}\).</p></li>
+        <li class="step"><p>Topa etkiyen terimler:</p>\[ \vec F_g=-mg\hat{\mathbf z},\qquad \vec F_{\text{mk}}=-m\vec\omega\times(\vec\omega\times\vec r)=m\alpha^2t^2r\,\hat{\rho},\qquad \vec F_{\text{Euler}}=-m\dot{\vec\omega}\times\vec r=-m\alpha r\,\hat{\varphi}. \]<p>Top dönen çerçevede durgun (\(\dot{\vec r}|_{S'}=0\)), bu yüzden Coriolis kuvveti sıfır.</p></li>
+        <li class="step"><p>Durgunluk: \(\vec F_{\text{çocuk}}+\vec F_g+\vec F_{\text{mk}}+\vec F_{\text{Euler}}=0\):</p>\[ \boxed{\vec F_{\text{çocuk}}=-m\alpha^2t^2r\,\hat{\rho}+m\alpha r\,\hat{\varphi}+mg\,\hat{\mathbf z}}. \]</li>
+        <li class="step"><p><b>Eylemsiz çerçeveden kontrol:</b> Top \(r\) yarıçaplı çemberde açısal hızı artarak dönüyor. Bunun için merkeze doğru \(m\omega^2r\) (merkezcil), dönme yönünde \(m\alpha r\) (teğetsel ivme) ve ağırlığı dengelemek için \(mg\) gerekir. Aynı sonuç ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-exS-6"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= KONU 1 -->
+<section class="topic" id="konu1" data-topic="Newton mekaniği">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Konu 1</span><span class="sess">T&amp;M Bölüm 2 · Tong Böl. 1–2</span></p>
+    <h2>Tek parçacığın Newton mekaniği</h2>
+    <p class="ch-lede">Dirençli hareket, eğik atış, Lorentz kuvveti, iş–enerji, kararlılık ve korunumlu alanlar.</p>
+  </header>
+  <article class="prob" id="tm2-2" data-short="Küreye kısıtlı hareket">
+    <div class="prob-head"><span class="pid">T&amp;M 2-2</span><span class="lvl">Seviye 3 · kitapçık s. 22 · eğitmen sorusu</span></div>
+    <h3>Küre yüzeyine kısıtlı parçacık</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m\) kütleli parçacık, uygulanan \(\vec F(\theta,\varphi)\) kuvvetiyle \(R\) yarıçaplı bir kürenin yüzeyinde hareket etmeye zorlanıyor. Hareket denklemini yazın.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Küresel birim vektörlerin türevleri</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Küresel koordinatlarda \(r=R\) sabit (\(\dot r=\ddot r=0\)); serbestlik dereceleri \(\theta\) (kutup) ve \(\varphi\) (azimut). Birim vektör türevleri:</p>\[ \dot{\hat{\mathbf e}}_r=\dot\theta\,\hat{\mathbf e}_\theta+\dot\varphi\sin\theta\,\hat{\mathbf e}_\varphi,\quad \dot{\hat{\mathbf e}}_\theta=-\dot\theta\,\hat{\mathbf e}_r+\dot\varphi\cos\theta\,\hat{\mathbf e}_\varphi,\quad \dot{\hat{\mathbf e}}_\varphi=-\dot\varphi(\sin\theta\,\hat{\mathbf e}_r+\cos\theta\,\hat{\mathbf e}_\theta). \]</li>
+        <li class="step"><p>\(\vec r=R\,\hat{\mathbf e}_r\Rightarrow\vec v=R\big(\dot\theta\,\hat{\mathbf e}_\theta+\dot\varphi\sin\theta\,\hat{\mathbf e}_\varphi\big)\). Bir kez daha türev alıp topladığımızda:</p>\[ \vec a=-R\big(\dot\theta^2+\dot\varphi^2\sin^2\theta\big)\hat{\mathbf e}_r+R\big(\ddot\theta-\dot\varphi^2\sin\theta\cos\theta\big)\hat{\mathbf e}_\theta+R\big(\ddot\varphi\sin\theta+2\dot\theta\dot\varphi\cos\theta\big)\hat{\mathbf e}_\varphi . \]</li>
+        <li class="step"><p>Kuvvetler: uygulanan \(\vec F=F_r\hat{\mathbf e}_r+F_\theta\hat{\mathbf e}_\theta+F_\varphi\hat{\mathbf e}_\varphi\) ve yüzeyin radyal kısıt kuvveti \(N\hat{\mathbf e}_r\).</p></li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Hareket denklemleri</span>\[ mR\big(\ddot\theta-\dot\varphi^2\sin\theta\cos\theta\big)=F_\theta,\qquad mR\big(\ddot\varphi\sin\theta+2\dot\theta\dot\varphi\cos\theta\big)=F_\varphi . \]</div></li>
+        <li class="step"><p>Radyal denklem \(-mR(\dot\theta^2+\dot\varphi^2\sin^2\theta)=F_r+N\) hareket denklemi değildir; kısıt kuvvetini verir. Ders notlarındaki yarım çember örneğinin üç boyutlu hâli budur.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-3" data-short="Eğik doğruyu kesme süresi">
+    <div class="prob-head"><span class="pid">T&amp;M 2-3</span><span class="lvl">Seviye 2 · kitapçık s. 23 · eğitmen sorusu</span></div>
+    <h3>Mermi, orijinden geçen eğik doğruyu ne zaman keser?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Mermi orijinden \(v_0\) hızıyla, yatayla \(\alpha\) açısı yaparak atılıyor. Orijinden geçen ve yatayla \(\beta\lt\alpha\) açısı yapan doğruyu kesmesi için geçen süreyi bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Kesişme koşulu</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(x=v_0\cos\alpha\,t\), \(y=v_0\sin\alpha\,t-\tfrac12gt^2\). Doğru: \(y=x\tan\beta\).</p></li>
+        <li class="step"><p>\(t\ne0\) için bölelim:</p>\[ v_0\sin\alpha-\tfrac12gt=v_0\cos\alpha\tan\beta\ \Rightarrow\ \boxed{t=\frac{2v_0\sin(\alpha-\beta)}{g\cos\beta}}. \]</li>
+        <li class="step"><p>\(\beta=0\) için bilinen uçuş süresi \(2v_0\sin\alpha/g\) çıkar. Bu sonuç T&amp;M 2-14'ün (a) şıkkının ilk adımıdır.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-5" data-short="Pilotun çembersel manevrası">
+    <div class="prob-head"><span class="pid">T&amp;M 2-5</span><span class="lvl">Seviye 2 · kitapçık s. 24 · eğitmen sorusu</span></div>
+    <h3>Mach 3'te dalıştan çıkış: en küçük yarıçap</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Pilot \(9g\)'lik ivmeye dayanabiliyor. Uçak Mach 3 hızla düşey aşağı dalışta; pilot yere çarpmadan çembersel bir manevrayla doğrulmak istiyor. (a) En büyük ivme manevranın neresinde? (b) En küçük yarıçap nedir?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Pilotun hissettiği yük = koltuk kuvveti / kütle</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Pilotun “hissettiği” ivme koltuğun ona uyguladığı kuvvet bölü kütledir (\(N/m\)), net ivme değil. Hız sabit tutulursa (motor kullanılarak), çemberin en alt noktasından \(\psi\) açısı uzaktaki konumda merkeze doğru Newton yasası:</p>\[ N-mg\cos\psi=\frac{mv^2}{R}\ \Rightarrow\ \frac Nm=\frac{v^2}{R}+g\cos\psi . \]<p>Dalışın başında (\(\psi=90^\circ\)) yerçekimi teğettir; en altta (\(\psi=0\)) tamamen merkezden dışarı bakar.</p></li>
+        <li class="step"><p><b>(a)</b> \(\cos\psi\) en altta 1 olur. Yerçekimi ve merkezcil gereksinim aynı yönde toplanır: <b>en büyük yük çemberin en alt noktasındadır.</b></p></li>
+        <li class="step"><p><b>(b)</b> En altta \(N/m\le9g\):</p>\[ \frac{v^2}{R}+g\le9g\ \Rightarrow\ R_{\min}=\frac{v^2}{8g}. \]</li>
+        <li class="step"><p>Ses hızı \(\approx340\) m/s kabulüyle \(v\approx1020\) m/s:</p>\[ R_{\min}=\frac{(1020)^2}{8\cdot9{,}8}\approx\boxed{13\ \text{km}}. \]</li>
+        <li class="step"><p><b>Not.</b> Motor kapalıysa uçak çeyrek çember boyunca hızlanır, \(v_{\text{alt}}^2=v^2+2gR\) olur. O zaman en alttaki yük \(v^2/R+3g\) ve \(R_{\min}=v^2/6g\approx18\) km çıkar. Hangi varsayımı kullandığınızı sınavda yazın.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-5"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-8" data-short="Aynı yükseklikte iki nokta">
+    <div class="prob-head"><span class="pid">T&amp;M 2-8</span><span class="lvl">Seviye 2 · kitapçık s. 25 · eğitmen sorusu</span></div>
+    <h3>Aynı yükseklikteki iki nokta arası uzaklık</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Mermi, ikisi de yataydan \(h\) yukarıda olan iki noktadan geçecek şekilde \(v_0\) hızıyla atılıyor. Top en büyük menzile ayarlıysa noktalar arasındaki uzaklığın \(d=\frac{v_0}{g}\sqrt{v_0^2-4gh}\) olduğunu gösterin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(y=h\) ikinci derece denkleminin iki kökü</h4></div>
+      <ol class="steps">
+        <li class="step"><p>En büyük menzil \(\alpha=45^\circ\) demektir. Yörünge denklemi (\(\tan\alpha=1\), \(\cos^2\alpha=\tfrac12\)):</p>\[ y=x\tan\alpha-\frac{gx^2}{2v_0^2\cos^2\alpha}=x-\frac{g}{v_0^2}x^2 . \]</li>
+        <li class="step"><p>\(y=h\) koyalım:</p>\[ \frac{g}{v_0^2}x^2-x+h=0\ \Rightarrow\ x_\pm=\frac{v_0^2}{2g}\Big(1\pm\sqrt{1-\frac{4gh}{v_0^2}}\Big). \]</li>
+        <li class="step"><p>Kökler farkı:</p>\[ d=x_+-x_-=\frac{v_0^2}{g}\sqrt{1-\frac{4gh}{v_0^2}}=\boxed{\frac{v_0}{g}\sqrt{v_0^2-4gh}}\ \checkmark \]<p>\(v_0^2=4gh\) iken \(d=0\): \(h\) tam tepe yüksekliği (\(v_0^2/4g\)).</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-8"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-11" data-short="Karesel dirençle düşme">
+    <div class="prob-head"><span class="pid">T&amp;M 2-11</span><span class="lvl">Seviye 2 · kitapçık s. 26 · eğitmen sorusu</span></div>
+    <h3>Karesel dirençle düşme mesafesi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m\) kütleli parçacık sabit yerçekimi alanında durgundan düşüyor ve \(kmv^2\) büyüklüğünde direnç kuvveti var. Hızın \(v_0\)'dan \(v_1\)'e çıkması sırasında düşülen mesafenin şu olduğunu gösterin:</p>\[ s(v_0\to v_1)=\frac{1}{2k}\ln\frac{g-kv_0^2}{g-kv_1^2}. \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Zamanı yok et, hız–konum ilişkisine geç</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Aşağı yönü + seçelim. Ağırlık aşağı, direnç yukarı:</p>\[ m\frac{dv}{dt}=mg-kmv^2\ \Rightarrow\ \frac{dv}{dt}=g-kv^2 . \]</li>
+        <li class="step"><p>Soru zamanı değil mesafeyi istiyor. Zincir kuralı: \(\dfrac{dv}{dt}=\dfrac{dv}{ds}\dfrac{ds}{dt}=v\dfrac{dv}{ds}\).</p>\[ v\frac{dv}{ds}=g-kv^2\ \Rightarrow\ ds=\frac{v\,dv}{g-kv^2}. \]</li>
+        <li class="step"><p>\(u=g-kv^2\) dersek \(du=-2kv\,dv\), yani \(v\,dv=-du/2k\):</p>\[ s=\int_{v_0}^{v_1}\frac{v\,dv}{g-kv^2}=-\frac1{2k}\Big[\ln(g-kv^2)\Big]_{v_0}^{v_1}. \]</li>
+        <li class="step"><p>Sınırları yerleştirelim:</p>\[ s=\frac1{2k}\Big[\ln(g-kv_0^2)-\ln(g-kv_1^2)\Big]=\frac{1}{2k}\ln\frac{g-kv_0^2}{g-kv_1^2}.\ \checkmark \]</li>
+        <li class="step"><p><b>Yorum.</b> Limit hız \(v_t=\sqrt{g/k}\). \(v_1\to v_t\) iken payda sıfıra gider ve \(s\to\infty\): limit hıza sonlu mesafede ulaşılmaz, yalnızca yaklaşılır.</p></li>
+      </ol></div>
+    <p class="tip"><b>Sınav ipucu:</b> “Mesafe” ya da “yükseklik” soruluyor ve zaman sorulmuyorsa hemen \(\dot v=v\,dv/dx\) dönüşümünü yapın.</p>
+    <label class="solved"><input type="checkbox" id="sv-tm2-11"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-12" data-short="Yukarı–aşağı karesel direnç">
+    <div class="prob-head"><span class="pid">T&amp;M 2-12</span><span class="lvl">Seviye 3 · kitapçık s. 27 · eğitmen sorusu</span></div>
+    <h3>Yukarı atış ve karesel direnç</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Parçacık \(v_0\) hızıyla düşey yukarı atılıyor; direnç anlık hızın karesiyle orantılı. Başlangıç noktasına döndüğünde hızın şu olduğunu gösterin (\(v_t\): limit hız):</p>\[ v=\frac{v_0v_t}{\sqrt{v_0^2+v_t^2}}. \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki ayrı denklem, aynı yükseklik</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Direnç \(kmv^2\) olsun; limit hız \(mg=kmv_t^2\Rightarrow v_t^2=g/k\). Direnç hep hareketin tersine olduğu için çıkış ve inişi <b>ayrı</b> yazmalıyız.</p></li>
+        <li class="step"><p><b>Çıkış</b> (+ yukarı; ağırlık ve direnç ikisi de aşağı):</p>\[ v\frac{dv}{dx}=-g-kv^2\ \Rightarrow\ H=\int_0^{v_0}\frac{v\,dv}{g+kv^2}=\frac1{2k}\ln\Big(1+\frac{kv_0^2}{g}\Big)=\frac1{2k}\ln\Big(1+\frac{v_0^2}{v_t^2}\Big). \]</li>
+        <li class="step"><p><b>İniş</b> (+ aşağı; direnç yukarı):</p>\[ v\frac{dv}{dx}=g-kv^2\ \Rightarrow\ H=\int_0^{v}\frac{v'\,dv'}{g-kv'^2}=-\frac1{2k}\ln\Big(1-\frac{v^2}{v_t^2}\Big). \]</li>
+        <li class="step"><p>İki \(H\)'yi eşitleyip logaritmayı kaldıralım:</p>\[ 1+\frac{v_0^2}{v_t^2}=\frac{1}{1-v^2/v_t^2}\ \Rightarrow\ 1-\frac{v^2}{v_t^2}=\frac{v_t^2}{v_t^2+v_0^2}. \]</li>
+        <li class="step"><p>\(v^2\)'yi çekelim:</p>\[ \frac{v^2}{v_t^2}=\frac{v_0^2}{v_0^2+v_t^2}\ \Rightarrow\ \boxed{v=\frac{v_0v_t}{\sqrt{v_0^2+v_t^2}}}. \]</li>
+        <li class="step"><p><b>Kontrol.</b> \(v_0\ll v_t\): \(v\approx v_0\) (direnç önemsiz). \(v_0\gg v_t\): \(v\approx v_t\). Ders notlarındaki \(kv^2\) topu ile aynı sonuç: \(\lambda=v_0^2/v_t^2\) yazınca \(w=v_0(1+\lambda)^{-1/2}\) olur.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-12"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-14" data-short="Tepeye eğik atış">
+    <div class="prob-head"><span class="pid">T&amp;M 2-14</span><span class="lvl">Seviye 2 · kitapçık s. 28 · eğitmen sorusu</span></div>
+    <h3>Eğimli tepeye atış</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Mermi \(v_0\) hızıyla, eğimi \(\beta\) olan bir tepeye doğru \(\alpha\) yükselme açısıyla (\(\alpha>\beta\)) atılıyor. (a) Tepe boyunca ne kadar uzağa düşer? (b) Hangi \(\alpha\) menzili en büyük yapar? (c) En büyük menzil nedir?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Yörüngeyi tepe çizgisiyle kesiştir</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yatay \(x\), düşey \(y\); direnç yok:</p>\[ x=v_0\cos\alpha\,t,\qquad y=v_0\sin\alpha\,t-\tfrac12gt^2 . \]</li>
+        <li class="step"><p>Tepe yüzeyi \(y=x\tan\beta\). Kesişme koşulu (\(t\ne0\)):</p>\[ v_0\sin\alpha-\tfrac12gt=v_0\cos\alpha\tan\beta\ \Rightarrow\ t=\frac{2v_0(\sin\alpha\cos\beta-\cos\alpha\sin\beta)}{g\cos\beta}=\frac{2v_0\sin(\alpha-\beta)}{g\cos\beta}. \]</li>
+        <li class="step"><p><b>(a)</b> Tepe boyunca mesafe \(d=x/\cos\beta\):</p>\[ \boxed{d=\frac{2v_0^2\cos\alpha\,\sin(\alpha-\beta)}{g\cos^2\beta}}. \]</li>
+        <li class="step"><p><b>(b)</b> Çarpımı toplama çevirelim: \(\cos\alpha\sin(\alpha-\beta)=\tfrac12\big[\sin(2\alpha-\beta)-\sin\beta\big]\). Yalnızca ilk terim \(\alpha\)'ya bağlı ve en büyük değeri 1:</p>\[ 2\alpha-\beta=\frac\pi2\ \Rightarrow\ \boxed{\alpha=\frac\pi4+\frac\beta2}. \]</li>
+        <li class="step"><p><b>(c)</b> Yerine koyalım ve \(\cos^2\beta=(1-\sin\beta)(1+\sin\beta)\) kullanalım:</p>\[ d_{\max}=\frac{2v_0^2}{g\cos^2\beta}\cdot\frac{1-\sin\beta}{2}=\boxed{\frac{v_0^2}{g(1+\sin\beta)}}. \]</li>
+        <li class="step"><p><b>Kontrol.</b> \(\beta=0\): \(\alpha=45^\circ\), \(d_{\max}=v_0^2/g\), düz zemindeki bilinen sonuç ✓. En iyi açı, düşeyle tepe arasındaki açının tam ortasıdır.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-14"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-15" data-short="Eğik düzlemde kv² direnç">
+    <div class="prob-head"><span class="pid">T&amp;M 2-15</span><span class="lvl">Seviye 3 · kitapçık s. 29 · eğitmen sorusu</span></div>
+    <h3>Karesel dirençle eğik düzlemden kayma süresi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m\) kütleli parçacık \(\theta\) eğimli düzlemden kayıyor; hareket \(f=kmv^2\) kuvvetiyle engelleniyor. Durgundan başlayıp \(d\) mesafesini almak için gereken sürenin şu olduğunu gösterin:</p>\[ t=\frac{\cosh^{-1}\!\big(e^{kd}\big)}{\sqrt{kg\sin\theta}}. \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Önce \(v(t)\), sonra \(x(t)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Eğim boyunca: \(\dot v=g\sin\theta-kv^2=k\big(v_t^2-v^2\big)\), limit hız \(v_t^2=g\sin\theta/k\).</p></li>
+        <li class="step"><p>Kısmi kesirler ya da standart integral:</p>\[ \int_0^v\frac{dv'}{v_t^2-v'^2}=\frac1{v_t}\tanh^{-1}\frac{v}{v_t}=kt\ \Rightarrow\ v(t)=v_t\tanh(kv_tt). \]</li>
+        <li class="step"><p>Konum: \(\int\tanh(at)\,dt=\frac1a\ln\cosh(at)\) ile</p>\[ x(t)=\int_0^tv\,dt'=\frac{v_t}{kv_t}\ln\cosh(kv_tt)=\frac1k\ln\cosh(kv_tt). \]</li>
+        <li class="step"><p>\(x=d\) koyalım: \(\cosh(kv_tt)=e^{kd}\). \(kv_t=\sqrt{k\cdot kg\sin\theta/k}=\sqrt{kg\sin\theta}\) olduğundan:</p>\[ \boxed{t=\frac{\cosh^{-1}\!\big(e^{kd}\big)}{\sqrt{kg\sin\theta}}}\ \checkmark \]</li>
+        <li class="step"><p><b>Kontrol.</b> \(k\to0\): \(e^{kd}\approx1+kd\), \(\cosh^{-1}(1+\epsilon)\approx\sqrt{2\epsilon}\) ⇒ \(t\approx\sqrt{2d/(g\sin\theta)}\), sürtünmesiz eğik düzlem ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-15"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-16" data-short="Eğimde yukarı ve geri">
+    <div class="prob-head"><span class="pid">T&amp;M 2-16</span><span class="lvl">Seviye 1 · kitapçık s. 30 · eğitmen sorusu</span></div>
+    <h3>Sürtünmesiz eğimde gidip dönme süresi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Parçacık \(\alpha\) eğimli sürtünmesiz yokuşa \(v_0\) hızıyla yukarı fırlatılıyor. Başlangıç noktasına dönme süresi? \(v_0=2{,}4\) m/s, \(\alpha=26^\circ\) için hesaplayın.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Eğim boyunca sabit ivme</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Eğim boyunca ivme \(-g\sin\alpha\) (yukarı +): \(s(t)=v_0t-\tfrac12g\sin\alpha\,t^2\).</p></li>
+        <li class="step"><p>\(s=0\) (\(t\ne0\)):</p>\[ t=\frac{2v_0}{g\sin\alpha}=\frac{2(2{,}4)}{9{,}8\sin26^\circ}\approx\boxed{1{,}12\ \text{s}}. \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-16"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-17" data-short="Çiti aşan top">
+    <div class="prob-head"><span class="pid">T&amp;M 2-17</span><span class="lvl">Seviye 1 · kitapçık s. 31 · eğitmen sorusu</span></div>
+    <h3>Softbol topu çiti aşmalı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Top, plakanın 0,7 m üstünden \(35^\circ\) yükselme açısıyla vuruluyor; 60 m uzaktaki 2 m yüksekliğinde bir çite doğru gidiyor. Çiti aşması için ilk hız en az ne olmalı? (Hava direnci yok.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Yörünge denkleminde \(x=60\) m, \(y=2\) m</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yörünge: \(y=y_0+x\tan\alpha-\dfrac{gx^2}{2v_0^2\cos^2\alpha}\). Sınırda \(y(60)=2\) m.</p></li>
+        <li class="step"><p>\(v_0^2\)'yi çekelim:</p>\[ v_0^2=\frac{gx^2}{2\cos^2\alpha\,\big(y_0+x\tan\alpha-y\big)}=\frac{9{,}8\cdot3600}{2(0{,}671)(0{,}7+42{,}01-2)}\approx646\ \text{m}^2/\text{s}^2 . \]</li>
+        <li class="step"><p>\[ \boxed{v_0\approx25{,}4\ \text{m/s}}\ (\approx91\ \text{km/sa}). \]</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-17"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-22" data-short="Lorentz kuvveti ve sürüklenme">
+    <div class="prob-head"><span class="pid">T&amp;M 2-22</span><span class="lvl">Seviye 3 · kitapçık s. 32 · eğitmen sorusu</span></div>
+    <h3>Lorentz kuvveti ve \(\vec E\times\vec B\) sürüklenmesi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(\vec F=q\vec E+q\vec v\times\vec B\) (\(v\ll c\)). (a) \(\vec E=0\) ve parçacık \(\vec B\)'ye dik girerse yörüngenin \(r=mv/qB=v/\omega_c\) yarıçaplı çember olduğunu gösterin. (b) \(\vec B=B\hat{\mathbf k}\), \(\vec E=E_y\hat{\mathbf j}+E_z\hat{\mathbf k}\) için \(z(t)=z_0+\dot z_0t+\frac{qE_z}{2m}t^2\) olduğunu gösterin. (c) \(\dot x(t)\), \(\dot y(t)\)'yi bulun ve \(\langle\dot x\rangle=E_y/B\), \(\langle\dot y\rangle=0\) olduğunu gösterin. (d) Verilen başlangıç koşullarıyla \(x(t)\), \(y(t)\)'nin trokoit olduğunu gösterin ve üç durumu çizin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Sürüklenen çerçevede çember</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(\vec F=q\vec v\times\vec B\perp\vec v\): kuvvet iş yapmaz, \(v\) sabit; büyüklüğü \(|q|vB\) sabit ve hep hıza dik. Bu düzgün çembersel harekettir:</p>\[ \frac{mv^2}{r}=|q|vB\ \Rightarrow\ r=\frac{mv}{|q|B}=\frac{v}{\omega_c},\qquad \omega_c=\frac{qB}{m}. \]</li>
+        <li class="step"><p><b>(b)</b> \(\vec v\times\vec B=(\dot x,\dot y,\dot z)\times(0,0,B)=(\dot yB,\,-\dot xB,\,0)\). Bileşenler:</p>\[ m\ddot x=qB\dot y,\qquad m\ddot y=qE_y-qB\dot x,\qquad m\ddot z=qE_z . \]<p>Üçüncü denklem sabit ivmedir: \(z(t)=z_0+\dot z_0t+\frac{qE_z}{2m}t^2\) ✓.</p></li>
+        <li class="step"><p><b>(c)</b> \(\omega_c\) ile: \(\ddot x=\omega_c\dot y\), \(\ddot y=\omega_c\big(E_y/B-\dot x\big)\). Kaydırılmış hız \(u:=\dot x-E_y/B\) tanımlayalım:</p>\[ \dot u=\omega_c\dot y,\qquad \ddot y=-\omega_cu\ \Rightarrow\ \ddot u=\omega_c\ddot y=-\omega_c^2u . \]<p>\(u\) basit harmonik salınım yapıyor.</p></li>
+        <li class="step"><p>Çözüm (\(a=\dot x(0)-E_y/B\), \(b=\dot y(0)\)):</p>\[ \dot x(t)=\frac{E_y}{B}+a\cos\omega_ct+b\sin\omega_ct,\qquad \dot y(t)=b\cos\omega_ct-a\sin\omega_ct . \]<p>Hareket \(2\pi/\omega_c\) periyotlu; sinüs ve kosinüsün bir periyot üzerindeki ortalaması sıfır:</p>\[ \langle\dot x\rangle=\frac{E_y}{B},\qquad \langle\dot y\rangle=0 . \]<p>Bu, \(\vec E\times\vec B/B^2=(E_y/B)\,\hat{\mathbf i}\) sürüklenme hızıdır ve yükün işaretinden bağımsızdır.</p></li>
+        <li class="step"><p><b>(d)</b> Başlangıç koşulları \(\dot x(0)=E_y/B\Rightarrow a=0\) ve \(\dot y(0)=A\Rightarrow b=A\):</p>\[ \dot x=\frac{E_y}{B}+A\sin\omega_ct,\qquad \dot y=A\cos\omega_ct . \]</li>
+        <li class="step"><p>İntegral alıp \(x(0)=-A/\omega_c\), \(y(0)=0\) koşullarını kullanalım (integral sabitleri sıfır çıkar):</p>\[ \boxed{x(t)=-\frac{A}{\omega_c}\cos\omega_ct+\frac{E_y}{B}t,\qquad y(t)=\frac{A}{\omega_c}\sin\omega_ct}. \]<p>\(E_y/B\) hızıyla giden bir çerçevede \(A/\omega_c\) yarıçaplı çember: <b>trokoit</b>.</p></li>
+        <li class="step"><p><b>Çizim.</b> \(\dot x\)'in işaret değiştirip değiştirmediğine bakın: \(\dot x_{\min}=E_y/B-A\). (i) \(A>|E_y/B|\): \(\dot x\) negatif olur, eğri <b>ilmek</b> yapar. (ii) \(A\lt|E_y/B|\): \(\dot x\) hep pozitif, ilmeksiz <b>dalgalı</b> eğri. (iii) \(A=|E_y/B|\): \(\dot x\) ve \(\dot y\) aynı anda sıfır olur, <b>sikloit</b> (sivri uçlar). Aşağıdaki çizimde deneyin.</p></li>
+      </ol></div>
+    <figure class="mini" id="mini-troch">
+      <div class="view"><canvas id="cv-troch" aria-label="Trokoit çizimi"></canvas></div>
+      <div class="ctrls"></div>
+    </figure>
+    <p class="tip"><b>Sınav ipucu:</b> Sürüklenme hızını ezberlemek yerine \(\dot x\)'ten sabit kısmı çıkarın: geriye saf dönme kalır. Bu “hareketli çerçeveye geç” fikri Galile dönüşümünün kendisidir.</p>
+    <label class="solved"><input type="checkbox" id="sv-tm2-22"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-24" data-short="Kayakçı ve sürtünme">
+    <div class="prob-head"><span class="pid">T&amp;M 2-24</span><span class="lvl">Seviye 2 · kitapçık s. 34 · eğitmen sorusu</span></div>
+    <h3>Kayakçı: sürtünme katsayısı ve dipteki hız</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>90 kg'lık kayakçı \(17^\circ\) eğimli tepeden durgundan başlıyor; 100 m iniyor, sonra düz karda 70 m kayıp duruyor. Kinetik sürtünme katsayısını ve tepenin dibindeki hızı bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İş–enerji: kazanılan potansiyel = sürtünme işi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Başta ve sonda durgun: toplam yerçekimi işi = toplam sürtünme işi. Eğimde normal kuvvet \(mg\cos17^\circ\), düzde \(mg\):</p>\[ mg(100\sin17^\circ)=\mu_kmg\big(100\cos17^\circ+70\big). \]</li>
+        <li class="step"><p>Kütle sadeleşir:</p>\[ \mu_k=\frac{100\sin17^\circ}{100\cos17^\circ+70}=\frac{29{,}24}{165{,}63}\approx\boxed{0{,}18}. \]</li>
+        <li class="step"><p>Dipteki hız, düz kısımda sürtünmenin söndürdüğü kinetik enerjiden:</p>\[ \tfrac12mv^2=\mu_kmg(70)\ \Rightarrow\ v=\sqrt{2\mu_kg(70)}\approx\boxed{15{,}6\ \text{m/s}}. \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-24"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-25" data-short="Raydaki blok">
+    <div class="prob-head"><span class="pid">T&amp;M 2-25</span><span class="lvl">Seviye 3 · kitapçık s. 35 · eğitmen sorusu</span></div>
+    <h3>Raydaki blok: normal kuvvetler, ayrılma ve iniş noktası</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m=1{,}62\) kg'lık blok sürtünmesiz raydan kayıyor (Şekil 2-A); halkanın dibinden \(h=3{,}91\) m yukarıdan bırakılıyor. Ray \(A\)'da (dip) \(R\) yarıçaplı bir yaya dönüşüyor ve \(A\)'dan \(45^\circ\) ötedeki \(B\)'de bitiyor. (a) \(A\)'da rayın kuvveti? (b) \(B\)'de? (c) Blok raydan hangi hızla ayrılır? (d) \(A\)'dan ne kadar uzağa düşer? (e) \(U(x)\)'i çizin. (\(R\) şekilde sayı olarak verilmemiş.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Enerji korunumu + radyal Newton + eğik atış</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(A\)'da \(v_A^2=2gh\). Merkez yukarıda; radyal yönde \(N_A-mg=mv_A^2/R\):</p>\[ N_A=mg\Big(1+\frac{2h}{R}\Big)=15{,}9\ \text{N}+\frac{124\ \text{J}}{R}. \]</li>
+        <li class="step"><p><b>(b)</b> \(B\)'nin \(A\)'dan yüksekliği \(y_B=R(1-\cos45^\circ)\), dolayısıyla \(v_B^2=2g(h-y_B)\). \(B\)'de ağırlığın merkezden dışarı bileşeni \(mg\cos45^\circ\):</p>\[ N_B-mg\cos45^\circ=\frac{mv_B^2}{R}\ \Rightarrow\ N_B=mg\Big(\frac{2h}{R}+\frac{3}{\sqrt2}-2\Big). \]</li>
+        <li class="step"><p><b>(c)</b> Ray \(B\)'de bitiyor; blok buradan teğet doğrultuda, yataydan \(45^\circ\) yukarı ayrılıyor:</p>\[ v_B=\sqrt{2g\big(h-R(1-1/\sqrt2)\big)}. \]</li>
+        <li class="step"><p><b>(d)</b> \(B\)'den eğik atış: \(x_B=R/\sqrt2\), \(y_B\), hız bileşenleri \(v_B/\sqrt2\). Yere iniş süresi \(y_B+\frac{v_B}{\sqrt2}t-\frac12gt^2=0\) denkleminden. \(\frac{v_B^2}{2}=g(h-y_B)\) kullanınca sade bir sonuç çıkar:</p>\[ D=\frac{R}{\sqrt2}+(h-y_B)+\sqrt{h^2-y_B^2},\qquad y_B=R\Big(1-\frac1{\sqrt2}\Big). \]</li>
+        <li class="step"><p><b>Örnek \(R=1\) m:</b> \(N_A\approx140\) N, \(N_B\approx126\) N, \(v_B\approx8{,}4\) m/s, \(D\approx8{,}2\) m. \(R\ll h\) limitinde \(D\to2h\approx7{,}8\) m.</p></li>
+        <li class="step"><p><b>(e)</b> \(U(x)=mg\,y(x)\) rayın profilinin aynısıdır: \(x=0\)'da \(mgh\), eğim boyunca azalır, \(A\)'da sıfır, \(B\)'ye kadar \(mgy_B\)'ye yükselir. Toplam enerji \(E=mgh\) yatay bir çizgidir; aradaki dikey mesafe kinetik enerjidir.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-25"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-26" data-short="Yay sıkışması ve sürtünme">
+    <div class="prob-head"><span class="pid">T&amp;M 2-26</span><span class="lvl">Seviye 2 · kitapçık s. 36 · eğitmen sorusu</span></div>
+    <h3>Blok yayı ne kadar sıkıştırır?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>2 kg'lık blok kaygan zeminde 4 m/s ile kayıp \(k=6\) N/m'lik yaya çarpıyor. En büyük sıkışma? Blok önce \(\mu_k=0{,}2\) olan 2 m'lik pürüzlü zeminden geçerse sonuç ne olur?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Kinetik enerji → yay enerjisi (− sürtünme işi)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Sürtünmesiz: \(\tfrac12mv^2=\tfrac12kx^2\Rightarrow x=v\sqrt{m/k}=4\sqrt{2/6}\approx\boxed{2{,}31\ \text{m}}\).</p></li>
+        <li class="step"><p>Pürüzlü zeminde kayıp \(\mu_kmgd=0{,}2(2)(9{,}8)(2)=7{,}84\) J. Başta 16 J vardı, yaya 8,16 J kalır:</p>\[ x=\sqrt{\frac{2(8{,}16)}{6}}\approx\boxed{1{,}65\ \text{m}}. \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-26"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-27" data-short="İpi masaya çekme işi">
+    <div class="prob-head"><span class="pid">T&amp;M 2-27</span><span class="lvl">Seviye 1 · kitapçık s. 37 · eğitmen sorusu</span></div>
+    <h3>Sarkan ipi masaya çekmek için gereken iş</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Toplam kütlesi 0,4 kg ve uzunluğu 4 m olan ipin 0,6 m'si çalışma tezgâhından düşey sarkıyor. İpin tamamını tezgâha almak için ne kadar iş yapılmalı?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki yol: integral ve kütle merkezi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Çizgisel yoğunluk \(\lambda=0{,}4/4=0{,}1\ \text{kg/m}\). İpi yavaşça (kinetik enerji vermeden) çektiğimizi, tezgâhın sürtünmesiz olduğunu varsayalım.</p></li>
+        <li class="step"><p>Sarkan uzunluk \(x\) iken çekmemiz gereken kuvvet sarkan kısmın ağırlığıdır: \(F=\lambda gx\). Uzunluğu \(0{,}6\to0\) azaltmak için:</p>\[ W=\int_0^{0{,}6}\lambda g\,x\,dx=\frac{\lambda g(0{,}6)^2}{2}=\frac{0{,}1\cdot9{,}8\cdot0{,}36}{2}. \]</li>
+        <li class="step"><p><b>Kontrol (kütle merkezi):</b> Sarkan kısmın kütlesi \(0{,}06\) kg ve kütle merkezi \(0{,}3\) m aşağıda. Potansiyel enerji artışı \(0{,}06\cdot9{,}8\cdot0{,}3\), aynı sonuç.</p>\[ \boxed{W\approx0{,}176\ \text{J}} \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-27"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-28" data-short="Süper top ve bilye">
+    <div class="prob-head"><span class="pid">T&amp;M 2-28</span><span class="lvl">Seviye 3 · kitapçık s. 38 · eğitmen sorusu</span></div>
+    <h3>Süper top üstünde bilye: art arda esnek çarpışmalar</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(M\) kütleli süper top ve hemen üstündeki \(m\) kütleli bilye \(h\) yüksekliğinden bırakılıyor. Top yerden esnek seker ve bilyeye çarpar. Hareket düşey, boyutlar ihmal. Bilye ve top ne kadar yükselir?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Önce yer, sonra 1B esnek çarpışma</h4></div>
+      <ol class="steps">
+        <li class="step"><p>İkisi de yere \(v=\sqrt{2gh}\) hızla gelir. Top yerden esnek sekip \(+v\) (yukarı) olur; bilye hâlâ \(-v\) ile iniyor.</p></li>
+        <li class="step"><p>1B esnek çarpışma formülleri (\(u_1=+v\) top, \(u_2=-v\) bilye):</p>\[ v_m'=\frac{2Mu_1+(m-M)u_2}{M+m}=v\,\frac{3M-m}{M+m},\qquad v_M'=\frac{(M-m)u_1+2mu_2}{M+m}=v\,\frac{M-3m}{M+m}. \]</li>
+        <li class="step"><p>Yükseklik \(\propto v'^2\):</p>\[ \boxed{h_m=h\Big(\frac{3M-m}{M+m}\Big)^2,\qquad h_M=h\Big(\frac{M-3m}{M+m}\Big)^2}. \]</li>
+        <li class="step"><p><b>Limit \(M\gg m\):</b> bilye \(3v\) ile çıkar ve \(9h\)'ye yükselir; top neredeyse \(h\)'ye döner. \(M\lt3m\) ise top çarpışmadan sonra aşağı gider. Ünlü “basketbol + tenis topu” gösterisinin hesabı budur.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-28"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-32" data-short="Eğimde bağlı kütleler">
+    <div class="prob-head"><span class="pid">T&amp;M 2-32</span><span class="lvl">Seviye 2 · kitapçık s. 39 · eğitmen sorusu</span></div>
+    <h3>Bağlı kütleler sabit hızla hangi açıda hareket eder?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Eğik düzlemdeki \(2m\) bloğu, tepedeki makaradan geçen iple düşey sarkan \(m\) bloğuna bağlı (Şekil 2-B). Kinetik sürtünme \(\mu_k\). Kütlelerin sabit hızla hareket etmesi için \(\theta\) ne olmalı?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Net kuvvet sıfır; hareket yönüne göre iki durum</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Sabit hız ⇒ her blokta net kuvvet sıfır, ip gerilmesi \(T=mg\). Sürtünme \(2m\)'nin hareketine ters, yönü harekete bağlı.</p></li>
+        <li class="step"><p><b>Durum 1:</b> \(m\) iniyor, \(2m\) yokuş yukarı çıkıyor; sürtünme yokuş aşağı:</p>\[ mg=2mg\sin\theta+2\mu_kmg\cos\theta\ \Rightarrow\ \sin\theta+\mu_k\cos\theta=\tfrac12 . \]</li>
+        <li class="step"><p><b>Durum 2:</b> \(2m\) yokuş aşağı iniyor; sürtünme yokuş yukarı:</p>\[ 2mg\sin\theta=mg+2\mu_kmg\cos\theta\ \Rightarrow\ \sin\theta-\mu_k\cos\theta=\tfrac12 . \]</li>
+        <li class="step"><p>\(\sin\theta\pm\mu\cos\theta=\sqrt{1+\mu^2}\sin(\theta\pm\phi)\), \(\phi=\arctan\mu_k\):</p>\[ \boxed{\theta=\arcsin\frac{1}{2\sqrt{1+\mu_k^2}}\mp\arctan\mu_k}\quad(\text{üst işaret: durum 1}). \]</li>
+        <li class="step"><p><b>Kontrol:</b> \(\mu_k=0\) ⇒ \(\theta=30^\circ\) (\(2m\sin\theta=m\)). Örnek \(\mu_k=0{,}2\): durum 1 \(\theta\approx18{,}0^\circ\), durum 2 \(\theta\approx40{,}7^\circ\). Bu iki açı arasında sistem durgunsa durgun kalabilir.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-32"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-34" data-short="Hız–mesafe ilişkisi">
+    <div class="prob-head"><span class="pid">T&amp;M 2-34</span><span class="lvl">Seviye 2 · kitapçık s. 40 · eğitmen sorusu</span></div>
+    <h3>Dirençle düşüşte hız ile mesafe ilişkisi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Parçacık durgundan bırakılıyor; yerçekimi ve hava direnci altında düşüyor. Direnç (a) \(\alpha v\), (b) \(\beta v^2\) ise \(v\) ile düşme mesafesi arasındaki ilişkiyi bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(mv\,dv/dx=mg-f(v)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(mv\dfrac{dv}{dx}=mg-\alpha v\). Limit hız \(v_t=mg/\alpha\) ile \(\dfrac{v}{v_t-v}=-1+\dfrac{v_t}{v_t-v}\) ayrışımı:</p>\[ x=\frac m\alpha\int_0^v\frac{v'dv'}{v_t-v'}=\boxed{-\frac{m}{\alpha}v-\frac{m^2g}{\alpha^2}\ln\Big(1-\frac{\alpha v}{mg}\Big)}. \]</li>
+        <li class="step"><p><b>(b)</b> \(mv\dfrac{dv}{dx}=mg-\beta v^2\):</p>\[ x=\frac{m}{2\beta}\ln\frac{mg}{mg-\beta v^2}\ \Longleftrightarrow\ \boxed{v^2=\frac{mg}{\beta}\Big(1-e^{-2\beta x/m}\Big)}. \]</li>
+        <li class="step"><p><b>Kontrol:</b> (a)'da \(\ln(1-\epsilon)\approx-\epsilon-\epsilon^2/2\) açılımı, (b)'de \(e^{-u}\approx1-u\) açılımı küçük dirençte ikisini de \(v^2=2gx\)'e indirir ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-34"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-40" data-short="Teğetsel ve normal ivme">
+    <div class="prob-head"><span class="pid">T&amp;M 2-40</span><span class="lvl">Seviye 3 · kitapçık s. 41 · eğitmen sorusu</span></div>
+    <h3>Teğetsel ve normal ivme bileşenleri</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(x(t)=A(2\alpha t-\sin\alpha t)\), \(y(t)=A(1-\cos\alpha t)\). (a) Hıza göre teğetsel \(a_t\) ve normal \(a_n\) ivmeleri? (b) \(a_n\) hangi anlarda en büyük?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(a_t=\vec v\cdot\vec a/v\), \(a_n=|\vec v\times\vec a|/v\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\phi=\alpha t\) diyelim. Hız ve ivme:</p>\[ \vec v=A\alpha\,(2-\cos\phi,\ \sin\phi),\qquad \vec a=A\alpha^2(\sin\phi,\ \cos\phi),\qquad v=A\alpha\sqrt{5-4\cos\phi},\quad |\vec a|=A\alpha^2 . \]</li>
+        <li class="step"><p>Teğetsel bileşen:</p>\[ a_t=\frac{\vec v\cdot\vec a}{v}=\frac{A^2\alpha^3\big[(2-\cos\phi)\sin\phi+\sin\phi\cos\phi\big]}{A\alpha\sqrt{5-4\cos\phi}}=\boxed{\frac{2A\alpha^2\sin\alpha t}{\sqrt{5-4\cos\alpha t}}}. \]</li>
+        <li class="step"><p>Normal bileşen (\(\dot x\ddot y-\dot y\ddot x\)):</p>\[ a_n=\frac{A^2\alpha^3\big[(2-\cos\phi)\cos\phi-\sin^2\phi\big]}{A\alpha\sqrt{5-4\cos\phi}}=\boxed{\frac{A\alpha^2(2\cos\alpha t-1)}{\sqrt{5-4\cos\alpha t}}}. \]<p>Kontrol: \(a_t^2+a_n^2=A^2\alpha^4=|\vec a|^2\) ✓.</p></li>
+        <li class="step"><p><b>(b)</b> \(c=\cos\phi\) ile \(f(c)=\dfrac{2c-1}{\sqrt{5-4c}}\), \(f'(c)=\dfrac{8-4c}{(5-4c)^{3/2}}>0\): \(c\) arttıkça artar. En büyük değer \(c=1\)'de \(f=1\):</p>\[ a_n^{\max}=A\alpha^2,\qquad \boxed{t=\frac{2n\pi}{\alpha}}\ \ (n=0,1,2,\dots). \]</li>
+        <li class="step"><p>O anlarda \(a_t=0\): ivmenin tamamı normaldir. Ayrıca \(c=-1\)'de (\(t=(2n+1)\pi/\alpha\)) \(a_n=-A\alpha^2\): büyüklük aynı ama eğrilik ters yöne. \(\cos\alpha t=\tfrac12\) olduğunda \(a_n=0\): bükülme noktaları.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-40"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-41" data-short="Trende atılan top">
+    <div class="prob-head"><span class="pid">T&amp;M 2-41</span><span class="lvl">Seviye 2 · kitapçık s. 42 · eğitmen sorusu</span></div>
+    <h3>Trende atılan top: iş ve kinetik enerji iki çerçevede</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Tren sabit \(u\) hızıyla gidiyor. Trendeki kadın \(m\) kütleli topu kendisine göre \(v\) hızıyla ileri atıyor. Topun kinetik enerji kazancı (a) trendeki birine göre, (b) yerdeki birine göre ne kadar? (c) Kadın ne kadar iş yapar? (d) Tren?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Kinetik enerji çerçeveye bağlıdır, ama iş–enerji teoremi her çerçevede geçerlidir</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> Tren çerçevesinde \(0\to v\): \(\Delta T=\tfrac12mv^2\).</p></li>
+        <li class="step"><p><b>(b)</b> Yer çerçevesinde \(u\to u+v\):</p>\[ \Delta T=\tfrac12m(u+v)^2-\tfrac12mu^2=\tfrac12mv^2+muv . \]</li>
+        <li class="step"><p><b>(c)</b> Kadının kasları, kendi durgun çerçevesinde hesaplanan işi yapar: \(\boxed{W_{\text{kadın}}=\tfrac12mv^2}\). Bu, harcadığı kimyasal enerjidir ve çerçeveden bağımsızdır.</p></li>
+        <li class="step"><p><b>(d)</b> Atış sırasında kadın trene geriye doğru \(mv\) itme uygular. Trenin sabit hızda kalması için tren (motor/zemin) ona ileri yönde aynı itmeyi verir. Bu kuvvet yer çerçevesinde \(u\) hızıyla hareket eden bir noktaya etkidiği için iş yapar:</p>\[ W_{\text{tren}}=u\cdot mv=\boxed{muv}. \]</li>
+        <li class="step"><p>Toplam \(\tfrac12mv^2+muv\), (b)'deki yer çerçevesi kazancıyla tutarlı ✓. Ders 1'deki Galile göreliliği: kinetik enerji gibi işler de çerçeveye bağlıdır; yalnızca ivme ve kuvvet değişmez.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-41"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-42" data-short="Silindir üstünde küp">
+    <div class="prob-head"><span class="pid">T&amp;M 2-42</span><span class="lvl">Seviye 3 · kitapçık s. 43 · eğitmen sorusu</span></div>
+    <h3>Silindirin üstünde küp: denge ne zaman kararlı?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kenarı \(b\) olan homojen bir küp, \(R\) yarıçaplı bir silindirin tepesinde dengede (dört yüzü silindirin eksenine paralel). Temas tamamen pürüzlü, yani küp kaymadan yuvarlanır. Denge hangi koşulda kararlıdır?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Potansiyel enerjinin ikinci türevi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Küp \(\theta\) açısı kadar yuvarlansın. Kayma olmadığı için temas noktası silindir üzerinde \(R\theta\) kadar ilerler ve küpün yüzü üzerinde de aynı \(R\theta\) kadar yer değiştirir. Temas noktası silindirin merkezine göre \(P=(R\sin\theta,\ R\cos\theta)\).</p></li>
+        <li class="step"><p>Yüzün teğet yönü \(\hat t=(\cos\theta,-\sin\theta)\), dış normali \(\hat n=(\sin\theta,\cos\theta)\). Küpün merkezi: temas noktasından yüz boyunca \(R\theta\) geri, sonra normal boyunca \(b/2\) yukarı:</p>\[ \vec r_{\text{km}}=P-R\theta\,\hat t+\tfrac b2\,\hat n . \]</li>
+        <li class="step"><p>Yükseklik bileşeni:</p>\[ y_{\text{km}}=\Big(R+\frac b2\Big)\cos\theta+R\theta\sin\theta,\qquad U(\theta)=Mg\,y_{\text{km}} . \]</li>
+        <li class="step"><p>Türevler:</p>\[ U'(\theta)=Mg\Big[-\Big(R+\frac b2\Big)\sin\theta+R\sin\theta+R\theta\cos\theta\Big],\qquad U'(0)=0\ \checkmark \]\[ U''(0)=Mg\Big[-\Big(R+\frac b2\Big)+2R\Big]=Mg\Big(R-\frac b2\Big). \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span><p>\(U''(0)>0\iff\boxed{b\lt2R}\): kararlı. \(b>2R\): kararsız. \(b=2R\) için Taylor açılımı \(U\approx\text{sabit}-MgR\theta^4/12\) verir, yani yine kararsızdır.</p></div></li>
+        <li class="step"><p><b>Fiziksel anlamı.</b> Kütle merkezi temas noktasından \(b/2\) yukarıda. Bu mesafe silindirin yarıçapından küçükse yuvarlanma kütle merkezini <em>yükseltir</em> ve küp geri döner. Ders notlarındaki kural: ikinci türevin işareti kararlılığı belirler.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-42"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-49" data-short="Çift yıldız: Kepler III">
+    <div class="prob-head"><span class="pid">T&amp;M 2-49</span><span class="lvl">Seviye 2 · kitapçık s. 44 · eğitmen sorusu</span></div>
+    <h3>Çift yıldızlarda Kepler'in üçüncü yasası</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kütleleri \(m_1\ne m_2\) ve aralarındaki uzaklık \(d\) olan iki yıldız, kütle merkezi etrafında çembersel yörüngelerde dönüyor. Periyodun \(\tau\propto d^{3/2}\) olduğunu gösterin ve orantı sabitini bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İkisi de aynı açısal hızla KM etrafında döner</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(M=m_1+m_2\). KM'den uzaklıklar \(r_1=\dfrac{m_2}{M}d\), \(r_2=\dfrac{m_1}{M}d\). İki yıldız aynı \(\omega\) ile döner.</p></li>
+        <li class="step"><p>\(m_1\) için merkezcil kuvvet = kütleçekim:</p>\[ m_1\omega^2r_1=\frac{Gm_1m_2}{d^2}\ \Rightarrow\ \omega^2\frac{m_2d}{M}=\frac{Gm_2}{d^2}\ \Rightarrow\ \omega^2=\frac{GM}{d^3}. \]</li>
+        <li class="step"><p>\[ \boxed{\tau=\frac{2\pi}{\omega}=\frac{2\pi}{\sqrt{G(m_1+m_2)}}\,d^{3/2}}. \]<p>Orantı sabiti \(2\pi/\sqrt{G(m_1+m_2)}\); toplam kütleye bağlı. \(m_2\ll m_1\) iken Güneş sistemi formuna döner.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-49"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm2-53" data-short="Korunumlu kuvvetler">
+    <div class="prob-head"><span class="pid">T&amp;M 2-53</span><span class="lvl">Seviye 3 · kitapçık s. 45 · eğitmen sorusu</span></div>
+    <h3>Hangi kuvvetler korunumlu? Potansiyeli bul</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>(a) \(F_x=ayz+bx+c,\ F_y=axz+bz,\ F_z=axy+by\). (b) \(F_x=-ze^{-x},\ F_y=\ln z,\ F_z=e^{-x}+y/z\). (c) \(\vec F=\hat{\mathbf e}_r\,a/r\). Korunumlu olanların \(U(\vec r)\)'sini bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Önce rotasyonel, sonra integral</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>Yöntem.</b> Basit bağlantılı bölgede \(\vec\nabla\times\vec F=0\iff\vec F=-\vec\nabla U\). Rotasyonel sıfırsa \(U\)'yu bileşen bileşen integralle buluruz; her adımda “sabit” diğer değişkenlerin fonksiyonudur.</p></li>
+        <li class="step"><p><b>(a) Rotasyonel:</b></p>\[ \partial_yF_z-\partial_zF_y=(ax+b)-(ax+b)=0,\quad \partial_zF_x-\partial_xF_z=ay-ay=0,\quad \partial_xF_y-\partial_yF_x=az-az=0 . \]<p>Korunumlu (her yerde).</p></li>
+        <li class="step"><p><b>(a) Potansiyel:</b> \(-\partial_xU=ayz+bx+c\Rightarrow U=-axyz-\tfrac b2x^2-cx+f(y,z)\). Sonra \(-\partial_yU=axz-\partial_yf=axz+bz\Rightarrow f=-byz+h(z)\). Son olarak \(-\partial_zU=axy+by-h'(z)=axy+by\Rightarrow h'=0\).</p>\[ \boxed{U_a=-axyz-\frac b2x^2-cx-byz+\text{sabit}} \]</li>
+        <li class="step"><p><b>(b) Bölge:</b> \(\ln z\) için \(z>0\) yarı uzayı (basit bağlantılı). Rotasyonel:</p>\[ \partial_yF_z-\partial_zF_y=\frac1z-\frac1z=0,\quad \partial_zF_x-\partial_xF_z=-e^{-x}+e^{-x}=0,\quad \partial_xF_y-\partial_yF_x=0 . \]<p>Korunumlu.</p></li>
+        <li class="step"><p><b>(b) Potansiyel:</b> \(\partial_xU=ze^{-x}\Rightarrow U=-ze^{-x}+f(y,z)\). \(\partial_yU=f_y=-\ln z\Rightarrow f=-y\ln z+h(z)\). \(-\partial_zU=e^{-x}+y/z-h'=e^{-x}+y/z\Rightarrow h'=0\).</p>\[ \boxed{U_b=-ze^{-x}-y\ln z+\text{sabit}}\qquad(z>0) \]</li>
+        <li class="step"><p><b>(c)</b> Yalnızca \(r\)'ye bağlı, radyal bir kuvvet her zaman korunumludur (\(r\ne0\)). \(F_r=-dU/dr\):</p>\[ U_c=-\int\frac ar\,dr=\boxed{-a\ln\frac{r}{r_0}} \]<p>Burada \(r_0\) referans yarıçapıdır.</p></li>
+        <li class="step"><p><b>Kontrol alışkanlığı.</b> Bulduğunuz \(U\)'nun eksi gradyanını alıp üç bileşeni tek tek geri elde edin. Sınavda bu 30 saniyelik kontrol çok puan kurtarır.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm2-53"> Çözdüm</label>
+  </article>
+
+</section>
+
+<!-- ================================================= KONU 2 -->
+<section class="topic" id="konu2" data-topic="Salınımlar">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Konu 2</span><span class="sess">T&amp;M Bölüm 3 · Tong Böl. 2.3–3</span></p>
+    <h2>Salınımlar: serbest, sönümlü, zorlanmış</h2>
+    <p class="ch-lede">Ölçekler, sönüm parametresi, kaldırma kuvveti, sonlu süreli kuvvet, kritik sönüm, Green fonksiyonu ve indirgenmiş kütle.</p>
+  </header>
+  <article class="prob" id="tm3-1-2" data-short="Osilatör ölçekleri + sönüm">
+    <div class="prob-head"><span class="pid">T&amp;M 3-1 + 3-2</span><span class="lvl">Seviye 1–2 · kitapçık s. 65–66 · ek soru</span></div>
+    <h3>Temel osilatör ölçekleri ve genlik sönümünden \(\beta\)</h3>
+    <div class="box q"><span class="box-label">Soru</span><p><b>3-1:</b> 100 g kütle, \(k=10^4\) dyn/cm yay; 3 cm çekilip durgun bırakılıyor. (a) \(\nu_0\), \(\tau_0\); (b) toplam enerji; (c) en büyük hız. <b>3-2:</b> Aynı hareket dirençli ortamda; 10 s sonra en büyük genlik yarıya iniyor. (a) \(\beta\); (b) \(\nu_1\) (\(\nu_0\) ile karşılaştırın); (c) dekrement.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Önce birimler, sonra formüller</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>SI'ya çevir.</b> \(1\ \text{dyn}=10^{-5}\ \text{N}\), \(1\ \text{cm}=10^{-2}\ \text{m}\):</p>\[ k=10^4\frac{\text{dyn}}{\text{cm}}=10\ \text{N/m},\qquad m=0{,}1\ \text{kg},\qquad A=0{,}03\ \text{m}. \]</li>
+        <li class="step"><p><b>3-1 (a)</b></p>\[ \omega_0=\sqrt{k/m}=10\ \text{rad/s},\qquad \nu_0=\frac{\omega_0}{2\pi}\approx1{,}59\ \text{Hz},\qquad \tau_0=\frac{1}{\nu_0}\approx0{,}628\ \text{s}. \]</li>
+        <li class="step"><p><b>3-1 (b), (c)</b> Durgun bırakıldığı için genlik \(A\):</p>\[ E=\tfrac12kA^2=4{,}5\times10^{-3}\ \text{J}=4{,}5\times10^{4}\ \text{erg},\qquad v_{\max}=\omega_0A=0{,}30\ \text{m/s}. \]</li>
+        <li class="step"><p><b>3-2 (a)</b> Az sönümde genlik \(Ae^{-\beta t}\) ile azalır:</p>\[ e^{-\beta\cdot10}=\tfrac12\ \Rightarrow\ \beta=\frac{\ln2}{10\ \text{s}}\approx0{,}0693\ \text{s}^{-1}. \]</li>
+        <li class="step"><p><b>3-2 (b)</b> \(\omega_1=\sqrt{\omega_0^2-\beta^2}=\sqrt{100-0{,}0048}\approx9{,}99976\) rad/s:</p>\[ \nu_1\approx1{,}59151\ \text{Hz},\qquad \nu_0\approx1{,}59155\ \text{Hz},\qquad \frac{\nu_0-\nu_1}{\nu_0}\approx\frac{\beta^2}{2\omega_0^2}\approx2{,}4\times10^{-5}. \]<p>Sönüm frekansı neredeyse hiç değiştirmiyor; zayıf sönümde bu her zaman böyledir.</p></li>
+        <li class="step"><p><b>3-2 (c)</b> Dekrement, ardışık iki maksimumun oranıdır: \(e^{\beta\tau_1}\), \(\tau_1=2\pi/\omega_1\approx0{,}6283\) s.</p>\[ \beta\tau_1\approx0{,}0436\ (\text{logaritmik dekrement}),\qquad e^{\beta\tau_1}\approx1{,}044 . \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-1-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-6" data-short="Yayla bağlı iki kütle">
+    <div class="prob-head"><span class="pid">T&amp;M 3-6</span><span class="lvl">Seviye 2 · kitapçık s. 70 · ek soru</span></div>
+    <h3>Yayla bağlı iki kütle: indirgenmiş kütle</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m_1=100\) g ve \(m_2=200\) g sürtünmesiz yatay rayda serbestçe kayıyor ve \(k=0{,}5\) N/m'lik yayla bağlı. Salınım frekansını bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Göreli koordinata geç</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yayın doğal boyu \(L\), uzama \(r=x_2-x_1-L\):</p>\[ m_1\ddot x_1=+kr,\qquad m_2\ddot x_2=-kr . \]</li>
+        <li class="step"><p>İkinci denklemi \(m_2\)'ye, birinciyi \(m_1\)'e bölüp çıkaralım:</p>\[ \ddot r=\ddot x_2-\ddot x_1=-k\Big(\frac1{m_1}+\frac1{m_2}\Big)r=-\frac k\mu r,\qquad \mu=\frac{m_1m_2}{m_1+m_2}. \]<p>Toplamak ise \(\ddot X_{\text{km}}=0\) verir: kütle merkezi düzgün hareket eder.</p></li>
+        <li class="step"><p>Sayılar: \(\mu=\dfrac{0{,}1\cdot0{,}2}{0{,}3}\approx0{,}0667\) kg.</p>\[ \omega=\sqrt{k/\mu}=\sqrt{7{,}5}\approx2{,}74\ \text{rad/s},\qquad \boxed{\nu=\frac{\omega}{2\pi}\approx0{,}44\ \text{Hz}},\qquad \tau\approx2{,}3\ \text{s}. \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-6"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-7" data-short="Yüzen cismin salınımı">
+    <div class="prob-head"><span class="pid">T&amp;M 3-7</span><span class="lvl">Seviye 2 · kitapçık s. 46 · eğitmen sorusu</span></div>
+    <h3>Kaldırma kuvveti ve küçük salınımlar</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kesit alanı \(A=1\ \text{cm}^2\), yoğunluğu \(\rho=0{,}8\ \text{g/cm}^3\) olan cisim \(\rho_0=1\ \text{g/cm}^3\) sıvıda yüzüyor ve dengede \(V=0{,}8\ \text{cm}^3\) hacim yerinden ediyor. Küçük salınımların periyodunun \(\tau=2\pi\sqrt{V/gA}\) olduğunu gösterin ve \(\tau\)'yu hesaplayın.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Denge + geri çağırıcı kuvvet</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>Denge:</b> kaldırma kuvveti ağırlığa eşit: \(\rho_0Vg=mg\Rightarrow m=\rho_0V\).</p></li>
+        <li class="step"><p>Cismi dengeden \(x\) kadar aşağı itelim. Ek batan hacim \(Ax\), ek kaldırma kuvveti yukarı yönde \(\rho_0Agx\). Ağırlık ile denge kaldırma kuvveti birbirini götürür:</p>\[ m\ddot x=-\rho_0gA\,x . \]</li>
+        <li class="step"><p>Bu bir Hooke yasası, etkin yay sabiti \(k_{\text{etkin}}=\rho_0gA\):</p>\[ \omega^2=\frac{\rho_0gA}{m}=\frac{\rho_0gA}{\rho_0V}=\frac{gA}{V}\ \Rightarrow\ \boxed{\tau=2\pi\sqrt{\frac{V}{gA}}}. \]</li>
+        <li class="step"><p>Sayılar: \(V/A=0{,}8\ \text{cm}=0{,}008\) m:</p>\[ \tau=2\pi\sqrt{\frac{0{,}008}{9{,}8}}\approx\boxed{0{,}18\ \text{s}}. \]<p>(Sıvının birlikte sürüklenen kütlesi ve viskozite ihmal edildi.)</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-7"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-8" data-short="Sikloit sarkaç">
+    <div class="prob-head"><span class="pid">T&amp;M 3-8</span><span class="lvl">Seviye 3 · kitapçık s. 47 · eğitmen sorusu</span></div>
+    <h3>Sikloit sarkaç tam eş zamanlıdır</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Sarkaç, sert bir desteğe oyulmuş sikloidin sivri ucundan asılı (Şekil 3-A); kütle \(x=a(\phi-\sin\phi)\), \(y=a(\cos\phi-1)\) sikloidi üzerinde hareket ediyor, sarkaç boyu \(l=4a\). Salınımların genlikten bağımsız olarak tam eş zamanlı olduğunu ve frekansın \(\omega_0=\sqrt{g/l}\) olduğunu gösterin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Yay uzunluğu \(s\) ile potansiyel tam olarak \(s^2\)'ye orantılı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yay elemanı:</p>\[ ds^2=dx^2+dy^2=a^2\big[(1-\cos\phi)^2+\sin^2\phi\big]d\phi^2=2a^2(1-\cos\phi)\,d\phi^2=4a^2\sin^2\tfrac\phi2\,d\phi^2 . \]</li>
+        <li class="step"><p>En alt nokta \(\phi=\pi\) (\(y=-2a\)). Oradan ölçülen yay uzunluğu:</p>\[ s=\int_\pi^\phi2a\sin\tfrac{\phi'}2\,d\phi'=-4a\cos\tfrac\phi2 . \]</li>
+        <li class="step"><p>En alt noktadan yükseklik:</p>\[ h=y+2a=a(1+\cos\phi)=2a\cos^2\tfrac\phi2=2a\Big(\frac{s}{4a}\Big)^2=\frac{s^2}{8a}. \]</li>
+        <li class="step"><p>Enerji \(\tfrac12m\dot s^2+mg\dfrac{s^2}{8a}=\text{sabit}\). Zamana göre türev alıp \(\dot s\)'yi sadeleştirelim:</p>\[ \ddot s+\frac{g}{4a}\,s=0 . \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span><p>Bu denklem <b>hiçbir yaklaşım yapılmadan</b> basit harmonik: \(\omega_0=\sqrt{g/4a}=\sqrt{g/l}\). Periyot genlikten bağımsız (tautokron). Sıradan sarkaçta ise \(h\propto1-\cos\theta\) olduğundan bu yalnızca küçük açılarda doğrudur.</p></div></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-8"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-9" data-short="Sonlu süreli sabit kuvvet">
+    <div class="prob-head"><span class="pid">T&amp;M 3-9</span><span class="lvl">Seviye 2 · kitapçık s. 48 · eğitmen sorusu</span></div>
+    <h3>\(t_0\) süre etkiyen sabit kuvvet</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Asılı yayın ucundaki \(m\) kütlesi durgun. \(t=0\)'da aşağı yönde sabit \(F\) kuvveti uygulanıyor ve \(t_0\) süre etkiyor. Kuvvet kalktıktan sonra dengeden yer değiştirmenin şu olduğunu gösterin (\(x\) aşağı, \(\omega_0^2=k/m\)):</p>\[ x-x_0=\frac Fk\big[\cos\omega_0(t-t_0)-\cos\omega_0t\big]. \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki basamağın farkı (süperpozisyon)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\xi=x-x_0\) dengeden sapma olsun. Yerçekimi dengede yayla dengelendiği için denklem \(m\ddot\xi=-k\xi+F(t)\)'dir.</p></li>
+        <li class="step"><p><b>Basamak yanıtı.</b> \(t=0\)'da açılıp hiç kapanmayan \(F\) için, \(\xi(0)=\dot\xi(0)=0\):</p>\[ \xi_H(t)=\frac Fk\big(1-\cos\omega_0t\big). \]<p>(Özel çözüm \(F/k\) + homojen çözüm; başlangıç koşulları katsayıyı \(-F/k\) yapar.)</p></li>
+        <li class="step"><p>Sonlu süreli kuvvet iki basamağın farkıdır: \(F(t)=F\big[H(t)-H(t-t_0)\big]\). Denklem doğrusal olduğu için yanıtlar da çıkarılır:</p>\[ \xi(t)=\xi_H(t)-\xi_H(t-t_0)\quad(t>t_0). \]</li>
+        <li class="step"><p>Yerine koyalım:</p>\[ \xi=\frac Fk\big(1-\cos\omega_0t\big)-\frac Fk\big(1-\cos\omega_0(t-t_0)\big)=\boxed{\frac Fk\big[\cos\omega_0(t-t_0)-\cos\omega_0t\big]}\ \checkmark \]</li>
+        <li class="step"><p><b>Ek:</b> \(\cos A-\cos B=-2\sin\frac{A+B}2\sin\frac{A-B}2\) ile genlik \(\dfrac{2F}{k}\big|\sin\tfrac{\omega_0t_0}{2}\big|\) çıkar. \(t_0\) periyodun tam katıysa kuvvet kalktıktan sonra kütle <em>hiç salınmaz</em>; yarım periyotta genlik en büyüktür (\(2F/k\)).</p></li>
+      </ol></div>
+    <p class="tip"><b>Sınav ipucu:</b> Parçalı kuvvetlerde iki aralığı ayrı çözüp \(t_0\)'da sürekliliği eşlemek de doğru, ama Heaviside süperpozisyonu (ders notları, Bölüm 9) çok daha kısa.</p>
+    <label class="solved"><input type="checkbox" id="sv-tm3-9"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-12" data-short="Sarkaç ve kritik sönüm">
+    <div class="prob-head"><span class="pid">T&amp;M 3-12</span><span class="lvl">Seviye 2 · kitapçık s. 49 · eğitmen sorusu</span></div>
+    <h3>Sarkaç ve kritik sönüm</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Basit sarkacın (kütle \(m\), uzunluk \(l\)) hareket denklemini yazın ve \(\sin\theta\approx\theta\) yaklaşımında \(\omega_0=\sqrt{g/l}\) olduğunu gösterin. Hareket \(2m\sqrt{gl}\,\dot\theta\) geciktirici kuvvetli viskoz ortamda olursa ne olur?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Denklemi standart forma getir, \(\beta\)'yı \(\omega_0\) ile karşılaştır</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Teğetsel Newton yasası (yay boyu \(s=l\theta\)):</p>\[ ml\ddot\theta=-mg\sin\theta\ \xrightarrow{\ \sin\theta\approx\theta\ }\ \ddot\theta+\frac gl\theta=0\ \Rightarrow\ \omega_0=\sqrt{g/l}. \]</li>
+        <li class="step"><p>Geciktirici kuvvet de teğetsel yönde ve hareketin tersine:</p>\[ ml\ddot\theta=-mg\theta-2m\sqrt{gl}\,\dot\theta\ \Rightarrow\ \ddot\theta+2\sqrt{\frac gl}\,\dot\theta+\frac gl\theta=0 . \]</li>
+        <li class="step"><p>Standart biçim \(\ddot\theta+2\beta\dot\theta+\omega_0^2\theta=0\) ile karşılaştırınca:</p>\[ \beta=\sqrt{g/l}=\omega_0\ \Rightarrow\ \beta^2-\omega_0^2=0:\ \textbf{kritik sönüm}. \]</li>
+        <li class="step"><p>Çift kök \(\lambda=-\omega_0\):</p>\[ \theta(t)=(A+Bt)\,e^{-\omega_0t}\quad\xrightarrow{\ \theta(0)=\theta_0,\ \dot\theta(0)=0\ }\quad \boxed{\theta(t)=\theta_0(1+\omega_0t)\,e^{-\omega_0t}}. \]</li>
+        <li class="step"><p><b>Tartışma.</b> Sarkaç salınmaz; dengeye en hızlı yoldan, aşırı salınım yapmadan döner. Dengeyi en fazla bir kez geçebilir, o da ancak ona doğru yeterli bir ilk hız verilirse. Biraz daha az sönümle salınım başlar; biraz daha fazla sönümle dönüş yavaşlar.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-12"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-29" data-short="Fourier: periyot 4π/ω">
+    <div class="prob-head"><span class="pid">T&amp;M 3-29</span><span class="lvl">Seviye 3 · kitapçık s. 50 · eğitmen sorusu</span></div>
+    <h3>Uzatılmış periyotlu fonksiyonun Fourier serisi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(F(t)=0\) (\(-2\pi/\omega\lt t\lt0\)), \(F(t)=\sin\omega t\) (\(0\lt t\lt2\pi/\omega\)) fonksiyonunu temsil eden Fourier serisini bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Önce periyodu doğru belirle: \(\mathcal T=4\pi/\omega\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Periyot \(\mathcal T=4\pi/\omega\), temel frekans \(\Omega=2\pi/\mathcal T=\omega/2\). Seri \(\cos(n\omega t/2)\), \(\sin(n\omega t/2)\) içerir. \(u=\omega t\) değişkeniyle:</p>\[ a_n=\frac1{2\pi}\int_0^{2\pi}\sin u\cos\frac{nu}{2}\,du,\qquad b_n=\frac1{2\pi}\int_0^{2\pi}\sin u\sin\frac{nu}{2}\,du . \]</li>
+        <li class="step"><p><b>\(a_n\):</b> \(\sin u\cos ku=\tfrac12[\sin(1+k)u+\sin(1-k)u]\), \(\int_0^{2\pi}\sin pu\,du=(1-\cos2\pi p)/p\). \(n\) çiftse (\(a_0\) dahil) \(p\) tam sayıdır ve integral sıfırdır. \(n\) tekse \(\cos2\pi p=-1\):</p>\[ a_n=\frac1{2\pi}\Big[\frac{1}{1+n/2}+\frac{1}{1-n/2}\Big]=\frac{4}{\pi(4-n^2)}\quad(n\ \text{tek}). \]</li>
+        <li class="step"><p><b>\(b_n\):</b> \(\sin u\sin ku=\tfrac12[\cos(1-k)u-\cos(1+k)u]\). \(\int_0^{2\pi}\cos pu\,du\) yalnızca \(p=0\) iken sıfırdan farklıdır (\(2\pi\)), yani yalnızca \(n=2\): \(b_2=\tfrac12\).</p></li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span>\[ F(t)=\frac12\sin\omega t+\frac4\pi\sum_{n\ \text{tek}}\frac{\cos(n\omega t/2)}{4-n^2}=\frac12\sin\omega t+\frac4\pi\Big[\frac{\cos\frac{\omega t}2}{3}-\frac{\cos\frac{3\omega t}2}{5}-\frac{\cos\frac{5\omega t}2}{21}-\cdots\Big]. \]</div></li>
+        <li class="step"><p><b>Kontrol.</b> \(t=0\)'da \(F=0\) olmalı: \(\sum_{n\ \text{tek}}\frac{1}{4-n^2}=\frac13-\frac14\big(1+\frac13\big)=0\) (teleskopik) ✓. Seriyi 4000 terimle sayısal olarak da karşılaştırdım; dört basamak aynı.</p></li>
+      </ol></div>
+    <figure class="mini series-mini" data-series="s329"><div class="view"><canvas aria-label="3-29 Fourier kısmi toplamı"></canvas></div><div class="ctrls"></div></figure>
+    <label class="solved"><input type="checkbox" id="sv-tm3-29"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-35" data-short="Yarım sinüs puls">
+    <div class="prob-head"><span class="pid">T&amp;M 3-35</span><span class="lvl">Seviye 3 · kitapçık s. 51 · eğitmen sorusu</span></div>
+    <h3>Yarım sinüs pulsa doğrusal osilatörün yanıtı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(F(t)/m=a\sin\omega t\) (\(0\lt t\lt\pi/\omega\)), diğer zamanlarda 0. Başlangıçta dengede durgun olan doğrusal osilatörün yanıtını bulun. (Sönümsüz \(\ddot x+\omega_0^2x=F/m\) ve \(\omega\ne\omega_0\) alıyoruz.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Puls = iki kaydırılmış sinüsün toplamı</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>\(0\lt t\lt\pi/\omega\):</b> Özel çözüm \(\dfrac{a\sin\omega t}{\omega_0^2-\omega^2}\), homojen kısım \(B\sin\omega_0t\). \(x(0)=0\) otomatik; \(\dot x(0)=0\) koşulu \(B=-\dfrac{a\omega}{\omega_0(\omega_0^2-\omega^2)}\) verir:</p>\[ x_1(t)=\frac{a}{\omega_0^2-\omega^2}\Big[\sin\omega t-\frac{\omega}{\omega_0}\sin\omega_0t\Big]. \]</li>
+        <li class="step"><p><b>Hile:</b> Yarım sinüs \(=a\sin\omega t\,H(t)+a\sin\omega(t-\tfrac\pi\omega)H(t-\tfrac\pi\omega)\). \(\sin(\omega t-\pi)=-\sin\omega t\) olduğundan \(t>\pi/\omega\)'da iki terim birbirini götürür. Doğrusallık:</p>\[ x(t)=x_1(t)+x_1\big(t-\tfrac\pi\omega\big)\qquad(t>\pi/\omega). \]</li>
+        <li class="step"><p>Zorlanmış terimler sadeleşir (\(\sin\omega t+\sin(\omega t-\pi)=0\)), geriye serbest salınım kalır:</p>\[ x(t)=-\frac{a\omega}{\omega_0(\omega_0^2-\omega^2)}\Big[\sin\omega_0t+\sin\omega_0\big(t-\tfrac\pi\omega\big)\Big]. \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç (\(t>\pi/\omega\))</span>\[ x(t)=-\frac{2a\omega}{\omega_0(\omega_0^2-\omega^2)}\cos\frac{\pi\omega_0}{2\omega}\,\sin\omega_0\Big(t-\frac{\pi}{2\omega}\Big). \]<p>Puls bittikten sonra osilatör kendi frekansında, sabit genlikle salınır. Sonucu Runge–Kutta çözümüyle karşılaştırdım; yedi basamak aynı.</p></div></li>
+        <li class="step"><p><b>Yorum.</b> \(\cos(\pi\omega_0/2\omega)=0\) olursa (ör. \(\omega_0=3\omega\)) puls sonrası hiç salınım kalmaz. \(\omega\to\omega_0\) iken \(0/0\) belirsizliği çözülür ve genlik sonlu bir değere gider: \(a\pi/(2\omega_0^2)\). Sönüm istenirse aynı süperpozisyon Green fonksiyonuyla yapılır (T&amp;M 3-38).</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-35"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-38" data-short="Green fonksiyonu yanıtı">
+    <div class="prob-head"><span class="pid">T&amp;M 3-38</span><span class="lvl">Seviye 3 · kitapçık s. 52 · eğitmen sorusu</span></div>
+    <h3>Green yöntemiyle sönen sinüs sürücüye yanıt</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Green yöntemini kullanarak sönümlü bir osilatörün şu kuvvete yanıtını bulun:</p>\[ F(t)=\begin{cases}0,&t\lt0\\ F_0e^{-\gamma t}\sin\omega t,&t>0\end{cases} \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Konvolüsyon integrali, karmaşık üstellerle</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Denklem \(\ddot x+2\beta\dot x+\omega_0^2x=F(t)/m\), az sönümlü varsayalım (\(\omega_1=\sqrt{\omega_0^2-\beta^2}\)). Durgun başlayan osilatörün Green fonksiyonu (ani darbeye yanıtı):</p>\[ G(t,t')=\frac{1}{m\omega_1}e^{-\beta(t-t')}\sin\omega_1(t-t'),\qquad t\ge t' . \]</li>
+        <li class="step"><p>Yanıt, kuvvetin Green fonksiyonuyla konvolüsyonudur:</p>\[ x(t)=\int_0^tF(t')G(t,t')\,dt'=\frac{F_0e^{-\beta t}}{m\omega_1}\int_0^te^{\kappa t'}\sin\omega t'\,\sin\omega_1(t-t')\,dt',\qquad \kappa:=\beta-\gamma . \]</li>
+        <li class="step"><p>Çarpımı farka çevirelim: \(\sin a\sin b=\tfrac12[\cos(a-b)-\cos(a+b)]\), \(a=\omega t'\), \(b=\omega_1(t-t')\):</p>\[ a-b=(\omega+\omega_1)t'-\omega_1t,\qquad a+b=(\omega-\omega_1)t'+\omega_1t . \]</li>
+        <li class="step"><p>Tek tip integral kalır; karmaşık üstelle kolayca alınır:</p>\[ I(\Omega,\varphi)=\int_0^te^{\kappa t'}\cos(\Omega t'+\varphi)\,dt'=\operatorname{Re}\frac{e^{i\varphi}\big(e^{(\kappa+i\Omega)t}-1\big)}{\kappa+i\Omega},\qquad \operatorname{Re}\frac{P+iQ}{\kappa+i\Omega}=\frac{\kappa P+\Omega Q}{\kappa^2+\Omega^2}. \]</li>
+        <li class="step"><p>\(\Omega_\pm=\omega\pm\omega_1\) ile iki terimin pay kısımları:</p>\[ P=e^{\kappa t}\cos\omega t-\cos\omega_1t,\qquad Q_\pm=e^{\kappa t}\sin\omega t\pm\sin\omega_1t . \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span>\[ x(t)=\frac{F_0e^{-\beta t}}{2m\omega_1}\left[\frac{\kappa P+\Omega_+Q_+}{\kappa^2+\Omega_+^2}-\frac{\kappa P+\Omega_-Q_-}{\kappa^2+\Omega_-^2}\right],\qquad \kappa=\beta-\gamma,\ \ t>0 \]<p>ve \(t\lt0\) için \(x=0\). Bu ifadeyi sayısal Runge–Kutta çözümüyle karşılaştırdım; sekiz basamağa kadar aynı.</p></div></li>
+        <li class="step"><p><b>Yorum.</b> \(e^{-\beta t}e^{\kappa t}=e^{-\gamma t}\) çarpanlı terimler sürücüyü izleyen <b>zorlanmış</b> kısımdır. \(e^{-\beta t}\cos\omega_1t\), \(e^{-\beta t}\sin\omega_1t\) terimleri ise osilatörün kendi frekansındaki <b>geçici</b> kısımdır. Kontrol: \(t=0\)'da \(P=Q_\pm=0\), yani \(x(0)=0\) ✓.</p></li>
+      </ol></div>
+    <p class="tip"><b>Sınav ipucu:</b> \(\sin\cdot\sin\) integrallerini parça parça almak yerine hepsini \(\operatorname{Re}\,e^{(\kappa+i\Omega)t}\) olarak yazın; tek bir integral kalır.</p>
+    <label class="solved"><input type="checkbox" id="sv-tm3-38"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm3-39" data-short="Yarım dalga doğrultucu">
+    <div class="prob-head"><span class="pid">T&amp;M 3-39</span><span class="lvl">Seviye 3 · kitapçık s. 53 · eğitmen sorusu</span></div>
+    <h3>Yarım dalga doğrultucunun Fourier serisi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(F(t)=\sin\omega t\) (\(0\lt t\lt\pi/\omega\)), \(F(t)=0\) (\(\pi/\omega\lt t\lt2\pi/\omega\)), periyodik. Fourier gösterimini bulun ve ilk dört terimin toplamını çizin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Periyot \(2\pi/\omega\); \(u=\omega t\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Ortalama: \(\dfrac{a_0}{2}=\dfrac{1}{2\pi}\displaystyle\int_0^\pi\sin u\,du=\dfrac1\pi\).</p></li>
+        <li class="step"><p>\(a_n=\dfrac1\pi\displaystyle\int_0^\pi\sin u\cos nu\,du\). \(n=1\) için sıfır. \(n\ge2\) için:</p>\[ \int_0^\pi\sin u\cos nu\,du=\frac{1+\cos n\pi}{1-n^2}\ \Rightarrow\ a_n=\begin{cases}-\dfrac{2}{\pi(n^2-1)},&n\ \text{çift}\\[4pt]0,&n\ \text{tek}\end{cases} \]</li>
+        <li class="step"><p>\(b_n=\dfrac1\pi\displaystyle\int_0^\pi\sin u\sin nu\,du\): yalnızca \(n=1\)'de sıfırdan farklı, \(b_1=\tfrac12\).</p></li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span>\[ F(t)=\frac1\pi+\frac12\sin\omega t-\frac2\pi\Big[\frac{\cos2\omega t}{3}+\frac{\cos4\omega t}{15}+\frac{\cos6\omega t}{35}+\cdots\Big]. \]<p>İlk dört terim: \(\dfrac1\pi+\dfrac12\sin\omega t-\dfrac{2}{3\pi}\cos2\omega t-\dfrac{2}{15\pi}\cos4\omega t\). Çizim aşağıda; terim sayısını değiştirebilirsiniz.</p></div></li>
+        <li class="step"><p><b>Yorum.</b> Doğrultucu çıkışının DC bileşeni \(1/\pi\approx0{,}32\)'dir. Temel frekansın üstünde yalnızca <em>çift</em> harmonikler vardır ve \(1/n^2\) gibi hızla söner (fonksiyon sürekli olduğu için Gibbs aşımı yok). Bunu 3-29 ile karşılaştırın: orada periyot iki katına çıktığı için tek harmonikler ortaya çıktı.</p></li>
+      </ol></div>
+    <figure class="mini series-mini" data-series="s339"><div class="view"><canvas aria-label="3-39 Fourier kısmi toplamı"></canvas></div><div class="ctrls"></div></figure>
+    <label class="solved"><input type="checkbox" id="sv-tm3-39"> Çözdüm</label>
+  </article>
+
+</section>
+
+<!-- ================================================= KONU 3 -->
+<section class="topic" id="konu3" data-topic="Merkezi kuvvetler">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Konu 3</span><span class="sess">T&amp;M Bölüm 8 · Tong Böl. 5</span></p>
+    <h2>Merkezi kuvvet hareketi</h2>
+    <p class="ch-lede">Etkin potansiyel, çembersel yörünge etrafında salınım, enerjiden yörünge türü ve radyal düşme süresi.</p>
+  </header>
+  <div class="box ex"><span class="box-label">Hatırlatma</span>
+    <p>Merkezi kuvvette \(\ell=mr^2\dot\theta\) korunur ve radyal hareket tek boyutlu bir probleme iner:</p>
+    \[ E=\tfrac12m\dot r^2+U_{\text{etkin}}(r),\qquad U_{\text{etkin}}(r)=U(r)+\frac{\ell^2}{2mr^2}. \]
+    <p>Çembersel yörünge \(U'_{\text{etkin}}(r_0)=0\); etrafındaki küçük radyal salınım \(\omega_r^2=U''_{\text{etkin}}(r_0)/m\). (İki cisim probleminde \(m\to\mu\).)</p>
+  </div>
+
+  <article class="prob" id="tm3-43" data-short="Çembersel yörünge etrafında salınım">
+    <div class="prob-head"><span class="pid">T&amp;M 3-43</span><span class="lvl">Seviye 3 · kitapçık s. 54 · eğitmen sorusu</span></div>
+    <h3>Yaya bağlı kütle: çembersel yörünge etrafında radyal salınım</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(m\) kütlesi sürtünmesiz yatay masada, doğal boyu \(a\) ve sabiti \(k\) olan kütlesiz bir yayın ucunda. Yay masaya serbestçe dönebilecek şekilde bağlı; net kuvvet \(F(r)=-k(r-a)\). (a) \(U(r)\) ve \(U_{\text{etkin}}(r)\)'yi bulup çizin. (b) \(r_0\) yarıçaplı çembersel yörünge için gereken \(\omega_0\)? (c) Bu yörünge etrafındaki küçük salınımların frekansı \(\omega\)? (\(k,m,r_0,a\) cinsinden.)</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Etkin potansiyelin minimumu ve eğriliği</h4></div>
+      <ol class="steps">
+        <li class="step"><p><b>(a)</b> \(F=-dU/dr\Rightarrow U(r)=\tfrac12k(r-a)^2\): minimumu \(r=a\)'da olan bir parabol. Açısal momentum \(\ell=mr^2\dot\theta\) ile:</p>\[ U_{\text{etkin}}(r)=\tfrac12k(r-a)^2+\frac{\ell^2}{2mr^2}. \]<p>Çizim: \(r\to0\)'da merkezkaç duvarı (\(\propto1/r^2\)) yükselir, büyük \(r\)'de parabol baskındır. Minimum \(a\)'nın <em>sağına</em> kayar (\(r_0>a\)).</p></li>
+        <li class="step"><p><b>(b)</b> Çembersel yörünge: yayın çekişi merkezcil kuvveti sağlamalı:</p>\[ mr_0\omega_0^2=k(r_0-a)\ \Rightarrow\ \boxed{\omega_0=\sqrt{\frac{k(r_0-a)}{m\,r_0}}}\qquad(r_0>a). \]<p>Eşdeğeri \(U'_{\text{etkin}}(r_0)=0\), \(\ell^2=mkr_0^3(r_0-a)\).</p></li>
+        <li class="step"><p><b>(c)</b> İkinci türev:</p>\[ U''_{\text{etkin}}(r_0)=k+\frac{3\ell^2}{mr_0^4}=k+3m\omega_0^2=k+\frac{3k(r_0-a)}{r_0}=\frac{k(4r_0-3a)}{r_0}. \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span>\[ \omega=\sqrt{\frac{U''_{\text{etkin}}}{m}}=\sqrt{\frac{k}{m}\Big(4-\frac{3a}{r_0}\Big)}. \]</div></li>
+        <li class="step"><p><b>Kontrol.</b> \(a=0\) (iki boyutlu izotrop osilatör): \(\omega_0=\sqrt{k/m}\) ve \(\omega=2\sqrt{k/m}=2\omega_0\). Bir turda iki radyal salınım: merkezi orijinde olan kapalı elips ✓. Genel \(a\) için \(\omega/\omega_0\) rasyonel değilse yörünge kapanmaz (rozet).</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm3-43"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm8-3" data-short="Ani çekim değişimi">
+    <div class="prob-head"><span class="pid">T&amp;M 8-3</span><span class="lvl">Seviye 2 · kitapçık s. 73 · ek soru</span></div>
+    <h3>Çekim aniden yarıya inerse yörünge parabol olur</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Parçacık \(F(r)=-k/r^2\) alanında çembersel yörüngede. \(k\) aniden yarıya inerse yörüngenin parabolik olduğunu gösterin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Ani değişimde konum ve hız aynı kalır, enerji değişir</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Çembersel yörüngede merkezcil kuvvet çekimdir:</p>\[ \frac{mv^2}{r}=\frac{k}{r^2}\ \Rightarrow\ \tfrac12mv^2=\frac{k}{2r}. \]</li>
+        <li class="step"><p>“Aniden” demek: \(r\) ve \(\vec v\) o anda değişmez, yalnızca potansiyel \(-k/r\to-k/2r\) olur. Yeni toplam enerji:</p>\[ E'=\tfrac12mv^2-\frac{k/2}{r}=\frac{k}{2r}-\frac{k}{2r}=0 . \]</li>
+        <li class="step"><p>Ters kare kuvvette yörünge türü enerjinin işaretiyle belirlenir: \(\varepsilon=\sqrt{1+\dfrac{2E\ell^2}{mk'^2}}\). \(E'=0\Rightarrow\varepsilon=1\):</p>\[ \boxed{\text{parabol}}. \]<p>\(E\lt0\): elips, \(E=0\): parabol, \(E>0\): hiperbol. Parçacık tam kaçış sınırındadır.</p></li>
+      </ol></div>
+    <p class="tip"><b>Sınav ipucu:</b> Çembersel yörüngede \(T=-\tfrac12V\) (virial) ilişkisini hatırlarsanız \(V\)'yi yarıya indirmenin \(E=T+V'=0\) yaptığı tek satırda görülür.</p>
+    <label class="solved"><input type="checkbox" id="sv-tm8-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm8-5" data-short="Radyal çökme süresi">
+    <div class="prob-head"><span class="pid">T&amp;M 8-5</span><span class="lvl">Seviye 3 · kitapçık s. 75 · ek soru</span></div>
+    <h3>Durdurulan iki cisim ne zaman çarpışır?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Karşılıklı kütleçekimiyle birbirlerinin çevresinde \(\tau\) periyotlu çembersel yörüngede dönen iki cisim aniden durduruluyor ve birbirine doğru düşmeye bırakılıyor. \(\tau/(4\sqrt2)\) süre sonra çarpıştıklarını gösterin.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki yol: Kepler hilesi ve doğrudan integral</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Göreli koordinat \(r\), toplam kütle \(M=m_1+m_2\): \(\mu\ddot{\vec r}=-Gm_1m_2\hat{\vec r}/r^2\Rightarrow\ddot{\vec r}=-GM\hat{\vec r}/r^2\). Başlangıç ayrımı \(R\). Çembersel yörünge için Kepler III:</p>\[ \tau^2=\frac{4\pi^2R^3}{GM}. \]</li>
+        <li class="step"><p><b>Kepler hilesi.</b> Durgundan radyal düşüş, eksantrikliği 1'e giden (dejenere) bir elipstir: büyük yarı eksen \(a=R/2\). Periyot yalnızca \(a\)'ya bağlı:</p>\[ \tau'=2\pi\sqrt{\frac{(R/2)^3}{GM}}=\frac{\tau}{2\sqrt2}. \]</li>
+        <li class="step"><p>Düşüş, bu dejenere yörüngenin yarısıdır (en uzak noktadan odağa):</p>\[ t_c=\frac{\tau'}{2}=\boxed{\frac{\tau}{4\sqrt2}}. \]</li>
+        <li class="step"><p><b>Doğrudan kontrol.</b> Enerji korunumu \(\tfrac12\dot r^2-GM/r=-GM/R\):</p>\[ t_c=\int_0^R\frac{dr}{\sqrt{2GM(1/r-1/R)}}=\sqrt{\frac{R}{2GM}}\int_0^R\sqrt{\frac{r}{R-r}}\,dr . \]</li>
+        <li class="step"><p>\(r=R\sin^2u\) yerine koyma: \(\sqrt{r/(R-r)}=\tan u\), \(dr=2R\sin u\cos u\,du\):</p>\[ \int_0^R\sqrt{\frac{r}{R-r}}\,dr=2R\int_0^{\pi/2}\sin^2u\,du=\frac{\pi R}{2}\ \Rightarrow\ t_c=\frac\pi2\sqrt{\frac{R^3}{2GM}}=\frac{\tau}{4\sqrt2}\ \checkmark \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm8-5"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= KONU 4 -->
+<section class="topic" id="konu4" data-topic="Parçacık sistemleri">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Konu 4</span><span class="sess">T&amp;M Bölüm 9</span></p>
+    <h2>Parçacık sistemleri</h2>
+    <p class="ch-lede">Kütle merkezi integrali ve momentum ile enerji kısıtlarının birlikte kullanıldığı patlama problemi.</p>
+  </header>
+
+  <article class="prob" id="tm9-2" data-short="Koninin kütle merkezi">
+    <div class="prob-head"><span class="pid">T&amp;M 9-2</span><span class="lvl">Seviye 2 · kitapçık s. 81 · ek soru</span></div>
+    <h3>Dolu koninin kütle merkezi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Taban çapı \(2a\), yüksekliği \(h\) olan homojen dolu koninin kütle merkezini bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İnce disklere dilimle</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Simetri: kütle merkezi eksen üzerinde. Tepe orijinde, eksen \(z\) boyunca. \(z\) yüksekliğindeki kesitin yarıçapı benzer üçgenlerden \(\rho(z)=az/h\).</p></li>
+        <li class="step"><p>\(dz\) kalınlığındaki diskin hacmi \(dV=\pi\rho^2dz=\pi\dfrac{a^2}{h^2}z^2dz\). Yoğunluk sabit olduğu için sadeleşir:</p>\[ z_{\text{km}}=\frac{\int_0^hz\,dV}{\int_0^hdV}=\frac{\int_0^hz^3dz}{\int_0^hz^2dz}=\frac{h^4/4}{h^3/3}. \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span><p>\(z_{\text{km}}=\dfrac34h\) tepeden, yani <b>tabandan \(h/4\)</b> yukarıda, eksen üzerinde. \(a\)'ya bağlı değil.</p></div></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm9-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm9-9" data-short="Tepe noktasında patlama">
+    <div class="prob-head"><span class="pid">T&amp;M 9-9</span><span class="lvl">Seviye 3 · kitapçık s. 84 · ek soru</span></div>
+    <h3>Tepe noktasında patlayan mermi</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Mermi \(45^\circ\) açıyla, ilk kinetik enerji \(E_0\) ile atılıyor. Yörüngenin tepesinde ek \(E_0\) enerjiyle iki parçaya ayrılıyor; \(m_1\) kütleli parça dümdüz aşağı gidiyor. \(m_2\) parçasının hızı (büyüklük ve yön) ve \(m_1\)'in hızı nedir? \(m_1\) en büyükken \(m_1/m_2\) oranı nedir?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki momentum denklemi + bir enerji denklemi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(M=m_1+m_2\), \(E_0=\tfrac12Mv_0^2\). Tepe noktasında hız yatay: \(v_0\cos45^\circ=v_0/\sqrt2\), kinetik enerji \(E_0/2\). Patlama sonrası toplam kinetik enerji \(E_0/2+E_0=\tfrac32E_0=\tfrac34Mv_0^2\).</p></li>
+        <li class="step"><p>\(m_1\) aşağı \(u_1\) hızıyla; \(m_2\)'nin hızı \((V_x,V_y)\). Momentum korunumu (patlama anında dış kuvvetin itmesi ihmal edilebilir):</p>\[ \text{yatay: } \frac{Mv_0}{\sqrt2}=m_2V_x,\qquad \text{düşey: } 0=-m_1u_1+m_2V_y . \]</li>
+        <li class="step"><p>Enerji:</p>\[ \tfrac12m_1u_1^2+\tfrac12m_2\big(V_x^2+V_y^2\big)=\tfrac34Mv_0^2 . \]<p>\(V_x=\dfrac{Mv_0}{\sqrt2m_2}\), \(V_y=\dfrac{m_1u_1}{m_2}\) yerine koyunca \(\tfrac12m_1u_1^2\big(1+\tfrac{m_1}{m_2}\big)=\tfrac{m_1M}{2m_2}u_1^2\) olur.</p></li>
+        <li class="step"><p>\(u_1^2\)'yi çözelim:</p>\[ \frac{m_1M}{2m_2}u_1^2=\frac34Mv_0^2-\frac{M^2v_0^2}{4m_2}\ \Rightarrow\ u_1^2=v_0^2\,\frac{2m_2-m_1}{2m_1}=\frac{E_0(2m_2-m_1)}{m_1M}. \]</li>
+        <li class="step"><p>\(m_2\)'nin hızı. \(V_y=\dfrac{v_0}{m_2}\sqrt{\tfrac{m_1(2m_2-m_1)}{2}}\) ile \(M^2+2m_1m_2-m_1^2=m_2^2+4m_1m_2\) sadeleşmesi:</p>\[ |\vec V_2|=\frac{v_0}{\sqrt2}\sqrt{1+\frac{4m_1}{m_2}}=\sqrt{\frac{E_0(m_2+4m_1)}{M\,m_2}},\qquad \tan\varphi=\frac{V_y}{V_x}=\frac{\sqrt{m_1(2m_2-m_1)}}{M}\ \text{(yataydan yukarı)}. \]</li>
+        <li class="step"><div class="box" style="margin:.4rem 0"><span class="box-label">Sonuç</span>\[ u_1=\sqrt{\frac{E_0(2m_2-m_1)}{m_1M}}\ \text{(düşey aşağı)},\qquad |\vec V_2|=\sqrt{\frac{E_0(m_2+4m_1)}{Mm_2}}\ \text{(yataydan }\varphi\text{ yukarı)}. \]</div></li>
+        <li class="step"><p><b>En büyük \(m_1\).</b> \(u_1\) gerçel olmalı: \(2m_2-m_1\ge0\Rightarrow\boxed{m_1/m_2=2}\). Bu sınırda \(u_1=0\) ve \(\varphi=0\): \(m_1\) yerinde kalıp serbest düşer, \(m_2=M/3\) bütün enerjiyi yatayda taşır. Kontrol: \(\tfrac12\tfrac M3\big(\tfrac{3v_0}{\sqrt2}\big)^2=\tfrac34Mv_0^2\) ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm9-9"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= KONU 5 -->
+<section class="topic" id="konu5" data-topic="Eylemsiz olmayan sistemler">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Konu 5</span><span class="sess">T&amp;M Bölüm 10</span></p>
+    <h2>Eylemsiz olmayan referans sistemleri</h2>
+    <p class="ch-lede">Dönen Dünya'da etkin yerçekimi ve Coriolis sapması.</p>
+  </header>
+  <div class="box ex"><span class="box-label">Hatırlatma</span>
+    \[ \vec a_{\text{dönen}}=\frac{\vec F}{m}-\underbrace{\vec\omega\times(\vec\omega\times\vec r)}_{\text{merkezkaç}}-\underbrace{2\vec\omega\times\vec v_{\text{dönen}}}_{\text{Coriolis}}\qquad(\vec\omega\ \text{sabit}). \]
+    <p>Dünya: \(\omega=2\pi/(1\ \text{yıldız günü})\approx7{,}29\times10^{-5}\) rad/s, \(R\approx6{,}37\times10^6\) m.</p>
+  </div>
+
+  <article class="prob" id="tm10-7" data-short="Kutup ve ekvatorda g">
+    <div class="prob-head"><span class="pid">T&amp;M 10-7</span><span class="lvl">Seviye 2 · kitapçık s. 91 · ek soru</span></div>
+    <h3>Kutupta \(g\) ekvatordan ne kadar büyük?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Küresel Dünya varsayarak \(g\)'nin kutupta ekvatordan ne kadar büyük olduğunu bulun. Ölçülen fark \(\Delta g=52\ \text{mm/s}^2\) ise farkı açıklayın; aradaki farkı nasıl hesaplardınız?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Merkezkaç terimi + Dünya'nın basıklığı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Küresel Dünya'da kütleçekimi \(g_0\) her yerde aynı. Etkin yerçekimi \(\vec g_{\text{etkin}}=\vec g_0-\vec\omega\times(\vec\omega\times\vec r)\). Kutupta \(\vec r\parallel\vec\omega\), merkezkaç sıfır: \(g_p=g_0\). Ekvatorda merkezkaç ivme tam yukarı, büyüklüğü \(\omega^2R\): \(g_e=g_0-\omega^2R\).</p></li>
+        <li class="step"><p>Fark:</p>\[ g_p-g_e=\omega^2R=(7{,}29\times10^{-5})^2(6{,}37\times10^6)\approx\boxed{0{,}034\ \text{m/s}^2=34\ \text{mm/s}^2}. \]</li>
+        <li class="step"><p><b>Ölçülen 52 mm/s² neden büyük?</b> Kalan \(\approx18\ \text{mm/s}^2\), Dünya'nın <b>basıklığından</b> gelir. Dönme Dünya'yı ekvatorda şişirmiştir (\(R_e-R_p\approx21\) km). Kutuptaki gözlemci merkeze daha yakın olduğu için kütleçekiminin kendisi de kutupta daha büyüktür.</p></li>
+        <li class="step"><p><b>Nasıl hesaplanır?</b> Dünya'yı küre yerine basık bir sferoid olarak modelleyip kütleçekim potansiyeline dört-kutup (\(J_2\)) terimini ekleyerek. Bunun sonucu Clairaut formülüdür:</p>\[ \frac{g_p-g_e}{g_e}\approx\frac52m-f,\qquad m=\frac{\omega^2R}{g_e}\approx0{,}00346,\quad f\approx\frac1{298} \]\[ \Rightarrow\ g_p-g_e\approx0{,}0053\,g_e\approx52\ \text{mm/s}^2\ \checkmark \]</li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm10-7"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="tm10-8" data-short="Düşey atışta Coriolis">
+    <div class="prob-head"><span class="pid">T&amp;M 10-8</span><span class="lvl">Seviye 3 · kitapçık s. 92 · ek soru</span></div>
+    <h3>Düşey yukarı atılan cisim ne kadar batıya düşer?</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kuzey enlemi \(\lambda\) olan bir noktadan cisim \(h\) yüksekliğine düşey yukarı atılıyor. Yere, atıldığı noktanın şu kadar <b>batısına</b> düştüğünü gösterin (hava direnci yok, \(h\) küçük):</p>\[ \frac43\,\omega\cos\lambda\sqrt{\frac{8h^3}{g}}. \]</div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Coriolis ivmesini yalnızca düşey hızla hesapla</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Yerel eksenler: \(x\) doğu, \(y\) kuzey, \(z\) yukarı. Kuzey yarıkürede \(\vec\omega=\omega(0,\cos\lambda,\sin\lambda)\). Birinci mertebede hız düşeydir: \(\vec v\approx v_z\hat{\mathbf z}\).</p></li>
+        <li class="step"><p>\(\hat{\mathbf y}\times\hat{\mathbf z}=\hat{\mathbf x}\) olduğundan \(\vec\omega\times\vec v=\omega v_z\cos\lambda\,\hat{\mathbf x}\):</p>\[ \ddot x=-2\omega\cos\lambda\,v_z . \]<p>Yukarı giderken (\(v_z>0\)) batıya, aşağı inerken doğuya ivmelenir.</p></li>
+        <li class="step"><p>\(v_z=v_0-gt\), \(v_0=\sqrt{2gh}\). İki kez integral (\(x(0)=\dot x(0)=0\)):</p>\[ \dot x=-2\omega\cos\lambda\Big(v_0t-\tfrac12gt^2\Big),\qquad x=-2\omega\cos\lambda\Big(\tfrac12v_0t^2-\tfrac16gt^3\Big). \]</li>
+        <li class="step"><p>Uçuş süresi \(T=2v_0/g\):</p>\[ x(T)=-2\omega\cos\lambda\Big(\frac{2v_0^3}{g^2}-\frac{4v_0^3}{3g^2}\Big)=-\frac43\,\omega\cos\lambda\,\frac{v_0^3}{g^2}. \]</li>
+        <li class="step"><p>\(v_0^3=(2gh)^{3/2}=g^{3/2}\sqrt{8h^3}\) koyalım:</p>\[ \boxed{x(T)=-\frac43\,\omega\cos\lambda\sqrt{\frac{8h^3}{g}}}\quad(\text{eksi: batı}).\ \checkmark \]</li>
+        <li class="step"><p><b>Büyüklük.</b> \(h=100\) m, \(\lambda=40^\circ\) (Ankara): yaklaşık \(6{,}7\) cm batı. Çıkışta biriken batıya hız inişte tam silinmez, çünkü cisim yukarıda geçirdiği süre boyunca batıya kaymaya devam eder. Bu yüzden net sonuç batıdır. (Serbest düşmede ise sapma doğuya doğrudur.)</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-tm10-8"> Çözdüm</label>
+  </article>
+</section>
+  </main>
+</div>
+<script>
+'use strict';
+/* Çözüm defteri: adım adım açma, "çözdüm" işaretleri, içindekiler, trokoit çizimi */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('pbk.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('pbk.' + k, JSON.stringify(v)); } catch (e) { /* depolama yoksa geç */ } }
+};
+
+/* ---------- Adım adım ---------- */
+const steppers = [];
+document.querySelectorAll('.derive').forEach((d, di) => {
+  const steps = [...d.querySelectorAll(':scope > .steps > .step')];
+  if (!steps.length) return;
+  let shown = 1;
+  const bar = document.createElement('div');
+  bar.className = 'derive-bar';
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="dv${di}-next">Sonraki adım →</button>` +
+    `<button type="button" class="btn" id="dv${di}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="dv${di}-reset">Baştan</button>` +
+    `<span class="derive-count" aria-live="polite"></span>`;
+  d.appendChild(bar);
+  const [bNext, bAll, bReset] = bar.querySelectorAll('button');
+  const cnt = bar.querySelector('.derive-count');
+  function render(rev) {
+    steps.forEach((s, j) => {
+      const locked = j >= shown;
+      s.classList.toggle('locked', locked);
+      s.classList.toggle('tail', j === shown - 1 && shown < steps.length);
+      if (locked) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden');
+      if (rev != null && j >= rev && j < shown) { s.classList.remove('rev'); void s.offsetWidth; s.classList.add('rev'); }
+    });
+    cnt.textContent = `Adım ${shown} / ${steps.length}`;
+    bNext.disabled = bAll.disabled = shown >= steps.length;
+    bReset.disabled = shown <= 1;
+  }
+  bNext.addEventListener('click', () => { if (shown < steps.length) { shown++; render(shown - 1); } });
+  bAll.addEventListener('click', () => { const r = shown; shown = steps.length; render(r); });
+  bReset.addEventListener('click', () => { shown = 1; render(); });
+  steppers.push({ all() { shown = steps.length; render(); }, reset() { shown = 1; render(); } });
+  render();
+});
+document.getElementById('open-all').addEventListener('click', () => steppers.forEach(s => s.all()));
+document.getElementById('close-all').addEventListener('click', () => steppers.forEach(s => s.reset()));
+
+/* ---------- İçindekiler ---------- */
+const toc = document.getElementById('toc');
+const topics = [...document.querySelectorAll('section.topic')];
+const probs = [...document.querySelectorAll('article.prob')];
+topics.forEach((t, i) => {
+  const g = document.createElement('li'); g.className = 'grp'; const eb = t.querySelector('.eyebrow span');
+  g.textContent = `${eb ? eb.textContent : 'Konu ' + (i + 1)} · ${t.dataset.topic}`; toc.appendChild(g);
+  t.querySelectorAll('article.prob').forEach(p => {
+    const li = document.createElement('li');
+    const pid = p.querySelector('.pid').textContent.replace('T&M ', '');
+    li.innerHTML = `<a href="#${p.id}"><span class="n">${pid}</span><span>${p.dataset.short}</span><span class="ok">✓</span></a>`;
+    toc.appendChild(li);
+  });
+});
+const tocLinks = [...toc.querySelectorAll('a')];
+
+/* ---------- Çözdüm işaretleri ---------- */
+const solved = new Set(store.get('solved', []));
+function update() {
+  const n = probs.filter(p => solved.has(p.id)).length;
+  document.getElementById('prog-bar').style.width = (100 * n / probs.length) + '%';
+  document.getElementById('prog-txt').textContent = `${n} / ${probs.length} çözüldü`;
+  document.getElementById('sum-prog').textContent = `${n} / ${probs.length} çözüldü`;
+  document.getElementById('st-s').textContent = n;
+  tocLinks.forEach(a => a.classList.toggle('is-done', solved.has(a.getAttribute('href').slice(1))));
+}
+probs.forEach(p => {
+  const cb = p.querySelector('.solved input'); if (!cb) return;
+  cb.checked = solved.has(p.id);
+  cb.addEventListener('change', () => { if (cb.checked) solved.add(p.id); else solved.delete(p.id); store.set('solved', [...solved]); update(); });
+});
+document.getElementById('reset-progress').addEventListener('click', () => {
+  solved.clear(); store.set('solved', []); probs.forEach(p => { const cb = p.querySelector('.solved input'); if (cb) cb.checked = false; }); update();
+});
+document.getElementById('st-p').textContent = probs.length;
+document.getElementById('st-t').textContent = topics.filter(t => !t.classList.contains('exam-sec')).length;
+update();
+
+/* Kaydırma takibi ve dar ekran davranışı */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) tocLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id ? 'true' : 'false'));
+}), { rootMargin: '-30% 0px -65% 0px' });
+probs.forEach(p => spy.observe(p));
+const tocDet = document.getElementById('toc-details');
+const wide = window.matchMedia('(min-width: 1001px)');
+function syncToc() { tocDet.open = wide.matches; }
+syncToc(); wide.addEventListener('change', syncToc);
+tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
+tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+
+/* ---------- Trokoit çizimi (T&M 2-22 d) ---------- */
+(function () {
+  const fig = document.getElementById('mini-troch'); if (!fig) return;
+  const cv = fig.querySelector('canvas'), ctx = cv.getContext('2d');
+  const box = fig.querySelector('.ctrls');
+  box.innerHTML = `<div class="ctrl"><label for="tr-r"><span>A / (E<sub>y</sub>/B)</span><output id="tr-r-o"></output></label><input type="range" id="tr-r" min="0.2" max="2.5" step="0.05" value="1.6"></div>`;
+  const inp = box.querySelector('input'), out = box.querySelector('output');
+  let W = 0, H = 0;
+  function col(k) { return getComputedStyle(document.documentElement).getPropertyValue('--' + k).trim(); }
+  function draw() {
+    const r = +inp.value;
+    out.textContent = r.toFixed(2).replace('.', ',') + (Math.abs(r - 1) < 0.026 ? ' · sikloit' : r > 1 ? ' · ilmekli' : ' · dalgalı');
+    ctx.fillStyle = col('canvas'); ctx.fillRect(0, 0, W, H);
+    const tmax = 6 * Math.PI, xmax = tmax + r, sc = Math.min((W - 40) / (xmax + r), (H - 40) / (2 * r + 0.4));
+    const ox = 20 + r * sc, oy = H / 2;
+    ctx.strokeStyle = col('grid'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(10, oy); ctx.lineTo(W - 10, oy); ctx.stroke();
+    ctx.strokeStyle = col('accent'); ctx.lineWidth = 2.2; ctx.beginPath();
+    for (let i = 0; i <= 900; i++) { const t = tmax * i / 900, x = -r * Math.cos(t) + t, y = r * Math.sin(t); const px = ox + x * sc, py = oy - y * sc; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.stroke();
+    ctx.fillStyle = col('muted'); ctx.font = '11px "IBM Plex Mono", monospace'; ctx.fillText('x →  (sürüklenme yönü, ⟨ẋ⟩ = E_y/B)', 14, H - 10);
+  }
+  function fit() {
+    const w = Math.round(cv.parentElement.clientWidth); if (!w || w === W) return;
+    W = w; H = Math.round(Math.min(220, Math.max(150, w * 0.3)));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+  }
+  inp.addEventListener('input', draw);
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cv.parentElement); else window.addEventListener('resize', fit);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  fit();
+})();
+
+/* ---------- Fourier kısmi toplam çizimleri (T&M 3-29, 3-39) ---------- */
+const SERIES = {
+  s329: {
+    span: [-2 * Math.PI, 6 * Math.PI], yr: [-1.25, 1.25], def: 4,
+    target: t => { const T = 4 * Math.PI, u = ((t + 2 * Math.PI) % T + T) % T - 2 * Math.PI; return u > 0 ? Math.sin(u) : 0; },
+    term: (j, t) => j === 0 ? 0.5 * Math.sin(t) : (n => 4 / (Math.PI * (4 - n * n)) * Math.cos(n * t / 2))(2 * j - 1)
+  },
+  s339: {
+    span: [0, 4 * Math.PI], yr: [-0.25, 1.15], def: 4,
+    target: t => { const u = ((t % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI); return u < Math.PI ? Math.sin(u) : 0; },
+    term: (j, t) => j === 0 ? 1 / Math.PI : j === 1 ? 0.5 * Math.sin(t) : (n => -2 / (Math.PI * (n * n - 1)) * Math.cos(n * t))(2 * (j - 1))
+  }
+};
+document.querySelectorAll('.series-mini').forEach((fig, fi) => {
+  const S = SERIES[fig.dataset.series]; if (!S) return;
+  const cv = fig.querySelector('canvas'), ctx = cv.getContext('2d');
+  const id = 'ser' + fi;
+  fig.querySelector('.ctrls').innerHTML = `<div class="ctrl"><label for="${id}"><span>Terim sayısı</span><output id="${id}-o"></output></label><input type="range" id="${id}" min="1" max="15" step="1" value="${S.def}"></div>`;
+  const inp = fig.querySelector('input'), out = fig.querySelector('output');
+  let W = 0, H = 0;
+  const col = k => getComputedStyle(document.documentElement).getPropertyValue('--' + k).trim();
+  function draw() {
+    const N = +inp.value; out.textContent = N + ' terim';
+    ctx.fillStyle = col('canvas'); ctx.fillRect(0, 0, W, H);
+    const [x0, x1] = S.span, [y0, y1] = S.yr, pad = 14;
+    const X = t => pad + (t - x0) / (x1 - x0) * (W - 2 * pad), Y = y => H - pad - (y - y0) / (y1 - y0) * (H - 2 * pad);
+    ctx.strokeStyle = col('grid'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad, Y(0)); ctx.lineTo(W - pad, Y(0)); ctx.stroke();
+    const line = (f, c, w, dash) => { ctx.strokeStyle = c; ctx.lineWidth = w; ctx.setLineDash(dash || []); ctx.beginPath(); for (let i = 0; i <= 800; i++) { const t = x0 + (x1 - x0) * i / 800, px = X(t), py = Y(f(t)); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); ctx.setLineDash([]); };
+    line(S.target, col('muted'), 1.5, [5, 4]);
+    line(t => { let s = 0; for (let j = 0; j < N; j++) s += S.term(j, t); return s; }, col('accent'), 2.2);
+    ctx.fillStyle = col('muted'); ctx.font = '11px "IBM Plex Mono", monospace'; ctx.fillText('kesikli: F(t) · düz: kısmi toplam · ωt ekseni', pad, 14);
+  }
+  function fit() {
+    const w = Math.round(cv.parentElement.clientWidth); if (!w || w === W) return;
+    W = w; H = Math.round(Math.min(220, Math.max(150, w * 0.3)));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+  }
+  inp.addEventListener('input', draw);
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cv.parentElement); else window.addEventListener('resize', fit);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  fit();
+});
+</script>
+
+<script>
+/* Site menüsü: aç/kapat, Esc, dışarı tıklama, odak yönetimi */
+(function () {
+  const nav = document.getElementById('site-nav'); if (!nav) return;
+  const btn = document.getElementById('nav-btn'), drawer = document.getElementById('nav-drawer'), scrim = document.getElementById('nav-scrim');
+  const links = [...drawer.querySelectorAll('a')];
+  const cur = nav.dataset.current;
+  links.forEach(a => { if (a.dataset.key === cur) a.setAttribute('aria-current', 'page'); });
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.classList.toggle('nav-lock', open);
+    /* çekmece görünür olduktan sonra odakla (visibility geçişi başlarken öğe odaklanamaz) */
+    if (open) setTimeout(() => (drawer.querySelector('a[aria-current]') || links[0]).focus({ preventScroll: true }), 60);
+  }
+  btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  scrim.addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { set(false); btn.focus(); }
+    if (e.key === 'Tab') {
+      const items = [btn, ...links, ...drawer.querySelectorAll('.nav-foot a')];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>

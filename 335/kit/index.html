@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PHYS 335 Yöntem Kiti</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PHYS 335 sorularını çözmek için gereken yöntemlerin Türkçe, adım adım öğretimi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas', 'select', 'option'] },
+  startup: { typeset: true, pageReady: () => MathJax.startup.defaultPageReady().then(fitMath) }
+};
+/* Dar ekranda sütuna sığmayan satır içi formülü kendi satırına alıp yatay kaydırılabilir yapar */
+function fitMath() {
+  const els = [...document.querySelectorAll('mjx-container:not([display="true"])')];
+  els.forEach(el => el.classList.remove('mj-wide'));
+  const wide = [];
+  els.forEach(el => {
+    let b = el.parentElement;
+    while (b && getComputedStyle(b).display === 'inline') b = b.parentElement;
+    if (!b) return;
+    const cs = getComputedStyle(b);
+    const avail = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (el.getBoundingClientRect().width > avail + 1) wide.push(el);
+  });
+  wide.forEach(el => el.classList.add('mj-wide'));
+}
+let fitW = window.innerWidth, fitT = 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === fitW) return;
+  fitW = window.innerWidth; clearTimeout(fitT); fitT = setTimeout(fitMath, 200);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<style>
+/* Düzen: üstte milimetrik kâğıt bandı; altında sol yapışkan içindekiler + 48rem okuma sütunu.
+   Laboratuvarlar sütun genişliğinde "deney tezgâhı" panelleri; renkler fiziksel anlam taşır
+   (kuvvet kırmızı, hız mavi, ivme mor, enerji amber). */
+:root {
+  --bg: #F0F6F3;
+  --panel: #FFFFFF;
+  --panel-2: #E6F0EC;
+  --canvas: #FAFDFB;
+  --ink: #10201A;
+  --muted: #52675E;
+  --rule: #CFDDD6;
+  --grid: #DFECE6;
+  --accent: #0E7A62;
+  --accent-soft: #D9F3E9;
+  --on-accent: #FFFFFF;
+  --force: #C7372C;
+  --vel: #0A78BC;
+  --acc: #7B3FB3;
+  --energy: #B67400;
+  --good: #2E7D32;
+  --bad: #B3261E;
+  --good-soft: #E3F2DF;
+  --bad-soft: #F8E3E1;
+  --font-display: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-body: 1.0625rem;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1411; --panel: #111D19; --panel-2: #17261F; --canvas: #0E1814;
+    --ink: #E2F0EA; --muted: #8DA89C; --rule: #24372F; --grid: #182821;
+    --accent: #6EE2B4; --accent-soft: #123A2C; --on-accent: #06140F;
+    --force: #FF6F61; --vel: #4BB4F2; --acc: #C29BFF; --energy: #F0B43C;
+    --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1411; --panel: #111D19; --panel-2: #17261F; --canvas: #0E1814;
+  --ink: #E2F0EA; --muted: #8DA89C; --rule: #24372F; --grid: #182821;
+  --accent: #6EE2B4; --accent-soft: #123A2C; --on-accent: #06140F;
+  --force: #FF6F61; --vel: #4BB4F2; --acc: #C29BFF; --energy: #F0B43C;
+  --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+mjx-container { color: inherit; position: relative; }
+mjx-assistive-mml { max-width: 100% !important; }
+mjx-container.mj-wide { display: block !important; max-width: 100%; overflow-x: auto; overflow-y: hidden; margin: .3rem 0; padding-bottom: .15rem; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .25rem; margin: .6rem 0 !important; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Üst bant ---------- */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.hero-in {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.75rem 2.25rem;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.5rem; align-items: end;
+}
+.eyebrow {
+  font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: 0 0 .75rem;
+}
+.hero h1 {
+  font: 600 clamp(2.4rem, 6vw, 3.9rem)/1.02 var(--font-display);
+  letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+.hero h1 i { font-style: italic; font-weight: 500; color: var(--accent); }
+.hero .lede { font-size: 1.12rem; color: var(--ink); max-width: 38rem; margin: 0; }
+.hero-card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: grid; gap: .85rem;
+}
+.hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero-stats div { display: grid; }
+.hero-stats b { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.hero-stats span { font: 500 .72rem/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend i { width: 1.4rem; height: 3px; border-radius: 2px; display: inline-block; position: relative; }
+.legend i::after { content: ""; position: absolute; right: -2px; top: -3px; border-left: 6px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+.hero-how { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .92rem; }
+.hero-how li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .6rem; }
+.hero-how b { font: 500 .72rem/1.9 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+
+/* ---------- İskelet ---------- */
+.shell {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3.25rem;
+}
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 2rem 2rem; }
+.side summary { display: none; }
+.toc-title { font: 500 .72rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem; }
+.progress { height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; margin: .2rem 0 .45rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.progress-txt { font: 400 .8rem/1.4 var(--font-mono); color: var(--muted); margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.toc a {
+  display: grid; grid-template-columns: 1.6rem 1fr 1rem; gap: .35rem; align-items: baseline;
+  text-decoration: none; color: var(--muted); padding: .38rem .5rem; border-radius: 5px; font-size: .9rem; line-height: 1.35;
+}
+.toc a:hover { background: var(--panel-2); color: var(--ink); }
+.toc a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.toc .n { font: 500 .78rem/1.5 var(--font-mono); color: var(--accent); }
+.toc .ok { color: var(--good); font-size: .85rem; visibility: hidden; }
+.toc a.is-done .ok { visibility: visible; }
+.side-foot { margin-top: 1.2rem; display: grid; gap: .5rem; font-size: .82rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
+
+main { min-width: 0; max-width: 48rem; padding-block: 1rem 6rem; }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side {
+    max-height: none; overflow: visible; z-index: 30; padding-block: 0;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .side summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    list-style: none; cursor: pointer; padding-block: .75rem; font-weight: 500;
+  }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary .sum-prog { font: 400 .8rem var(--font-mono); color: var(--muted); }
+  .side details[open] .toc-wrap { padding-bottom: 1rem; max-height: 70vh; overflow-y: auto; }
+  .toc-title { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem 1.75rem; }
+}
+
+/* ---------- Bölümler ---------- */
+.chapter { padding-top: 3.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
+.ch-head .eyebrow .sess { color: var(--accent); }
+.chapter h2 { font: 600 clamp(1.8rem, 4vw, 2.45rem)/1.12 var(--font-display); margin: 0 0 .8rem; text-wrap: balance; letter-spacing: -.005em; }
+.ch-lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 42rem; }
+.chapter h3 { font: 600 1.42rem/1.25 var(--font-display); margin: 2.6rem 0 .6rem; text-wrap: balance; }
+.chapter h3 .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-left: .5rem; vertical-align: .25em; white-space: nowrap; }
+.chapter p, .chapter li { max-width: 44rem; }
+.chapter ul, .chapter ol { padding-left: 1.3rem; }
+.chapter li + li { margin-top: .3rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 1rem 0; }
+.kv dt { font: 500 .78rem/1.9 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 0; }
+
+/* Kutular: sonuç / örnek / sınav */
+.box {
+  --lbl: var(--accent);
+  position: relative; margin: 1.9rem 0 1.4rem; padding: 1.15rem 1.2rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--lbl) 38%, var(--rule)); border-radius: var(--radius); background: var(--panel);
+}
+.box-label {
+  position: absolute; top: -.72em; left: .85rem; padding: 0 .45rem;
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--panel) 50%);
+  font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--lbl);
+}
+.box > :first-child:not(.box-label), .box > .box-label + * { margin-top: 0; }
+.box > :last-child { margin-bottom: .2rem; }
+.box.ex { --lbl: var(--energy); }
+.box.exam { --lbl: var(--force); }
+.box.ext { --lbl: var(--acc); }
+.box p { margin: .5rem 0; }
+
+/* Adım adım türetim */
+.derive { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.derive-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .85rem 1.15rem .2rem; }
+.derive-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.derive-head h4 { margin: 0; font: 600 1.05rem/1.35 var(--font-body); }
+.steps { list-style: none; margin: .5rem 0 0; padding: .3rem 1.15rem .2rem; counter-reset: st; }
+.step { counter-increment: st; position: relative; padding: .1rem 0 1.05rem 2.55rem; max-width: none !important; }
+.step + .step { margin-top: 0 !important; }
+.step::before {
+  content: counter(st); position: absolute; left: 0; top: .12rem; width: 1.7rem; height: 1.7rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--panel);
+  font: 600 .8rem/1.55rem var(--font-mono); text-align: center; z-index: 1;
+}
+.step::after { content: ""; position: absolute; left: .82rem; top: 1.9rem; bottom: .15rem; width: 1.5px; background: var(--rule); }
+.step.tail::after, .step:last-child::after { display: none; }
+.step > p:first-child { margin-top: .1rem; }
+.step p { margin: .35rem 0; }
+.step.locked { visibility: hidden; max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.step.rev { animation: rise .4s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .step.rev { animation: none; } }
+.derive-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); border-radius: 0 0 var(--radius) var(--radius); }
+.derive-count { margin-left: auto; font: 500 .82rem var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Düğmeler */
+.btn {
+  font: 500 .88rem/1.2 var(--font-body); padding: .5rem .85rem; border-radius: 5px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--panel); color: var(--accent);
+  min-height: 2.25rem;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--panel); }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+.btn-primary:disabled { background: var(--accent); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+
+/* Laboratuvar */
+.lab { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.lab-head { padding: .95rem 1.15rem .7rem; }
+.lab-tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--vel); }
+.lab-head h4 { margin: .15rem 0 .25rem; font: 600 1.12rem/1.3 var(--font-body); }
+.lab-head p { margin: 0; color: var(--muted); font-size: .94rem; }
+.view { position: relative; overflow: hidden; background: var(--canvas); border-block: 1px solid var(--rule); }
+.view canvas { display: block; width: 100%; touch-action: pan-y; }
+.view .hint { position: absolute; right: .6rem; top: .45rem; font: 500 .72rem var(--font-mono); color: var(--muted); pointer-events: none; }
+.ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .7rem 1.4rem; padding: .95rem 1.15rem .35rem; }
+.ctrl { display: grid; gap: .15rem; min-width: 0; }
+.ctrl label { display: flex; justify-content: space-between; gap: .6rem; font-size: .86rem; color: var(--ink); }
+.ctrl output { font: 500 .84rem var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); margin: .25rem 0; min-height: 1.4rem; }
+.ctrl select, .ctrl input[type="number"] {
+  font: 400 .9rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .4rem .5rem; width: 100%; min-height: 2.25rem;
+}
+.ctrl.check label { justify-content: flex-start; align-items: center; gap: .5rem; padding-top: 1.2rem; }
+.ctrl.check input { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: .55rem 1.15rem .3rem; }
+.readout { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .45rem; padding: .65rem 1.15rem .9rem; margin: 0; }
+.readout > div { background: var(--panel-2); border-radius: 5px; padding: .42rem .65rem .48rem; min-width: 0; }
+.readout dt { font: 500 .74rem/1.35 var(--font-mono); color: var(--muted); }
+.readout dd { margin: .1rem 0 0; font: 500 .95rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.readout > div.wide { grid-column: 1 / -1; }
+.chip { display: inline-block; font: 600 .74rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .5rem; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.warn { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.lab-try { margin: 0; padding: .1rem 1.15rem 1.05rem; font-size: .9rem; color: var(--muted); }
+.lab-try b { color: var(--ink); font-weight: 600; }
+.lab-note { font-size: .86rem; color: var(--muted); padding: 0 1.15rem .8rem; margin: 0; }
+
+/* Tablolar */
+.tbl-wrap { overflow-x: auto; margin: 1.2rem 0; }
+table.tbl { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.tbl th, .tbl td { padding: .5rem .7rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+.tbl th { font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.tbl td.c, .tbl th.c { text-align: center; }
+.tbl td.num { font-family: var(--font-mono); }
+
+/* Sorular */
+.quiz-set { margin: 2.4rem 0 1rem; }
+.quiz-set > h3 { margin-top: 0; }
+.quiz { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 1rem 1.15rem 1rem; margin: .9rem 0; }
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+.quiz-opts { display: grid; gap: .45rem; }
+.quiz-opts button {
+  display: grid; grid-template-columns: 1.7rem 1fr; gap: .55rem; align-items: center; text-align: left;
+  font: 400 .95rem/1.45 var(--font-body); color: var(--ink); background: var(--panel); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 5px; padding: .5rem .65rem; min-height: 2.6rem;
+}
+.quiz-opts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-opts button:disabled { cursor: default; }
+.quiz-opts button > span:last-child { min-width: 0; }
+.opt-k { font: 600 .78rem/1 var(--font-mono); color: var(--muted); width: 1.55rem; height: 1.55rem; border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; }
+.quiz-opts button.ok { border-color: var(--good); background: var(--good-soft); }
+.quiz-opts button.ok .opt-k { background: var(--good); color: var(--panel); border-color: var(--good); }
+.quiz-opts button.no { border-color: var(--bad); background: var(--bad-soft); }
+.quiz-opts button.no .opt-k { background: var(--bad); color: var(--panel); border-color: var(--bad); }
+.quiz-why { margin: .75rem 0 0; font-size: .93rem; }
+.quiz:not(.done) .quiz-why { visibility: hidden; max-height: 0; overflow: hidden; margin: 0; }
+.quiz-why .verdict { font-weight: 600; margin-right: .3rem; }
+.quiz.is-right .verdict { color: var(--good); }
+.quiz.is-wrong .verdict { color: var(--bad); }
+
+.ch-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--rule); }
+.ch-foot .btn.is-done { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.ch-foot a { font-size: .92rem; }
+
+/* Formül kartı */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1.2rem; }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.card h5 { margin: 0; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.card mjx-container[display="true"] { margin: .35rem 0 !important; }
+
+footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* Çözüm defteri eklemeleri */
+.topic { padding-top: 3.2rem; }
+.topic + .topic { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.topic h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.prob { padding-top: 2.2rem; }
+.prob + .prob { border-top: 1px dashed var(--rule); margin-top: 2.2rem; }
+.prob-head { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: center; }
+.pid { font: 600 .78rem/1.5 var(--font-mono); color: var(--accent); background: var(--accent-soft); padding: .05rem .5rem; border-radius: 4px; }
+.lvl { font: 500 .76rem/1.5 var(--font-mono); color: var(--muted); }
+.prob h3 { margin: .35rem 0 .2rem; font: 600 1.4rem/1.25 var(--font-display); text-wrap: balance; }
+.box.q { --lbl: var(--vel); }
+.box.q p { margin: .4rem 0; }
+.tip { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); max-width: 44rem; }
+.tip b { color: var(--force); font-weight: 600; }
+.solved { display: inline-flex; gap: .55rem; align-items: center; font-size: .92rem; color: var(--muted); margin-top: 1rem; cursor: pointer; padding: .35rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.solved input { accent-color: var(--good); width: 1.05rem; height: 1.05rem; }
+.solved:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 0; }
+.toc .grp { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .9rem 0 .25rem .5rem; list-style: none; }
+.toc .grp:first-child { margin-top: 0; }
+.toc a { grid-template-columns: 3.6rem 1fr 1rem; }
+.toc .n { font-size: .72rem; }
+.toc a.is-done .ok { visibility: visible; }
+.mini { margin: 1rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.mini .ctrls { padding-top: .7rem; }
+.note-src { font-size: .85rem; color: var(--muted); }
+
+/* Yöntem kiti eklemeleri */
+.part { padding-top: 3.2rem; }
+.part + .part { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.part h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.method { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); padding: 1.1rem 1.2rem 1rem; }
+.m-head { display: flex; gap: .9rem; align-items: flex-start; }
+.m-no { flex: none; font: 600 1.25rem/1 var(--font-mono); color: var(--on-accent); background: var(--accent); border-radius: 6px; padding: .5rem .55rem; min-width: 2.9rem; text-align: center; }
+.m-head h3 { margin: .05rem 0 .2rem; font: 600 1.38rem/1.25 var(--font-display); text-wrap: balance; }
+.m-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+.m-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 1.4rem; margin-top: 1rem; }
+@media (max-width: 720px) { .m-grid { grid-template-columns: minmax(0, 1fr); } }
+.m-block h4 { margin: 0 0 .35rem; font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.m-block.when h4 { color: var(--vel); }
+.m-block.trap h4 { color: var(--force); }
+.m-block ul, .m-block ol { margin: 0; padding-left: 1.2rem; font-size: .95rem; }
+.m-block li + li { margin-top: .3rem; }
+.m-block.trap ul { list-style: none; padding-left: 0; }
+.m-block.trap li { padding-left: 1.3rem; position: relative; }
+.m-block.trap li::before { content: "✗"; position: absolute; left: 0; color: var(--force); font-weight: 600; }
+.m-recipe { margin-top: 1rem; }
+.m-recipe ol { counter-reset: r; list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.m-recipe li { counter-increment: r; position: relative; padding-left: 2.2rem; }
+.m-recipe li::before { content: counter(r); position: absolute; left: 0; top: .05rem; width: 1.55rem; height: 1.55rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .78rem/1.55rem var(--font-mono); text-align: center; }
+.method .derive { margin: 1.1rem 0 .4rem; }
+.m-foot { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-top: .8rem; font-size: .9rem; color: var(--muted); }
+.m-foot .links { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.nb { font: 500 .76rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--accent); text-decoration: none; border: 1px solid var(--rule); }
+.nb:hover { border-color: var(--accent); }
+.learned { display: inline-flex; gap: .5rem; align-items: center; cursor: pointer; margin-left: auto; padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.learned input { accent-color: var(--good); width: 1rem; height: 1rem; }
+.learned:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.proto { counter-reset: p; list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: .6rem; }
+.proto li { counter-increment: p; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; align-items: start; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .7rem .9rem; }
+.proto li::before { content: counter(p); font: 600 1.3rem/1 var(--font-display); color: var(--accent); padding-top: .15rem; }
+.proto b { display: block; }
+.math-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1rem; }
+.math-card { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.math-card h4 { margin: 0 0 .2rem; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.math-card p { margin: .3rem 0; font-size: .92rem; }
+.math-card mjx-container[display="true"] { margin: .3rem 0 !important; }
+.plan { display: grid; gap: .7rem; margin-top: 1rem; }
+.plan > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .75rem .95rem; }
+@media (max-width: 560px) { .plan > div { grid-template-columns: 1fr; gap: .3rem; } }
+.plan .when-t { font: 600 .82rem/1.5 var(--font-mono); color: var(--accent); }
+.plan p { margin: 0; }
+td .nb { display: inline-block; margin: .1rem 0; }
+/* Grid öğeleri içerikteki uzun formül yüzünden sütunu genişletmesin */
+.m-recipe li, .m-grid > *, .m-head > div, .proto li > span, .plan > div > * { min-width: 0; }
+
+
+/* ---------- Site menüsü (hamburger) ---------- */
+.nav-btn {
+  position: fixed; z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  right: calc(max(16px, env(safe-area-inset-right, 0px)) - 4px);
+  width: 44px; height: 44px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  display: grid; place-content: center; gap: 4px; padding: 0;
+}
+.nav-btn:hover { border-color: var(--accent); }
+.nav-btn span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.site-nav.open .nav-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav.open .nav-btn span:nth-child(2) { opacity: 0; }
+.site-nav.open .nav-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* kapalı çekmece ekran dışına itildiğinde sayfayı genişletmesin diye kırpan katman */
+.nav-layer { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.site-nav.open .nav-layer { pointer-events: auto; }
+.nav-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 38%, transparent); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+.nav-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 86vw); overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--rule);
+  padding: calc(env(safe-area-inset-top, 0px) + 68px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) 18px;
+  transform: translateX(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+}
+.site-nav.open .nav-drawer { transform: none; visibility: visible; }
+.site-nav.open .nav-scrim { opacity: 1; visibility: visible; }
+.nav-title { font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem .8rem; }
+.nav-drawer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.nav-drawer li a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 6px; text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+.nav-drawer li a b { font-weight: 600; font-size: 1rem; }
+.nav-drawer li a span { font-size: .85rem; color: var(--muted); }
+.nav-drawer li a:hover { background: var(--panel-2); }
+.nav-drawer li a[aria-current="page"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); }
+.nav-drawer li a[aria-current="page"] b { color: var(--accent); }
+.nav-foot { margin: 1.4rem 0 0 .8rem; font-size: .85rem; color: var(--muted); }
+.nav-foot a { color: var(--muted); }
+body.nav-lock { overflow: hidden; }
+.hero-in { padding-top: 4.2rem; }
+@media (max-width: 1000px) {
+  .hero-in { padding-top: 4rem; }
+  .side summary { padding-right: 52px; }
+  .nav-btn { width: 40px; height: 40px; top: calc(env(safe-area-inset-top, 0px) + 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .nav-drawer, .nav-scrim, .nav-btn span { transition: none; } }
+
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav" data-current="kit" aria-label="PHYS 335 sayfaları">
+  <button type="button" class="nav-btn" id="nav-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
+  <div class="nav-layer">
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <p class="nav-title">PHYS 335 · Klasik Mekanik I</p>
+    <ul>
+      <li><a href="../" data-key="home"><b>Giriş</b><span>Üç sayfanın özeti</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Klasik Mekanik Defteri</b><span>Ders notları · 19 simülasyon</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>51 soru · çıkmış sınavlar</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>16 yöntem · çalışma planı</span></a></li>
+    </ul>
+    <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
+  </div>
+  </div>
+</nav>
+
+
+<header class="hero" lang="tr">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow"><span>ODTÜ PHYS 335</span><span>Yöntem odaklı</span><span>Sınav hazırlığı</span></p>
+      <h1>PHYS 335 <i>Yöntem Kiti</i></h1>
+      <p class="lede">Çözüm defterindeki 51 sorunun hepsi bir avuç yönteme iner. Bu kit soruları tek tek çözmek yerine yöntemleri öğretir: bir soruyu ilk okuyuşta tanımak, doğru denklemi seçmek, hesabı kontrol etmek.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div><b id="st-m">16</b><span>yöntem</span></div>
+        <div><b id="st-l">0</b><span>öğrendiğin</span></div>
+        <div><b id="st-q">0</b><span>tanıma sorusu</span></div>
+      </div>
+      <ul class="hero-how">
+        <li><b>1 · Protokol</b><span>Her soruda aynı 6 adım.</span></li>
+        <li><b>2 · Alet</b><span>Gereken matematik tek sayfada.</span></li>
+        <li><b>3 · Yöntem</b><span>Ne zaman, nasıl, nerede yanılırsın; yeni örnekle.</span></li>
+        <li><b>4 · Tanı</b><span>Soruyu görünce yöntemi seç; harita ile defterde dene.</span></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="shell" lang="tr">
+  <aside class="side">
+    <details id="toc-details" open>
+      <summary><span>Kit</span><span class="sum-prog" id="sum-prog">0 / 16</span></summary>
+      <div class="toc-wrap">
+        <p class="toc-title">İçindekiler</p>
+        <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
+        <p class="progress-txt" id="prog-txt">0 / 16 yöntem öğrenildi</p>
+        <ol class="toc" id="toc"></ol>
+        <div class="side-foot"><button type="button" class="linkbtn" id="reset-progress">İşaretleri sıfırla</button></div>
+      </div>
+    </details>
+  </aside>
+
+  <main id="main">
+
+<!-- ================================================= PROTOKOL -->
+<section class="part" id="protokol" data-toc="Sınav protokolü">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm A</span><span class="sess">Her soruda</span></p>
+    <h2>Altı adımlık sınav protokolü</h2>
+    <p class="ch-lede">2025 ve 2024 çözüm anahtarlarında puanlar hep aynı yerlere verilmiş: doğru denklemi kurmak, işaretleri tutarlı seçmek, sonucu kutulamak. Bu sırayı alışkanlık hâline getirin.</p>
+  </header>
+  <ol class="proto">
+    <li><span><b>Çiz ve eksen seç.</b> Koordinat ekseni ve pozitif yönü şekle yazın. Direnç ve sürtünme sorularında hangi yönün + olduğu, işaret hatalarının bir numaralı kaynağıdır.</span></li>
+    <li><span><b>Serbestlik derecesini say.</b> Kaç bağımsız koordinat var (\(x\), \(\theta\), \(r\)…)? Kısıtlar (ip uzamaz, \(r=R\), yuvarlanma) hangileri? Her kısıt bir denklemi “kısıt kuvveti” denklemine çevirir.</span></li>
+    <li><span><b>Kuvvetleri listele.</b> Serbest cisim diyagramı: ağırlık, normal, gerilme, sürtünme, direnç, yay. Eylemsiz olmayan çerçevedeyseniz hayali kuvvetleri ekleyin.</span></li>
+    <li><span><b>Doğru aracı seç.</b> İvme ya da kuvvet soruluyorsa Newton. Hız ile konum arası ilişki soruluyorsa enerji ya da \(v\,dv/dx\). Çarpışma, patlama ya da iki cisim varsa momentum ve kütle merkezi. Salınım varsa standart form. Sınır ya da sabit soruluyorsa boyut analizi.</span></li>
+    <li><span><b>Çöz, sonra kutula.</b> Sembolik çözün, sayıyı en sonda koyun. Anahtarlar sonucu kutulayana ayrıca puan veriyor.</span></li>
+    <li><span><b>Kontrol et (30 saniye).</b> Birimler tutuyor mu? Limitler doğru mu (\(k\to0\), \(h\to0\), \(m_1\gg m_2\))? İşaret mantıklı mı? Bilinen bir özel durumu veriyor mu?</span></li>
+  </ol>
+</section>
+
+<!-- ================================================= MATEMATİK -->
+<section class="part" id="matematik" data-toc="Matematik alet çantası">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm B</span><span class="sess">Ön koşullar</span></p>
+    <h2>Matematik alet çantası</h2>
+    <p class="ch-lede">Bu sorularda gerçekten kullanılan matematiğin tamamı. Kapalı kitap sınavda bunları ezbere bilmek gerekir.</p>
+  </header>
+  <div class="math-grid">
+    <div class="math-card"><h4>İntegraller · direnç soruları</h4>
+      \[ \int\frac{v\,dv}{a\pm bv^2}=\pm\frac{1}{2b}\ln|a\pm bv^2| \]
+      \[ \int\frac{dv}{a+bv}=\frac1b\ln|a+bv| \]
+      \[ \int\frac{dv}{c^2-v^2}=\frac1c\tanh^{-1}\frac vc=\frac{1}{2c}\ln\frac{c+v}{c-v} \]
+      <p>Kural: zaman soruluyorsa \(dv/F(v)=dt\); konum soruluyorsa \(v\,dv/F(v)=dx\).</p></div>
+    <div class="math-card"><h4>Hiperbolik fonksiyonlar</h4>
+      \[ \cosh x=\tfrac{e^x+e^{-x}}2,\quad \sinh x=\tfrac{e^x-e^{-x}}2,\quad \cosh^2-\sinh^2=1 \]
+      \[ (\cosh)'=\sinh,\quad(\tanh)'=1-\tanh^2,\quad \int\tanh x\,dx=\ln\cosh x \]
+      <p>\(\ddot x=+\omega^2x\) (masadan kayan ip) çözümleri \(\cosh\), \(\sinh\); \(\ddot x=-\omega^2x\) ise \(\cos\), \(\sin\).</p></div>
+    <div class="math-card"><h4>2. mertebe sabit katsayılı ODE</h4>
+      \[ \ddot x+2\beta\dot x+\omega_0^2x=0,\quad x=e^{\lambda t}\Rightarrow\lambda=-\beta\pm\sqrt{\beta^2-\omega_0^2} \]
+      <p>Kökler gerçel ve farklı: üsteller. Çift kök: \((A+Bt)e^{\lambda t}\). Karmaşık: \(e^{-\beta t}(A\cos\omega_1t+B\sin\omega_1t)\). Homojen olmayanda <b>genel = homojen + özel</b>; başlangıç koşulları <em>en sonda</em>, toplam çözüme uygulanır.</p></div>
+    <div class="math-card"><h4>Özel çözüm tahminleri</h4>
+      <p>Sağ taraf sabit \(F\) → \(x_p=F/\omega_0^2\). Sağ taraf \(A\cos\omega t\) → \(x_p=C\cos(\omega t-\delta)\). \(Ae^{-\gamma t}\) → \(x_p=De^{-\gamma t}\). \(e^{-\gamma t}\sin\omega t\) → karmaşık üstel ya da Green.</p>
+      \[ C=\frac{A}{\sqrt{(\omega_0^2-\omega^2)^2+4\beta^2\omega^2}},\quad \tan\delta=\frac{2\beta\omega}{\omega_0^2-\omega^2} \]</div>
+    <div class="math-card"><h4>Karmaşık üstel hilesi</h4>
+      \[ e^{i\theta}=\cos\theta+i\sin\theta \]
+      \[ \int e^{\kappa t}\cos\Omega t\,dt=\operatorname{Re}\frac{e^{(\kappa+i\Omega)t}}{\kappa+i\Omega} \]
+      <p>Çarpım hâlindeki sinüs/kosinüs integrallerini ya da birbirine bağlı \(\dot x,\dot z\) denklemlerini (\(Z=x+iz\)) tek satıra indirir.</p></div>
+    <div class="math-card"><h4>Trigonometri</h4>
+      \[ \sin a\sin b=\tfrac12[\cos(a-b)-\cos(a+b)] \]
+      \[ \sin a\cos b=\tfrac12[\sin(a+b)+\sin(a-b)] \]
+      \[ \cos A-\cos B=-2\sin\tfrac{A+B}2\sin\tfrac{A-B}2 \]
+      <p>Optimizasyonda çarpımı toplama çevirmek türev almaktan hızlıdır (T&amp;M 2-14).</p></div>
+    <div class="math-card"><h4>Taylor açılımları · limit kontrolleri</h4>
+      \[ (1+x)^n\approx1+nx,\quad e^x\approx1+x+\tfrac{x^2}2 \]
+      \[ \ln(1+x)\approx x-\tfrac{x^2}2,\quad \sin x\approx x,\quad \cos x\approx1-\tfrac{x^2}2 \]
+      <p>Kullanım: küçük salınım (\(U\approx U_0+\tfrac12U''x^2\)), küçük direnç limiti, \(\cosh^{-1}(1+\epsilon)\approx\sqrt{2\epsilon}\).</p></div>
+    <div class="math-card"><h4>Vektörler</h4>
+      \[ \vec a\times\vec b=\begin{vmatrix}\hat{\mathbf x}&\hat{\mathbf y}&\hat{\mathbf z}\\a_x&a_y&a_z\\b_x&b_y&b_z\end{vmatrix} \]
+      \[ (\nabla\times\vec F)_x=\partial_yF_z-\partial_zF_y\ \ \text{(döngüsel)} \]
+      <p>\(\hat{\mathbf x}\times\hat{\mathbf y}=\hat{\mathbf z}\), \(\hat{\mathbf y}\times\hat{\mathbf z}=\hat{\mathbf x}\), \(\hat{\mathbf z}\times\hat{\mathbf x}=\hat{\mathbf y}\).</p></div>
+    <div class="math-card"><h4>Eğri koordinatlarda ivme</h4>
+      \[ \text{kutupsal: } \vec a=(\ddot r-r\dot\theta^2)\hat{\mathbf e}_r+(r\ddot\theta+2\dot r\dot\theta)\hat{\mathbf e}_\theta \]
+      \[ a_t=\frac{\vec v\cdot\vec a}{v},\qquad a_n=\frac{|\vec v\times\vec a|}{v}=\frac{v^2}{\rho} \]
+      <p>Türetmenin anahtarı: \(\dot{\hat{\mathbf e}}_r=\dot\theta\hat{\mathbf e}_\theta\), \(\dot{\hat{\mathbf e}}_\theta=-\dot\theta\hat{\mathbf e}_r\).</p></div>
+  </div>
+</section>
+
+<!-- ================================================= YÖNTEMLER 1 -->
+<section class="part" id="yontemler" data-toc="Yöntem kartları">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm C</span><span class="sess">16 yöntem</span></p>
+    <h2>Yöntem kartları</h2>
+    <p class="ch-lede">Her kartın örneği <b>defterde olmayan</b> yeni bir problem; amaç yöntemi aktarılabilir kılmak. Kartın altındaki etiketler, aynı yöntemi kullanan defter sorularına gider.</p>
+  </header>
+
+  <article class="method" id="y1" data-short="Newton + kısıtlar">
+    <div class="m-head"><span class="m-no">Y1</span><div><h3>Serbest cisim diyagramı ve kısıt denklemleri</h3><p>Birden çok cisim, ip, makara, eğik düzlem.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“İp”, “makara”, “bağlı bloklar”, “sabit hızla”, “ivmesi nedir”.</li><li>Kuvvet ya da ivme soruluyor, hareket bir doğru boyunca.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Sürtünme yönünü harekete göre değil, “kayma eğilimine” göre seçmek gerekir. Sabit hızda yön verilmezse iki durumu da yazın.</li><li>\(T\), ancak ip kütlesiz ve makara sürtünmesizse iki tarafta aynıdır.</li><li>“Sabit hız” = net kuvvet sıfır, “durgun” değil.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Her cisim için ayrı diyagram, ayrı eksen (her cisimde hareket yönü +).</li><li>Her cisim için \(\sum F=ma\).</li><li>Kısıt: ip uzamaz ⇒ ivmeler eşit büyüklükte (makaraya göre işaretler).</li><li>Denklemleri toplayarak iç kuvvetleri (\(T\)) yok edin.</li><li>Limit kontrolü: \(\mu\to0\), bir kütle \(\to\infty\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Masada \(m_1\) (sürtünme \(\mu\)), kenardan sarkan \(m_2\): ivme?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(m_1\): yatay, ip \(T\) ileri, sürtünme \(\mu m_1g\) geri: \(m_1a=T-\mu m_1g\).</p></li>
+        <li class="step"><p>\(m_2\): düşey, aşağı +: \(m_2a=m_2g-T\). İp uzamaz, aynı \(a\).</p></li>
+        <li class="step"><p>Topla, \(T\) gider:</p>\[ (m_1+m_2)a=(m_2-\mu m_1)g\ \Rightarrow\ a=\frac{m_2-\mu m_1}{m_1+m_2}\,g . \]</li>
+        <li class="step"><p>Kontrol: \(\mu=0\) ⇒ Atwood benzeri; \(m_2\lt\mu m_1\) ⇒ \(a\lt0\) çıkıyor. Bu fiziksel değil: sistem hiç başlamaz, statik sürtünme yeter. Negatif ivme “hareket yok” demektir.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-32">2-32</a><a class="nb" data-p="tm2-16">2-16</a><a class="nb" data-p="tm2-24">2-24</a></span><label class="learned"><input type="checkbox" id="ln-y1"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y2" data-short="Eğik atış geometrisi">
+    <div class="m-head"><span class="m-no">Y2</span><div><h3>Eğik atış: yörünge denklemi ve iki kök</h3><p>Bir yüzeye düşme, bir noktadan geçme, menzili en büyük yapma.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Tepe/eğimli yüzeye düşer”, “iki noktadan geçer”, “çiti aşar”, “hangi açı en büyük”.</li><li>Hava direnci yok.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Atış ve iniş yükseklikleri farklıyken \(R=v_0^2\sin2\alpha/g\) kullanmak.</li><li>İki kökten yalnızca birini almak: “iki nokta” sorularında fark istenir.</li><li>Optimizasyonda \(\sin\theta=0\) gibi fiziksel olmayan kökleri atmayı unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(x=v_0\cos\alpha\,t\), \(y=v_0\sin\alpha\,t-\tfrac12gt^2\) ya da yörünge: \(y=x\tan\alpha-\dfrac{gx^2}{2v_0^2}(1+\tan^2\alpha)\).</li><li>Hedef koşulu yaz (\(y=h\), \(y=x\tan\beta\), \(x=d\)).</li><li>İkinci derece denklemin köklerini/farkını kullan.</li><li>Optimizasyon: çarpımı toplama çevir ya da türev al.</li><li>Kontrol: düz zemin (\(h=0\), \(\beta=0\)) özel durumu.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\((x,y)\) noktasını vurmak için hangi açılar?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\cos^{-2}\alpha=1+\tan^2\alpha\) ile yörünge \(\tan\alpha\) cinsinden ikinci derece olur:</p>\[ \frac{gx^2}{2v_0^2}\tan^2\alpha-x\tan\alpha+\Big(y+\frac{gx^2}{2v_0^2}\Big)=0 . \]</li>
+        <li class="step"><p>Kökler:</p>\[ \tan\alpha=\frac{v_0^2\pm\sqrt{v_0^4-g\,(gx^2+2yv_0^2)}}{gx}. \]</li>
+        <li class="step"><p>Yorum: iki açı (alçak ve yüksek atış); diskriminant sıfırsa tek açı. Bu nokta “güvenlik parabolü” üzerindedir ve ulaşılabilecek en uzak noktadır. \(y=0\) için \(\tan\alpha=1\) (45°) ve \(x=v_0^2/g\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-3">2-3</a><a class="nb" data-p="tm2-8">2-8</a><a class="nb" data-p="tm2-14">2-14</a><a class="nb" data-p="tm2-17">2-17</a><a class="nb" data-p="ex25-2">2025 S2</a></span><label class="learned"><input type="checkbox" id="ln-y2"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y3" data-short="Hıza bağlı direnç">
+    <div class="m-head"><span class="m-no">Y3</span><div><h3>Hıza bağlı direnç: değişkenlerine ayır</h3><p>\(\dot v=F(v)/m\) biçimindeki her denklem iki integrale iner.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Direnç \(kv\)”, “\(kv^2\)”, “viskoz ortam”, “limit hız”.</li><li>“… mesafede”, “döndüğünde hızı” ⇒ \(v\,dv/dx\). “… sürede” ⇒ \(dv/dt\).</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(v^2\) dirençte yukarı ve aşağı hareketi tek denklemle yazmak (işaret bozulur). \(v|v|\) yazın ya da iki ayrı denklem kurun.</li><li>\(kmv^2\) ile \(kv^2\) farkı: \(k\)'nın birimi değişir, limit hız \(\sqrt{g/k}\) ya da \(\sqrt{mg/k}\) olur.</li><li>Başlangıç koşulunu integral sabitine koymayı unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Eksen ve + yön seç; direnç hep hareketin tersine.</li><li>\(m\dot v=-mg\,(\text{yön})-f(v)\) yaz; limit hız \(F(v_t)=0\).</li><li>Zaman: \(\int dv/F=\int dt\). Konum: \(\int v\,dv/F=\int dx\).</li><li>Başlangıç koşullarını uygula, sonra limitleri kontrol et (\(k\to0\) ⇒ serbest düşme).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Durgundan, \(kmv^2\) dirençle düşüş: \(v(t)\)?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Aşağı +: \(\dot v=g-kv^2=g\big(1-v^2/v_t^2\big)\), \(v_t=\sqrt{g/k}\).</p></li>
+        <li class="step"><p>Ayır ve integral al (tablodaki \(\tanh^{-1}\)):</p>\[ \int_0^v\frac{dv'}{1-v'^2/v_t^2}=v_t\tanh^{-1}\frac{v}{v_t}=gt . \]</li>
+        <li class="step"><p>\[ v(t)=v_t\tanh\frac{gt}{v_t}. \]<p>Kontrol: küçük \(t\)'de \(\tanh u\approx u\) ⇒ \(v\approx gt\) ✓; \(t\to\infty\) ⇒ \(v_t\) ✓. Konum için bir kez daha integral: \(x=\frac{v_t^2}{g}\ln\cosh\frac{gt}{v_t}\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-11">2-11</a><a class="nb" data-p="tm2-12">2-12</a><a class="nb" data-p="tm2-15">2-15</a><a class="nb" data-p="tm2-34">2-34</a><a class="nb" data-p="ex24-2">2024 S2</a><a class="nb" data-p="exS-5">roket</a></span><label class="learned"><input type="checkbox" id="ln-y3"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y4" data-short="Eğri koordinatlar, kısıt kuvveti">
+    <div class="m-head"><span class="m-no">Y4</span><div><h3>Eğri koordinatlar: hareket denklemi mi, kısıt kuvveti mi?</h3><p>Çember, küre, sarkaç, raydaki blok.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Çember/küre üzerinde”, “ray”, “sarkaç”, “normal kuvvet”, “raydan ayrılır”.</li><li>“Teğetsel ve normal ivme”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Radyal denklemi hareket denklemi sanmak; o yalnızca \(N\)'yi verir.</li><li>“Ayrılma” koşulu: \(N=0\) (hız sıfır değil!).</li><li>Merkezcil ivmeyi bir kuvvet gibi diyagrama eklemek.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Simetriye uygun koordinat (kutupsal/küresel).</li><li>İvmeyi bileşenlere ayır (alet çantasındaki formül).</li><li>Kısıtı koy (\(r=R\) ⇒ \(\dot r=\ddot r=0\)).</li><li>Teğetsel denklem → hareket; radyal denklem + enerji korunumu → \(N(\theta)\).</li><li>\(N=0\) → ayrılma noktası.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Pürüzsüz yarım kürenin tepesinden kayan blok nerede ayrılır?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\theta\) düşeyden. Radyal (merkeze doğru): \(mg\cos\theta-N=\dfrac{mv^2}{R}\).</p></li>
+        <li class="step"><p>Enerji (tepeden durgun): \(v^2=2gR(1-\cos\theta)\).</p></li>
+        <li class="step"><p>Birleştir: \(N=mg(3\cos\theta-2)\). \(N=0\):</p>\[ \cos\theta=\frac23\ \Rightarrow\ \theta\approx48{,}2^\circ,\quad\text{yükseklik }\tfrac23R . \]</li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-2">2-2</a><a class="nb" data-p="tm2-5">2-5</a><a class="nb" data-p="tm2-25">2-25</a><a class="nb" data-p="tm2-40">2-40</a><a class="nb" data-p="tm3-12">3-12</a></span><label class="learned"><input type="checkbox" id="ln-y4"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y5" data-short="İş–enerji">
+    <div class="m-head"><span class="m-no">Y5</span><div><h3>İş–enerji teoremi ve enerji korunumu</h3><p>Hız–yükseklik ilişkisi, sürtünme kayıpları, yay sıkışması.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Hangi hızla”, “ne kadar sıkışır”, “ne kadar iş”, “durana kadar ne kadar yol”.</li><li>Zaman sorulmuyor, başlangıç ve son durum belli.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Sürtünme işinde \(N\)'yi eğim üzerinde \(mg\) almak (\(mg\cos\theta\) olmalı).</li><li>Değişken kütle dağılımında (ip) ağırlık yerine kütle merkezinin yükselmesini unutmak.</li><li>Korunumlu olmayan kuvvet varken enerji korunumu yazmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>İki durum seç (başlangıç, son).</li><li>\(T_1+U_1+W_{\text{korunumsuz}}=T_2+U_2\).</li><li>Sürtünme işi \(-\mu N d\), yay \(\tfrac12kx^2\), yerçekimi \(mgh\).</li><li>Normal kuvvet gerekiyorsa Y4'teki radyal denklemle birleştir.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Çember döngüyü tamamlamak için en küçük yükseklik</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Döngünün tepesinde rayda kalma koşulu \(N\ge0\): \(mg+N=mv^2/R\Rightarrow v_{\text{tepe}}^2\ge gR\).</p></li>
+        <li class="step"><p>Enerji (sürtünmesiz, \(h\)'den durgun): \(mgh=mg(2R)+\tfrac12mv_{\text{tepe}}^2\).</p></li>
+        <li class="step"><p>\[ h\ge2R+\frac R2=\frac52R . \]<p>Kütleden bağımsız.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-24">2-24</a><a class="nb" data-p="tm2-25">2-25</a><a class="nb" data-p="tm2-26">2-26</a><a class="nb" data-p="tm2-27">2-27</a><a class="nb" data-p="ex25-3">2025 S3</a><a class="nb" data-p="tm3-8">3-8</a></span><label class="learned"><input type="checkbox" id="ln-y5"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y6" data-short="Korunumluluk testi">
+    <div class="m-head"><span class="m-no">Y6</span><div><h3>Korunumluluk testi ve potansiyel bulma</h3><p>Rotasyonel sıfır mı? Sonra bileşen bileşen integral.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Korunumlu mu?”, “potansiyel enerjiyi bulun”, “\(F_x, F_y, F_z\) verilmiş”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(\vec F=-\nabla U\)'daki eksiyi unutmak.</li><li>İkinci integralde “sabit”in diğer değişkenlere bağlı olabileceğini unutmak.</li><li>Tanım bölgesini (ln, \(1/r\)) belirtmemek.</li><li>Hıza ya da zamana açıkça bağlı kuvvetler korunumlu değildir.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Bölgeyi belirt (basit bağlantılı mı?).</li><li>\(\nabla\times\vec F\)'in üç bileşeni.</li><li>\(U=-\int F_x\,dx+f(y,z)\).</li><li>\(-\partial_yU=F_y\) ⇒ \(f\); sonra \(z\).</li><li>Geri kontrol: \(-\nabla U\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\vec F=(2xy,\ x^2+z,\ y)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Rotasyonel: \(\partial_yF_z-\partial_zF_y=1-1=0\), \(\partial_zF_x-\partial_xF_z=0\), \(\partial_xF_y-\partial_yF_x=2x-2x=0\). Korunumlu.</p></li>
+        <li class="step"><p>\(-\partial_xU=2xy\Rightarrow U=-x^2y+f(y,z)\). \(-\partial_yU=x^2-f_y=x^2+z\Rightarrow f=-yz+h(z)\). \(-\partial_zU=y-h'=y\Rightarrow h'=0\).</p></li>
+        <li class="step"><p>\[ U=-x^2y-yz+C . \]<p>Kontrol: \(-\nabla U=(2xy,\ x^2+z,\ y)\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-53">2-53</a><a class="nb" data-p="ex25-4">2025 S4</a></span><label class="learned"><input type="checkbox" id="ln-y6"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y7" data-short="1B potansiyel analizi">
+    <div class="m-head"><span class="m-no">Y7</span><div><h3>Bir boyutlu potansiyel analizi</h3><p>Denge, kararlılık, dönüm noktaları, kaçış, küçük salınım frekansı. 2024 ve 2025 sınavlarının ikisinde de var.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>\(U(x)\) ya da \(F(x)\) verilmiş; “denge noktaları”, “kararlı mı”, “dönüm noktaları”, “kaçmak için en küçük hız”, “çizin”.</li><li>“Küçük salınımların frekansı”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Denge noktası (\(U'=0\)) ile dönüm noktasını (\(U=E\)) karıştırmak.</li><li>Tanım bölgesi dışındaki kökleri tutmak (\(x>0\) iken \(x=-5\)).</li><li>Kaçış koşulunda \(U(\infty)\)'u unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(U=-\int F\,dx\), referansı belirt (ör. \(U(\infty)=0\)).</li><li>Asimptotlar: \(x\to0\), \(x\to\infty\).</li><li>\(U'(x_0)=0\) → denge; \(U''(x_0)\) işareti → kararlı/kararsız/nötr.</li><li>\(U=E\) → dönüm noktaları; \(E\) çizgisinin altı izinli.</li><li>Küçük salınım: \(\omega=\sqrt{U''(x_0)/m}\). Kaçış: \(E\ge U(\infty)\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(U=U_0\big(\frac{x^4}{a^4}-\frac{2x^2}{a^2}\big)\) çift kuyusu</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(U'=U_0\big(\frac{4x^3}{a^4}-\frac{4x}{a^2}\big)=0\Rightarrow x=0,\ \pm a\).</p></li>
+        <li class="step"><p>\(U''=U_0\big(\frac{12x^2}{a^4}-\frac{4}{a^2}\big)\): \(U''(0)=-\frac{4U_0}{a^2}\lt0\) kararsız; \(U''(\pm a)=\frac{8U_0}{a^2}>0\) kararlı, \(U(\pm a)=-U_0\).</p></li>
+        <li class="step"><p>Kuyu dibinde küçük salınım: \(\omega=\sqrt{\dfrac{8U_0}{ma^2}}\).</p></li>
+        <li class="step"><p>Enerji seviyeleri: \(-U_0\lt E\lt0\) iken parçacık tek kuyuda salınır. \(E>0\) iken iki kuyuyu birden dolaşır. \(E=0\) tepeye sonsuz sürede ulaşır.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="ex25-4">2025 S4</a><a class="nb" data-p="ex24-1">2024 S1</a><a class="nb" data-p="tm2-42">2-42</a><a class="nb" data-p="tm3-7">3-7</a><a class="nb" data-p="tm3-43">3-43</a></span><label class="learned"><input type="checkbox" id="ln-y7"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y8" data-short="Momentum, çarpışma, KM">
+    <div class="m-head"><span class="m-no">Y8</span><div><h3>Momentum, çarpışma ve kütle merkezi</h3><p>Patlama, art arda çarpışma, KM integrali.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Patlar”, “çarpışır”, “esnek”, “parçalara ayrılır”, “kütle merkezi”.</li><li>Çok kısa bir anda iç kuvvetler büyük, dış kuvvet itmesi ihmal edilebilir.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Esnek olmayan çarpışmada kinetik enerji korunumu yazmak.</li><li>Momentumu skaler toplamak (bileşenlere ayırın).</li><li>Patlamada eklenen enerjiyi toplama katmayı unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Olay anını seç: hemen önce / hemen sonra.</li><li>Her bileşen için momentum korunumu.</li><li>Esnekse enerji; ya da 1B kısayol: \(v_1'-v_2'=-(v_1-v_2)\).</li><li>KM: simetri ekseni + ince dilim (\(dm\)) integrali.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Yarım dairesel levhanın kütle merkezi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Simetri: KM \(y\) ekseninde. \(y\) yüksekliğinde yatay şerit: genişlik \(2\sqrt{R^2-y^2}\), \(dm=\sigma\,2\sqrt{R^2-y^2}\,dy\).</p></li>
+        <li class="step"><p>\(\int_0^Ry\,2\sqrt{R^2-y^2}\,dy=\frac23R^3\) (\(u=R^2-y^2\) ile). Alan \(\pi R^2/2\).</p></li>
+        <li class="step"><p>\[ y_{\text{km}}=\frac{\frac23R^3}{\frac\pi2R^2}=\frac{4R}{3\pi}\approx0{,}42R . \]</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-28">2-28</a><a class="nb" data-p="tm9-9">9-9</a><a class="nb" data-p="tm9-2">9-2</a><a class="nb" data-p="tm2-41">2-41</a></span><label class="learned"><input type="checkbox" id="ln-y8"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y9" data-short="Değişken kütle (roket)">
+    <div class="m-head"><span class="m-no">Y9</span><div><h3>Değişken kütle: roket denklemi</h3><p>Ders 1'deki “tipik ara sınav sorusu”; Sarıoğlu sınavında 25 puan.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Kütle azalıyor/artıyor”, “yakıt atar”, “kum döker”, “\(dm/dt\)”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(F=d(mv)/dt\)'yi sistemi tanımlamadan uygulamak.</li><li>\(dm/dt\lt0\) işaretini kaybetmek (itme \(-u\,dm/dt>0\)).</li><li>Kalkış koşulunu unutmak: itme ağırlığı aşmalı.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(t\) ve \(t+dt\) anlarında <em>roket + atılan gaz</em> momentumu.</li><li>\(dp=F_{\text{dış}}dt\) ⇒ \(m\dot v=F_{\text{dış}}-u\dot m\) (\(u\): rokete göre gaz hızı).</li><li>Dış kuvvetleri ekle (yerçekimi, direnç), \(\dot m\) ifadesini koy.</li><li>Çıkan doğrusal ODE'yi çöz (integral çarpanı).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Boşlukta roket: Tsiolkovsky denklemi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(F_{\text{dış}}=0\): \(m\,dv=-u\,dm\).</p></li>
+        <li class="step"><p>Ayır ve integral al (\(m_0\to m\)):</p>\[ v-v_0=u\ln\frac{m_0}{m}. \]</li>
+        <li class="step"><p>Yorum: hız kazancı yalnızca kütle oranına ve gaz hızına bağlı, yakıtın ne kadar hızlı yakıldığına değil. Yerçekimi eklenirse \(-gt\) terimi gelir, bu yüzden hızlı yakmak avantajlıdır.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="exS-5">Sarıoğlu S5</a></span><label class="learned"><input type="checkbox" id="ln-y9"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y10" data-short="Salınım: standart form">
+    <div class="m-head"><span class="m-no">Y10</span><div><h3>Salınım: denklemi standart forma getir, \(\omega_0\) ve \(\beta\)'yı oku</h3><p>Yüzen cisim, sarkaç, iki kütle, sönüm rejimleri.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Küçük salınımların periyodu/frekansı”, “sönümlü”, “kritik”, “genlik yarıya iner”.</li><li>Dengeden küçük sapmada geri çağırıcı kuvvet var.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(\beta=b/2m\) (2'yi unutmak).</li><li>\(\omega_0\), \(\omega_1=\sqrt{\omega_0^2-\beta^2}\) ve \(\omega_R=\sqrt{\omega_0^2-2\beta^2}\)'yi karıştırmak.</li><li>İki cisimde \(m\) yerine \(\mu\) kullanmayı unutmak.</li><li>Başlangıç koşullarını özel çözümü eklemeden uygulamak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Dengeyi bul; sapma \(\xi\) tanımla (sabit kuvvetler dengeyle gider).</li><li>Doğrusallaştır (\(\sin\theta\approx\theta\), Taylor).</li><li>\(\ddot\xi+2\beta\dot\xi+\omega_0^2\xi=0\) biçimine getir: \(\omega_0^2=k_{\text{etkin}}/m_{\text{etkin}}\).</li><li>\(\beta\) ile \(\omega_0\)'ı karşılaştır → rejim; çözümü yaz, koşulları uygula.</li><li>İki cisim: \(\mu=m_1m_2/(m_1+m_2)\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>U borusundaki sıvı sütununun salınımı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Toplam uzunluk \(L\), kesit \(A\), yoğunluk \(\rho\): salınan kütle \(\rho AL\).</p></li>
+        <li class="step"><p>Bir kolda \(x\) yükselince öbür kolda \(x\) alçalır; seviye farkı \(2x\). Geri çağırıcı kuvvet \(\rho A(2x)g\).</p></li>
+        <li class="step"><p>\[ \rho AL\,\ddot x=-2\rho Agx\ \Rightarrow\ \omega_0=\sqrt{\frac{2g}{L}},\quad T=2\pi\sqrt{\frac{L}{2g}}. \]<p>Yoğunluk ve kesit sadeleşir. T&amp;M 3-7'deki yüzen cisimle aynı mantık: \(k_{\text{etkin}}\) sıvının ağırlığından gelir.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm3-1-2">3-1/3-2</a><a class="nb" data-p="tm3-7">3-7</a><a class="nb" data-p="tm3-12">3-12</a><a class="nb" data-p="tm3-6">3-6</a><a class="nb" data-p="ex25-5">2025 S5</a><a class="nb" data-p="ex24-3">2024 S3</a><a class="nb" data-p="tm3-8">3-8</a></span><label class="learned"><input type="checkbox" id="ln-y10"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y11" data-short="Süperpozisyon ve Green">
+    <div class="m-head"><span class="m-no">Y11</span><div><h3>Zorlanmış ve parçalı kuvvetler: süperpozisyon, Heaviside, Green</h3><p>Doğrusal denklemde yanıtlar toplanır.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“\(t_0\) süre etkiyen”, “puls”, “\(t\gt0\) için \(F(t)\)”, “Green yöntemiyle”, “kalıcı durum”, “rezonans”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Parçalı çözümde \(t_0\)'da \(x\) ve \(\dot x\) sürekliliğini unutmak.</li><li>Green integralinde \(G(t-t')\) yerine \(G(t')\) yazmak.</li><li>Faz \(\delta\)'nın \(\omega>\omega_0\)'da \(\pi/2\)'yi aştığını unutmak (arctan dalı).</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Kuvveti basit parçaların toplamı olarak yaz: \(F=\sum F_i\) (basamaklar, kaydırılmış sinüsler).</li><li>Her parça için bilinen yanıt (basamak yanıtı, kalıcı durum).</li><li>Topla; kaydırılmış parçalar için \(t\to t-t_i\).</li><li>Genel kuvvet: \(x(t)=\int_0^tF(t')G(t-t')dt'\), \(G(\tau)=\frac{e^{-\beta\tau}\sin\omega_1\tau}{m\omega_1}\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Aniden uygulanan sabit yük: neden statik sapmanın iki katı?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Sönümsüz, durgun yay; \(t=0\)'da \(F\) uygulanıyor: \(m\ddot x+kx=F\).</p></li>
+        <li class="step"><p>Özel \(F/k\) + homojen \(A\cos\omega_0t\); \(x(0)=0\Rightarrow A=-F/k\):</p>\[ x(t)=\frac Fk(1-\cos\omega_0t). \]</li>
+        <li class="step"><p>En büyük sapma \(2F/k\): yavaşça konulan yükün iki katı. Mühendislikte “darbe katsayısı 2” budur. Sönüm varsa (az sönümlü) aşım oranı \(e^{-\beta\pi/\omega_1}\) olur.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm3-9">3-9</a><a class="nb" data-p="tm3-35">3-35</a><a class="nb" data-p="tm3-38">3-38</a></span><label class="learned"><input type="checkbox" id="ln-y11"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y12" data-short="Fourier katsayıları">
+    <div class="m-head"><span class="m-no">Y12</span><div><h3>Fourier katsayıları</h3><p>Önce periyot ve simetri, sonra integral.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Fourier serisini/gösterimini bulun”, “periyodik fonksiyon”, “ilk dört terimi çizin”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Periyodu yanlış okumak (T&amp;M 3-29'da \(4\pi/\omega\), 3-39'da \(2\pi/\omega\)).</li><li>\(a_0/2\)'yi unutmak ya da \(a_0\) ile ortalamayı karıştırmak.</li><li>\(n=1\) gibi paydayı sıfırlayan durumu ayrı hesaplamamak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\mathcal T\) ve \(\Omega=2\pi/\mathcal T\).</li><li>Simetri: çift ⇒ yalnızca \(a_n\); tek ⇒ yalnızca \(b_n\).</li><li>\(a_0/2=\langle F\rangle\); \(a_n,b_n=\frac2{\mathcal T}\int F\cos/\sin(n\Omega t)\).</li><li>Çarpım–toplam ile integral; tek/çift \(n\)'yi ayır; paydası sıfırlanan \(n\)'yi ayrıca hesapla.</li><li>Kontrol: bir noktada seriyi değerlendir.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Kare dalga: \(+1\) (\(0\lt t\lt\pi\)), \(-1\) (\(-\pi\lt t\lt0\))</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Tek fonksiyon ⇒ \(a_n=0\). \(\Omega=1\).</p></li>
+        <li class="step"><p>\[ b_n=\frac2\pi\int_0^\pi\sin nt\,dt=\frac{2}{n\pi}(1-\cos n\pi)=\begin{cases}\frac4{n\pi},&n\ \text{tek}\\0,&n\ \text{çift}\end{cases} \]</p></li>
+        <li class="step"><p>\(F=\frac4\pi\big(\sin t+\frac13\sin3t+\frac15\sin5t+\cdots\big)\). Kontrol \(t=\pi/2\): \(\frac4\pi(1-\frac13+\frac15-\cdots)=\frac4\pi\cdot\frac\pi4=1\) ✓ (Leibniz serisi).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm3-29">3-29</a><a class="nb" data-p="tm3-39">3-39</a></span><label class="learned"><input type="checkbox" id="ln-y12"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y13" data-short="Merkezi kuvvet, iki cisim">
+    <div class="m-head"><span class="m-no">Y13</span><div><h3>Merkezi kuvvet ve iki cisim problemi</h3><p>İndirgenmiş kütle, etkin potansiyel, Kepler.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Birbirinin etrafında döner”, “çembersel yörünge”, “yörünge türü”, “çarpışana kadar süre”, “\(F(r)\)”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>İki cisimde \(r\)'yi KM'den uzaklık sanmak (göreli uzaklıktır).</li><li>Kepler III'te \(m\) yerine \(M=m_1+m_2\).</li><li>“Aniden” değişimde konum ve hızın aynı kaldığını unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\vec r=\vec r_1-\vec r_2\), \(\mu\ddot{\vec r}=\vec F(r)\); KM düzgün hareket eder.</li><li>\(\ell=\mu r^2\dot\theta\) korunur; \(U_{\text{etkin}}=U+\ell^2/2\mu r^2\).</li><li>Çembersel: \(U'_{\text{etkin}}=0\); küçük salınım: \(\omega_r^2=U''_{\text{etkin}}/\mu\).</li><li>\(1/r^2\) kuvvet: \(E\lt0\) elips, \(=0\) parabol, \(>0\) hiperbol; \(\tau^2=4\pi^2a^3/GM\).</li><li>Radyal düşüş: \(a=R/2\) dejenere elips, süre = yarım periyot.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Çembersel hız ve kaçış hızı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Çembersel: \(\dfrac{mv_c^2}{r}=\dfrac{GMm}{r^2}\Rightarrow v_c=\sqrt{GM/r}\). Toplam enerji \(E=-\dfrac{GMm}{2r}\).</p></li>
+        <li class="step"><p>Kaçış: \(E=0\Rightarrow\tfrac12mv_e^2=\dfrac{GMm}{r}\Rightarrow v_e=\sqrt{2GM/r}=\sqrt2\,v_c\).</p></li>
+        <li class="step"><p>Sonuç: çembersel yörüngedeki bir cismin hızını \(\sqrt2\) katına çıkarmak onu kaçırır. Çekimi yarıya indirmek de aynı etkiyi yapar (T&amp;M 8-3, parabol).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm2-49">2-49</a><a class="nb" data-p="tm3-43">3-43</a><a class="nb" data-p="tm8-3">8-3</a><a class="nb" data-p="tm8-5">8-5</a><a class="nb" data-p="ex25-6">2025 S6</a><a class="nb" data-p="ex25-5">2025 S5</a></span><label class="learned"><input type="checkbox" id="ln-y13"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y14" data-short="Boyut analizi">
+    <div class="m-head"><span class="m-no">Y14</span><div><h3>Boyut analizi</h3><p>Hesap yapmadan bağımlılığı bul; kalan sabiti dinamik belirler.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Boyut analiziyle”, “belirsiz boyutsuz sabit olabilir”, “\(w=u\,f(\lambda)\) biçiminde”.</li><li>Ayrıca her sonucun birim kontrolü için.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>İlgili bir büyüklüğü listeye almamak (ya da ilgisiz birini eklemek).</li><li>\([G]=M^{-1}L^3T^{-2}\), \([k]\) (direnç) gibi boyutları yanlış yazmak.</li><li>Boyutsuz sabiti boyut analiziyle bulabileceğini sanmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>İlgili büyüklükleri listele.</li><li>Her birinin \(M,L,T\) boyutu.</li><li>Sonuç \(=c\prod q_i^{\alpha_i}\); üslerin denklem sistemini çöz.</li><li>Fazla değişken varsa boyutsuz grup (\(\lambda\)) oluşur: sonuç \(f(\lambda)\) içerir.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Sarkaç periyodu</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Adaylar: \(m\ [M]\), \(l\ [L]\), \(g\ [LT^{-2}]\). \(T=c\,m^al^bg^d\).</p></li>
+        <li class="step"><p>\(M\): \(a=0\). \(T\): \(-2d=1\Rightarrow d=-\tfrac12\). \(L\): \(b+d=0\Rightarrow b=\tfrac12\).</p></li>
+        <li class="step"><p>\(T=c\sqrt{l/g}\); kütle düşer. \(c=2\pi\) ancak hareket denklemiyle bulunur; büyük genlikte ise \(c\), boyutsuz \(\theta_0\)'ın fonksiyonu olur.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="ex25-6">2025 S6</a><a class="nb" data-p="tm8-5">8-5</a></span><label class="learned"><input type="checkbox" id="ln-y14"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y15" data-short="Dönen çerçeveler">
+    <div class="m-head"><span class="m-no">Y15</span><div><h3>Dönen çerçeveler: merkezkaç, Coriolis, Euler</h3><p>Dünya üzerinde ya da dönen bir diskte hareket.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Dönen”, “atlıkarınca”, “Dünya'nın dönmesi”, “enlem \(\lambda\)”, “sapma”, “etkin \(g\)”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Coriolis'te işaret: \(-2m\vec\omega\times\vec v\). Kuzey yarıkürede yukarı giden cisim batıya sapar.</li><li>\(\dot{\vec\omega}\ne0\) iken Euler terimini unutmak.</li><li>Durgun cisim için Coriolis sıfırdır.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(m\vec a'=\vec F-m\vec\omega\times(\vec\omega\times\vec r)-2m\vec\omega\times\vec v'-m\dot{\vec\omega}\times\vec r\).</li><li>Dünya'da yerel eksen: \(x\) doğu, \(y\) kuzey, \(z\) yukarı; \(\vec\omega=\omega(0,\cos\lambda,\sin\lambda)\).</li><li>Birinci mertebe: Coriolis'i dönmesiz çözümün hızıyla hesapla.</li><li>Eylemsiz çerçeveden kontrol et.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(h\)'den bırakılan cisim ne kadar doğuya düşer?</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\vec v\approx-gt\,\hat{\mathbf z}\). \(\vec\omega\times\hat{\mathbf z}=\omega\cos\lambda\,\hat{\mathbf x}\) ⇒ \(\ddot x=-2\omega\cos\lambda(-gt)=2\omega g t\cos\lambda\).</p></li>
+        <li class="step"><p>İki kez integral: \(x=\tfrac13\omega gt^3\cos\lambda\), \(t=\sqrt{2h/g}\):</p>\[ x=\frac13\,\omega\cos\lambda\sqrt{\frac{8h^3}{g}}\quad(\text{doğu}). \]</li>
+        <li class="step"><p>Karşılaştırma: aynı yüksekliğe yukarı atılıp geri düşen cisim ise bunun 4 katı kadar <em>batıya</em> düşer (T&amp;M 10-8).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="tm10-7">10-7</a><a class="nb" data-p="tm10-8">10-8</a><a class="nb" data-p="exS-6">atlıkarınca</a></span><label class="learned"><input type="checkbox" id="ln-y15"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y16" data-short="Çerçeve değiştirme hilesi">
+    <div class="m-head"><span class="m-no">Y16</span><div><h3>Çerçeve değiştirme: Galile dönüşümü ve sürüklenme</h3><p>Problemi basitleştiren çerçeveye geç, orada çöz, geri dön.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Trende”, “hareketli duvar”, “\(x'=f(x,t)\)”, “ortalama hız”, “\(\vec E\times\vec B\)”.</li><li>Bir sabit hız çıkarılınca hareket basitleşiyorsa.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Kinetik enerji ve işin çerçeveye bağlı olduğunu unutmak (ivme ve kuvvet değil).</li><li>Geri dönüşte hızı eklemeyi unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Sabit hızla giden uygun çerçeveyi seç (\(\vec r'=\vec r-\vec Vt\)).</li><li>Orada problemi çöz (çoğu zaman simetrik ya da durgun).</li><li>\(\vec v=\vec v'+\vec V\) ile geri dön.</li><li>Genel dönüşümde zincir kuralı: \(v'=vf_x+f_t\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Hareketli duvardan esnek sekme</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Top \(v\) ile sağa, duvar \(u\) ile sola gidiyor. Duvarın çerçevesine geç: top \(v+u\) ile geliyor.</p></li>
+        <li class="step"><p>Duvar çerçevesinde esnek sekme: hız tersine döner, \(v+u\) ile sola.</p></li>
+        <li class="step"><p>Yere dön: \(v+u+u=v+2u\) ile sola. Top enerji kazanır (Fermi ivmelenmesi, kütleçekim sapanı). İş, duvarın çerçeveye bağlı hareketinden gelir.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="ex25-1">2025 S1</a><a class="nb" data-p="tm2-41">2-41</a><a class="nb" data-p="tm2-22">2-22</a></span><label class="learned"><input type="checkbox" id="ln-y16"> Öğrendim</label></div>
+  </article>
+</section>
+
+<!-- ================================================= TANIMA -->
+<section class="part" id="tanima" data-toc="Tanıma antrenmanı">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm D</span><span class="sess">Soruyu görünce yöntemi seç</span></p>
+    <h2>Tanıma antrenmanı</h2>
+    <p class="ch-lede">Sınavda zamanın çoğu “nereden başlasam” diye düşünerek gider. Aşağıdaki kısa soru kökleri defterde yok; yalnızca ilk hamleyi seçin.</p>
+  </header>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“Parçacık \(v_0\) ile yukarı atılıyor, direnç \(cv^2\). Tepe noktasının yüksekliği?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">\(dv/dt\) ile ayır, sonra \(t\)'yi bul</button><button type="button" data-k="b">\(v\,dv/dx=-g-(c/m)v^2\) ile doğrudan \(x\)'e geç</button><button type="button" data-k="c">Enerji korunumu</button><button type="button" data-k="d">Boyut analizi yeterli</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Yükseklik soruluyor, zaman değil: Y3'ün \(v\,dv/dx\) dalı. Direnç korunumsuz olduğu için enerji korunumu yanlış olur.</p></div>
+  <div class="quiz" data-answer="c"><p class="quiz-q">“\(U(x)=\frac{A}{x^{6}}-\frac{B}{x^{3}}\). Küçük salınımların frekansı?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Newton yasasını tam çöz</button><button type="button" data-k="b">Fourier serisi</button><button type="button" data-k="c">\(U'(x_0)=0\), sonra \(\omega=\sqrt{U''(x_0)/m}\)</button><button type="button" data-k="d">Etkin potansiyel</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y7: dengeyi bul, ikinci türev etkin yay sabitidir.</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“Kütleleri \(m\) ve \(3m\) olan iki parça, durgun bir cismin patlamasıyla ayrılıyor; açığa çıkan enerji \(Q\). Hızlar?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Momentum (toplam 0) + enerji (\(Q\))</button><button type="button" data-k="b">Yalnızca enerji korunumu</button><button type="button" data-k="c">Kütle merkezi integrali</button><button type="button" data-k="d">Değişken kütle denklemi</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y8: iki bilinmeyen, iki denklem. \(mv_1=3mv_2\) ve \(\tfrac12mv_1^2+\tfrac32mv_2^2=Q\).</p></div>
+  <div class="quiz" data-answer="d"><p class="quiz-q">“Yay–kütle sistemine \(0\lt t\lt\tau\) süresince \(F_0\) kuvveti, sonra hiçbir şey. \(t>\tau\) için hareket?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Fourier serisi</button><button type="button" data-k="b">Rezonans formülü \(C(\omega)\)</button><button type="button" data-k="c">Enerji korunumu</button><button type="button" data-k="d">İki basamağın farkı (süperpozisyon)</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y11: \(F_0[H(t)-H(t-\tau)]\) ⇒ \(x=x_H(t)-x_H(t-\tau)\). T&amp;M 3-9'un aynısı.</p></div>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“Boncuk, düşey eksen etrafında \(\omega\) ile dönen bir telde kayıyor. Telin kuvveti?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Kartezyen Newton</button><button type="button" data-k="b">Dönen çerçeve (merkezkaç + Coriolis) ya da kutupsal ivme</button><button type="button" data-k="c">Boyut analizi</button><button type="button" data-k="d">Fourier</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y15 ya da Y4. Telin kuvveti kısıt kuvvetidir: dönen çerçevede Coriolis terimini dengeler, eylemsiz çerçevede \(2\dot r\dot\theta\) terimini sağlar.</p></div>
+  <div class="quiz" data-answer="c"><p class="quiz-q">“Uydu çembersel yörüngedeyken motoru çalıştırıp hızını aniden %20 artırıyor. Yeni yörünge?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Yeni bir çembersel yörünge</button><button type="button" data-k="b">Hiperbol, çünkü hız arttı</button><button type="button" data-k="c">Enerjinin işaretine bak: \(1{,}2^2\lt2\) ⇒ hâlâ \(E\lt0\), elips</button><button type="button" data-k="d">Parabol</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y13: kaçış için \(v\ge\sqrt2v_c\) gerekir. \(1{,}2\lt1{,}414\) olduğundan bağlı kalır ama çember değil, elips olur.</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“\(\vec F=(y^2,\ 2xy+z,\ y)\). Korunumlu mu ve \(U\)?”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Rotasyonele bak, sonra bileşen bileşen integral</button><button type="button" data-k="b">Kapalı yol integrali seç ve hesapla</button><button type="button" data-k="c">Hıza bağlı olduğu için korunumsuz</button><button type="button" data-k="d">Yalnızca \(x\) bileşenini integral al</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y6. Rotasyonel sıfır çıkar; \(U=-xy^2-yz+C\).</p></div>
+  <div class="quiz" data-answer="d"><p class="quiz-q">“Bir yıldızın çökme süresinin \(G\), \(\rho\) (yoğunluk) ile nasıl ölçeklendiğini bulun.”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Kepler III</button><button type="button" data-k="b">Enerji korunumu</button><button type="button" data-k="c">Etkin potansiyel</button><button type="button" data-k="d">Boyut analizi</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y14: \([G\rho]=T^{-2}\) ⇒ \(t\sim1/\sqrt{G\rho}\). (2025 S6'nın genelleştirilmiş hâli.)</p></div>
+</section>
+
+<!-- ================================================= HARİTA -->
+<section class="part" id="harita" data-toc="Yöntem haritası">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm E</span><span class="sess">51 soru × 16 yöntem</span></p>
+    <h2>Defterdeki soruların yöntem haritası</h2>
+    <p class="ch-lede">Bir yöntem kartını bitirince, o yöntemi kullanan soruları defterde çözün. Etiketlere tıklayınca soru açılır.</p>
+  </header>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Yöntem</th><th>Defterdeki sorular</th></tr></thead>
+    <tbody>
+      <tr><td>Y1 · Newton + kısıt</td><td><a class="nb" data-p="tm2-16">2-16</a> <a class="nb" data-p="tm2-32">2-32</a> <a class="nb" data-p="tm2-24">2-24</a> <a class="nb" data-p="exS-6">atlıkarınca</a></td></tr>
+      <tr><td>Y2 · Eğik atış</td><td><a class="nb" data-p="tm2-3">2-3</a> <a class="nb" data-p="tm2-8">2-8</a> <a class="nb" data-p="tm2-14">2-14</a> <a class="nb" data-p="tm2-17">2-17</a> <a class="nb" data-p="ex25-2">2025 S2</a></td></tr>
+      <tr><td>Y3 · Hıza bağlı direnç</td><td><a class="nb" data-p="tm2-11">2-11</a> <a class="nb" data-p="tm2-12">2-12</a> <a class="nb" data-p="tm2-15">2-15</a> <a class="nb" data-p="tm2-34">2-34</a> <a class="nb" data-p="ex24-2">2024 S2</a> <a class="nb" data-p="exS-5">roket</a></td></tr>
+      <tr><td>Y4 · Eğri koordinatlar</td><td><a class="nb" data-p="tm2-2">2-2</a> <a class="nb" data-p="tm2-5">2-5</a> <a class="nb" data-p="tm2-25">2-25</a> <a class="nb" data-p="tm2-40">2-40</a> <a class="nb" data-p="tm3-12">3-12</a></td></tr>
+      <tr><td>Y5 · İş–enerji</td><td><a class="nb" data-p="tm2-24">2-24</a> <a class="nb" data-p="tm2-25">2-25</a> <a class="nb" data-p="tm2-26">2-26</a> <a class="nb" data-p="tm2-27">2-27</a> <a class="nb" data-p="ex25-3">2025 S3</a> <a class="nb" data-p="tm3-8">3-8</a></td></tr>
+      <tr><td>Y6 · Korunumluluk</td><td><a class="nb" data-p="tm2-53">2-53</a> <a class="nb" data-p="ex25-4">2025 S4</a></td></tr>
+      <tr><td>Y7 · 1B potansiyel</td><td><a class="nb" data-p="ex25-4">2025 S4</a> <a class="nb" data-p="ex24-1">2024 S1</a> <a class="nb" data-p="tm2-42">2-42</a> <a class="nb" data-p="tm3-7">3-7</a> <a class="nb" data-p="tm3-43">3-43</a></td></tr>
+      <tr><td>Y8 · Momentum, KM</td><td><a class="nb" data-p="tm2-28">2-28</a> <a class="nb" data-p="tm9-9">9-9</a> <a class="nb" data-p="tm9-2">9-2</a> <a class="nb" data-p="tm2-41">2-41</a></td></tr>
+      <tr><td>Y9 · Roket</td><td><a class="nb" data-p="exS-5">Sarıoğlu S5</a></td></tr>
+      <tr><td>Y10 · Salınım standart form</td><td><a class="nb" data-p="tm3-1-2">3-1/3-2</a> <a class="nb" data-p="tm3-6">3-6</a> <a class="nb" data-p="tm3-7">3-7</a> <a class="nb" data-p="tm3-8">3-8</a> <a class="nb" data-p="tm3-12">3-12</a> <a class="nb" data-p="ex25-5">2025 S5</a> <a class="nb" data-p="ex24-3">2024 S3</a></td></tr>
+      <tr><td>Y11 · Süperpozisyon, Green</td><td><a class="nb" data-p="tm3-9">3-9</a> <a class="nb" data-p="tm3-35">3-35</a> <a class="nb" data-p="tm3-38">3-38</a></td></tr>
+      <tr><td>Y12 · Fourier</td><td><a class="nb" data-p="tm3-29">3-29</a> <a class="nb" data-p="tm3-39">3-39</a></td></tr>
+      <tr><td>Y13 · Merkezi kuvvet</td><td><a class="nb" data-p="tm2-49">2-49</a> <a class="nb" data-p="tm3-43">3-43</a> <a class="nb" data-p="tm8-3">8-3</a> <a class="nb" data-p="tm8-5">8-5</a> <a class="nb" data-p="ex25-6">2025 S6</a></td></tr>
+      <tr><td>Y14 · Boyut analizi</td><td><a class="nb" data-p="ex25-6">2025 S6</a></td></tr>
+      <tr><td>Y15 · Dönen çerçeve</td><td><a class="nb" data-p="tm10-7">10-7</a> <a class="nb" data-p="tm10-8">10-8</a> <a class="nb" data-p="exS-6">atlıkarınca</a></td></tr>
+      <tr><td>Y16 · Çerçeve değiştirme</td><td><a class="nb" data-p="ex25-1">2025 S1</a> <a class="nb" data-p="tm2-41">2-41</a> <a class="nb" data-p="tm2-22">2-22</a></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================= PLAN -->
+<section class="part" id="plan" data-toc="Sınava kadar plan">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm F</span><span class="sess">2 Kasım, 18:00 (önerilen tarih)</span></p>
+    <h2>Sınava kadar çalışma planı</h2>
+    <p class="ch-lede">Ara sınav kapsamı resmî olarak açıklanmamış; ancak 2025 sınavı Newton, 1B potansiyel, salınım ve iki cisim sorularından oluşuyordu. Plan buna göre ağırlıklandırıldı.</p>
+  </header>
+  <div class="plan">
+    <div><span class="when-t">Bu akşam · 2 sa</span><p><b>Teşhis:</b> 2025 sınavını (defterde “Çıkmış sorular”) çözümlere bakmadan, 120 dakika süre tutarak çözün. Takıldığınız her soruda yalnızca ilgili yöntem kartını açın.</p></div>
+    <div><span class="when-t">Bu akşam · 1 sa</span><p><b>Yöntem kartları Y3, Y7, Y10, Y13:</b> Sınavda en çok puan taşıyan dört yöntem. Her kartın örneğini önce kendiniz çözün, sonra adımları açın.</p></div>
+    <div><span class="when-t">Sabah · 2 sa</span><p><b>Haritadan pratik:</b> Y2, Y4, Y5, Y8 satırlarındaki defter sorularından her birinden en az bir tane. Sonra 2024 sınavını 60 dakikada çözün.</p></div>
+    <div><span class="when-t">Öğlen · 45 dk</span><p><b>Tanıma antrenmanı</b> ve <b>matematik alet çantası</b>: integraller, \(\tanh\), çarpım–toplam formülleri ezbere.</p></div>
+    <div><span class="when-t">Sınavdan önce · 20 dk</span><p>Altı adımlık protokolü ve “tuzaklar” listelerini okuyun. Yeni soru çözmeyin.</p></div>
+  </div>
+</section>
+  </main>
+</div>
+<script>
+'use strict';
+/* Yöntem kiti: adım adım örnekler, tanıma soruları, "öğrendim" işaretleri, deftere bağlantılar */
+const NOTEBOOK = '../cozumler/';
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('kit.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('kit.' + k, JSON.stringify(v)); } catch (e) { /* depolama yoksa geç */ } }
+};
+
+/* Deftere bağlantılar */
+document.querySelectorAll('a.nb[data-p]').forEach(a => { a.href = NOTEBOOK + '#' + a.dataset.p; a.target = '_blank'; a.rel = 'noopener'; a.title = 'Çözüm defterinde aç'; });
+
+/* Adım adım örnekler */
+document.querySelectorAll('.derive').forEach((d, di) => {
+  const steps = [...d.querySelectorAll(':scope > .steps > .step')];
+  if (!steps.length) return;
+  let shown = 1;
+  const bar = document.createElement('div');
+  bar.className = 'derive-bar';
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="kd${di}-next">Sonraki adım →</button>` +
+    `<button type="button" class="btn" id="kd${di}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="kd${di}-reset">Baştan</button><span class="derive-count" aria-live="polite"></span>`;
+  d.appendChild(bar);
+  const [bNext, bAll, bReset] = bar.querySelectorAll('button');
+  const cnt = bar.querySelector('.derive-count');
+  function render(rev) {
+    steps.forEach((s, j) => {
+      const locked = j >= shown;
+      s.classList.toggle('locked', locked);
+      s.classList.toggle('tail', j === shown - 1 && shown < steps.length);
+      if (locked) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden');
+      if (rev != null && j >= rev && j < shown) { s.classList.remove('rev'); void s.offsetWidth; s.classList.add('rev'); }
+    });
+    cnt.textContent = `Adım ${shown} / ${steps.length}`;
+    bNext.disabled = bAll.disabled = shown >= steps.length;
+    bReset.disabled = shown <= 1;
+  }
+  bNext.addEventListener('click', () => { if (shown < steps.length) { shown++; render(shown - 1); } });
+  bAll.addEventListener('click', () => { const r = shown; shown = steps.length; render(r); });
+  bReset.addEventListener('click', () => { shown = 1; render(); });
+  render();
+});
+
+/* Tanıma soruları */
+const quizSaved = store.get('quiz', {});
+const quizzes = [...document.querySelectorAll('.quiz')];
+quizzes.forEach((q, qi) => {
+  const id = 'tq' + qi, ans = q.dataset.answer, letters = 'ABCD';
+  const btns = [...q.querySelectorAll('.quiz-opts button')];
+  const verdict = q.querySelector('.verdict');
+  btns.forEach((b, j) => {
+    b.id = id + '-' + b.dataset.k;
+    const k = document.createElement('span'); k.className = 'opt-k'; k.textContent = letters[j];
+    const body = document.createElement('span'); while (b.firstChild) body.appendChild(b.firstChild);
+    b.append(k, body);
+    b.addEventListener('click', () => choose(b.dataset.k, true));
+  });
+  function choose(k, save) {
+    const right = k === ans;
+    btns.forEach(b => { b.disabled = true; if (b.dataset.k === ans) b.classList.add('ok'); if (b.dataset.k === k && !right) b.classList.add('no'); });
+    verdict.textContent = right ? 'Doğru.' : `Yanlış, doğru cevap ${letters[btns.findIndex(b => b.dataset.k === ans)]}.`;
+    q.classList.add('done', right ? 'is-right' : 'is-wrong');
+    if (save) { quizSaved[id] = k; store.set('quiz', quizSaved); }
+  }
+  q._reset = () => { btns.forEach(b => { b.disabled = false; b.classList.remove('ok', 'no'); }); q.classList.remove('done', 'is-right', 'is-wrong'); verdict.textContent = ''; };
+  if (quizSaved[id]) choose(quizSaved[id], false);
+});
+document.getElementById('st-q').textContent = quizzes.length;
+
+/* İçindekiler */
+const toc = document.getElementById('toc');
+const parts = [...document.querySelectorAll('section.part')];
+const methods = [...document.querySelectorAll('article.method')];
+parts.forEach(p => {
+  const eb = p.querySelector('.eyebrow span');
+  const li = document.createElement('li');
+  li.innerHTML = `<a href="#${p.id}"><span class="n">${eb ? eb.textContent.replace('Bölüm ', '') : ''}</span><span>${p.dataset.toc}</span><span class="ok"></span></a>`;
+  toc.appendChild(li);
+  if (p.id === 'yontemler') methods.forEach(m => {
+    const l2 = document.createElement('li');
+    l2.innerHTML = `<a href="#${m.id}"><span class="n">${m.querySelector('.m-no').textContent}</span><span>${m.dataset.short}</span><span class="ok">✓</span></a>`;
+    toc.appendChild(l2);
+  });
+});
+const tocLinks = [...toc.querySelectorAll('a')];
+
+/* Öğrendim işaretleri */
+const learned = new Set(store.get('learned', []));
+function update() {
+  const n = methods.filter(m => learned.has(m.id)).length;
+  document.getElementById('prog-bar').style.width = (100 * n / methods.length) + '%';
+  document.getElementById('prog-txt').textContent = `${n} / ${methods.length} yöntem öğrenildi`;
+  document.getElementById('sum-prog').textContent = `${n} / ${methods.length}`;
+  document.getElementById('st-l').textContent = n;
+  document.getElementById('st-m').textContent = methods.length;
+  tocLinks.forEach(a => a.classList.toggle('is-done', learned.has(a.getAttribute('href').slice(1))));
+}
+methods.forEach(m => {
+  const cb = m.querySelector('.learned input'); if (!cb) return;
+  cb.checked = learned.has(m.id);
+  cb.addEventListener('change', () => { if (cb.checked) learned.add(m.id); else learned.delete(m.id); store.set('learned', [...learned]); update(); });
+});
+document.getElementById('reset-progress').addEventListener('click', () => {
+  learned.clear(); store.set('learned', []); methods.forEach(m => { const cb = m.querySelector('.learned input'); if (cb) cb.checked = false; });
+  for (const k in quizSaved) delete quizSaved[k]; store.set('quiz', {}); quizzes.forEach(q => q._reset()); update();
+});
+update();
+
+/* Kaydırma takibi, dar ekran */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) tocLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id ? 'true' : 'false'));
+}), { rootMargin: '-30% 0px -65% 0px' });
+[...parts.filter(p => p.id !== 'yontemler'), ...methods].forEach(x => spy.observe(x));
+const tocDet = document.getElementById('toc-details');
+const wide = window.matchMedia('(min-width: 1001px)');
+function syncToc() { tocDet.open = wide.matches; }
+syncToc(); wide.addEventListener('change', syncToc);
+tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
+tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+</script>
+
+<script>
+/* Site menüsü: aç/kapat, Esc, dışarı tıklama, odak yönetimi */
+(function () {
+  const nav = document.getElementById('site-nav'); if (!nav) return;
+  const btn = document.getElementById('nav-btn'), drawer = document.getElementById('nav-drawer'), scrim = document.getElementById('nav-scrim');
+  const links = [...drawer.querySelectorAll('a')];
+  const cur = nav.dataset.current;
+  links.forEach(a => { if (a.dataset.key === cur) a.setAttribute('aria-current', 'page'); });
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.classList.toggle('nav-lock', open);
+    /* çekmece görünür olduktan sonra odakla (visibility geçişi başlarken öğe odaklanamaz) */
+    if (open) setTimeout(() => (drawer.querySelector('a[aria-current]') || links[0]).focus({ preventScroll: true }), 60);
+  }
+  btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  scrim.addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { set(false); btn.focus(); }
+    if (e.key === 'Tab') {
+      const items = [btn, ...links, ...drawer.querySelectorAll('.nav-foot a')];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
