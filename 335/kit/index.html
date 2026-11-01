@@ -428,6 +428,23 @@ footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--
 td .nb { display: inline-block; margin: .1rem 0; }
 /* Grid öğeleri içerikteki uzun formül yüzünden sütunu genişletmesin */
 .m-recipe li, .m-grid > *, .m-head > div, .proto li > span, .plan > div > * { min-width: 0; }
+/* Tablo alıştırmaları: cevap hücreleri dokununca açılır */
+.drill { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.drill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .9rem 1.15rem .2rem; }
+.drill-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.drill-head h4 { margin: 0; font: 600 1.05rem/1.4 var(--font-body); }
+.drill-head .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-left: .4rem; white-space: nowrap; }
+.drill .tbl-wrap { margin: .4rem 0 0; padding: 0 1.15rem; }
+.drill .tbl td { vertical-align: top; }
+.drill td.ans { padding: .3rem .4rem; }
+.cell { all: unset; box-sizing: border-box; display: block; position: relative; width: 100%; min-height: 1.9rem; padding: .2rem .35rem; border-radius: 4px; cursor: pointer; }
+.cell > .c-in { visibility: hidden; }
+.cell::after { content: "?"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .82rem/1 var(--font-mono); }
+.cell:hover::after { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+.cell.shown > .c-in { visibility: visible; }
+.cell.shown::after { content: none; }
+.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.drill-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); margin-top: .6rem; }
 
 
 /* ---------- Site menüsü (hamburger) ---------- */
@@ -488,7 +505,7 @@ body.nav-lock { overflow: hidden; }
       <li><a href="../" data-key="home"><b>Giriş</b><span>Üç sayfanın özeti</span></a></li>
       <li><a href="../notlar/" data-key="notlar"><b>Klasik Mekanik Defteri</b><span>Ders notları · 19 simülasyon</span></a></li>
       <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>51 soru · çıkmış sınavlar</span></a></li>
-      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>16 yöntem · çalışma planı</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>16 yöntem · 8 tablo · plan</span></a></li>
     </ul>
     <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
   </div>
@@ -514,6 +531,7 @@ body.nav-lock { overflow: hidden; }
         <li><b>2 · Alet</b><span>Gereken matematik tek sayfada.</span></li>
         <li><b>3 · Yöntem</b><span>Ne zaman, nasıl, nerede yanılırsın; yeni örnekle.</span></li>
         <li><b>4 · Tanı</b><span>Soruyu görünce yöntemi seç; harita ile defterde dene.</span></li>
+        <li><b>5 · Tablo</b><span>Sınavın 1. sorusu için 8 tablo; hücreye dokun, cevap açılsın.</span></li>
       </ul>
     </div>
   </div>
@@ -899,10 +917,156 @@ body.nav-lock { overflow: hidden; }
     <p class="quiz-why"><span class="verdict"></span>Y14: \([G\rho]=T^{-2}\) ⇒ \(t\sim1/\sqrt{G\rho}\). (2025 S6'nın genelleştirilmiş hâli.)</p></div>
 </section>
 
+<!-- ================================================= TABLO SORULARI -->
+<section class="part" id="tablolar" data-toc="Tablo soruları">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm E</span><span class="sess">Sınavın 1. sorusu için</span></p>
+    <h2>Tablo soruları</h2>
+    <p class="ch-lede">Sınav yönergesi: <em>“In Question 1 you will fill in a table. Write the requested values and a short reason in each row.”</em> Aşağıdaki sekiz tablo, notlara ve çıkmış sınavlara göre en olası biçimler. Önce kâğıda kendin doldur, sonra soru işaretli hücreye dokunarak cevabı aç.</p>
+  </header>
+  <div class="box exam"><span class="box-label">Kısa gerekçe nasıl yazılır?</span>
+    <p>Değeri yaz, yanına <b>tek bir ölçüt</b> koy: “\(U''(x_0)=-2k\lt0\)”, “\(\partial V/\partial t\ne0\)”, “\(\vec F\perp\vec v\)”. Cümle kurmaya gerek yok; 2025 çözüm anahtarında puan bu ölçüte verilmiş. Hücreler sınavda yazacağın gibi İngilizce.</p>
+  </div>
+
+  <div class="drill" id="tb1">
+    <div class="drill-head"><span class="tag">Tablo 1 · en olası</span><h4>Conservative or not? <span class="src">Uygulama 2, “no calculations”</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Force</th><th>Conservative?</th><th>Potential</th><th>Short reason</th></tr></thead>
+      <tbody>
+        <tr><td>\(F=-kx\)</td><td class="ans">Yes</td><td class="ans">\(U=\tfrac12kx^2\)</td><td class="ans">depends only on \(x\)</td></tr>
+        <tr><td>\(F=-b\dot x\)</td><td class="ans">No</td><td class="ans">none</td><td class="ans">velocity-dependent, dissipates energy</td></tr>
+        <tr><td>\(F=F_0\sin(\omega t+x)\)</td><td class="ans">No</td><td class="ans">\(V=F_0\cos(\omega t+x)\) at each fixed \(t\)</td><td class="ans">explicit \(t\): \(dE/dt=\partial V/\partial t\ne0\)</td></tr>
+        <tr><td>\(F=\dfrac{k}{x^2}e^{-t/\tau}\)</td><td class="ans">No</td><td class="ans">\(V=\dfrac kxe^{-t/\tau}\)</td><td class="ans">\(\partial V/\partial t\ne0\)</td></tr>
+        <tr><td>\(\vec F=-\dfrac{GMm}{r^2}\hat{\mathbf r}\)</td><td class="ans">Yes</td><td class="ans">\(U=-\dfrac{GMm}{r}\)</td><td class="ans">central, depends only on \(r\)</td></tr>
+        <tr><td>\(\vec F=(-y,\ x,\ 0)\)</td><td class="ans">No</td><td class="ans">none</td><td class="ans">\(\nabla\times\vec F=2\hat{\mathbf z}\ne0\)</td></tr>
+        <tr><td>\(\vec F=q\vec v\times\vec B\)</td><td class="ans">No scalar potential</td><td class="ans">none</td><td class="ans">\(\vec F\perp\vec v\): does no work, \(T\) conserved</td></tr>
+        <tr><td>\(\vec F=(2xy,\ x^2+z,\ y)\)</td><td class="ans">Yes</td><td class="ans">\(U=-x^2y-yz\)</td><td class="ans">\(\nabla\times\vec F=0\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb2">
+    <div class="drill-head"><span class="tag">Tablo 2</span><h4>\(U(x)=\dfrac{kx^2}{2}-\dfrac{kx^4}{4\alpha^2}\): equilibria and motion <span class="src">2024 S1, 2025 S4</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Row</th><th>Value</th><th>Short reason</th></tr></thead>
+      <tbody>
+        <tr><td>Equilibrium points</td><td class="ans">\(x_0=0,\ \pm\alpha\)</td><td class="ans">\(U'=kx(1-x^2/\alpha^2)=0\)</td></tr>
+        <tr><td>\(x_0=0\)</td><td class="ans">stable</td><td class="ans">\(U''(0)=k>0\)</td></tr>
+        <tr><td>\(x_0=\pm\alpha\)</td><td class="ans">unstable</td><td class="ans">\(U''(\pm\alpha)=-2k\lt0\)</td></tr>
+        <tr><td>\(E>k\alpha^2/4\)</td><td class="ans">unbounded, no turning point</td><td class="ans">\(E>U\) everywhere</td></tr>
+        <tr><td>\(0\lt E\lt k\alpha^2/4\), starts near 0</td><td class="ans">bounded oscillation</td><td class="ans">two turning points (\(U=E\)) inside \(\lvert x\rvert\lt\alpha\)</td></tr>
+        <tr><td>same \(E\), starts at \(\lvert x\rvert>\alpha\)</td><td class="ans">comes in, reflects, escapes</td><td class="ans">one turning point (scattering)</td></tr>
+        <tr><td>\(E\lt0\)</td><td class="ans">no motion near 0; outside unbounded</td><td class="ans">\(U>E\) near 0 is forbidden</td></tr>
+        <tr><td>Small-oscillation \(\omega\) about 0</td><td class="ans">\(\sqrt{k/m}\)</td><td class="ans">\(\omega^2=U''(x_0)/m\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb3">
+    <div class="drill-head"><span class="tag">Tablo 3</span><h4>Galilean boost \(\vec v_0\): same in \(S\) and \(S'\)? <span class="src">Ders 1, 2025 S1, T&amp;M 2-41</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Quantity</th><th>Same?</th><th>Short reason</th></tr></thead>
+      <tbody>
+        <tr><td>time interval</td><td class="ans">Yes</td><td class="ans">absolute time, \(t'=t\)</td></tr>
+        <tr><td>position</td><td class="ans">No</td><td class="ans">\(\vec r'=\vec r-\vec v_0t\)</td></tr>
+        <tr><td>velocity</td><td class="ans">No</td><td class="ans">\(\vec v'=\vec v-\vec v_0\)</td></tr>
+        <tr><td>acceleration</td><td class="ans">Yes</td><td class="ans">\(\vec v_0\) is constant</td></tr>
+        <tr><td>force, Newton's 2nd law</td><td class="ans">Yes</td><td class="ans">\(m\vec a\) and interactions unchanged</td></tr>
+        <tr><td>momentum</td><td class="ans">No</td><td class="ans">\(\vec p'=\vec p-m\vec v_0\)</td></tr>
+        <tr><td>change in momentum</td><td class="ans">Yes</td><td class="ans">\(m\vec v_0\) cancels</td></tr>
+        <tr><td>kinetic energy, work</td><td class="ans">No</td><td class="ans">\(\Delta T'=\Delta T-\vec v_0\cdot\Delta\vec p\)</td></tr>
+        <tr><td>distance between two particles</td><td class="ans">Yes</td><td class="ans">\(\vec v_0t\) cancels in \(\vec r_1-\vec r_2\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb4">
+    <div class="drill-head"><span class="tag">Tablo 4</span><h4>Damping regimes of \(\ddot x+2\beta\dot x+\omega_0^2x=0\) <span class="src">Ders 5, 2024 S3</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Condition</th><th>Name</th><th>\(x(t)\)</th><th>Oscillates?</th><th>Phase-space orbit</th></tr></thead>
+      <tbody>
+        <tr><td>\(\beta=0\)</td><td class="ans">free (SHO)</td><td class="ans">\(A\cos(\omega_0t-\phi)\)</td><td class="ans">yes</td><td class="ans">ellipse, \(E\) constant</td></tr>
+        <tr><td>\(\beta\lt\omega_0\)</td><td class="ans">underdamped</td><td class="ans">\(Ae^{-\beta t}\cos(\omega_1t-\phi)\)</td><td class="ans">yes, \(\omega_1=\sqrt{\omega_0^2-\beta^2}\)</td><td class="ans">logarithmic spiral, clockwise</td></tr>
+        <tr><td>\(\beta=\omega_0\)</td><td class="ans">critical</td><td class="ans">\((A+Bt)e^{-\beta t}\)</td><td class="ans">no; crosses 0 at most once</td><td class="ans">enters along \(\dot x=-\beta x\); fastest return</td></tr>
+        <tr><td>\(\beta>\omega_0\)</td><td class="ans">overdamped</td><td class="ans">\(e^{-\beta t}(Ae^{\omega_2t}+Be^{-\omega_2t})\)</td><td class="ans">no</td><td class="ans">along the asymptote lines</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb5">
+    <div class="drill-head"><span class="tag">Tablo 5</span><h4>Driven oscillator: limiting cases <span class="src">Ders 6, “check the limiting cases”</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>\(\omega\)</th><th>Amplitude \(C\)</th><th>Phase \(\delta\)</th><th>Short reason</th></tr></thead>
+      <tbody>
+        <tr><td>\(\omega\to0\)</td><td class="ans">\(A/\omega_0^2\)</td><td class="ans">\(0\)</td><td class="ans">static deflection, in phase</td></tr>
+        <tr><td>\(\omega=\omega_R=\sqrt{\omega_0^2-2\beta^2}\)</td><td class="ans">maximum</td><td class="ans">\(\lt\pi/2\)</td><td class="ans">denominator of \(C\) is minimal</td></tr>
+        <tr><td>\(\omega=\omega_0\)</td><td class="ans">\(A/(2\beta\omega_0)\)</td><td class="ans">\(\pi/2\)</td><td class="ans">\(\tan\delta\to\infty\); \(\langle T\rangle\) is maximal here (\(\omega_E=\omega_0\))</td></tr>
+        <tr><td>\(\omega\to\infty\)</td><td class="ans">\(\approx A/\omega^2\to0\)</td><td class="ans">\(\pi\)</td><td class="ans">inertia dominates, out of phase</td></tr>
+        <tr><td>Quality factor</td><td class="ans">\(Q=\omega_R/2\beta\)</td><td class="ans">—</td><td class="ans">\(\beta\to0\Rightarrow Q\to\infty\), sharper peak</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb6">
+    <div class="drill-head"><span class="tag">Tablo 6</span><h4>Mechanical ↔ electrical (driven RLC) <span class="src">Ders 6</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Mechanical</th><th>Electrical</th></tr></thead>
+      <tbody>
+        <tr><td>\(x(t)\)</td><td class="ans">\(q(t)\)</td></tr>
+        <tr><td>\(\dot x\)</td><td class="ans">\(I=\dot q\)</td></tr>
+        <tr><td>\(m\)</td><td class="ans">\(L\)</td></tr>
+        <tr><td>\(b\)</td><td class="ans">\(R\)</td></tr>
+        <tr><td>\(k\)</td><td class="ans">\(1/C\)</td></tr>
+        <tr><td>\(F_0\cos\omega t\)</td><td class="ans">\(\mathcal E_0\cos\omega t\)</td></tr>
+        <tr><td>\(\omega_0^2=k/m\)</td><td class="ans">\(1/LC\)</td></tr>
+        <tr><td>\(\beta=b/2m\)</td><td class="ans">\(R/2L\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb7">
+    <div class="drill-head"><span class="tag">Tablo 7</span><h4>Dimensions <span class="src">2025 S6, Uygulama 1</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Quantity</th><th>Dimension</th><th>Short reason</th></tr></thead>
+      <tbody>
+        <tr><td>\(G\)</td><td class="ans">\(M^{-1}L^3T^{-2}\)</td><td class="ans">\(F=Gm_1m_2/r^2\)</td></tr>
+        <tr><td>\(k\) in \(F=kv^2\)</td><td class="ans">\(ML^{-1}\)</td><td class="ans">\([F]/[v^2]\)</td></tr>
+        <tr><td>\(k\) in \(F=kmv^2\)</td><td class="ans">\(L^{-1}\)</td><td class="ans">\([F]/[mv^2]\)</td></tr>
+        <tr><td>\(k\) in \(F=kmv\)</td><td class="ans">\(T^{-1}\)</td><td class="ans">\([F]/[mv]\)</td></tr>
+        <tr><td>spring constant \(k\)</td><td class="ans">\(MT^{-2}\)</td><td class="ans">\(F=kx\)</td></tr>
+        <tr><td>\(\beta,\ \omega_0\)</td><td class="ans">\(T^{-1}\)</td><td class="ans">appear as \(e^{-\beta t}\), \(\omega_0t\)</td></tr>
+        <tr><td>\(Q\)</td><td class="ans">dimensionless</td><td class="ans">ratio of two frequencies</td></tr>
+        <tr><td>angular momentum \(\ell\)</td><td class="ans">\(ML^2T^{-1}\)</td><td class="ans">\(\vec r\times\vec p\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb8">
+    <div class="drill-head"><span class="tag">Tablo 8</span><h4>Symmetry ↔ conserved quantity <span class="src">Ders 3, T&amp;M 2.5</span></h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Symmetry</th><th>Conserved quantity</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td>space translation</td><td class="ans">\(\vec p\)</td><td class="ans">\(\vec F_{\text{net}}=0\)</td></tr>
+        <tr><td>translation along one direction \(\vec s\)</td><td class="ans">\(\vec s\cdot\vec p\)</td><td class="ans">\(\vec s\cdot\vec F_{\text{net}}=0\) (e.g. \(p_y\) for \(\vec B=B\hat{\mathbf y}\))</td></tr>
+        <tr><td>rotation, \(SO(3)\)</td><td class="ans">\(\vec L\)</td><td class="ans">\(\vec\tau=0\)</td></tr>
+        <tr><td>time translation</td><td class="ans">\(E\)</td><td class="ans">\(\partial U/\partial t=0\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+</section>
+
 <!-- ================================================= HARİTA -->
 <section class="part" id="harita" data-toc="Yöntem haritası">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm E</span><span class="sess">51 soru × 16 yöntem</span></p>
+    <p class="eyebrow"><span>Bölüm F</span><span class="sess">51 soru × 16 yöntem</span></p>
     <h2>Defterdeki soruların yöntem haritası</h2>
     <p class="ch-lede">Bir yöntem kartını bitirince, o yöntemi kullanan soruları defterde çözün. Etiketlere tıklayınca soru açılır.</p>
   </header>
@@ -932,7 +1096,7 @@ body.nav-lock { overflow: hidden; }
 <!-- ================================================= PLAN -->
 <section class="part" id="plan" data-toc="Sınava kadar plan">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm F</span><span class="sess">2 Kasım, 18:00 (önerilen tarih)</span></p>
+    <p class="eyebrow"><span>Bölüm G</span><span class="sess">2 Kasım, 18:00 (önerilen tarih)</span></p>
     <h2>Sınava kadar çalışma planı</h2>
     <p class="ch-lede">Ara sınav kapsamı resmî olarak açıklanmamış; ancak 2025 sınavı Newton, 1B potansiyel, salınım ve iki cisim sorularından oluşuyordu. Plan buna göre ağırlıklandırıldı.</p>
   </header>
@@ -1065,6 +1229,28 @@ function syncToc() { tocDet.open = wide.matches; }
 syncToc(); wide.addEventListener('change', syncToc);
 tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
 tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+
+/* Tablo alıştırmaları: her cevap hücresi bir düğme; dokununca açılır, tekrar dokununca kapanır */
+document.querySelectorAll('.drill').forEach((t, ti) => {
+  const cells = [...t.querySelectorAll('td.ans')].map((td, ci) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'cell'; b.id = `dr${ti}-c${ci}`; b.setAttribute('aria-label', 'Cevabı göster');
+    const inner = document.createElement('span'); inner.className = 'c-in';
+    while (td.firstChild) inner.appendChild(td.firstChild);
+    b.appendChild(inner); td.appendChild(b);
+    b.addEventListener('click', () => set(b, !b.classList.contains('shown')));
+    return b;
+  });
+  function set(b, on) { b.classList.toggle('shown', on); b.setAttribute('aria-label', on ? 'Cevabı gizle' : 'Cevabı göster'); count(); }
+  const bar = t.querySelector('.drill-bar');
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="dr${ti}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="dr${ti}-hide">Gizle</button><span class="derive-count" aria-live="polite"></span>`;
+  const cnt = bar.querySelector('.derive-count');
+  function count() { cnt.textContent = `${cells.filter(c => c.classList.contains('shown')).length} / ${cells.length} hücre açık`; }
+  bar.querySelector(`#dr${ti}-all`).addEventListener('click', () => cells.forEach(c => set(c, true)));
+  bar.querySelector(`#dr${ti}-hide`).addEventListener('click', () => cells.forEach(c => set(c, false)));
+  count();
+});
 </script>
 
 <script>
