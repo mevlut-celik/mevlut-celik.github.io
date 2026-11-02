@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kur'an Kelimeleri — Kur'an'daki kelimeleri aralıklı tekrarla öğrenin</title>
-<meta name="description" content="Kur'an Kelimeleri: Kur'an'da geçen 4.858 kelimeyi en sık geçenden başlayarak FSRS aralıklı tekrar algoritmasıyla öğreten Android uygulaması. Örnek ayetler, el-Müfredât açıklamaları, metin kapsamı ve çevrimdışı çalışma.">
+<meta name="description" content="Kur'an Kelimeleri: Kur'an'da geçen 4.858 kelimeyi en sık geçenden başlayarak FSRS aralıklı tekrar algoritmasıyla öğreten Android uygulaması. Örnek ayetler, el-Müfredât açıklamaları, metin kapsamı, miladi ve hicrî çalışma takvimi, açık ve koyu tema, çevrimdışı çalışma.">
 <meta name="theme-color" content="#0d0d0d">
 <link rel="canonical" href="https://mevlut-celik.github.io/kuran-kelimeleri/">
 <meta property="og:type" content="website">
@@ -47,6 +47,7 @@
       <li class="nav__item--text"><a class="nav__link" href="#calisma">Çalışma</a></li>
       <li class="nav__item--text"><a class="nav__link" href="#kelime">Kelime sayfası</a></li>
       <li class="nav__item--text"><a class="nav__link" href="#ilerleme">İlerleme</a></li>
+      <li class="nav__item--text"><a class="nav__link" href="#istatistik">İstatistik</a></li>
       <li class="nav__item--text"><a class="nav__link" href="#ozellikler">Özellikler</a></li>
       <li>
         <span class="btn btn--sm btn--soon">
@@ -63,7 +64,7 @@
   <section class="band hero">
     <div class="band__inner hero__inner">
       <div class="hero__text">
-        <p class="hero__badge"><strong>Sürüm 1.0</strong> Google Play'e hazırlanıyor</p>
+        <p class="hero__badge"><strong>Sürüm 1.1</strong> Açık tema ve istatistik ekranı</p>
         <h1 class="display display--xl">Kur'an'daki kelimeleri <span class="accent">aralıklı tekrarla</span> öğrenin</h1>
         <p class="lead">
           Kur'an Kelimeleri, Kur'an'da geçen 4.858 kelimeyi en sık geçenden başlayarak öğretir. Anki'nin de kullandığı
@@ -78,7 +79,7 @@
           <a class="btn btn--ghost" href="#calisma">Nasıl çalışır?</a>
         </div>
         <ul class="hero__meta">
-          <li>Sürüm 1.0</li>
+          <li>Sürüm 1.1</li>
           <li>Android 8.0 ve üzeri</li>
           <li>Çevrimdışı çalışır</li>
           <li>Reklamsız, açık kaynak</li>
@@ -131,6 +132,7 @@
         <ul class="checks">
           <li>Tekrar, Zor, İyi, Kolay: her düğmenin altında kelimenin ne zaman yeniden geleceği yazar</li>
           <li>Yanlış düğmeye bastıysanız son cevabı geri alırsınız</li>
+          <li>Cevaba baktıktan sonra kartı X ile yeniden kapatıp kelimeyi bir kez daha düşünebilirsiniz</li>
           <li>Günlük yeni kelime sayısını ve hedef hatırlama oranını Ayarlar'dan siz seçersiniz</li>
           <li>Yarım bıraktığınız oturum kaldığı yerden devam eder</li>
         </ul>
@@ -175,6 +177,49 @@
           <li>Son 30 günün tekrar grafiği ve çalışma serisi</li>
           <li>Listede Arapça, Türkçe anlam ya da köke göre arama; yeni, öğreniliyor ve öğrenildi filtreleri</li>
           <li>Bugünkü yeni kelime, öğrenme ve tekrar sayıları, tahmini süreyle</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= STATISTICS ========================= -->
+  <section class="band" id="istatistik">
+    <div class="band__inner split">
+      <div class="split__text">
+        <p class="eyebrow">İstatistik</p>
+        <h2 class="display display--lg">Bir yılın çalışması tek bakışta</h2>
+        <p class="lead">
+          Çalışma takviminde son bir yılın her günü bir karedir; renk koyulaştıkça o gün daha çok tekrar
+          yapılmıştır. Takvim hem miladi hem hicrî aylarla okunur.
+        </p>
+        <ul class="checks">
+          <li>Miladi aylar üstte, hicrî aylar altta; bir güne dokununca iki tarih birlikte, o günün tekrar, yeni kelime ve doğru oranıyla</li>
+          <li>Şu anki ve en uzun çalışma seriniz, çalıştığınız gün ve toplam tekrar sayısı</li>
+          <li>Önümüzdeki 30 günde kaç tekrarın vakti geleceği, gün gün</li>
+          <li>Bugünkü hızınızla bütün kelimeleri ne zaman görmüş olacağınız ve kalıcı hâle gelen kelimeler</li>
+        </ul>
+      </div>
+      <div class="phone phone--single"><div class="phone__screen"><img src="./assets/img/istatistik.webp" width="540" height="1167" loading="lazy" alt="İstatistik ekranı: üstünde miladi, altında hicrî ay adları olan çalışma takvimi, seçilen günün iki tarihi ve önümüzdeki 30 günün tekrar grafiği"></div></div>
+    </div>
+  </section>
+
+  <!-- =========================== THEME ============================ -->
+  <section class="band" id="gorunum">
+    <div class="band__inner split">
+      <div class="duo">
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/tema-koyu.webp" width="540" height="1167" loading="lazy" alt="Ana sayfa koyu temada: koyu zemin üzerinde nane yeşili kart"></div></div>
+        <div class="phone"><div class="phone__screen"><img src="./assets/img/tema-acik.webp" width="540" height="1167" loading="lazy" alt="Ana sayfa açık temada: krem zemin üzerinde açık nane yeşili kart"></div></div>
+      </div>
+      <div class="split__text">
+        <p class="eyebrow">Görünüm</p>
+        <h2 class="display display--lg">Gece koyu, gündüz açık</h2>
+        <p class="lead">
+          Uygulama koyu temayla gelir. Ayarlar'dan açık temayı seçebilir ya da telefonunuzun ayarına
+          bırakabilirsiniz; nane yeşili vurgu ve cami silüeti iki temada da aynı.
+        </p>
+        <ul class="checks">
+          <li>Tema: Sistem, Açık veya Koyu</li>
+          <li>Arapça ve Latin harfli yazının boyutu ayrı ayrı ayarlanır, önizlemesiyle</li>
         </ul>
       </div>
     </div>
@@ -270,6 +315,14 @@
       <h2 class="display display--lg">Neler var?</h2>
       <ol class="releases">
         <li class="release release--latest">
+          <p class="release__version">1.1 <span class="release__date">Kasım 2026</span></p>
+          <ul class="release__list">
+            <li>Açık tema: Sistem, Açık veya Koyu</li>
+            <li>İstatistik ekranı: miladi ve hicrî aylarla çalışma takvimi, seri, önümüzdeki 30 günün tekrar tahmini, tahmini bitiş tarihi ve kalıcı kelimeler</li>
+            <li>Açılan kart X tuşuyla ya da geri hareketiyle yeniden kapatılabilir</li>
+          </ul>
+        </li>
+        <li class="release">
           <p class="release__version">1.0 <span class="release__date">Ekim 2026 &middot; ilk sürüm</span></p>
           <ul class="release__list">
             <li>Kur'an'daki 4.858 kelime, sıklık sırasıyla</li>
@@ -295,7 +348,7 @@
   <section class="band">
     <div class="band__inner cta">
       <h2 class="display display--lg">Kur'an Kelimeleri yakında Google Play'de</h2>
-      <p>Sürüm 1.0 &middot; Android 8.0 ve üzeri &middot; Çevrimdışı</p>
+      <p>Sürüm 1.1 &middot; Android 8.0 ve üzeri &middot; Çevrimdışı</p>
       <div class="hero__actions">
         <span class="btn btn--soon">
           <svg aria-hidden="true"><use href="#i-clock"/></svg>
