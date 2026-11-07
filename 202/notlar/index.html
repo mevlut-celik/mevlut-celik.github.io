@@ -1,0 +1,2419 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Modern Fizik Defteri</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PHYS 202 ara sınav konularının (Krane 2–5) Türkçe, adım adım ve etkileşimli anlatımı.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas', 'select', 'option'] },
+  startup: { typeset: true, pageReady: () => MathJax.startup.defaultPageReady().then(fitMath) }
+};
+/* Dar ekranda sütuna sığmayan satır içi formülü kendi satırına alıp yatay kaydırılabilir yapar */
+function fitMath() {
+  const els = [...document.querySelectorAll('mjx-container:not([display="true"])')];
+  els.forEach(el => el.classList.remove('mj-wide'));
+  const wide = [];
+  els.forEach(el => {
+    let b = el.parentElement;
+    while (b && getComputedStyle(b).display === 'inline') b = b.parentElement;
+    if (!b) return;
+    const cs = getComputedStyle(b);
+    const avail = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (el.getBoundingClientRect().width > avail + 1) wide.push(el);
+  });
+  wide.forEach(el => el.classList.add('mj-wide'));
+}
+let fitW = window.innerWidth, fitT = 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === fitW) return;
+  fitW = window.innerWidth; clearTimeout(fitT); fitT = setTimeout(fitMath, 200);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<style>
+/* Düzen: üstte milimetrik kâğıt bandı ve altında görünür tayf şeridi; sol yapışkan içindekiler + 48rem okuma sütunu.
+   Laboratuvarlar sütun genişliğinde "deney tezgâhı" panelleri; renkler fiziksel anlam taşır
+   (gözlemci/çerçeve kırmızı, parçacık mavi, dalga fonksiyonu macenta, foton/enerji amber). */
+:root {
+  --bg: #F3F2F9;
+  --panel: #FFFFFF;
+  --panel-2: #E9E7F4;
+  --canvas: #FBFAFE;
+  --ink: #16132A;
+  --muted: #5A5675;
+  --rule: #D5D2E6;
+  --grid: #E5E2F2;
+  --accent: #4A3DBF;
+  --accent-soft: #E3E0FA;
+  --on-accent: #FFFFFF;
+  --force: #C2362B;
+  --vel: #0B6FB0;
+  --acc: #B0247A;
+  --energy: #A86A00;
+  --good: #2E7D32;
+  --bad: #B3261E;
+  --good-soft: #E3F2DF;
+  --bad-soft: #F8E3E1;
+  --font-display: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-body: 1.0625rem;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D0B18; --panel: #141127; --panel-2: #1B1833; --canvas: #100E1F;
+    --ink: #E8E5F8; --muted: #9A95BA; --rule: #2A2645; --grid: #1C1932;
+    --accent: #A497FF; --accent-soft: #24204F; --on-accent: #0D0B18;
+    --force: #FF7A6E; --vel: #5BB6F2; --acc: #F27DC2; --energy: #F0B43C;
+    --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D0B18; --panel: #141127; --panel-2: #1B1833; --canvas: #100E1F;
+  --ink: #E8E5F8; --muted: #9A95BA; --rule: #2A2645; --grid: #1C1932;
+  --accent: #A497FF; --accent-soft: #24204F; --on-accent: #0D0B18;
+  --force: #FF7A6E; --vel: #5BB6F2; --acc: #F27DC2; --energy: #F0B43C;
+  --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+mjx-container { color: inherit; position: relative; }
+mjx-assistive-mml { max-width: 100% !important; }
+mjx-container.mj-wide { display: block !important; max-width: 100%; overflow-x: auto; overflow-y: hidden; margin: .3rem 0; padding-bottom: .15rem; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .25rem; margin: .6rem 0 !important; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Üst bant ---------- */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.hero-in {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.75rem 2.25rem;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.5rem; align-items: end;
+}
+.eyebrow {
+  font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: 0 0 .75rem;
+}
+.hero h1 {
+  font: 600 clamp(2.4rem, 6vw, 3.9rem)/1.02 var(--font-display);
+  letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+.hero h1 i { font-style: italic; font-weight: 500; color: var(--accent); }
+.hero .lede { font-size: 1.12rem; color: var(--ink); max-width: 38rem; margin: 0; }
+.hero-card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: grid; gap: .85rem;
+}
+.hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero-stats div { display: grid; }
+.hero-stats b { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.hero-stats span { font: 500 .72rem/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend i { width: 1.4rem; height: 3px; border-radius: 2px; display: inline-block; position: relative; }
+.legend i::after { content: ""; position: absolute; right: -2px; top: -3px; border-left: 6px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+.hero-how { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .92rem; }
+.hero-how li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .6rem; }
+.hero-how b { font: 500 .72rem/1.9 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+
+/* ---------- İskelet ---------- */
+.shell {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3.25rem;
+}
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 2rem 2rem; }
+.side summary { display: none; }
+.toc-title { font: 500 .72rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem; }
+.progress { height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; margin: .2rem 0 .45rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.progress-txt { font: 400 .8rem/1.4 var(--font-mono); color: var(--muted); margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.toc a {
+  display: grid; grid-template-columns: 1.6rem 1fr 1rem; gap: .35rem; align-items: baseline;
+  text-decoration: none; color: var(--muted); padding: .38rem .5rem; border-radius: 5px; font-size: .9rem; line-height: 1.35;
+}
+.toc a:hover { background: var(--panel-2); color: var(--ink); }
+.toc a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.toc .n { font: 500 .78rem/1.5 var(--font-mono); color: var(--accent); }
+.toc .ok { color: var(--good); font-size: .85rem; visibility: hidden; }
+.toc a.is-done .ok { visibility: visible; }
+.side-foot { margin-top: 1.2rem; display: grid; gap: .5rem; font-size: .82rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
+
+main { min-width: 0; max-width: 48rem; padding-block: 1rem 6rem; }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side {
+    max-height: none; overflow: visible; z-index: 30; padding-block: 0;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .side summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    list-style: none; cursor: pointer; padding-block: .75rem; font-weight: 500;
+  }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary .sum-prog { font: 400 .8rem var(--font-mono); color: var(--muted); }
+  .side details[open] .toc-wrap { padding-bottom: 1rem; max-height: 70vh; overflow-y: auto; }
+  .toc-title { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem 1.75rem; }
+}
+
+/* ---------- Bölümler ---------- */
+.chapter { padding-top: 3.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
+.ch-head .eyebrow .sess { color: var(--accent); }
+.chapter h2 { font: 600 clamp(1.8rem, 4vw, 2.45rem)/1.12 var(--font-display); margin: 0 0 .8rem; text-wrap: balance; letter-spacing: -.005em; }
+.ch-lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 42rem; }
+.chapter h3 { font: 600 1.42rem/1.25 var(--font-display); margin: 2.6rem 0 .6rem; text-wrap: balance; }
+.chapter h3 .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-left: .5rem; vertical-align: .25em; white-space: nowrap; }
+.chapter p, .chapter li { max-width: 44rem; }
+.chapter ul, .chapter ol { padding-left: 1.3rem; }
+.chapter li + li { margin-top: .3rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 1rem 0; }
+.kv dt { font: 500 .78rem/1.9 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 0; }
+
+/* Kutular: sonuç / örnek / sınav */
+.box {
+  --lbl: var(--accent);
+  position: relative; margin: 1.9rem 0 1.4rem; padding: 1.15rem 1.2rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--lbl) 38%, var(--rule)); border-radius: var(--radius); background: var(--panel);
+}
+.box-label {
+  position: absolute; top: -.72em; left: .85rem; padding: 0 .45rem;
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--panel) 50%);
+  font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--lbl);
+}
+.box > :first-child:not(.box-label), .box > .box-label + * { margin-top: 0; }
+.box > :last-child { margin-bottom: .2rem; }
+.box.ex { --lbl: var(--energy); }
+.box.exam { --lbl: var(--force); }
+.box.ext { --lbl: var(--acc); }
+.box p { margin: .5rem 0; }
+
+/* Adım adım türetim */
+.derive { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.derive-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .85rem 1.15rem .2rem; }
+.derive-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.derive-head h4 { margin: 0; font: 600 1.05rem/1.35 var(--font-body); }
+.steps { list-style: none; margin: .5rem 0 0; padding: .3rem 1.15rem .2rem; counter-reset: st; }
+.step { counter-increment: st; position: relative; padding: .1rem 0 1.05rem 2.55rem; max-width: none !important; }
+.step + .step { margin-top: 0 !important; }
+.step::before {
+  content: counter(st); position: absolute; left: 0; top: .12rem; width: 1.7rem; height: 1.7rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--panel);
+  font: 600 .8rem/1.55rem var(--font-mono); text-align: center; z-index: 1;
+}
+.step::after { content: ""; position: absolute; left: .82rem; top: 1.9rem; bottom: .15rem; width: 1.5px; background: var(--rule); }
+.step.tail::after, .step:last-child::after { display: none; }
+.step > p:first-child { margin-top: .1rem; }
+.step p { margin: .35rem 0; }
+.step.locked { visibility: hidden; max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.step.rev { animation: rise .4s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .step.rev { animation: none; } }
+.derive-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); border-radius: 0 0 var(--radius) var(--radius); }
+.derive-count { margin-left: auto; font: 500 .82rem var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Düğmeler */
+.btn {
+  font: 500 .88rem/1.2 var(--font-body); padding: .5rem .85rem; border-radius: 5px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--panel); color: var(--accent);
+  min-height: 2.25rem;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--panel); }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+.btn-primary:disabled { background: var(--accent); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+
+/* Laboratuvar */
+.lab { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.lab-head { padding: .95rem 1.15rem .7rem; }
+.lab-tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--vel); }
+.lab-head h4 { margin: .15rem 0 .25rem; font: 600 1.12rem/1.3 var(--font-body); }
+.lab-head p { margin: 0; color: var(--muted); font-size: .94rem; }
+.view { position: relative; overflow: hidden; background: var(--canvas); border-block: 1px solid var(--rule); }
+.view canvas { display: block; width: 100%; touch-action: pan-y; }
+.view .hint { position: absolute; right: .6rem; top: .45rem; font: 500 .72rem var(--font-mono); color: var(--muted); pointer-events: none; }
+.ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .7rem 1.4rem; padding: .95rem 1.15rem .35rem; }
+.ctrl { display: grid; gap: .15rem; min-width: 0; }
+.ctrl label { display: flex; justify-content: space-between; gap: .6rem; font-size: .86rem; color: var(--ink); }
+.ctrl output { font: 500 .84rem var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); margin: .25rem 0; min-height: 1.4rem; }
+.ctrl select, .ctrl input[type="number"] {
+  font: 400 .9rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .4rem .5rem; width: 100%; min-height: 2.25rem;
+}
+.ctrl.check label { justify-content: flex-start; align-items: center; gap: .5rem; padding-top: 1.2rem; }
+.ctrl.check input { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: .55rem 1.15rem .3rem; }
+.readout { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .45rem; padding: .65rem 1.15rem .9rem; margin: 0; }
+.readout > div { background: var(--panel-2); border-radius: 5px; padding: .42rem .65rem .48rem; min-width: 0; }
+.readout dt { font: 500 .74rem/1.35 var(--font-mono); color: var(--muted); }
+.readout dd { margin: .1rem 0 0; font: 500 .95rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.readout > div.wide { grid-column: 1 / -1; }
+.chip { display: inline-block; font: 600 .74rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .5rem; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.warn { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.lab-try { margin: 0; padding: .1rem 1.15rem 1.05rem; font-size: .9rem; color: var(--muted); }
+.lab-try b { color: var(--ink); font-weight: 600; }
+.lab-note { font-size: .86rem; color: var(--muted); padding: 0 1.15rem .8rem; margin: 0; }
+
+/* Tablolar */
+.tbl-wrap { overflow-x: auto; margin: 1.2rem 0; }
+table.tbl { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.tbl th, .tbl td { padding: .5rem .7rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+.tbl th { font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.tbl td.c, .tbl th.c { text-align: center; }
+.tbl td.num { font-family: var(--font-mono); }
+
+/* Sorular */
+.quiz-set { margin: 2.4rem 0 1rem; }
+.quiz-set > h3 { margin-top: 0; }
+.quiz { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 1rem 1.15rem 1rem; margin: .9rem 0; }
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+.quiz-opts { display: grid; gap: .45rem; }
+.quiz-opts button {
+  display: grid; grid-template-columns: 1.7rem 1fr; gap: .55rem; align-items: center; text-align: left;
+  font: 400 .95rem/1.45 var(--font-body); color: var(--ink); background: var(--panel); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 5px; padding: .5rem .65rem; min-height: 2.6rem;
+}
+.quiz-opts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-opts button:disabled { cursor: default; }
+.quiz-opts button > span:last-child { min-width: 0; }
+.opt-k { font: 600 .78rem/1 var(--font-mono); color: var(--muted); width: 1.55rem; height: 1.55rem; border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; }
+.quiz-opts button.ok { border-color: var(--good); background: var(--good-soft); }
+.quiz-opts button.ok .opt-k { background: var(--good); color: var(--panel); border-color: var(--good); }
+.quiz-opts button.no { border-color: var(--bad); background: var(--bad-soft); }
+.quiz-opts button.no .opt-k { background: var(--bad); color: var(--panel); border-color: var(--bad); }
+.quiz-why { margin: .75rem 0 0; font-size: .93rem; }
+.quiz:not(.done) .quiz-why { visibility: hidden; max-height: 0; overflow: hidden; margin: 0; }
+.quiz-why .verdict { font-weight: 600; margin-right: .3rem; }
+.quiz.is-right .verdict { color: var(--good); }
+.quiz.is-wrong .verdict { color: var(--bad); }
+
+.ch-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--rule); }
+.ch-foot .btn.is-done { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.ch-foot a { font-size: .92rem; }
+
+/* Formül kartı */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1.2rem; }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.card h5 { margin: 0; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.card mjx-container[display="true"] { margin: .35rem 0 !important; }
+
+footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* Çözüm defteri eklemeleri */
+.topic { padding-top: 3.2rem; }
+.topic + .topic { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.topic h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.prob { padding-top: 2.2rem; }
+.prob + .prob { border-top: 1px dashed var(--rule); margin-top: 2.2rem; }
+.prob-head { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: center; }
+.pid { font: 600 .78rem/1.5 var(--font-mono); color: var(--accent); background: var(--accent-soft); padding: .05rem .5rem; border-radius: 4px; }
+.lvl { font: 500 .76rem/1.5 var(--font-mono); color: var(--muted); }
+.prob h3 { margin: .35rem 0 .2rem; font: 600 1.4rem/1.25 var(--font-display); text-wrap: balance; }
+.box.q { --lbl: var(--vel); }
+.box.q p { margin: .4rem 0; }
+.tip { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); max-width: 44rem; }
+.tip b { color: var(--force); font-weight: 600; }
+.solved { display: inline-flex; gap: .55rem; align-items: center; font-size: .92rem; color: var(--muted); margin-top: 1rem; cursor: pointer; padding: .35rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.solved input { accent-color: var(--good); width: 1.05rem; height: 1.05rem; }
+.solved:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 0; }
+.toc .grp { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .9rem 0 .25rem .5rem; list-style: none; }
+.toc .grp:first-child { margin-top: 0; }
+.toc a { grid-template-columns: 3.6rem 1fr 1rem; }
+.toc .n { font-size: .72rem; }
+.toc a.is-done .ok { visibility: visible; }
+.mini { margin: 1rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.mini .ctrls { padding-top: .7rem; }
+.note-src { font-size: .85rem; color: var(--muted); }
+
+/* Yöntem kiti eklemeleri */
+.part { padding-top: 3.2rem; }
+.part + .part { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.part h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.method { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); padding: 1.1rem 1.2rem 1rem; }
+.m-head { display: flex; gap: .9rem; align-items: flex-start; }
+.m-no { flex: none; font: 600 1.25rem/1 var(--font-mono); color: var(--on-accent); background: var(--accent); border-radius: 6px; padding: .5rem .55rem; min-width: 2.9rem; text-align: center; }
+.m-head h3 { margin: .05rem 0 .2rem; font: 600 1.38rem/1.25 var(--font-display); text-wrap: balance; }
+.m-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+.m-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 1.4rem; margin-top: 1rem; }
+@media (max-width: 720px) { .m-grid { grid-template-columns: minmax(0, 1fr); } }
+.m-block h4 { margin: 0 0 .35rem; font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.m-block.when h4 { color: var(--vel); }
+.m-block.trap h4 { color: var(--force); }
+.m-block ul, .m-block ol { margin: 0; padding-left: 1.2rem; font-size: .95rem; }
+.m-block li + li { margin-top: .3rem; }
+.m-block.trap ul { list-style: none; padding-left: 0; }
+.m-block.trap li { padding-left: 1.3rem; position: relative; }
+.m-block.trap li::before { content: "✗"; position: absolute; left: 0; color: var(--force); font-weight: 600; }
+.m-recipe { margin-top: 1rem; }
+.m-recipe ol { counter-reset: r; list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.m-recipe li { counter-increment: r; position: relative; padding-left: 2.2rem; }
+.m-recipe li::before { content: counter(r); position: absolute; left: 0; top: .05rem; width: 1.55rem; height: 1.55rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .78rem/1.55rem var(--font-mono); text-align: center; }
+.method .derive { margin: 1.1rem 0 .4rem; }
+.m-foot { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-top: .8rem; font-size: .9rem; color: var(--muted); }
+.m-foot .links { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.nb { font: 500 .76rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--accent); text-decoration: none; border: 1px solid var(--rule); }
+.nb:hover { border-color: var(--accent); }
+.learned { display: inline-flex; gap: .5rem; align-items: center; cursor: pointer; margin-left: auto; padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.learned input { accent-color: var(--good); width: 1rem; height: 1rem; }
+.learned:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.proto { counter-reset: p; list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: .6rem; }
+.proto li { counter-increment: p; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; align-items: start; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .7rem .9rem; }
+.proto li::before { content: counter(p); font: 600 1.3rem/1 var(--font-display); color: var(--accent); padding-top: .15rem; }
+.proto b { display: block; }
+.math-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1rem; }
+.math-card { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.math-card h4 { margin: 0 0 .2rem; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.math-card p { margin: .3rem 0; font-size: .92rem; }
+.math-card mjx-container[display="true"] { margin: .3rem 0 !important; }
+.plan { display: grid; gap: .7rem; margin-top: 1rem; }
+.plan > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .75rem .95rem; }
+@media (max-width: 560px) { .plan > div { grid-template-columns: 1fr; gap: .3rem; } }
+.plan .when-t { font: 600 .82rem/1.5 var(--font-mono); color: var(--accent); }
+.plan p { margin: 0; }
+td .nb { display: inline-block; margin: .1rem 0; }
+/* Grid öğeleri içerikteki uzun formül yüzünden sütunu genişletmesin */
+.m-recipe li, .m-grid > *, .m-head > div, .proto li > span, .plan > div > * { min-width: 0; }
+/* Tablo alıştırmaları: cevap hücreleri dokununca açılır */
+.drill { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.drill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .9rem 1.15rem .2rem; }
+.drill-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.drill-head h4 { margin: 0; font: 600 1.05rem/1.4 var(--font-body); }
+.drill-head .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-left: .4rem; white-space: nowrap; }
+.drill .tbl-wrap { margin: .4rem 0 0; padding: 0 1.15rem; }
+.drill .tbl td { vertical-align: top; }
+.drill td.ans { padding: .3rem .4rem; }
+.cell { all: unset; box-sizing: border-box; display: block; position: relative; width: 100%; min-height: 1.9rem; padding: .2rem .35rem; border-radius: 4px; cursor: pointer; }
+.cell > .c-in { visibility: hidden; }
+.cell::after { content: "?"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .82rem/1 var(--font-mono); }
+.cell:hover::after { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+.cell.shown > .c-in { visibility: visible; }
+.cell.shown::after { content: none; }
+.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.drill-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); margin-top: .6rem; }
+
+
+/* PHYS 202 eklemeleri */
+.hero { position: relative; }
+/* Tayf şeridi: görünür ışığın gerçek renkleri, iki temada da aynı */
+.hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+  background: linear-gradient(90deg, #6A00C8 0%, #3B2BFF 14%, #0090FF 30%, #00C27A 46%, #B8D600 60%, #FFC400 72%, #FF7A00 84%, #E0001A 100%);
+  opacity: .85;
+}
+.box.mine { --lbl: var(--bad); background: color-mix(in srgb, var(--bad) 5%, var(--panel)); }
+.box.mine p { margin: .4rem 0; }
+.slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
+.src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
+figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
+figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
+.fig .s-ink { stroke: var(--ink); fill: none; }
+.fig .s-muted { stroke: var(--muted); fill: none; }
+.fig .s-psi { stroke: var(--acc); fill: none; }
+.fig .s-en { stroke: var(--energy); fill: none; }
+.fig .s-vel { stroke: var(--vel); fill: none; }
+.fig .s-force { stroke: var(--force); fill: none; }
+.fig .f-region { fill: var(--panel-2); stroke: none; }
+.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig text.t-ink { fill: var(--ink); }
+.fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
+.fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
+.fig text.t-sym { fill: var(--ink); font: italic 600 15px var(--font-display); }
+.pattern td { vertical-align: top; font-size: .92rem; }
+.pattern td:first-child { white-space: nowrap; }
+.odds { display: inline-block; min-width: 3.2rem; text-align: center; font: 600 .74rem/1.5 var(--font-mono); padding: .05rem .4rem; border-radius: 99px; }
+.odds.hi { background: var(--good-soft); color: var(--good); }
+.odds.md { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.odds.lo { background: var(--panel-2); color: var(--muted); }
+.cheat { columns: 2 19rem; column-gap: 1rem; margin-top: 1rem; }
+.cheat .math-card { break-inside: avoid; margin-bottom: .8rem; }
+.hero-links { display: flex; flex-wrap: wrap; gap: .4rem .8rem; font-size: .88rem; }
+.hero-links a { font-weight: 500; }
+/* Deneme sınavı */
+.exam-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin: 1.2rem 0 0; padding: .7rem 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); }
+.clock { display: grid; margin-right: auto; }
+.clock-lbl { font: 500 .7rem/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.clock b { font: 600 1.6rem/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.clock b.over { color: var(--bad); }
+.clock-btns { display: flex; flex-wrap: wrap; gap: .45rem; }
+details.sol { margin: 1.1rem 0 .4rem; }
+details.sol > summary { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none; font: 500 .9rem/1.2 var(--font-body); color: var(--accent); padding: .5rem .85rem; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 5px; background: var(--panel); min-height: 2.25rem; }
+details.sol > summary::-webkit-details-marker { display: none; }
+details.sol > summary::before { content: "▸"; transition: transform .2s; }
+details.sol[open] > summary::before { transform: rotate(90deg); }
+details.sol > summary:hover { background: var(--accent-soft); }
+.rubric { margin: .6rem 0 0; padding: .6rem .9rem .6rem 2rem; font-size: .9rem; color: var(--muted); background: var(--panel-2); border-radius: var(--radius); }
+.rubric::before { content: "Puan nereden gelir"; display: block; margin-left: -1.1rem; font: 600 .7rem/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.box.q ol { margin: .3rem 0; padding-left: 1.2rem; }
+@media (max-width: 1000px) { .exam-bar { position: static; } }
+/* ---------- Site menüsü (hamburger) ---------- */
+.nav-btn {
+  position: fixed; z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  right: calc(max(16px, env(safe-area-inset-right, 0px)) - 4px);
+  width: 44px; height: 44px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  display: grid; place-content: center; gap: 4px; padding: 0;
+}
+.nav-btn:hover { border-color: var(--accent); }
+.nav-btn span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.site-nav.open .nav-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav.open .nav-btn span:nth-child(2) { opacity: 0; }
+.site-nav.open .nav-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* kapalı çekmece ekran dışına itildiğinde sayfayı genişletmesin diye kırpan katman */
+.nav-layer { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.site-nav.open .nav-layer { pointer-events: auto; }
+.nav-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 38%, transparent); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+.nav-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 86vw); overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--rule);
+  padding: calc(env(safe-area-inset-top, 0px) + 68px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) 18px;
+  transform: translateX(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+}
+.site-nav.open .nav-drawer { transform: none; visibility: visible; }
+.site-nav.open .nav-scrim { opacity: 1; visibility: visible; }
+.nav-title { font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem .8rem; }
+.nav-drawer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.nav-drawer li a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 6px; text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+.nav-drawer li a b { font-weight: 600; font-size: 1rem; }
+.nav-drawer li a span { font-size: .85rem; color: var(--muted); }
+.nav-drawer li a:hover { background: var(--panel-2); }
+.nav-drawer li a[aria-current="page"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); }
+.nav-drawer li a[aria-current="page"] b { color: var(--accent); }
+.nav-foot { margin: 1.4rem 0 0 .8rem; font-size: .85rem; color: var(--muted); }
+.nav-foot a { color: var(--muted); }
+body.nav-lock { overflow: hidden; }
+.hero-in { padding-top: 4.2rem; }
+@media (max-width: 1000px) {
+  .hero-in { padding-top: 4rem; }
+  .side summary { padding-right: 52px; }
+  .nav-btn { width: 40px; height: 40px; top: calc(env(safe-area-inset-top, 0px) + 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .nav-drawer, .nav-scrim, .nav-btn span { transition: none; } }
+
+@media (min-width: 1001px) { .exam-bar { top: calc(env(safe-area-inset-top, 0px) + 62px); } }
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav" data-current="notlar" aria-label="PHYS 202 sayfaları">
+  <button type="button" class="nav-btn" id="nav-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
+  <div class="nav-layer">
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <p class="nav-title">PHYS 202 · Modern Fizik</p>
+    <ul>
+      <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Modern Fizik Defteri</b><span>Krane 2–5 · 11 laboratuvar</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>49 soru · çıkmış sınavlar</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 12 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavı</b><span>5 soru · 2 saat · çözümlü</span></a></li>
+    </ul>
+    <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
+  </div>
+  </div>
+</nav>
+
+<header class="hero" lang="tr">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow"><span>ODTÜ PHYS 202</span><span>Güz 2026–27 · 1. ara sınav kapsamı</span><span>Krane, Modern Physics 3e</span></p>
+      <h1>Modern Fizik <i>Defteri</i></h1>
+      <p class="lede">Özel görelilikten Schrödinger denklemine, Krane'in 2–5. bölümlerinin adım adım anlatımı. Her bölüm, ara sınavdaki beş soru yuvasından birine bağlanır. Türetimleri satır satır açın, laboratuvarlarda parametreleri değiştirin, bölüm sonundaki sorularla kendinizi sınayın.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div><b id="st-ch">9</b><span>bölüm</span></div>
+        <div><b id="st-lab">11</b><span>laboratuvar</span></div>
+        <div><b id="st-q">27</b><span>soru</span></div>
+      </div>
+      <ul class="hero-how">
+        <li><b>Türetim</b><span>“Sonraki adım” ile bir satır ilerleyin. Açmadan önce sonraki adımı tahmin edin.</span></li>
+        <li><b>Laboratuvar</b><span>Kaydırıcılar canlıdır; çıkmış soruların değerleri hazır yüklü gelir.</span></li>
+        <li><b>Sorular</b><span>Cevabı seçince açıklama açılır. İlerlemeniz bu tarayıcıda saklanır.</span></li>
+      </ul>
+      <div class="legend" aria-label="Renk dili">
+        <span style="color:var(--force)"><i style="background:var(--force)"></i>Gözlemci, çerçeve</span>
+        <span style="color:var(--vel)"><i style="background:var(--vel)"></i>Parçacık</span>
+        <span style="color:var(--acc)"><i style="background:var(--acc)"></i>Dalga fonksiyonu</span>
+        <span style="color:var(--energy)"><i style="background:var(--energy)"></i>Foton, enerji</span>
+      </div>
+      <p class="hero-links"><a href="../cozumler/">Çözüm Defteri →</a> <a href="../kit/">Yöntem Kiti →</a> <a href="../deneme/">Deneme Sınavı →</a></p>
+    </div>
+  </div>
+</header>
+
+<div class="shell" lang="tr">
+  <aside class="side">
+    <details id="toc-details" open>
+      <summary><span>İçindekiler</span><span class="sum-prog" id="sum-prog">0 / 9</span></summary>
+      <div class="toc-wrap">
+        <p class="toc-title">İçindekiler</p>
+        <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
+        <p class="progress-txt" id="prog-txt">0 / 9 bölüm · 0 doğru cevap</p>
+        <ol class="toc" id="toc">
+          <li><a href="#postulat"><span class="n">01</span><span>Postulatlar, zaman genişlemesi, boy kısalması</span><span class="ok">✓</span></a></li>
+          <li><a href="#lorentz"><span class="n">02</span><span>Lorentz dönüşümü ve hız toplama</span><span class="ok">✓</span></a></li>
+          <li><a href="#ikiz"><span class="n">03</span><span>İkiz paradoksu, sinyaller, Doppler</span><span class="ok">✓</span></a></li>
+          <li><a href="#dinamik"><span class="n">04</span><span>Göreli momentum ve enerji</span><span class="ok">✓</span></a></li>
+          <li><a href="#karacisim"><span class="n">05</span><span>Kara cisim ışıması</span><span class="ok">✓</span></a></li>
+          <li><a href="#foton"><span class="n">06</span><span>Fotoelektrik etki ve Compton</span><span class="ok">✓</span></a></li>
+          <li><a href="#belirsizlik"><span class="n">07</span><span>De Broglie dalgaları ve belirsizlik</span><span class="ok">✓</span></a></li>
+          <li><a href="#schrodinger"><span class="n">08</span><span>Schrödinger denklemi ve sonsuz kuyu</span><span class="ok">✓</span></a></li>
+          <li><a href="#sonlu"><span class="n">09</span><span>Basamak, kuyu, engel, osilatör</span><span class="ok">✓</span></a></li>
+          <li><a href="#ozet"><span class="n">∑</span><span>Formül kartı</span><span class="ok">✓</span></a></li>
+        </ol>
+        <div class="side-foot">
+          <button type="button" class="linkbtn" id="reset-progress">İlerlemeyi sıfırla</button>
+        </div>
+      </div>
+    </details>
+  </aside>
+
+  <main id="main">
+
+
+<!-- ============================================================ 1 -->
+<section class="chapter" id="postulat" data-ch="postulat">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 1</span><span class="sess">Krane 2.1–2.4 · Sınav yuvası S1, S2</span></p>
+    <h2>Görelilik postulatları: zaman genişlemesi ve boy kısalması</h2>
+    <p class="ch-lede">Işık hızı herkes için aynıysa saatler ve cetveller gözlemciye göre değişmek zorundadır. Bu bölümün iki formülü, iki ara sınavın beş görelilik sorusunun hepsinde kullanıldı.</p>
+  </header>
+
+  <h3>Galile göreliliği neden yetmedi?</h3>
+  <p>Klasik fizikte iki gözlemci arasındaki dönüşüm <b>Galile dönüşümüdür</b>. \(O'\), \(O\)'ya göre \(+x\) yönünde \(u\) hızıyla gidiyorsa:</p>
+  \[ x'=x-ut,\qquad t'=t,\qquad v'_x=v_x-u . \]
+  <p>Bu dönüşüm Newton yasalarını korur ama Maxwell denklemlerini korumaz: Maxwell denklemleri ışığın hızını \(c=1/\sqrt{\mu_0\varepsilon_0}\) olarak verir ve hangi çerçevede olduğunu söylemez. 19. yüzyılda bunun bir “esir” çerçevesinde geçerli olduğu düşünüldü. <b>Michelson–Morley deneyi</b>, Dünya'nın esire göre hareketini girişim saçaklarındaki kaymadan ölçmeye çalıştı ve hiçbir kayma bulamadı (Krane Problem 2.3: tek bir saçaklık kayma, \(11\) m'lik kolda yaklaşık \(7\times10^4\) m/s'lik esir rüzgârına karşılık gelirdi).</p>
+
+  <h3>Einstein'ın iki postulatı</h3>
+  <dl class="kv">
+    <dt>1. Görelilik</dt>
+    <dd>Fizik yasaları bütün eylemsiz çerçevelerde aynıdır. Hiçbir deney “mutlak durgunluğu” belirleyemez.</dd>
+    <dt>2. Işık hızı</dt>
+    <dd>Boşlukta ışığın hızı bütün eylemsiz gözlemciler için aynı \(c\) değeridir; kaynağın ya da gözlemcinin hareketinden bağımsızdır.</dd>
+  </dl>
+  <p>İkinci postulat Galile hız toplamasını doğrudan bozar: hızı \(0{,}9c\) olan bir gemiden ileri doğru atılan ışık yerdeki gözlemciye göre \(1{,}9c\) değil, yine \(c\) hızındadır. Bunun bedeli, zaman ve uzunluğun gözlemciye bağlı hâle gelmesidir.</p>
+
+  <h3>Zaman genişlemesi</h3>
+  <p>İki olay aynı yerde olduğunda aralarındaki süreyi ölçen tek bir saat yeterlidir. Bu saatin ölçtüğü süreye <b>öz zaman</b> \(\Delta t_0\) denir. Olaylara göre hareket eden bir gözlemci aynı aralığı daha uzun ölçer.</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Işık saatiyle \(\Delta t=\gamma\Delta t_0\)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Aralarında \(d\) uzaklığı olan iki ayna düşünün; bir ışık atımı aşağıdan yukarı gidip geri dönüyor. Saatle birlikte duran \(O'\) için bir “tik” süresi:</p>\[ \Delta t_0=\frac{2d}{c}. \]</li>
+      <li class="step"><p>\(O\) gözlemcisine göre saat \(u\) hızıyla sağa gidiyor. Atım yukarı çıkarken aynalar da \(u\,\Delta t/2\) kadar kayar; ışık çapraz bir yol izler. İkinci postulat gereği bu çapraz yolda da hız \(c\)'dir:</p>\[ \Big(\frac{c\,\Delta t}{2}\Big)^2=d^2+\Big(\frac{u\,\Delta t}{2}\Big)^2 . \]</li>
+      <li class="step"><p>\(\Delta t\)'yi çekin ve \(d=c\Delta t_0/2\) koyun:</p>\[ \Delta t^2\,(c^2-u^2)=4d^2=c^2\Delta t_0^2\ \Rightarrow\ \Delta t=\frac{\Delta t_0}{\sqrt{1-u^2/c^2}} . \]</li>
+      <li class="step"><p>Kısaltma olarak Lorentz çarpanını tanımlayın: \(\gamma=1/\sqrt{1-u^2/c^2}\ge1\). Sonuç \(\Delta t=\gamma\,\Delta t_0\). Hareketli saat, duran gözlemciye göre yavaş işler. Etki simetriktir: \(O'\) de \(O\)'nun saatini yavaş görür.</p></li>
+    </ol>
+  </div>
+
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ \Delta t=\gamma\,\Delta t_0,\qquad L=\frac{L_0}{\gamma},\qquad \gamma=\frac{1}{\sqrt{1-u^2/c^2}} . \]
+    <p>\(\Delta t_0\): olayların <em>aynı yerde</em> olduğu çerçevede ölçülen süre. \(L_0\): cismin <em>durduğu</em> çerçevede ölçülen uzunluk.</p>
+  </div>
+
+  <h3>Boy kısalması</h3>
+  <p>Bir cismin kendi durduğu çerçevede ölçülen uzunluğu <b>öz uzunluktur</b> \(L_0\). Cisme göre \(u\) hızıyla hareket eden gözlemci, cismin iki ucunu <em>kendi çerçevesinde aynı anda</em> işaretleyerek ölçtüğünde daha kısa bir değer bulur: \(L=L_0/\gamma\). Kısalma yalnızca hareket doğrultusundadır; dik boyutlar değişmez.</p>
+  <p>İki etki birbirini tutarlı kılar. Atmosferin üst katmanında oluşan bir müon \(u=0{,}998c\) ile yere iniyor. Yerden bakan için müonun ömrü uzar (\(\gamma\tau_0\)); müonun kendi çerçevesinde ise atmosferin kalınlığı kısalır (\(L_0/\gamma\)). İki gözlemci de müonun yere ulaştığında anlaşır.</p>
+
+  <div class="box ex"><span class="box-label">Hangisi “öz”?</span>
+    <p>Sınavdaki en yaygın hata \(\gamma\)'yı yanlış tarafa koymaktır. Kontrol sorusu: <b>“İki olay hangi çerçevede aynı yerde?”</b> O çerçevenin süresi öz zamandır ve en kısa süredir. <b>“Cisim hangi çerçevede duruyor?”</b> O çerçevenin uzunluğu öz uzunluktur ve en uzun uzunluktur.</p>
+    <p>Gemiyle Dünya arasında bir yolculukta yolcunun saati öz zamanı ölçer (kalkış ve varış gemide, aynı yerde). Dünya ile gezegen arasındaki mesafenin öz uzunluğu Dünya'nın ölçtüğüdür (ikisi de Dünya çerçevesinde duruyor).</p>
+  </div>
+
+  <figure class="lab" id="lab-saat">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 1.1</span><h4>Işık saati ve hareketli cetvel</h4><p>Solda saat kendi çerçevesinde; sağda aynı saat \(u\) hızıyla geçerken laboratuvardan görülüyor. İki panel aynı laboratuvar zamanında ilerler.</p></div>
+    <div class="view"><canvas id="cv-saat" aria-label="Işık saati simülasyonu"></canvas></div>
+    <div class="ctrls"></div>
+    <div class="lab-actions"><button type="button" class="btn" data-act="play">Durdur</button><button type="button" class="btn btn-ghost" data-act="reset">Baştan</button></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> \(u=0{,}6c\) seçin. Sağdaki saat 4 tik atarken soldaki 5 tik atar (\(\gamma=1{,}25\)). \(u\)'yu \(0{,}99c\)'ye çıkarınca cetvel yaklaşık yedide birine iner.</p>
+  </figure>
+
+  <div class="box exam"><span class="box-label">Tipik sınav sorusu</span>
+    <p><b>Krane 2.7 (önerilen liste):</b> Öz ömrü \(100{,}0\) ns olan parçacık \(0{,}960c\) ile gidiyor. Laboratuvarda ömrü \(\gamma\tau_0=100/\sqrt{1-0{,}9216}=357{,}1\) ns, aldığı yol \(0{,}960c\times357{,}1\ \text{ns}=103\) m. Parçacıkla giden gözlemciye göre laboratuvar geçip giden şeydir ve yol \(0{,}960c\times100\ \text{ns}=28{,}8\) m'dir (\(=103/\gamma\)). Üç sayıdaki \(\gamma\)'nın yeri, “hangisi öz?” sorusuyla belirlenir.</p>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Bir astronot \(0{,}8c\) ile giderken kalp atışları arasındaki süreyi kendi saatiyle \(1{,}0\) s ölçüyor. Dünya'daki gözlemci kaç saniye ölçer?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(0{,}6\) s</button><button type="button" data-k="b">\(1{,}67\) s</button><button type="button" data-k="c">\(1{,}0\) s</button><button type="button" data-k="d">\(1{,}25\) s</button></div>
+      <p class="quiz-why"><span class="verdict"></span>İki atış astronotun çerçevesinde aynı yerde: \(\Delta t_0=1{,}0\) s. \(\gamma=1/\sqrt{1-0{,}64}=1/0{,}6=1{,}67\), yani \(\Delta t=1{,}67\) s.</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Dünya'ya göre 4,8 ışık yılı uzaktaki bir yıldıza \(0{,}925c\) ile giden astronot, yolculuk sırasında Dünya–yıldız uzaklığını ne ölçer? (Krane örnek sınav A12)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(4{,}8\) ışık yılı</button><button type="button" data-k="b">\(12{,}6\) ışık yılı</button><button type="button" data-k="c">\(1{,}8\) ışık yılı</button><button type="button" data-k="d">\(4{,}4\) ışık yılı</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Dünya ve yıldız Dünya çerçevesinde duruyor: \(L_0=4{,}8\) ışık yılı. Astronota göre \(L=L_0\sqrt{1-0{,}925^2}=4{,}8\times0{,}380=1{,}8\) ışık yılı.</p>
+    </div>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Aşağıdakilerden hangisi her eylemsiz gözlemci için aynıdır?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Boşlukta ışığın hızı</button><button type="button" data-k="b">İki olay arasındaki süre</button><button type="button" data-k="c">Bir çubuğun uzunluğu</button><button type="button" data-k="d">İki olayın eşzamanlı olup olmadığı</button></div>
+      <p class="quiz-why"><span class="verdict"></span>İkinci postulat. Süre, uzunluk ve eşzamanlılık gözlemciye bağlıdır (eşzamanlılık bir sonraki bölümde).</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="postulat">Bu bölümü tamamladım</button><a href="#lorentz">Sonraki: Lorentz dönüşümü ve hız toplama →</a></div>
+</section>
+
+
+<!-- ============================================================ 2 -->
+<section class="chapter" id="lorentz" data-ch="lorentz">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 2</span><span class="sess">Krane 2.5 · Sınav yuvası S1, S2</span></p>
+    <h2>Lorentz dönüşümü, eşzamanlılık ve hız toplama</h2>
+    <p class="ch-lede">Zaman genişlemesi ve boy kısalması tek bir dönüşümün özel durumlarıdır. Olaylar aynı yerde ya da aynı anda değilse doğrudan Lorentz dönüşümünü kullanmak gerekir.</p>
+  </header>
+
+  <h3>Dönüşüm denklemleri</h3>
+  <p>Krane'in gösterimiyle \(O'\), \(O\)'ya göre \(+x\) yönünde \(u\) hızıyla hareket ediyor ve \(t=t'=0\) anında orijinler çakışıyor. Bir olay \(O\)'da \((x,t)\), \(O'\)'da \((x',t')\) koordinatlarına sahipse:</p>
+  \[ x'=\gamma\,(x-ut),\qquad t'=\gamma\Big(t-\frac{u}{c^2}\,x\Big),\qquad y'=y,\quad z'=z . \]
+  <p>Ters dönüşüm \(u\to-u\) ile elde edilir: \(x=\gamma(x'+ut')\), \(t=\gamma(t'+ux'/c^2)\). Sınavda neredeyse her zaman iki olay arasındaki <b>aralıklar</b> gerekir; denklemler doğrusal olduğu için aynı biçim aralıklar için de geçerlidir:</p>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ \Delta x'=\gamma\,(\Delta x-u\,\Delta t),\qquad \Delta t'=\gamma\Big(\Delta t-\frac{u\,\Delta x}{c^2}\Big). \]
+    <p>Sayısal kolaylık: \(c=300\) m/μs. Metre ve mikrosaniyeyle çalışırken \(u\Delta x/c^2=\beta\,\Delta x/c\) yazın.</p>
+  </div>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Lorentz dönüşümünden zaman genişlemesi ve boy kısalması</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Zaman genişlemesi.</b> Saat \(O'\)'da duruyor: iki tik \(O'\)'da aynı yerde, \(\Delta x'=0\). Ters dönüşüm kullanın:</p>\[ \Delta t=\gamma\Big(\Delta t'+\frac{u\,\Delta x'}{c^2}\Big)=\gamma\,\Delta t' . \]<p>\(\Delta t'\) öz zamandır, \(\Delta t=\gamma\Delta t_0\) ✓.</p></li>
+      <li class="step"><p><b>Boy kısalması.</b> Çubuk \(O'\)'da duruyor, öz uzunluğu \(L_0=\Delta x'\). \(O\) iki ucu <em>aynı anda</em> işaretler: \(\Delta t=0\). İleri dönüşüm:</p>\[ \Delta x'=\gamma\,(\Delta x-u\cdot0)\ \Rightarrow\ L=\Delta x=\frac{\Delta x'}{\gamma}=\frac{L_0}{\gamma}\ ✓ \]</li>
+      <li class="step"><p>Ders: iki kısayol formülü yalnızca bir aralığın sıfır olduğu durumlarda geçerlidir (\(\Delta x'=0\) ya da \(\Delta t=0\)). İki aralık da sıfır değilse doğrudan Lorentz dönüşümü yazılır.</p></li>
+    </ol>
+  </div>
+
+  <h3>Eşzamanlılığın göreliliği</h3>
+  <p>\(O\)'ya göre aynı anda (\(\Delta t=0\)) ama farklı yerlerde (\(\Delta x\ne0\)) olan iki olay \(O'\)'ya göre eşzamanlı değildir: \(\Delta t'=-\gamma u\Delta x/c^2\). Arkadaki olay önce olur. Tersine, \(O\)'da \(\Delta t\ne0\) olan iki olayı eşzamanlı gören bir çerçeve bulunabilir mi?</p>
+  \[ \Delta t'=0\ \Longleftrightarrow\ \Delta t=\frac{u\,\Delta x}{c^2}\ \Longrightarrow\ u=\frac{c^2\Delta t}{\Delta x}. \]
+  <p>Bu \(u\) ancak \(|u|\lt c\) ise fizikseldir, yani \(c|\Delta t|\lt|\Delta x|\): ışık bir olaydan diğerine yetişemiyor olmalı. Bu tür olay çiftine <b>uzay benzeri</b> denir. \(c|\Delta t|>|\Delta x|\) ise olaylar <b>zaman benzeridir</b>: biri diğerinin nedeni olabilir ve sıraları her çerçevede aynıdır (Krane Problem 2.46). Ayrım şu değişmezle yapılır:</p>
+  \[ s^2=(c\,\Delta t)^2-(\Delta x)^2=(c\,\Delta t')^2-(\Delta x')^2 . \]
+
+  <figure class="lab" id="lab-mink">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 2.1</span><h4>Minkowski diyagramı: aynı iki olay, iki çerçeve</h4><p>Siyah eksenler \(O\), kırmızı eksenler \(O'\). Kırmızı kesikli çizgiler \(O'\)'nun “aynı an” çizgileridir. İki olay aynı çizgi üzerindeyse \(O'\) onları eşzamanlı görür.</p></div>
+    <div class="view"><canvas id="cv-mink" aria-label="Minkowski diyagramı"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Bahar 2026 S2 seçiliyken \(u\)'yu \(0{,}318c\)'ye getirin: kesikli çizgiler üst üste biner. Krane 2.19'a geçin; olaylar zaman benzeri olduğu için hiçbir \(u\) çizgileri birleştiremez.</p>
+  </figure>
+
+  <div class="box exam"><span class="box-label">Çıkmış soru · Bahar 2026 S2 = Krane 2.20</span>
+    <p>\(O\)'ya göre mavi flaş \(x_b=10{,}4\) m, \(t_b=0{,}124\) μs; kırmızı flaş \(x_r=23{,}6\) m, \(t_r=0{,}138\) μs. \(O'\) ikisini eşzamanlı görüyor. \(u=c^2\Delta t/\Delta x=c\cdot(300\times0{,}014)/13{,}2=0{,}318c\).</p>
+    <p>Sorunun ikinci kısmı (“\(O'\)'daki uzaklığı boy kısalmasıyla bulabilir miyiz?”) bir tuzaktır ama cevap <b>evet</b>: olaylar \(O'\)'da eşzamanlı olduğu için, \(O\)'da \(x_b\) ile \(x_r\) arasında duran hayalî bir cetvelin iki ucunu \(O'\) aynı anda işaretlemiş olur. \(\Delta x'=\Delta x/\gamma=13{,}2/1{,}0547=12{,}5\) m. Lorentz dönüşümü aynı sonucu verir, çünkü \(u\Delta t=(u^2/c^2)\Delta x\). Ayrıntı çözüm defterinde.</p>
+  </div>
+
+  <h3>Göreli hız toplama</h3>
+  <p>Bir cisim \(O\)'ya göre \(v_x\) hızıyla gidiyorsa, \(O'\)'ya göre hızı Lorentz dönüşümünün \(dx'/dt'\) oranıdır:</p>
+  \[ v'_x=\frac{v_x-u}{1-u\,v_x/c^2},\qquad v_x=\frac{v'_x+u}{1+u\,v'_x/c^2},\qquad v'_y=\frac{v_y}{\gamma\,(1-u\,v_x/c^2)} . \]
+  <p>Kontrol: \(v_x=c\) koyun, \(v'_x=(c-u)/(1-u/c)=c\) çıkar. Işık hızına hiçbir hız eklenerek ulaşılamaz. \(u,v\ll c\) iken payda 1'e gider ve Galile toplaması geri gelir.</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Güz 2025 S1: zıt yönden gelen iki gemi</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Soru:</b> Dünya'ya göre A gemisi B'den %10 daha hızlı; iki gemi Dünya'ya zıt yönlerden yaklaşıyor. A'daki gözlemciye göre B'nin hızı \(0{,}9c\). Dünya'ya göre A'nın hızı nedir?</p></li>
+      <li class="step"><p>Çerçeveleri adlandırın. \(O\) = Dünya, \(O'\) = A gemisi. A \(+x\) yönünde \(u=v_A\) ile gidiyor; B ters yönde: \(v_x=-v_B\). B'nin A'ya göre hızı:</p>\[ v'_x=\frac{-v_B-v_A}{1+v_Av_B/c^2}=-0{,}9c . \]</li>
+      <li class="step"><p>\(v_B=xc\), \(v_A=1{,}1xc\) yazın:</p>\[ \frac{2{,}1x}{1+1{,}1x^2}=0{,}9\ \Rightarrow\ 0{,}99x^2-2{,}1x+0{,}9=0 . \]</li>
+      <li class="step"><p>İkinci derece denklemin kökleri \(x=0{,}596\) ve \(x=1{,}525\). İkincisi \(c\)'den büyük olduğu için atılır:</p>\[ v_B=0{,}596c,\qquad \boxed{v_A=1{,}1\times0{,}596c=0{,}656c} . \]</li>
+      <li class="step"><p>Kontrol: Galile toplaması \(0{,}656+0{,}596=1{,}25c\) verirdi. Göreli sonuç her zaman klasik toplamdan küçüktür (Krane örnek sınav B4).</p></li>
+    </ol>
+  </div>
+
+  <figure class="lab" id="lab-hiz">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 2.2</span><h4>Hızları toplamak</h4><p>\(O'\), \(O\)'ya göre \(u\) ile gidiyor; cisim \(O'\)'ya göre \(v'\) ile. Mor eğri göreli sonuç, gri kesikli doğru Galile toplaması.</p></div>
+    <div class="view"><canvas id="cv-hiz" aria-label="Göreli hız toplama grafiği"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> \(u=0{,}5c\), \(v'=0{,}5c\): klasik \(1{,}0c\), göreli \(0{,}8c\). İki kaydırıcıyı da sağa dayayın; sonuç \(c\)'ye yaklaşır ama geçemez.</p>
+  </figure>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="d">
+      <p class="quiz-q">İki olay \(O\)'da \(\Delta x=600\) m, \(\Delta t=1{,}0\) μs ile ayrılıyor. Onları eşzamanlı gören çerçevenin hızı nedir?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(2c\), yani böyle bir çerçeve yok</button><button type="button" data-k="b">\(0{,}25c\)</button><button type="button" data-k="c">\(0{,}9c\)</button><button type="button" data-k="d">\(0{,}5c\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(c\Delta t=300\) m \(\lt600\) m: uzay benzeri. \(u=c\cdot c\Delta t/\Delta x=c\cdot300/600=0{,}5c\).</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">\(\Delta t\ne0\) ve \(\Delta x\ne0\) olan iki olayın \(O'\)'daki uzaysal aralığı için hangisi her zaman doğrudur?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(\Delta x'=\Delta x/\gamma\)</button><button type="button" data-k="b">\(\Delta x'=\gamma(\Delta x-u\Delta t)\)</button><button type="button" data-k="c">\(\Delta x'=\gamma\Delta x\)</button><button type="button" data-k="d">\(\Delta x'=\Delta x-u\Delta t\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Genel kural Lorentz dönüşümüdür. \(\Delta x/\gamma\) yalnızca olaylar \(O'\)'da eşzamanlıysa doğru çıkar (Bahar 2026 S2'deki durum).</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Roket A istasyondan \(0{,}826c\), daha sonra roket B aynı yönde \(0{,}635c\) ile ayrılıyor. B'ye göre A'nın hızı? (Krane 2.11)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(0{,}191c\)</button><button type="button" data-k="b">\(0{,}97c\)</button><button type="button" data-k="c">\(0{,}402c\)</button><button type="button" data-k="d">\(0{,}635c\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\((0{,}826-0{,}635)/(1-0{,}826\times0{,}635)=0{,}191/0{,}4755=0{,}402c\). Aynı yönde giden cisimlerde payda 1'den küçüktür ve fark büyür.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="lorentz">Bu bölümü tamamladım</button><a href="#ikiz">Sonraki: İkiz paradoksu, sinyaller, Doppler →</a></div>
+</section>
+
+
+<!-- ============================================================ 3 -->
+<section class="chapter" id="ikiz" data-ch="ikiz">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 3</span><span class="sess">Krane 2.4, 2.6 · Sınav yuvası S1, S2</span></p>
+    <h2>İkiz paradoksu, ışık sinyalleri ve göreli Doppler</h2>
+    <p class="ch-lede">Gidiş-dönüş yolculukları ve yolculuk sırasında gönderilen ışık sinyalleri iki sınavda da çıktı. İki araç yeterli: uzay-zaman diyagramı ve Doppler çarpanı.</p>
+  </header>
+
+  <h3>İkiz paradoksu</h3>
+  <p>Amelia \(0{,}60c\) ile Dünya'dan 6 ışık yılı uzaktaki bir gezegene gidip dönüyor; ikizi Casper Dünya'da kalıyor (Krane §2.6). Dünya çerçevesinde yolculuk \(2\times6/0{,}6=20\) yıl sürer. Amelia'nın saati öz zamanı ölçer: \(20/\gamma=20/1{,}25=16\) yıl. Döndüğünde Amelia 4 yaş daha gençtir.</p>
+  <p>“Amelia'ya göre Casper hareket ediyor, o hâlde Casper genç kalmalı” itirazı çerçevelerin simetrik olmadığını unutur. Casper tüm yolculuk boyunca tek bir eylemsiz çerçevededir. Amelia dönüş noktasında çerçeve değiştirir (ivmelenir). Bu yüzden zaman genişlemesini doğru uygulayan Casper'dır.</p>
+
+  <div class="box"><span class="box-label">Sonuç · gidiş-dönüş şablonu</span>
+    <p>Durgun hedef \(L_0\) uzaklıkta, sabit \(v=\beta c\), dönüş anlık:</p>
+    \[ T_{\text{Dünya}}=\frac{2L_0}{v},\qquad \tau_{\text{yolcu}}=\frac{T_{\text{Dünya}}}{\gamma}=\frac{2L_0}{\gamma\beta c},\qquad L_{\text{yolcu}}=\frac{L_0}{\gamma}. \]
+    <p>Yolcunun yaşlanması verilmişse \(\beta\gamma=\dfrac{2L_0}{c\,\tau}\) ve \(\beta=\dfrac{1}{\sqrt{1+(c\tau/2L_0)^2}}\).</p>
+  </div>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Güz 2025 S2: 100 ışık yılı, 4 yıl yaşlanma</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Soru:</b> Dünya'ya göre duran gezegen 100 ışık yılı uzakta. Astronot gidip dönecek ve yolculukta tam 4 yıl yaşlanmak istiyor. (a) Gereken hız? (b) Astronota göre Dünya–gezegen uzaklığı? (c) Gezegendeki gözlemciye göre yolculuk ne kadar sürer?</p></li>
+      <li class="step"><p><b>(a)</b> Şablon: \(\beta\gamma=\dfrac{2\times100\ \text{ışık yılı}}{c\times4\ \text{yıl}}=50\). \(\beta\gamma=\beta/\sqrt{1-\beta^2}\) olduğundan:</p>\[ \beta=\frac{50}{\sqrt{1+50^2}}=\frac{50}{50{,}010}=0{,}99980,\qquad \boxed{v=0{,}9998\,c}. \]<p>Hesap makinesi \(0{,}99980\)'i yuvarlayabilir; \(1-\beta\approx\dfrac{1}{2(\beta\gamma)^2}=2{,}0\times10^{-4}\) yazmak daha güvenlidir.</p></li>
+      <li class="step"><p><b>(b)</b> \(\gamma=\sqrt{1+(\beta\gamma)^2}=50{,}01\):</p>\[ L=\frac{L_0}{\gamma}=\frac{100}{50{,}01}=\boxed{2{,}00\ \text{ışık yılı}} . \]<p>Tutarlılık: astronota göre gezegen 2 ışık yılı uzakta ve neredeyse \(c\) ile yaklaşıyor; tek yön ≈ 2 yıl, gidiş-dönüş 4 yıl ✓.</p></li>
+      <li class="step"><p><b>(c)</b> Gezegen Dünya'ya göre duruyor, yani aynı çerçevede:</p>\[ T=\frac{2L_0}{v}=\frac{200}{0{,}9998}=\boxed{200{,}04\ \text{yıl}} . \]<p>Krane örnek sınav C4 aynı sorudur (1500 ışık yılı, 30 yıl ⇒ \(0{,}99995c\), 15 ışık yılı, 3000,15 yıl). (d) şıkkı orada da sorulur: astronot ışıktan hızlı gitmiyor, yalnızca kat ettiği mesafe ona göre kısalmıştır.</p></li>
+    </ol>
+  </div>
+
+  <h3>Göreli Doppler etkisi</h3>
+  <p>Kaynak ile gözlemci \(u\) hızıyla birbirinden uzaklaşıyorsa gözlemcinin ölçtüğü frekans:</p>
+  \[ f'=f\sqrt{\frac{1-u/c}{1+u/c}}\quad(\text{uzaklaşma}),\qquad f'=f\sqrt{\frac{1+u/c}{1-u/c}}\quad(\text{yaklaşma}). \]
+  <p>Klasik Doppler'den farkı, sonucun yalnızca <em>göreli</em> hıza bağlı olmasıdır (esir yok). Dalga boyu için oran terstir: uzaklaşan galaksinin çizgileri uzun dalga boyuna kayar (kırmızıya kayma). Krane 2.12: \(122\) nm'lik çizginin \(366\) nm'de görülmesi için \(\sqrt{(1+\beta)/(1-\beta)}=3\Rightarrow\beta=0{,}8\).</p>
+
+  <h3>Sinyal problemlerinin iki aracı</h3>
+  <p><b>1. Uzay-zaman diyagramı.</b> Durgun çerçevede (Dünya) yatay eksen \(x\), düşey eksen \(ct\). Gemi \(x=vt\) doğrusu, ışık sinyalleri \(45^\circ\) eğimli doğrulardır. Her olay iki doğrunun kesişimidir; hepsi tek bir çerçevede hesaplanır, en sonda gerekirse \(\gamma\) ile yolcunun saatine geçilir.</p>
+  <p><b>2. Doppler (Bondi) çarpanı.</b> Sinyaller ardışık “tikler” gibidir. Uzaklaşan bir gözlemci kendi saatiyle \(\tau\) anında bir sinyal yollarsa, sinyal Dünya'ya Dünya saatiyle \(t=k\tau\) anında varır:</p>
+  \[ k=\sqrt{\frac{1+\beta}{1-\beta}} . \]
+  <p>Bu, Doppler formülünün “zaman” biçimidir; iki yönde de çalışır. Dünya \(t\) anında bir sinyal yollarsa uzaklaşan gemiye geminin saatiyle \(k\,t\) anında ulaşır. Gidiş-dönüşte yaklaşmada çarpan \(1/k\) olur (Krane 2.22: \(0{,}6c\)'de Casper işaretleri yılda 0,5 tane alır, dönüşte yılda 2).</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Bahar 2026 S1: Hain'e yolculuk</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Soru:</b> Gemi Dünya'dan \(0{,}6c\) ile Hain gezegenine (Dünya'ya göre duruyor) gidiyor. Kendi saatinize göre 3 yıl sonra Dünya'ya radyo sinyali yolluyorsunuz. Dünya sinyali alır almaz yanıt veriyor; yanıt size tam Hain'e vardığınız anda ulaşıyor. Size göre yolculuk ne kadar sürdü? Dünya'ya göre Hain ne kadar uzakta?</p></li>
+      <li class="step"><p><b>Diyagram yolu.</b> \(\gamma=1{,}25\). Sinyal olayı A: gemi saati 3 yıl ⇒ Dünya saati \(t_A=\gamma\cdot3=3{,}75\) yıl, konum \(x_A=0{,}6\times3{,}75=2{,}25\) ışık yılı.</p></li>
+      <li class="step"><p>Sinyal Dünya'ya \(x_A/c=2{,}25\) yılda ulaşır: \(t_B=3{,}75+2{,}25=6{,}0\) yıl. Yanıt \(x=c(t-6)\) doğrusu boyunca gider, gemi \(x=0{,}6t\) doğrusundadır. Kesişim:</p>\[ 0{,}6\,t=t-6\ \Rightarrow\ t_C=15\ \text{yıl},\qquad x_C=9\ \text{ışık yılı}. \]</li>
+      <li class="step"><p>Yolcunun saati: \(\tau=t_C/\gamma=15/1{,}25=\boxed{12\ \text{yıl}}\). Hain Dünya'ya göre \(\boxed{9\ \text{ışık yılı}}\) uzakta.</p></li>
+      <li class="step"><p><b>Doppler yolu (kontrol).</b> \(k=\sqrt{1{,}6/0{,}4}=2\). Sinyal gemi saatiyle 3'te çıkar, Dünya'ya \(k\cdot3=6\)'da varır. Yanıt Dünya saatiyle 6'da çıkar, gemiye gemi saatiyle \(k\cdot6=12\)'de varır ✓. İki satırlık çözüm budur.</p></li>
+    </ol>
+  </div>
+
+  <figure class="lab" id="lab-sinyal">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 3.1</span><h4>Sinyalli yolculuk: uzay-zaman diyagramı</h4><p>Mavi doğru gemi, amber kesikli doğrular ışık sinyalleri, gri dikey doğru varış gezegeni. Kaydırıcılar Bahar 2026 S1'in değerleriyle başlar.</p></div>
+    <div class="view"><canvas id="cv-sinyal" aria-label="Sinyalli yolculuk uzay-zaman diyagramı"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Hızı değiştirmeden sinyal anını 3'ten 6 yıla çıkarın; bütün süreler iki katına çıkar (\(\tau_C=k^2\tau_A\)). Hızı \(0{,}8c\) yapın: \(k=3\), varış \(9\tau_A\) gemi yılında olur.</p>
+  </figure>
+
+  <div class="box mine"><span class="box-label">Bahar 2026 kâğıdında</span>
+    <p>Kâğıtta “\(0{,}6c\times3\) yıl \(=1{,}8\) ışık yılı” yazılmış. 3 yıl gemi saatidir; Dünya çerçevesinde konum hesaplarken önce \(\gamma\cdot3=3{,}75\) yıla geçmek gerekir. Ardından hız toplama formülü ışığa uygulanmış (\(c\) zaten her çerçevede \(c\)). Kural: <b>bütün olayları tek bir çerçevede yaz, \(\gamma\)'yı yalnızca en başta ve en sonda kullan.</b></p>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Amelia 8,0 ışık yılı uzaktaki yıldıza \(0{,}80c\) ile gidip dönüyor. Döndüğünde Casper'dan kaç yaş genç? (Krane 2.23)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">8 yıl</button><button type="button" data-k="b">12 yıl</button><button type="button" data-k="c">4,8 yıl</button><button type="button" data-k="d">Aynı yaştalar</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Casper: \(16/0{,}8=20\) yıl. Amelia: \(20/\gamma=20\times0{,}6=12\) yıl. Fark 8 yıl.</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">\(\beta=0{,}6\) ile uzaklaşan gemi kendi saatiyle her yıl bir sinyal yolluyor. Dünya sinyalleri hangi aralıkla alır?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">1,25 yılda bir</button><button type="button" data-k="b">0,8 yılda bir</button><button type="button" data-k="c">2 yılda bir</button><button type="button" data-k="d">0,5 yılda bir</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(k=\sqrt{(1+0{,}6)/(1-0{,}6)}=2\). Aralığın 1,25'i zaman genişlemesinden, kalanı sinyallerin her seferinde daha uzun yol almasından gelir.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">İkiz paradoksunda yolculuk yapan ikizin daha genç olmasının nedeni nedir?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Yolculuk yapanın kalbi yavaş atar</button><button type="button" data-k="b">Yolcu dönüşte çerçeve değiştirir; Dünya'daki ikiz tek bir eylemsiz çerçevede kalır</button><button type="button" data-k="c">Durum simetriktir, ikisi de aynı yaştadır</button><button type="button" data-k="d">Işık sinyallerinin gecikmesi</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Simetri ivmelenmeyle bozulur. Zaman genişlemesini tek bir eylemsiz çerçevede uygulamak doğru sonucu verir.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="ikiz">Bu bölümü tamamladım</button><a href="#dinamik">Sonraki: Göreli momentum ve enerji →</a></div>
+</section>
+
+
+<!-- ============================================================ 4 -->
+<section class="chapter" id="dinamik" data-ch="dinamik">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 4</span><span class="sess">Krane 2.7–2.9 · S5'te gizli olarak kullanılır</span></p>
+    <h2>Göreli momentum, enerji, çarpışma ve bozunma</h2>
+    <p class="ch-lede">İki ara sınavda da ayrı bir soru olarak çıkmadı, ama S5'te “kinetik enerjiyi hangi formülle hesaplayacağım?” sorusunun cevabı burada. Önerilen listede bu kısımdan dört problem var.</p>
+  </header>
+
+  <h3>Momentum ve enerji</h3>
+  <p>Klasik momentum \(mv\), çarpışmalarda bir çerçevede korunuyorsa başka bir çerçevede korunmaz (Lorentz hız dönüşümü yüzünden). Korunan nicelik göreli momentumdur:</p>
+  \[ \vec p=\gamma m\vec v,\qquad E=\gamma mc^2,\qquad K=E-mc^2=(\gamma-1)\,mc^2 . \]
+  <p>\(mc^2\) durgun enerjidir. Krane Problem 2.28'deki gibi, iş–enerji teoreminde \(F=dp/dt\) kullanıp \(W=\int v\,dp\) integralini kısmi integrasyonla alınca \(K=(\gamma-1)mc^2\) çıkar.</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>\(E^2=(pc)^2+(mc^2)^2\) ve \(\beta=pc/E\)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>\(E=\gamma mc^2\) ve \(pc=\gamma m v c=\gamma mc^2\,\beta\) yazın. Kareleri farkı:</p>\[ E^2-(pc)^2=\gamma^2(mc^2)^2(1-\beta^2)=(mc^2)^2 . \]</li>
+      <li class="step"><p>Oranları: \(\dfrac{pc}{E}=\beta\). Bu üç ilişki (\(E^2=p^2c^2+m^2c^4\), \(\beta=pc/E\), \(E=K+mc^2\)) dört nicelikten birini bilince diğer üçünü verir.</p></li>
+      <li class="step"><p>Kütlesiz parçacık (foton): \(m=0\Rightarrow E=pc\) ve \(\beta=1\). Fotonun momentumu \(p=E/c=h/\lambda\) buradan gelir (Bölüm 6).</p></li>
+      <li class="step"><p>Birimler: parçacık fiziğinde enerji MeV, momentum MeV/\(c\), kütle MeV/\(c^2\) yazılır. Böylece \(pc\) ve \(mc^2\) doğrudan MeV olur ve \(c\) hiç sayısal olarak girmez. Bahar ve Güz sınavlarında hoca bu birimleri açıkça önerdi.</p></li>
+    </ol>
+  </div>
+
+  <h3>Ne zaman klasik, ne zaman ultra göreli?</h3>
+  <p>Kinetik enerjiyi momentum cinsinden yazın:</p>
+  \[ K=\sqrt{(pc)^2+(mc^2)^2}-mc^2\ \approx\ \begin{cases} \dfrac{(pc)^2}{2mc^2}=\dfrac{p^2}{2m}, &amp; pc\ll mc^2\ (\text{klasik})\\ pc, &amp; pc\gg mc^2\ (\text{ultra göreli}) \end{cases} \]
+  <div class="box exam"><span class="box-label">S5'in gizli adımı</span>
+    <p>Çekirdekte hapsedilmiş protonun momentumu \(\sim16\) MeV/\(c\), durgun enerjisi \(938\) MeV. \(pc\ll mc^2\) olduğu için \(K=p^2/2m=0{,}14\) MeV. \(K=pc\) yazmak bu durumda yüz kattan fazla hata verir. Aynı momentumdaki elektron (\(mc^2=0{,}511\) MeV) ise ultra görelidir ve \(K\approx pc\). Krane Örnek 4.7 bu yüzden elektron için tam formülü kullanır.</p>
+  </div>
+
+  <h3>Korunum yasaları: çarpışma ve bozunma</h3>
+  <p>Yalıtılmış sistemde <b>toplam göreli enerji</b> ve <b>toplam göreli momentum</b> korunur. Durgun enerji ve kinetik enerji tek tek korunmaz: kinetik enerji kütleye dönüşebilir (yapışan çarpışma) ya da kütle kinetik enerjiye (bozunma). Bir sistemin “değişmez kütlesi”:</p>
+  \[ Mc^2=\sqrt{E_{\text{top}}^2-(p_{\text{top}}c)^2} . \]
+  <p>Bu nicelik her çerçevede aynıdır. Yapışan iki parçacıktan oluşan yeni parçacığın kütlesi, kinetik enerji de kütleye katıldığı için kütlelerin toplamından büyüktür (Krane örnek sınav B1, B3: “greater than”).</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Krane 2.39: pion protona yapışıyor</h4></div>
+    <ol class="steps">
+      <li class="step"><p>\(m_\pi c^2=139{,}6\) MeV, \(v=0{,}906c\); durgun proton \(938{,}3\) MeV. \(\gamma_\pi=1/\sqrt{1-0{,}906^2}=2{,}363\).</p></li>
+      <li class="step"><p>Toplam enerji ve momentum (proton durgun, momentumu sıfır):</p>\[ E=2{,}363\times139{,}6+938{,}3=1268{,}1\ \text{MeV},\qquad pc=2{,}363\times139{,}6\times0{,}906=298{,}8\ \text{MeV}. \]</li>
+      <li class="step"><p>Yeni parçacığın durgun enerjisi:</p>\[ Mc^2=\sqrt{1268{,}1^2-298{,}8^2}=\boxed{1232\ \text{MeV}}>139{,}6+938{,}3=1077{,}9\ \text{MeV}. \]<p>Fark (154 MeV), pionun kinetik enerjisinin kütleye dönüşen kısmıdır. Bu, \(\Delta(1232)\) parçacığıdır (Krane 4.20'de yine karşımıza çıkar).</p></li>
+    </ol>
+  </div>
+
+  <figure class="lab" id="lab-enerji">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 4.1</span><h4>Enerji–momentum üçgeni</h4><p>Dik üçgenin dik kenarları \(mc^2\) ve \(pc\), hipotenüsü \(E\). Kaydırıcı kinetik enerjiyi logaritmik ölçekte değiştirir; alttaki çubuklar iki yaklaşımın hatasını gösterir.</p></div>
+    <div class="view"><canvas id="cv-enerji" aria-label="Enerji momentum üçgeni"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Proton seçip \(K=0{,}144\) MeV'ye gelin (S5): klasik formülün hatası binde birden küçük, \(K=pc\) ise yüzlerce kat yanlış. Elektrona geçip \(K=19\) MeV yapın (Krane Örnek 4.7): bu kez \(pc\) neredeyse doğru.</p>
+  </figure>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Kinetik enerjisi 750 MeV olan protonun momentumu nedir? (Krane örnek sınav A7)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">750 MeV/c</button><button type="button" data-k="b">1186 MeV/c</button><button type="button" data-k="c">1404 MeV/c</button><button type="button" data-k="d">1688 MeV/c</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(E=750+938{,}3=1688{,}3\) MeV. \(pc=\sqrt{1688{,}3^2-938{,}3^2}=1404\) MeV.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Kütleleri \(m\) olan iki parçacık zıt yönlerde \(0{,}707c\) ile çarpışıp tek bir parçacığa dönüşüyor. Yeni kütle? (Krane örnek sınav A18)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(2{,}0m\)</button><button type="button" data-k="b">\(2{,}8m\)</button><button type="button" data-k="c">\(1{,}0m\)</button><button type="button" data-k="d">\(4{,}0m\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Toplam momentum sıfır; \(Mc^2=2\gamma mc^2\), \(\gamma=1/\sqrt{1-0{,}5}=1{,}414\). \(M=2{,}83m\).</p>
+    </div>
+    <div class="quiz" data-answer="d">
+      <p class="quiz-q">Momentumu 50 MeV/\(c\) olan bir elektron ile bir protonun kinetik enerjileri için hangisi doğru?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">İkisi de \(p^2/2m\) ile hesaplanır</button><button type="button" data-k="b">İkisi de \(pc\) ile hesaplanır</button><button type="button" data-k="c">Elektron için \(p^2/2m\), proton için \(pc\)</button><button type="button" data-k="d">Elektron için \(\approx pc\), proton için \(\approx p^2/2m\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Elektronda \(pc=50\gg0{,}511\) MeV: ultra göreli. Protonda \(50\ll938\) MeV: klasik, \(K\approx1{,}3\) MeV.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="dinamik">Bu bölümü tamamladım</button><a href="#karacisim">Sonraki: Kara cisim ışıması →</a></div>
+</section>
+
+
+<!-- ============================================================ 5 -->
+<section class="chapter" id="karacisim" data-ch="karacisim">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 5</span><span class="sess">Krane 3.3 · Sınav yuvası S3</span></p>
+    <h2>Kara cisim ışıması</h2>
+    <p class="ch-lede">Her sınavın üçüncü sorusu. Fizik tek satırdır, \(P=\sigma T^4\times\text{alan}\); puanı belirleyen, alanın ve sıcaklık farkının doğru seçilmesidir.</p>
+  </header>
+
+  <h3>Isıl ışıma ve kara cisim</h3>
+  <p>Sıcaklığı \(T\) olan her cisim elektromanyetik ışıma yayar. Üzerine düşen bütün ışımayı soğuran ideal cisme <b>kara cisim</b> denir. Laboratuvardaki en iyi örnek, duvarları \(T\) sıcaklığında tutulan bir kovuğun üzerindeki küçük deliktir: deliğe giren ışık içeride defalarca yansıyıp soğurulur, geri çıkamaz. Delikten çıkan ışımanın tayfı yalnızca \(T\)'ye bağlıdır, kovuğun malzemesine ya da şekline bağlı değildir.</p>
+  <p>Deneysel olarak iki yasa bulunmuştu:</p>
+  <dl class="kv">
+    <dt>Stefan</dt><dd>Birim yüzeyden yayılan toplam güç (ışıma şiddeti): \(I=\sigma T^4\), \(\sigma=5{,}670\times10^{-8}\ \text{W/m}^2\text{K}^4\).</dd>
+    <dt>Wien</dt><dd>Şiddetin en büyük olduğu dalga boyu sıcaklıkla ters orantılı: \(\lambda_{\max}T=2{,}898\times10^{-3}\ \text{m·K}\).</dd>
+  </dl>
+  <p>Örnek: Güneş yüzeyi \(\approx5800\) K ⇒ \(\lambda_{\max}\approx500\) nm (görünür); insan derisi \(307\) K ⇒ \(9{,}4\) μm (kızılötesi, Krane 3.20); kozmik fon ışıması \(2{,}7\) K ⇒ \(1{,}1\) mm (mikrodalga).</p>
+
+  <h3>Morötesi felaketi ve Planck'ın varsayımı</h3>
+  <p>Klasik hesap (Rayleigh–Jeans), kovuktaki her duran dalga kipine ortalama \(kT\) enerji verir ve şunu bulur:</p>
+  \[ I(\lambda)=\frac{2\pi ckT}{\lambda^4}. \]
+  <p>Bu, uzun dalga boylarında deneyle uyuşur ama \(\lambda\to0\)'da sonsuza gider ve toplam güç sonsuz çıkar (<b>morötesi felaketi</b>). Planck 1900'de kovuk duvarındaki salınıcıların enerjisinin yalnızca \(\varepsilon=hf\)'nin tam katları olabileceğini varsaydı: \(E_n=n\,hf\).</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Planck'ın ortalama enerjisi ve dağılım yasası (Krane 3.14)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Enerjisi \(E_n=n\varepsilon\) olan salınıcı sayısı Boltzmann dağılımına uyar: \(N_n=A\,e^{-n\varepsilon/kT}\). \(x=e^{-\varepsilon/kT}\) yazın. Toplam sayı geometrik seridir:</p>\[ N=\sum_{n=0}^{\infty}A\,x^n=\frac{A}{1-x}. \]</li>
+      <li class="step"><p>Toplam enerji için \(\sum n x^n=x/(1-x)^2\) (geometrik serinin türevi):</p>\[ E_{\text{top}}=\sum_{n}n\varepsilon\,A x^n=\frac{A\varepsilon\,x}{(1-x)^2}. \]</li>
+      <li class="step"><p>Ortalama enerji:</p>\[ E_{\text{ort}}=\frac{E_{\text{top}}}{N}=\frac{\varepsilon\,x}{1-x}=\frac{\varepsilon}{e^{\varepsilon/kT}-1},\qquad \varepsilon=hf=\frac{hc}{\lambda}. \]</li>
+      <li class="step"><p>Limitler: \(\varepsilon\ll kT\) (uzun \(\lambda\)) ⇒ \(e^{\varepsilon/kT}-1\approx\varepsilon/kT\) ⇒ \(E_{\text{ort}}\approx kT\), klasik sonuç. \(\varepsilon\gg kT\) (kısa \(\lambda\)) ⇒ \(E_{\text{ort}}\to0\): kısa dalga boylu kipler “uyarılamaz”, felaket önlenir.</p></li>
+      <li class="step"><p>Rayleigh–Jeans'teki \(kT\) yerine bunu koyunca <b>Planck yasası</b>:</p>\[ I(\lambda,T)=\frac{2\pi hc^2}{\lambda^5}\,\frac{1}{e^{hc/\lambda kT}-1}. \]</li>
+    </ol>
+  </div>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Planck'tan Stefan ve Wien yasaları (Krane 3.15, 3.16)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Toplam şiddet \(\int_0^\infty I\,d\lambda\). Değişken: \(x=hc/\lambda kT\), \(d\lambda=-\dfrac{hc}{kT}\dfrac{dx}{x^2}\):</p>\[ I_{\text{top}}=\frac{2\pi k^4T^4}{h^3c^2}\int_0^\infty\frac{x^3\,dx}{e^x-1}=\frac{2\pi k^4T^4}{h^3c^2}\cdot\frac{\pi^4}{15}. \]</li>
+      <li class="step"><p>Böylece \(I=\sigma T^4\) ve Stefan sabiti temel sabitlerden çıkar:</p>\[ \sigma=\frac{2\pi^5k^4}{15h^3c^2}=5{,}670\times10^{-8}\ \text{W/m}^2\text{K}^4 . \]<p>Bahar 2026 S3 bu ifadeyi soru metninde verdi.</p></li>
+      <li class="step"><p>Wien: \(dI/d\lambda=0\) koşulu \(x\) cinsinden \(5(1-e^{-x})=x\) denklemine iner; kökü \(x=4{,}965\):</p>\[ \lambda_{\max}T=\frac{hc}{4{,}965\,k}=2{,}898\times10^{-3}\ \text{m·K}. \]</li>
+    </ol>
+  </div>
+
+  <h3>Sınavda: güç = σT⁴ × doğru alan</h3>
+  <p>Stefan yasası birim yüzey başına güçtür. Toplam güç için ışımanın çıktığı yüzeyin alanıyla çarpılır. İki sınavın S3'ü iki farklı geometriyi kullandı:</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Durum</th><th>Yayan alan</th><th>Formül</th></tr></thead>
+    <tbody>
+      <tr><td>Yıldız (küre)</td><td>\(4\pi R^2\)</td><td>\(L=4\pi R^2\sigma T^4\); \(d\) uzaklıkta akı \(F=\dfrac{L}{4\pi d^2}\)</td></tr>
+      <tr><td>Kovuktaki delik (disk)</td><td>\(\pi r^2\)</td><td>\(P=\pi r^2\,\sigma T^4\)</td></tr>
+      <tr><td>Ortam sıcaklığı \(T_0\) varken</td><td>aynı alan</td><td>\(P_{\text{net}}=A\,\sigma\,(T^4-T_0^4)\), <b>\((T-T_0)^4\) değil</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box exam"><span class="box-label">Çıkmış sorular · S3</span>
+    <p><b>Güz 2025 (Vega):</b> \(T=9600\) K, \(R=2{,}5R_\odot=1{,}74\times10^9\) m, gözlenen akı \(F=2{,}5\times10^{-8}\) W/m². \(L=4\pi R^2\sigma T^4=1{,}83\times10^{28}\) W (\(\approx48L_\odot\)). \(d=\sqrt{L/4\pi F}=2{,}42\times10^{17}\) m \(=7{,}8\) pc. Kısayol: \(d=R\sqrt{\sigma T^4/F}\).</p>
+    <p><b>Bahar 2026 (kovuk):</b> \(2{,}00\) mm çaplı delik, kovuk \(800\) K, ortam \(600\) K. Kovuğun dışarıyla tek alışverişi delikten olduğu için iç kaynağın sağlaması gereken güç \(P=\pi(1{,}00\ \text{mm})^2\,\sigma\,(800^4-600^4)=0{,}0499\) W. Krane 3.21 aynı sorunun ortamsız hâlidir (\(1650\) K, \(1{,}00\) mm ⇒ \(0{,}33\) W).</p>
+  </div>
+
+  <div class="box mine"><span class="box-label">Bahar 2026 kâğıdında</span>
+    <p>Kâğıtta \(P=4\pi r^2\,\sigma\,(800-600)^4\) yazılmış. İki ayrı hata var: delik bir küre değil diskdir (\(\pi r^2\)), ve iki sıcaklığın dördüncü kuvvetlerinin farkı alınır. \(T^4\) doğrusal olmadığı için \((T-T_0)^4\) çok küçük bir sayı verir.</p>
+  </div>
+
+  <figure class="lab" id="lab-planck">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 5.1</span><h4>Planck tayfı ve morötesi felaketi</h4><p>Amber eğri seçilen sıcaklık, gri kesikli eğri Güneş (5800 K). Renkli şerit görünür bölge. Kesikli mor eğri aynı sıcaklıktaki Rayleigh–Jeans tahmini.</p></div>
+    <div class="view"><canvas id="cv-planck" aria-label="Planck kara cisim tayfı"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Sıcaklığı Vega'nınkine (9600 K) çekin: tepe morötesine kayar, yıldız mavimsi görünür. Sıcaklığı iki katına çıkarınca tepe dalga boyu yarıya iner, toplam güç 16 kat artar.</p>
+  </figure>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Bir cisim \(T\) sıcaklığında en şiddetli ışımasını 5,6 μm'de yapıyor. \(4T\)'de tepe dalga boyu? (Krane örnek sınav A9)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">1,4 μm</button><button type="button" data-k="b">22,4 μm</button><button type="button" data-k="c">0,35 μm</button><button type="button" data-k="d">5,6 μm</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Wien: \(\lambda_{\max}\propto1/T\). \(5{,}6/4=1{,}4\) μm. Toplam güç ise \(4^4=256\) kat artar.</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Kovuk \(1000\) K'den \(2000\) K'ye ısıtılıyor. \(10\) μm civarında küçük bir dalga boyu aralığında çıkan foton sayısı ne olur? (Krane örnek sınav B8)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Azalır, çünkü tepe kısa dalga boyuna kaydı</button><button type="button" data-k="b">Değişmez</button><button type="button" data-k="c">Artar</button><button type="button" data-k="d">Sıfıra iner</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Planck eğrisi her dalga boyunda \(T\) ile artar; eğriler hiç kesişmez. Tepenin kayması, uzun dalga boylarında şiddetin azaldığı anlamına gelmez.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">\(T_0\) sıcaklığındaki ortamda duran, \(T\) sıcaklığındaki bir kara cismin net ışıma gücü hangisiyle orantılıdır?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\((T-T_0)^4\)</button><button type="button" data-k="b">\(T^4-T_0^4\)</button><button type="button" data-k="c">\(T-T_0\)</button><button type="button" data-k="d">\(T^4\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Cisim \(\sigma T^4\) yayar, ortamdan \(\sigma T_0^4\) soğurur. Net akı ikisinin farkıdır (Krane 3.20c: insan vücudu ≈ 150 W net).</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="karacisim">Bu bölümü tamamladım</button><a href="#foton">Sonraki: Fotoelektrik etki ve Compton →</a></div>
+</section>
+
+
+<!-- ============================================================ 6 -->
+<section class="chapter" id="foton" data-ch="foton">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 6</span><span class="sess">Krane 3.1, 3.2, 3.4, 3.5 · S3'ün yedeği</span></p>
+    <h2>Fotoelektrik etki, Compton saçılması ve diğer foton süreçleri</h2>
+    <p class="ch-lede">İki ara sınavda da çıkmadı, ama önerilen listede (3.9, 3.30, 3.36, 3.43) ve Krane'in örnek sınavlarında en çok soru buradan. S3 bir gün kara cisim yerine buradan gelirse hazırlıksız yakalanmayın.</p>
+  </header>
+
+  <h3>Foton: enerji ve momentum paketi</h3>
+  <p>Işık, enerjisi ve momentumu şu olan parçacıklar (fotonlar) olarak soğurulur ve yayılır:</p>
+  \[ E=hf=\frac{hc}{\lambda},\qquad p=\frac{E}{c}=\frac{h}{\lambda},\qquad hc=1240\ \text{eV·nm}=1240\ \text{MeV·fm}. \]
+  <p>\(hc=1240\) eV·nm ezberlenecek tek sabittir: \(500\) nm'lik yeşil foton \(2{,}48\) eV, \(0{,}1\) nm'lik X ışını \(12{,}4\) keV taşır.</p>
+
+  <h3>Fotoelektrik etki</h3>
+  <p>Metal yüzeye ışık düşünce elektron sökülür. Dalga kuramının üç öngörüsü deneyle çelişir:</p>
+  <ol>
+    <li>Kuram: daha şiddetli ışık daha hızlı elektron vermeli. Deney: en büyük kinetik enerji şiddetten bağımsız, yalnızca frekansa bağlı.</li>
+    <li>Kuram: her frekans yeterince şiddetliyse elektron sökmeli. Deney: bir <b>eşik frekansın</b> altında hiç elektron çıkmaz.</li>
+    <li>Kuram: zayıf ışıkta enerji birikene kadar gecikme olmalı. Deney: elektronlar hemen çıkar.</li>
+  </ol>
+  <p>Einstein'ın açıklaması: bir foton enerjisinin tamamını tek bir elektrona verir. Elektronu metalden koparmak için en az \(\phi\) (iş fonksiyonu) gerekir:</p>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ K_{\max}=hf-\phi=eV_s,\qquad \lambda_c=\frac{hc}{\phi}\ \ (\text{eşik dalga boyu}). \]
+    <p>Şiddet foton <em>sayısını</em>, dolayısıyla akımı belirler; frekans her fotonun enerjisini, dolayısıyla \(K_{\max}\)'ı belirler. \(V_s\) durdurma potansiyelidir: volt cinsinden değeri \(K_{\max}\)'ın eV cinsinden değerine eşittir.</p>
+  </div>
+
+  <figure class="lab" id="lab-fotoel">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 6.1</span><h4>Fotoelektrik etki: \(K_{\max}\)–frekans doğrusu</h4><p>Her metal için doğrunun eğimi aynıdır (\(h\)); kesişim noktası metale göre değişir (\(\phi\)). Değerler Krane Tablo 3.1'den.</p></div>
+    <div class="view"><canvas id="cv-fotoel" aria-label="Fotoelektrik etki grafiği"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Sodyumda 435 nm'yi seçin, sonra şiddeti sıfıra yaklaştırın: \(K_{\max}\) değişmez, yalnızca akım azalır. Platine geçin: görünür ışığın hiçbiri elektron sökemez.</p>
+  </figure>
+
+  <h3>Compton saçılması</h3>
+  <p>X ışınları serbest elektronlardan saçılınca dalga boyları uzar ve uzama saçılma açısına bağlıdır. Dalga kuramında saçılan ışık aynı dalga boyunda olmalıydı. Foton–elektron çarpışması olarak ele alınınca sonuç kendiliğinden çıkar.</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Compton formülü: göreli enerji ve momentum korunumu</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Gelen foton \(E,\ p=E/c\); elektron durgun. Saçılan foton \(E'\), \(\theta\) açısında; elektron \(p_e\) ile \(\phi\) açısında.</p></li>
+      <li class="step"><p>Momentum (iki bileşen): \(p=p'\cos\theta+p_e\cos\phi\), \(0=p'\sin\theta-p_e\sin\phi\). \(\phi\)'yi yok etmek için kareleri toplayın:</p>\[ p_e^2=p^2-2pp'\cos\theta+p'^2 . \]</li>
+      <li class="step"><p>Enerji: \(E+m c^2=E'+\sqrt{p_e^2c^2+m^2c^4}\). Kökü yalnız bırakıp kare alın:</p>\[ (E-E'+mc^2)^2=p_e^2c^2+m^2c^4 . \]</li>
+      <li class="step"><p>\(p_e^2c^2=E^2-2EE'\cos\theta+E'^2\) koyup açın; \(E^2\), \(E'^2\), \(m^2c^4\) sadeleşir:</p>\[ (E-E')\,mc^2=EE'(1-\cos\theta)\ \Rightarrow\ \frac{1}{E'}-\frac1E=\frac{1-\cos\theta}{mc^2}. \]</li>
+      <li class="step"><p>\(E=hc/\lambda\) ile dalga boyu biçimi:</p>\[ \lambda'-\lambda=\frac{h}{m_ec}\,(1-\cos\theta),\qquad \frac{h}{m_ec}=0{,}002426\ \text{nm}. \]<p>Kayma \(\lambda\)'ya bağlı değildir (Krane örnek sınav B11). En büyük kayma \(\theta=180^\circ\)'de \(2h/m_ec\). Elektronun aldığı enerji \(K_e=E-E'\) de o açıda en büyüktür: \(K_{e,\max}=\dfrac{2E^2}{mc^2+2E}\) (Krane 3.36).</p></li>
+    </ol>
+  </div>
+
+  <figure class="lab" id="lab-compton">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 6.2</span><h4>Compton saçılması: momentum üçgeni</h4><p>Amber oklar gelen ve saçılan foton, mavi ok geri tepen elektron. Okların uzunluğu momentumla orantılıdır ve üçgen her zaman kapanır.</p></div>
+    <div class="view"><canvas id="cv-compton" aria-label="Compton saçılması momentum diyagramı"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> 184 keV, 60°: \(E'=156\) keV, \(K_e=28\) keV (Krane örnek sınav C6). Açıyı küçültün: saçılan foton enerjisi artar, elektronun enerjisi azalır (örnek sınav B2).</p>
+  </figure>
+
+  <h3>Diğer foton süreçleri</h3>
+  <dl class="kv">
+    <dt>Bremsstrahlung</dt><dd>Hızlandırılmış elektron hedefte yavaşlarken foton yayar. Tek çarpışmada tüm kinetik enerjisini verirse en kısa dalga boyu çıkar: \(\lambda_{\min}=hc/(e\,\Delta V)\). Krane 3.30: \(25\) kV ⇒ \(0{,}0496\) nm.</dd>
+    <dt>Çift oluşumu</dt><dd>\(\gamma\to e^-+e^+\), ancak bir çekirdeğin yanında (momentumu o taşır). Eşik \(\approx2m_ec^2=1{,}022\) MeV.</dd>
+    <dt>Yok olma</dt><dd>\(e^-+e^+\to2\gamma\). Durgun çift için iki foton zıt yönlerde, her biri \(0{,}511\) MeV. Tek foton olamaz: momentum korunmaz.</dd>
+    <dt>Serbest elektron</dt><dd>Serbest bir elektron bir fotonu tamamen soğuramaz ya da yayamaz; enerji ve momentum aynı anda korunamaz (Krane 3.43). Fotoelektrik etkide metal örgüsü geri tepmeyi alır.</dd>
+  </dl>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">488 nm'lik ışık bir metalden en çok 1,39 eV'luk elektron söküyor. İş fonksiyonu? (Krane örnek sınav A7)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">2,54 eV</button><button type="button" data-k="b">1,15 eV</button><button type="button" data-k="c">3,93 eV</button><button type="button" data-k="d">0,65 eV</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(hc/\lambda=1240/488=2{,}54\) eV. \(\phi=2{,}54-1{,}39=1{,}15\) eV.</p>
+    </div>
+    <div class="quiz" data-answer="d">
+      <p class="quiz-q">Aynı dalga boyunda ama yarı şiddette ışık kullanılırsa \(K_{\max}\) ne olur? (Krane örnek sınav B6)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Yarıya iner</button><button type="button" data-k="b">İki katına çıkar</button><button type="button" data-k="c">Sıfır olur</button><button type="button" data-k="d">Değişmez</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Her fotonun enerjisi \(hc/\lambda\) aynı kalır. Daha az foton, daha az elektron demektir; elektron başına enerji aynıdır.</p>
+    </div>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Dalga boyu daha büyük X ışınları aynı açıda saçılırsa Compton kayması \(\Delta\lambda\) nasıl değişir? (Krane örnek sınav B11)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Aynı kalır</button><button type="button" data-k="b">Büyür</button><button type="button" data-k="c">Küçülür</button><button type="button" data-k="d">Sıfır olur</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(\Delta\lambda=(h/m_ec)(1-\cos\theta)\) yalnızca açıya bağlıdır. Göreli kayma \(\Delta\lambda/\lambda\) ise küçülür; görünür ışıkta etki bu yüzden fark edilmez.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="foton">Bu bölümü tamamladım</button><a href="#belirsizlik">Sonraki: De Broglie dalgaları ve belirsizlik →</a></div>
+</section>
+
+
+<!-- ============================================================ 7 -->
+<section class="chapter" id="belirsizlik" data-ch="belirsizlik">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 7</span><span class="sess">Krane 4.1–4.6 · Sınav yuvası S5</span></p>
+    <h2>De Broglie dalgaları, dalga paketleri ve belirsizlik ilkesi</h2>
+    <p class="ch-lede">İki sınavın beşinci sorusu kelimesi kelimesine aynıydı: çekirdekte hapsedilmiş proton. Kaynağı Krane eğitmen kitabının 4. bölüm örnek sınav problemi C4. Bu bölüm o sorunun her adımını kurar.</p>
+  </header>
+
+  <h3>De Broglie dalga boyu</h3>
+  <p>De Broglie (1924), fotonun \(p=h/\lambda\) ilişkisinin her parçacık için geçerli olduğunu önerdi:</p>
+  \[ \lambda=\frac{h}{p}=\frac{hc}{pc}. \]
+  <p>Momentumu kinetik enerjiden bulmak için Bölüm 4'teki karar verilir: klasik bölgede \(pc=\sqrt{2mc^2K}\), ultra göreli bölgede \(pc\approx K\), arada tam formül \(pc=\sqrt{K^2+2Kmc^2}\). Elektron için klasik bölgede kullanışlı kısayol: \(\lambda=1{,}226\ \text{nm}/\sqrt{K/\text{eV}}\).</p>
+  <dl class="kv">
+    <dt>Kanıt 1</dt><dd><b>Davisson–Germer (1927):</b> 54 eV'luk elektronlar nikel kristalinden saçılınca \(50^\circ\)'de bir şiddet tepesi verdi. Atom sıraları arası \(d=0{,}215\) nm ile \(d\sin\phi=\lambda\) ⇒ \(\lambda=0{,}165\) nm; de Broglie \(1{,}226/\sqrt{54}=0{,}167\) nm.</dd>
+    <dt>Kanıt 2</dt><dd><b>Çift yarık:</b> elektron, nötron, helyum atomu ve hatta büyük moleküllerle girişim saçakları gözlenir. Parçacıklar tek tek gönderilse de saçaklar zamanla oluşur.</dd>
+  </dl>
+  <p>Bir yapıyı görmek için dalga boyu yapının boyutu kadar ya da daha küçük olmalı. Krane 4.7: 14 fm'lik kurşun çekirdeğini incelemek için \(p=hc/(14\ \text{fm})=88{,}6\) MeV/\(c\). Elektronda bu \(K\approx88\) MeV (ultra göreli), nötronda \(K=p^2/2m=4{,}2\) MeV (klasik).</p>
+
+  <h3>Dalga paketleri</h3>
+  <p>Tek bir sinüs dalgasının konumu yoktur; her yere yayılmıştır. Yerelleşmiş bir parçacığı temsil etmek için farklı dalga sayılarını üst üste koyarız. Dalga sayısı aralığı \(\Delta k\) ne kadar genişse paket o kadar dardır. Klasik dalgaların genel özelliği:</p>
+  \[ \Delta x\,\Delta k\sim1,\qquad \Delta t\,\Delta\omega\sim1 . \]
+  <p>Krane 4.13: 2,0 s süren 1 kHz'lik düdük sesi \(660\) m'lik bir dalga treni oluşturur; frekans en iyi \(\Delta f\sim0{,}1/2{,}0\ \text{s}=0{,}05\) Hz hassasiyetle ölçülebilir. Paketin zarfı <b>grup hızıyla</b> ilerler: \(v_g=d\omega/dk\). Madde dalgası için \(E=\hbar\omega\), \(p=\hbar k\) koyunca \(v_g=dE/dp=p/m=v\): paket parçacıkla birlikte gider.</p>
+
+  <figure class="lab" id="lab-paket">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 7.1</span><h4>Gauss dalga paketi: dar konum, geniş momentum</h4><p>Macenta eğri \(\operatorname{Re}\psi\), kalın eğri \(|\psi|\) zarfı. Alttaki küçük grafik dalga sayısı dağılımı \(|A(k)|^2\). Oynat'a basınca serbest paket ilerler ve yayılır.</p></div>
+    <div class="view"><canvas id="cv-paket" aria-label="Gauss dalga paketi"></canvas></div>
+    <div class="ctrls"></div>
+    <div class="lab-actions"><button type="button" class="btn" data-act="play">Oynat</button><button type="button" class="btn btn-ghost" data-act="reset">Baştan</button></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> Paketi daraltın: alttaki \(|A(k)|^2\) genişler ve çarpım \(\Delta x\,\Delta k=0{,}5\)'te kalır. Oynatınca dar paketin daha hızlı yayıldığını görürsünüz; büyük \(\Delta k\), hız belirsizliği demektir.</p>
+  </figure>
+
+  <h3>Heisenberg belirsizlik ilişkileri</h3>
+  <p>\(p=\hbar k\) ve \(E=\hbar\omega\) dalga paketi ilişkilerine konunca:</p>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ \Delta x\,\Delta p_x\ge\frac{\hbar}{2},\qquad \Delta E\,\Delta t\ge\frac{\hbar}{2}\qquad\big(\text{tahminlerde Krane: } \Delta x\,\Delta p\sim\hbar,\ \Delta E\,\Delta t\sim\hbar\big). \]
+    <p>\(\hbar c=197{,}3\) MeV·fm \(=197{,}3\) eV·nm, \(\hbar=6{,}58\times10^{-16}\) eV·s.</p>
+  </div>
+  <p>Belirsizlik ölçüm aletinin kusuru değildir; dalga doğasının sonucudur. İlişki yalnızca aynı doğrultudaki konum ve momentum için geçerlidir: \(\Delta x\) ile \(\Delta p_y\) arasında sınır yoktur (Krane örnek sınav B10). Enerji–zaman biçimi ömür ile enerji genişliğini bağlar: ömrü \(\tau\) olan bir hâlin enerjisi \(\Delta E\sim\hbar/\tau\) kadar belirsizdir (Krane 4.21: 1,2 ns ⇒ \(5{,}5\times10^{-7}\) eV).</p>
+
+  <h3>Hapsedilmiş parçacık: kinetik enerji tahmini</h3>
+  <p>Parçacık \(\Delta x\) genişliğinde bir bölgeye kapatılmışsa ortalama momentumu sıfırdır ama momentumu sıfır değildir: \(p_{\text{tipik}}\sim\Delta p\sim\hbar/\Delta x\). Buradan bir “en küçük kinetik enerji” çıkar. Krane 4.18: atom boyunda (0,1 nm) elektron ⇒ \(\Delta p\sim2000\) eV/\(c\), \(K\sim4\) eV, gerçek atomik enerjilerle aynı mertebe. Örnek 4.7: aynı akıl yürütme, çekirdekte elektron olamayacağını gösterir (gerekli \(K\approx19\) MeV, beta elektronları ise \(\sim1\) MeV).</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>S5 (Güz 2025 ve Bahar 2026): yarıçapı 6,0 fm olan çekirdekte proton</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Soru:</b> (a) Momentum belirsizliği? (b) Bu momentumdaki protonun kinetik enerjisi? (c) Proton 5,6 MeV kinetik enerjiye sahipse çapa kaç de Broglie dalga boyu sığar; sonsuz kutu problemi olsaydı hangi duruma karşılık gelirdi? Bahar'da eklenen ipucu: <em>“Küresel koordinatın radyal bileşenini 1B dünyanız sayın ve hapsi dikkatle belirtin.”</em></p></li>
+      <li class="step"><p><b>(a) Hapsi belirtin.</b> Krane'in yolu: \(\Delta x\approx\) çap \(=12\) fm, \(\Delta p\sim\hbar/\Delta x\). Bahar ipucunun yolu: radyal dünya \(0\le r\le R\), yani \(\Delta r\approx R=6\) fm, ve kesin eşitsizlik \(\Delta r\,\Delta p\ge\hbar/2\). İkisi aynı sayıyı verir:</p>\[ \Delta p\approx\frac{\hbar c}{2R\,c}=\frac{197{,}3\ \text{MeV·fm}}{12\ \text{fm}}\,\frac1c=\boxed{16{,}4\ \text{MeV}/c}. \]<p>(\(\Delta r=R\) ile \(\sim\hbar\) kullanırsanız \(33\) MeV/\(c\) bulursunuz; tahmin için kabul edilir, ama hangi ilişkiyi kullandığınızı yazın.)</p></li>
+      <li class="step"><p><b>(b)</b> \(p\sim\Delta p\). Bölüm 4 kontrolü: \(pc=16{,}4\) MeV \(\ll m_pc^2=938{,}3\) MeV ⇒ klasik formül:</p>\[ K=\frac{(pc)^2}{2m_pc^2}=\frac{16{,}4^2}{2\times938{,}3}\ \text{MeV}=\boxed{0{,}144\ \text{MeV}}. \]</li>
+      <li class="step"><p><b>(c)</b> \(K=5{,}6\) MeV yine klasik bölge:</p>\[ pc=\sqrt{2m_pc^2K}=\sqrt{2\times938{,}3\times5{,}6}=102{,}5\ \text{MeV},\qquad \lambda=\frac{hc}{pc}=\frac{1240}{102{,}5}\ \text{fm}=12{,}1\ \text{fm}. \]<p>Çap 12 fm: <b>tam bir dalga boyu</b> sığar.</p></li>
+      <li class="step"><p><b>Hangi durum?</b> Duran dalga koşulu \(L=n\lambda/2\). Güz sürümündeki gibi çapı \(L=2R\) genişliğinde bir kutu sayarsanız \(n=2\lambda/\lambda=2\): birinci uyarılmış durum. Bahar ipucuyla radyal dünyada kutu \(0\le r\le R\) ve dalga \(r=0\)'da da sıfır olmalı (\(\psi=u(r)/r\), \(u(0)=0\)). Bu kez \(R=n\lambda/2\Rightarrow n=1\): <b>temel durum</b>.</p></li>
+      <li class="step"><p><b>Kontrol:</b> radyal kutunun temel durum enerjisi \(E_1=\dfrac{(\pi\hbar c)^2}{2m_pc^2R^2}=\dfrac{(619{,}9)^2}{2\times938{,}3\times36}=5{,}69\) MeV. Soruda verilen 5,6 MeV tam bu: soru temel durumu kastediyor. İki sayım aynı fiziği anlatır: \(2R\) genişliğindeki kutunun \(n=2\) durumu, merkezde düğümü olan, radyal kutunun \(n=1\) durumudur.</p></li>
+    </ol>
+  </div>
+
+  <div class="box mine"><span class="box-label">Bahar 2026 kâğıdında</span>
+    <p>(b)'de \(K=pc\) kullanılmış ve sonuç \(16\) MeV bulunmuş; (c)'de yine \(p=K/c\) ile \(\lambda=221\) fm ve “37 dalga” çıkmış. Proton bu enerjilerde klasik bölgededir. Kural: <b>önce \(pc\)'yi \(mc^2\) ile karşılaştır</b>, sonra formülü seç. (a)'da da \(197\) MeV·fm, \(12\times10^{-15}\) m'ye bölünmüş ve fm ile m karışmış. Pay ile paydayı aynı birimde tutun: \(197{,}3\ \text{MeV·fm}/12\ \text{fm}=16{,}4\) MeV/\(c\).</p>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Duvarlar birbirine yaklaştırılırsa iki duvar arasına hapsedilmiş elektronun ortalama kinetik enerjisi ne olur? (Krane örnek sınav B2)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Azalır</button><button type="button" data-k="b">Artar</button><button type="button" data-k="c">Değişmez</button><button type="button" data-k="d">Sıfıra iner</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(\Delta x\) küçülünce \(\Delta p\sim\hbar/\Delta x\) büyür, \(K\sim(\Delta p)^2/2m\) artar. Sonsuz kuyuda \(E_n\propto1/L^2\).</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Durgun enerjisi ~2500 MeV olan bir parçacığın ölçümleri ±40 MeV yayılıyor (alet kusursuz). Ömür mertebesi? (Krane örnek sınav A4)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(10^{-19}\) s</button><button type="button" data-k="b">\(10^{-21}\) s</button><button type="button" data-k="c">\(10^{-23}\) s</button><button type="button" data-k="d">\(10^{-25}\) s</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(\Delta t\sim\hbar/\Delta E=6{,}58\times10^{-22}\ \text{MeV·s}/40\ \text{MeV}\approx1{,}6\times10^{-23}\) s.</p>
+    </div>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Kinetik enerjileri aynı olan sodyum atomu, nötron, proton ve elektrondan hangisinin de Broglie dalga boyu en küçüktür? (Krane örnek sınav A5)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Sodyum atomu</button><button type="button" data-k="b">Nötron</button><button type="button" data-k="c">Proton</button><button type="button" data-k="d">Elektron</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Aynı \(K\) için \(p=\sqrt{2mK}\) kütleyle büyür, \(\lambda=h/p\) küçülür. En ağır olan sodyum.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="belirsizlik">Bu bölümü tamamladım</button><a href="#schrodinger">Sonraki: Schrödinger denklemi ve sonsuz kuyu →</a></div>
+</section>
+
+
+<!-- ============================================================ 8 -->
+<section class="chapter" id="schrodinger" data-ch="schrodinger">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 8</span><span class="sess">Krane 5.1–5.4 · Sınav yuvası S4, S5</span></p>
+    <h2>Schrödinger denklemi ve sonsuz potansiyel kuyusu</h2>
+    <p class="ch-lede">Dalga fonksiyonunun hangi koşulları sağlaması gerektiği, S4'ün puanlarının yarısıdır. Sonsuz kuyu ise S5'in (c) şıkkındaki “hangi durum?” sorusunun cevabıdır.</p>
+  </header>
+
+  <h3>Sınırda dalga davranışı</h3>
+  <p>Bir dalga bir ortamdan diğerine geçerken sınırda iki şey sürekli kalır: dalganın kendisi ve eğimi. Aksi hâlde ip kopar ya da sınırdaki kütlesiz parçaya sonsuz kuvvet etkir. Krane 5.2: \(x\lt0\)'da \(y=A\cos(2\pi x/\lambda+\pi/3)\), \(x>0\)'da dalga boyu \(\lambda/2\). \(y\) ve \(dy/dx\)'in sürekliliği iki denklem verir; genlik \(0{,}661A\), faz \(40{,}9^\circ\) çıkar. Kuantum mekaniğinde aynı iki koşul dalga fonksiyonuna uygulanır.</p>
+
+  <h3>Zamandan bağımsız Schrödinger denklemi</h3>
+  <p>Serbest parçacık için \(\psi=A\sin kx\), \(k=p/\hbar=\sqrt{2mK}/\hbar\) olmalı. İkinci türev \(\psi''=-k^2\psi\) ve \(K=E-U\) olduğundan:</p>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ -\frac{\hbar^2}{2m}\frac{d^2\psi}{dx^2}+U(x)\,\psi(x)=E\,\psi(x). \]
+    <p>Zaman bağımlılığı \(\Psi(x,t)=\psi(x)\,e^{-iEt/\hbar}\). \(|\Psi|^2=|\psi|^2\) zamanla değişmez: bu çözümlere <b>durağan durum</b> denir.</p>
+  </div>
+  <p>Denklemi şöyle okuyun: \(\psi''/\psi=\dfrac{2m}{\hbar^2}(U-E)\). \(E>U\) olan bölgede eğrilik eksene doğrudur, \(\psi\) salınır. \(E\lt U\) olan (klasik olarak yasak) bölgede eğrilik eksenden uzağa doğrudur, \(\psi\) üstel büyür ya da söner. S4'teki çizim sorusunun bütün mantığı bu tek cümledir.</p>
+
+  <h3>Dalga fonksiyonunun koşulları ve olasılık</h3>
+  <ol>
+    <li>\(\psi\) her yerde sonlu, tek değerli ve <b>sürekli</b> olmalı.</li>
+    <li>\(d\psi/dx\), \(U\)'nun sonlu olduğu her yerde <b>sürekli</b> olmalı. Sonsuz duvarda bu koşul aranmaz; orada yalnızca \(\psi=0\).</li>
+    <li>\(x\to\pm\infty\)'da \(\psi\to0\) olmalı ki normalize edilebilsin: \(\int_{-\infty}^{\infty}|\psi|^2dx=1\).</li>
+  </ol>
+  <p>\(|\psi(x)|^2dx\), parçacığı \(x\) ile \(x+dx\) arasında bulma olasılığıdır. Ortalama (beklenen) değer: \(\langle f(x)\rangle=\int f(x)\,|\psi|^2dx\). Krane örnek sınav A7: \(Ae^{-kx}/x\) (\(x=0\)'da sonsuz) ve \(Ae^{+kx}\) (sonsuzda büyür) ikisi de kabul edilemez.</p>
+
+  <h3>Sonsuz kuyu: bir kutudaki parçacık</h3>
+  <p>\(0\lt x\lt L\) arasında \(U=0\), dışarıda \(U=\infty\). Parçacık dışarıda bulunamaz: \(\psi=0\).</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Enerji düzeyleri ve normalize dalga fonksiyonları</h4></div>
+    <ol class="steps">
+      <li class="step"><p>İçeride \(U=0\): \(\psi''=-k^2\psi\), \(k=\sqrt{2mE}/\hbar\). Genel çözüm:</p>\[ \psi(x)=A\sin kx+B\cos kx . \]</li>
+      <li class="step"><p>Süreklilik \(x=0\)'da: \(\psi(0)=B=0\).</p></li>
+      <li class="step"><p>Süreklilik \(x=L\)'de: \(A\sin kL=0\). \(A=0\) her şeyi sıfırlar, o hâlde \(kL=n\pi\), \(n=1,2,3,\dots\) (\(n=0\) sıfır fonksiyon; negatif \(n\) yeni durum vermez).</p></li>
+      <li class="step"><p>Enerji \(k\)'dan gelir:</p>\[ E_n=\frac{\hbar^2k^2}{2m}=\frac{\hbar^2\pi^2}{2mL^2}\,n^2=\frac{h^2}{8mL^2}\,n^2 . \]<p>Enerji <b>kuantumludur</b>; bunu yapan sınır koşullarıdır. En düşük enerji sıfır değil (sıfır nokta enerjisi), belirsizlik ilkesiyle uyumlu.</p></li>
+      <li class="step"><p>Normalizasyon: \(\int_0^LA^2\sin^2(n\pi x/L)\,dx=A^2L/2=1\):</p>\[ \psi_n(x)=\sqrt{\frac2L}\,\sin\frac{n\pi x}{L}. \]</li>
+      <li class="step"><p>Yorum: \(k=2\pi/\lambda\) ile \(L=n\lambda/2\). Kuyuya tam sayıda yarım dalga boyu sığar; durum \(n\)'nin \(n-1\) düğümü vardır. S5(c) bu cümleyi kullanır.</p></li>
+    </ol>
+  </div>
+
+  <div class="box ex"><span class="box-label">Sayılarla</span>
+    <p>Elektron, \(L=0{,}1\) nm: \(E_1=\dfrac{(hc)^2}{8\,m_ec^2L^2}=\dfrac{1240^2}{8\times511\,000\times0{,}01}=37{,}6\) eV. Proton, \(L=12\) fm: \(E_1=\dfrac{1240^2}{8\times938{,}3\times144}=1{,}42\) MeV. Krane örnek sınav A1: birinci uyarılmış durum 6,0 eV ise temel durum \(6{,}0/4=1{,}5\) eV.</p>
+  </div>
+
+  <p><b>Olasılık hesabı.</b> Dar bir aralıkta integral gerekmez: \(P\approx|\psi(x)|^2\,\Delta x\). Krane 5.15: \(L=0{,}189\) nm, \(n=3\), \(1{,}00\) pm genişliğinde aralıklar. \(x=0{,}031\) nm'de \(P=0{,}0106\), \(x=0{,}188\) nm'de (duvar yanında) \(2{,}6\times10^{-5}\). Klasik parçacık için her yerde \(\Delta x/L=5{,}29\times10^{-3}\). Çok büyük \(n\)'de tepeler sıklaşır ve ortalama klasik sonuca gider (karşılık ilkesi).</p>
+  <p><b>Belirsizlik kontrolü.</b> Kuyuda \(\langle p\rangle=0\) ama \(\langle p^2\rangle=(\hbar n\pi/L)^2\), yani \(\Delta p=hn/2L\) (Krane 5.35). \(\Delta x=L\sqrt{1/12-1/2n^2\pi^2}\) (5.34). Temel durumda \(\Delta x\,\Delta p=0{,}568\hbar>\hbar/2\) ✓.</p>
+  <p><b>İki ve üç boyut.</b> Kare kutuda \(E=\dfrac{\hbar^2\pi^2}{2mL^2}(n_x^2+n_y^2)\). Farklı \((n_x,n_y)\) çiftleri aynı enerjiyi verebilir: \((1,2)\) ile \((2,1)\). Buna <b>dejenerelik</b> denir; simetrinin sonucudur.</p>
+
+  <figure class="lab" id="lab-kuyu">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 8.1</span><h4>Sonsuz kuyu: durumlar ve olasılık</h4><p>Macenta eğri seçilen durumun \(\psi_n\)'si (ya da \(|\psi_n|^2\)), kendi enerji düzeyine oturtulmuş. Gölgeli bölgenin olasılığı alttaki tabloda; klasik değerle karşılaştırın.</p></div>
+    <div class="view"><canvas id="cv-kuyu" aria-label="Sonsuz kuyu dalga fonksiyonları"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> \(n=2\) seçip gölgeyi kuyunun ortasına alın: olasılık neredeyse sıfır (düğüm). \(n=1\)'de aynı bölge en olası yerdir (Krane örnek sınav B6). \(n\)'yi 8'e çıkarın ve olasılığın klasik değere yaklaştığını görün.</p>
+  </figure>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Sonsuz kuyunun temel durum enerjisi 4,4 eV. Kuyu genişliği iki katına çıkarılırsa yeni temel durum enerjisi? (Krane 5.3)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">8,8 eV</button><button type="button" data-k="b">2,2 eV</button><button type="button" data-k="c">1,1 eV</button><button type="button" data-k="d">4,4 eV</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(E\propto1/L^2\): \(4{,}4/4=1{,}1\) eV.</p>
+    </div>
+    <div class="quiz" data-answer="d">
+      <p class="quiz-q">Temel durum enerjisi 2,0 eV olan bir kuyuda hangisi bir uyarılmış durumun enerjisi <em>olamaz</em>? (Krane örnek sınav A4)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">8 eV</button><button type="button" data-k="b">18 eV</button><button type="button" data-k="c">50 eV</button><button type="button" data-k="d">36 eV</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(E_n=2n^2\) eV: 2, 8, 18, 32, 50, 72… \(36/2=18\) bir tam kare değildir.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Birinci uyarılmış durumdaki (\(n=2\)) parçacık en çok nerede bulunur? (Krane örnek sınav B8)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(x=L/2\)</button><button type="button" data-k="b">\(x=L/4\) ve \(3L/4\)</button><button type="button" data-k="c">Duvarların yanında</button><button type="button" data-k="d">Her yerde eşit</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(|\psi_2|^2\propto\sin^2(2\pi x/L)\), tepeler \(L/4\) ve \(3L/4\)'te, ortada düğüm var.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="schrodinger">Bu bölümü tamamladım</button><a href="#sonlu">Sonraki: Basamak, kuyu, engel, osilatör →</a></div>
+</section>
+
+
+<!-- ============================================================ 9 -->
+<section class="chapter" id="sonlu" data-ch="sonlu">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 9</span><span class="sess">Krane 5.5–5.7 · Sınav yuvası S4</span></p>
+    <h2>Sonlu potansiyeller: basamak, kuyu, engel ve harmonik osilatör</h2>
+    <p class="ch-lede">S4 iki sınavda da aynı potansiyeli kullandı: bir duvarla kapanmış, içinde bir basamak olan kutu. Güz'de dalga fonksiyonunu çizdirdi, Bahar'da denklemlerini yazdırdı. İkisinin de reçetesi aynı.</p>
+  </header>
+
+  <h3>Bölge bölge çözüm reçetesi</h3>
+  <ol>
+    <li>Potansiyeli \(U\)'nun sabit olduğu bölgelere ayırın.</li>
+    <li>Her bölgede \(E\) ile \(U\)'yu karşılaştırın. \(E>U\): \(\psi=A\sin kx+B\cos kx\) (ya da \(e^{\pm ikx}\)), \(k=\sqrt{2m(E-U)}/\hbar\). \(E\lt U\): \(\psi=Ce^{\kappa x}+De^{-\kappa x}\), \(\kappa=\sqrt{2m(U-E)}/\hbar\).</li>
+    <li>Fiziksel olmayan terimleri atın: sonsuza uzanan bölgede büyüyen üstel; sonsuz duvarda \(\psi=0\).</li>
+    <li>Her iç sınırda iki koşul yazın: \(\psi\) sürekli, \(\psi'\) sürekli.</li>
+    <li>Bilinmeyen ve denklem sayısını karşılaştırın. Bağlı durumlarda denklem sayısı fazladır ve bu, <b>enerjinin kuantumlu olması</b> demektir.</li>
+  </ol>
+
+  <h3>Çizim kuralları (Güz 2025 S4)</h3>
+  <p>“Makul bir dalga fonksiyonu çizin ve gerekçelendirin” sorusunda puan, çizimin üzerine yazılan özelliklere verilir:</p>
+  <ul>
+    <li><b>Duvarlar:</b> sonsuz duvarda \(\psi=0\).</li>
+    <li><b>\(E>U\) bölgesi:</b> salınım. \(E-U\) büyüdükçe dalga boyu kısalır (\(\lambda=h/\sqrt{2m(E-U)}\)) ve genlik küçülür (parçacık orada hızlı, az zaman geçirir).</li>
+    <li><b>\(E\lt U\) bölgesi:</b> salınım yok, düğüm yok; eğri eksenden uzağa bükülür ve sınırdan uzaklaştıkça söner (ya da duvara doğru \(\sinh\) gibi sıfıra iner).</li>
+    <li><b>Basamakta:</b> kırık yok. \(\psi\) ve eğimi sürekli; eğrilik işaret değiştirir.</li>
+    <li><b>Düğüm sayısı:</b> \(n\). durumun duvarlar dışında \(n-1\) düğümü vardır.</li>
+  </ul>
+
+  <figure class="fig">
+    <svg viewBox="0 0 640 300" role="img" aria-label="Basamaklı kutu potansiyeli ve dalga fonksiyonu">
+  <rect class="f-region" x="70.0" y="20" width="260.0" height="242" opacity=".45"/>
+  <path class="s-ink" stroke-width="2.2" d="M70.0,16 L70.0,262.0 L330.0,262.0 L330.0,99.1 L590.0,99.1 L590.0,16"/>
+  <line class="s-en" stroke-width="1.4" stroke-dasharray="6 5" x1="70.0" y1="146.5" x2="590.0" y2="146.5"/>
+  <path class="s-psi" stroke-width="2.4" d="M70.0,146.5 L73.2,141.0 L76.5,135.6 L79.8,130.3 L83.0,125.2 L86.2,120.3 L89.5,115.7 L92.8,111.5 L96.0,107.6 L99.2,104.2 L102.5,101.3 L105.8,98.8 L109.0,96.9 L112.2,95.5 L115.5,94.7 L118.8,94.5 L122.0,94.8 L125.2,95.7 L128.5,97.2 L131.8,99.2 L135.0,101.7 L138.2,104.8 L141.5,108.2 L144.8,112.2 L148.0,116.5 L151.2,121.1 L154.5,126.0 L157.8,131.1 L161.0,136.5 L164.2,141.9 L167.5,147.3 L170.8,152.8 L174.0,158.2 L177.2,163.4 L180.5,168.5 L183.8,173.3 L187.0,177.9 L190.2,182.1 L193.5,185.8 L196.8,189.2 L200.0,192.1 L203.2,194.4 L206.5,196.3 L209.8,197.6 L213.0,198.3 L216.2,198.4 L219.5,198.0 L222.8,197.0 L226.0,195.5 L229.2,193.3 L232.5,190.7 L235.8,187.6 L239.0,184.0 L242.2,180.1 L245.5,175.7 L248.8,171.0 L252.0,166.1 L255.2,160.9 L258.5,155.6 L261.8,150.1 L265.0,144.7 L268.2,139.2 L271.5,133.8 L274.8,128.6 L278.0,123.6 L281.2,118.8 L284.5,114.3 L287.8,110.2 L291.0,106.5 L294.2,103.2 L297.5,100.4 L300.8,98.1 L304.0,96.4 L307.2,95.2 L310.5,94.6 L313.8,94.5 L317.0,95.0 L320.2,96.1 L323.5,97.8 L326.8,99.9 L330.0,102.7 L333.2,105.5 L336.5,108.2 L339.8,110.7 L343.0,113.0 L346.2,115.2 L349.5,117.2 L352.8,119.1 L356.0,120.9 L359.2,122.6 L362.5,124.1 L365.8,125.6 L369.0,126.9 L372.2,128.2 L375.5,129.4 L378.8,130.5 L382.0,131.5 L385.2,132.5 L388.5,133.4 L391.8,134.3 L395.0,135.1 L398.2,135.8 L401.5,136.5 L404.8,137.2 L408.0,137.8 L411.2,138.3 L414.5,138.9 L417.8,139.4 L421.0,139.8 L424.2,140.2 L427.5,140.7 L430.8,141.0 L434.0,141.4 L437.2,141.7 L440.5,142.0 L443.8,142.3 L447.0,142.6 L450.2,142.8 L453.5,143.1 L456.8,143.3 L460.0,143.5 L463.2,143.7 L466.5,143.9 L469.8,144.1 L473.0,144.2 L476.2,144.4 L479.5,144.5 L482.8,144.6 L486.0,144.7 L489.2,144.9 L492.5,145.0 L495.8,145.1 L499.0,145.2 L502.2,145.3 L505.5,145.3 L508.8,145.4 L512.0,145.5 L515.2,145.6 L518.5,145.6 L521.8,145.7 L525.0,145.7 L528.2,145.8 L531.5,145.8 L534.8,145.9 L538.0,145.9 L541.2,146.0 L544.5,146.0 L547.8,146.1 L551.0,146.1 L554.2,146.1 L557.5,146.2 L560.8,146.2 L564.0,146.2 L567.2,146.3 L570.5,146.3 L573.8,146.3 L577.0,146.3 L580.2,146.4 L583.5,146.4 L586.8,146.4 L590.0,146.5"/>
+  <line class="s-muted" stroke-width="1" stroke-dasharray="2 4" x1="330.0" y1="20" x2="330.0" y2="266"/>
+  <text class="t-en" x="598.0" y="151.5">E</text>
+  <text class="t-sym" x="598.0" y="104.1">U₁</text>
+  <text x="62.0" y="266.0" text-anchor="end">U₀ = 0</text>
+  <text class="t-psi" x="200.0" y="32" text-anchor="middle">ψ(x)</text>
+  <text x="200.0" y="284" text-anchor="middle">I: salınım, k = √(2mE)/ħ</text>
+  <text x="460.0" y="284" text-anchor="middle">II: üstel, κ = √(2m(U₁−E))/ħ</text>
+  <text x="70.0" y="302" text-anchor="middle">0</text>
+  <text x="330.0" y="302" text-anchor="middle">L</text>
+  <text x="590.0" y="302" text-anchor="middle">2L</text>
+</svg>
+    <figcaption>Sınav potansiyeli (\(U_0=0\)) için sayısal olarak bulunmuş üçüncü durum, \(E\approx0{,}71\,U_1\). I bölgesinde iki düğümlü salınım; \(x=L\)'de eğim sürekli; II bölgesinde düğümsüz, \(2L\)'deki duvara doğru sıfıra inen \(\sinh\) eğrisi.</figcaption>
+  </figure>
+
+  <h3>Bahar 2026 S4: denklemleri kurmak</h3>
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Genel çözüm, sınır koşulları ve aşırı belirlenmiş sistem</h4></div>
+    <ol class="steps">
+      <li class="step"><p><b>Potansiyel:</b> \(x\lt0\) ve \(x>2L\)'de \(\infty\); I bölgesi \(0\lt x\lt L\)'de \(U_0=0\); II bölgesi \(L\lt x\lt2L\)'de \(U_1>E\).</p></li>
+      <li class="step"><p><b>Genel çözümler:</b></p>\[ \psi_I=A\sin k_Ix+B\cos k_Ix,\quad k_I=\frac{\sqrt{2mE}}{\hbar};\qquad \psi_{II}=Ce^{k_{II}x}+De^{-k_{II}x},\quad k_{II}=\frac{\sqrt{2m(U_1-E)}}{\hbar}. \]<p>II bölgesi sonlu (\(2L\)'de bitiyor), bu yüzden büyüyen üstel atılmaz. İki terim de kalır.</p></li>
+      <li class="step"><p><b>Denklemler</b> (\(E\), \(L\), \(U_1\) verili; bilinmeyenler \(A,B,C,D\)):</p>\[ \begin{aligned} &amp;(1)\ \psi_I(0)=0:&amp;&amp; B=0\\ &amp;(2)\ \psi_{II}(2L)=0:&amp;&amp; Ce^{2k_{II}L}+De^{-2k_{II}L}=0\\ &amp;(3)\ \psi\ \text{sürekli},\ x=L:&amp;&amp; A\sin k_IL=Ce^{k_{II}L}+De^{-k_{II}L}\\ &amp;(4)\ \psi'\ \text{sürekli},\ x=L:&amp;&amp; Ak_I\cos k_IL=k_{II}\big(Ce^{k_{II}L}-De^{-k_{II}L}\big)\\ &amp;(5)\ \text{normalizasyon}:&amp;&amp; \textstyle\int_0^L|\psi_I|^2dx+\int_L^{2L}|\psi_{II}|^2dx=1 \end{aligned} \]<p>Dört bilinmeyene beş denklem.</p></li>
+      <li class="step"><p><b>Neden çözüm var?</b> (1)–(4) homojen doğrusal denklemlerdir: hepsi \(A=B=C=D=0\) ile sağlanır, ama bu (5)'i bozar. Sıfır olmayan çözüm için 4×4 katsayı determinantı sıfır olmalı. Bu, \(E\) üzerinde bir koşuldur.</p></li>
+      <li class="step"><p>(2)'den \(\psi_{II}=C'\sinh k_{II}(2L-x)\). (3) ve (4)'ü oranlayınca:</p>\[ k_I\cot(k_IL)=-k_{II}\coth(k_{II}L) . \]<p>Bu denklemi yalnızca belirli \(E\) değerleri sağlar. Normalizasyon ise kalan tek genliği belirler.</p></li>
+      <li class="step"><p><b>Yorum (sorunun asıl istediği):</b> sistem aşırı belirlenmiştir çünkü \(E\) keyfî verilemez. Rastgele bir \(E\) için çözüm yoktur; çözüm yalnızca izinli enerji düzeylerinde vardır. <b>Enerji kuantumlanması, sınır koşullarının sayısının bilinmeyenlerden fazla olmasının sonucudur.</b> \(E\)'yi bilinmeyen sayarsanız beş bilinmeyen, beş denklem olur.</p></li>
+    </ol>
+  </div>
+
+  <div class="box mine"><span class="box-label">Bahar 2026 kâğıdında</span>
+    <p>(a) doğruydu. (b)'de sınır koşulları yerine Schrödinger denklemi yeniden yazılmış; puan, yukarıdaki (1)–(5) listesindeydi. (c)'de “normalize etmeliyiz” denmiş. Normalizasyon yalnızca genliği verir; aşırı belirlenmişliğin anlamı <b>enerjinin kuantumlu olmasıdır</b>.</p>
+  </div>
+
+  <figure class="lab" id="lab-basamak">
+    <div class="lab-head"><span class="lab-tag">Laboratuvar 9.1</span><h4>Basamaklı kutu çözücüsü</h4><p>S4'ün potansiyeli: \(0\)–\(L\) arasında \(U_0\), \(L\)–\(2L\) arasında \(U_1\), iki uçta sonsuz duvar. Enerjiler \(\hbar^2/2mL^2\) biriminde. Özdeğerler yukarıdaki koşuldan sayısal olarak bulunur.</p></div>
+    <div class="view"><canvas id="cv-basamak" aria-label="Basamaklı kutu dalga fonksiyonu çözücüsü"></canvas></div>
+    <div class="ctrls"></div>
+    <dl class="readout"></dl>
+    <p class="lab-try"><b>Dene:</b> \(n=1,2,3\)'te \(E\lt U_1\): II bölgesinde salınım yok. \(n\)'yi \(E>U_1\) olana kadar artırın; II'de de salınım başlar ama dalga boyu I'dekinden uzundur. \(U_1\)'i büyütün: dalga II'ye daha az sızar, düzeyler \(L\) genişliğindeki sonsuz kuyununkilere yaklaşır.</p>
+  </figure>
+
+  <h3>Sonlu kuyu, basamak ve tünelleme</h3>
+  <p><b>Sonlu kare kuyu</b> (derinlik \(U_0\), genişlik \(L\)): içeride salınım, dışarıda sönen üstel \(e^{-\kappa|x|}\). Dalga duvarların içine \(\delta=1/\kappa\) kadar sızar; etkin kuyu biraz daha geniştir, bu yüzden enerjiler aynı genişlikteki sonsuz kuyununkilerden düşüktür ve bağlı durum sayısı sonludur.</p>
+  <p><b>Potansiyel basamağı</b> (\(x>0\)'da \(U_0\)), soldan gelen parçacık. \(E\lt U_0\): \(\psi_1=De^{-k_1x}\); süreklilik \(D=B=-A\,k_0/k_1\) gibi ilişkiler verir (Krane 5.27). Yansıma tamdır, ama parçacık basamağın içinde sıfır olmayan olasılıkla bulunur. \(E>U_0\): parçacık kısmen yansır: \(R=\Big(\dfrac{k_0-k_1}{k_0+k_1}\Big)^2\). Klasik parçacık hiç yansımazdı.</p>
+  <p><b>Engel ve tünelleme</b> (\(0\lt x\lt L\) arasında \(U_0>E\)): üç bölge, altı katsayı, dört süreklilik koşulu (Krane 5.29). Engelden geçme olasılığı:</p>
+  \[ T=\Big[1+\frac{U_0^2\sinh^2\kappa L}{4E(U_0-E)}\Big]^{-1}\ \approx\ 16\frac{E}{U_0}\Big(1-\frac{E}{U_0}\Big)e^{-2\kappa L}\quad(\kappa L\gg1). \]
+  <p>Engelin arkasında dalga boyu gelen dalgayla aynı, genliği küçüktür (Krane örnek sınav B3). Kalınlık iki katına çıkınca geçen genlik \(e^{-\kappa L}\) çarpanı kadar daha küçülür (B1). Alfa bozunumu, taramalı tünelleme mikroskobu ve tünel diyot bu etkiye dayanır.</p>
+
+  <h3>Basit harmonik osilatör</h3>
+  <p>\(U=\tfrac12kx^2\), \(\omega_0=\sqrt{k/m}\). Temel durum \(\psi_0=A\,e^{-ax^2}\) denenir; Schrödinger denklemine konunca \(x^2\)'li terimlerin sıfırlanması \(a=\sqrt{km}/2\hbar\), sabit terimler \(E_0=\tfrac12\hbar\omega_0\) verir. Normalizasyon \(A=(m\omega_0/\hbar\pi)^{1/4}\) (Krane 5.20). Genel sonuç:</p>
+  \[ E_n=\Big(n+\tfrac12\Big)\hbar\omega_0,\qquad n=0,1,2,\dots \]
+  <p>Düzeyler eşit aralıklıdır (Krane örnek sınav A2: 0,5 ve 1,5 eV'den sonra 2,5 eV). Birinci uyarılmış durum \(\psi_1=Axe^{-ax^2}\), \(E_1=\tfrac32\hbar\omega_0\) (Krane 5.36). Temel durumda \(\Delta x=\sqrt{\hbar/2m\omega_0}\), \(\Delta p=\sqrt{\hbar m\omega_0/2}\), çarpım tam \(\hbar/2\): Gauss paketi en küçük belirsizliktir. Dalga fonksiyonu klasik dönüm noktalarının dışına da sızar.</p>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="d">
+      <p class="quiz-q">Soldan gelen parçacık \(x=0\)'daki \(U_0\) basamağına çarpıyor, \(E\lt U_0\). \(x>0\)'da dalga fonksiyonunun biçimi? (Krane örnek sınav A8)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(Ae^{kx}+Be^{-kx}\)</button><button type="button" data-k="b">\(Ae^{ikx}+Be^{-ikx}\)</button><button type="button" data-k="c">\(Ae^{kx}\)</button><button type="button" data-k="d">\(Ae^{-kx}\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Bölge sonsuza uzanıyor, büyüyen üstel atılır. S4'teki II bölgesi sonlu olduğu için orada iki terim de kalıyordu; farka dikkat.</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Potansiyel: \(0\)–\(L\) arası \(-30\) eV, \(L\)–\(3L\) arası \(-15\) eV, \(3L\)–\(4L\) arası \(0\), dışarısı sonsuz. Enerji \(-5\) eV. Parçacık en çok hangi bölgede bulunur? (Krane örnek sınav B5)</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(0\)–\(L\)</button><button type="button" data-k="b">\(3L\)–\(4L\)</button><button type="button" data-k="c">\(L\)–\(3L\)</button><button type="button" data-k="d">Hepsinde eşit</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Son bölgede \(E\lt U\): yasak, sönen dalga. İlk bölgede \(E-U=25\) eV, ikincide \(10\) eV: ikincide parçacık daha yavaş (genlik büyük) ve bölge iki kat geniş.</p>
+    </div>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Bağlı durum probleminde sınır koşulu sayısının bilinmeyen katsayı sayısından fazla olması neyi gösterir?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Yalnızca belirli enerjilerde çözüm vardır</button><button type="button" data-k="b">Problem yanlış kurulmuştur</button><button type="button" data-k="c">Dalga fonksiyonu normalize edilemez</button><button type="button" data-k="d">Parçacık tünelleme yapar</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Bahar 2026 S4(c)'nin cevabı. Homojen sistemin determinantının sıfır olması \(E\) için bir koşuldur.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="sonlu">Bu bölümü tamamladım</button><a href="#ozet">Sonraki: Formül kartı →</a></div>
+</section>
+
+
+<!-- ============================================================ ÖZET -->
+<section class="chapter" id="ozet" data-ch="ozet">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Özet</span><span class="sess">Kopya kâğıdına geçirilecekler</span></p>
+    <h2>Formül kartı</h2>
+    <p class="ch-lede">İki sınavın yönergesi kopya kâğıdına izin veriyor. Aşağıdaki kartlar sınavda gerçekten kullanılan formüllerin tamamı; sabitler eV birimlerinde.</p>
+  </header>
+  <div class="cards">
+    <div class="card"><h5>Sabitler · eV dünyası</h5>
+      \[ hc=1240\ \text{eV·nm}=1240\ \text{MeV·fm} \]
+      \[ \hbar c=197{,}3\ \text{eV·nm}=197{,}3\ \text{MeV·fm} \]
+      \[ m_ec^2=0{,}511\ \text{MeV},\quad m_pc^2=938{,}3\ \text{MeV} \]
+      \[ k=8{,}617\times10^{-5}\ \text{eV/K},\quad \hbar=6{,}58\times10^{-16}\ \text{eV·s} \]
+      \[ c=300\ \text{m/μs},\quad 1\ \text{pc}=3{,}086\times10^{16}\ \text{m} \]</div>
+    <div class="card"><h5>Zaman ve uzunluk</h5>
+      \[ \gamma=\frac{1}{\sqrt{1-\beta^2}},\quad \Delta t=\gamma\Delta t_0,\quad L=\frac{L_0}{\gamma} \]
+      \[ \beta\gamma=\frac{2L_0}{c\tau}\ \Rightarrow\ \beta=\frac{1}{\sqrt{1+(c\tau/2L_0)^2}} \]</div>
+    <div class="card"><h5>Lorentz dönüşümü</h5>
+      \[ \Delta x'=\gamma(\Delta x-u\Delta t),\quad \Delta t'=\gamma\Big(\Delta t-\frac{u\Delta x}{c^2}\Big) \]
+      \[ \text{eşzamanlı: } u=\frac{c^2\Delta t}{\Delta x},\quad s^2=(c\Delta t)^2-\Delta x^2 \]</div>
+    <div class="card"><h5>Hız toplama</h5>
+      \[ v'=\frac{v-u}{1-uv/c^2},\qquad v=\frac{v'+u}{1+uv'/c^2} \]
+      \[ v'_y=\frac{v_y}{\gamma(1-uv_x/c^2)} \]</div>
+    <div class="card"><h5>Doppler ve sinyaller</h5>
+      \[ f'=f\sqrt{\frac{1-\beta}{1+\beta}}\ (\text{uzaklaşma}),\quad k=\sqrt{\frac{1+\beta}{1-\beta}} \]
+      \[ t_{\text{alış}}=k\,\tau_{\text{gönderiş}}\ \ (\text{uzaklaşırken}) \]</div>
+    <div class="card"><h5>Göreli dinamik</h5>
+      \[ p=\gamma mv,\quad E=\gamma mc^2=K+mc^2 \]
+      \[ E^2=(pc)^2+(mc^2)^2,\quad \beta=\frac{pc}{E} \]
+      \[ K\approx\frac{(pc)^2}{2mc^2}\ (pc\ll mc^2),\quad K\approx pc\ (pc\gg mc^2) \]</div>
+    <div class="card"><h5>Kara cisim</h5>
+      \[ I=\sigma T^4,\quad \sigma=5{,}67\times10^{-8}\ \tfrac{\text{W}}{\text{m}^2\text{K}^4},\quad \lambda_{\max}T=2{,}898\times10^{-3}\ \text{m·K} \]
+      \[ L=4\pi R^2\sigma T^4,\quad F=\frac{L}{4\pi d^2},\quad P_{\text{net}}=A\sigma(T^4-T_0^4) \]
+      \[ I(\lambda)=\frac{2\pi hc^2}{\lambda^5}\frac{1}{e^{hc/\lambda kT}-1} \]</div>
+    <div class="card"><h5>Foton süreçleri</h5>
+      \[ E=\frac{hc}{\lambda},\quad p=\frac h\lambda,\quad K_{\max}=hf-\phi=eV_s \]
+      \[ \lambda'-\lambda=\frac{h}{m_ec}(1-\cos\theta),\quad \frac{h}{m_ec}=0{,}002426\ \text{nm} \]
+      \[ \lambda_{\min}=\frac{hc}{e\Delta V},\quad E_{\text{eşik}}^{\text{çift}}\approx2m_ec^2 \]</div>
+    <div class="card"><h5>Madde dalgaları</h5>
+      \[ \lambda=\frac{h}{p},\quad pc=\sqrt{K^2+2Kmc^2} \]
+      \[ \Delta x\Delta p\ge\frac\hbar2\ (\sim\hbar),\quad \Delta E\Delta t\ge\frac\hbar2 \]
+      \[ v_g=\frac{d\omega}{dk}=\frac{dE}{dp}=v \]</div>
+    <div class="card"><h5>Schrödinger</h5>
+      \[ -\frac{\hbar^2}{2m}\psi''+U\psi=E\psi,\quad \int|\psi|^2dx=1 \]
+      \[ E>U:\ k=\frac{\sqrt{2m(E-U)}}{\hbar};\quad E\lt U:\ \kappa=\frac{\sqrt{2m(U-E)}}{\hbar} \]
+      <p>Sınırda \(\psi\) ve \(\psi'\) sürekli; sonsuz duvarda \(\psi=0\).</p></div>
+    <div class="card"><h5>Sonsuz kuyu ve osilatör</h5>
+      \[ E_n=\frac{h^2n^2}{8mL^2},\quad \psi_n=\sqrt{\tfrac2L}\sin\frac{n\pi x}{L},\quad L=\frac{n\lambda}{2} \]
+      \[ E_n=\Big(n+\tfrac12\Big)\hbar\omega_0,\quad \psi_0\propto e^{-\sqrt{km}\,x^2/2\hbar} \]</div>
+    <div class="card"><h5>Engel</h5>
+      \[ T\approx16\frac{E}{U_0}\Big(1-\frac{E}{U_0}\Big)e^{-2\kappa L} \]
+      \[ R_{\text{basamak}}=\Big(\frac{k_0-k_1}{k_0+k_1}\Big)^2\ (E>U_0) \]</div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="ozet">Özeti gözden geçirdim</button><a href="#postulat">Başa dön ↑</a></div>
+  <footer class="end">Kaynaklar: K. S. Krane, <em>Modern Physics</em>, 3. baskı (Wiley, 2012) ve eğitmen el kitabındaki örnek sınav soruları; PHYS 202 Güz 2025 (5 Kasım) ve Bahar 2026 (2 Nisan) 1. ara sınavları. Bütün sayısal sonuçlar ayrıca hesaplanarak kontrol edildi.</footer>
+</section>
+  </main>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   Çekirdek: depolama, tema, tuval, çizim yardımcıları, döngü,
+   adım adım türetimler, sorular, ilerleme ve gezinme.
+   ===================================================================== */
+const G = 9.81;
+const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PI = Math.PI, TAU = 2 * Math.PI;
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('mfd.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('mfd.' + k, JSON.stringify(v)); } catch (e) { /* depolama yoksa sessizce geç */ } }
+};
+
+/* Türkçe sayı biçimi: ondalık virgül, gerçek eksi işareti */
+function n(v, d = 2) {
+  if (v == null || !isFinite(v)) return '—';
+  if (Math.abs(v) < 0.5 * Math.pow(10, -d)) v = 0;
+  return v.toFixed(d).replace('-', '−').replace('.', ',');
+}
+const deg = r => r * 180 / PI;
+const rad = d => d * PI / 180;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+/* ---------- Tema ---------- */
+const T = {};
+function readTheme() {
+  const s = getComputedStyle(document.documentElement);
+  ['ink', 'muted', 'grid', 'rule', 'accent', 'force', 'vel', 'acc', 'energy', 'good', 'bad', 'canvas', 'panel', 'panel-2']
+    .forEach(k => { T[k.replace('-', '')] = s.getPropertyValue('--' + k).trim(); });
+}
+readTheme();
+const labs = [];
+function redrawAll() { readTheme(); labs.forEach(l => l.draw && l.draw()); }
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', redrawAll);
+new MutationObserver(redrawAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawAll);
+
+const FONT = {
+  mono: '11px "IBM Plex Mono", ui-monospace, Menlo, monospace',
+  monoB: '600 11px "IBM Plex Mono", ui-monospace, Menlo, monospace',
+  sym: 'italic 600 15px "STIX Two Text", "Times New Roman", serif',
+  symS: 'italic 600 13px "STIX Two Text", "Times New Roman", serif',
+  body: '500 12px "IBM Plex Sans", system-ui, sans-serif'
+};
+
+/* ---------- Tuval ---------- */
+function stage(cv, heightFn) {
+  const ctx = cv.getContext('2d');
+  const s = { cv, ctx, w: 0, h: 0, onDraw: null };
+  let lastW = -1;
+  function fit() {
+    const w = Math.round(cv.parentElement.clientWidth);
+    if (!w || w === lastW) return;
+    lastW = w;
+    const h = Math.round(heightFn(w));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    s.w = w; s.h = h;
+    if (s.onDraw) s.onDraw();
+  }
+  s.fit = fit;
+  s.clear = () => { ctx.fillStyle = T.canvas; ctx.fillRect(0, 0, s.w, s.h); };
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(cv.parentElement);
+  else window.addEventListener('resize', fit);
+  fit();
+  return s;
+}
+
+/* ---------- Çizim yardımcıları ---------- */
+function niceStep(span, target) {
+  const raw = span / Math.max(1, target);
+  const p = Math.pow(10, Math.floor(Math.log10(raw)));
+  const f = raw / p;
+  return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * p;
+}
+function decFor(step) { return step >= 1 ? 0 : Math.min(3, Math.ceil(-Math.log10(step) - 1e-9)); }
+
+/* Eksenli grafik: box {x,y,w,h} piksel; v {x0,x1,y0,y1} dünya */
+function chart(ctx, box, v, o = {}) {
+  const X = x => box.x + (x - v.x0) / (v.x1 - v.x0) * box.w;
+  const Y = y => box.y + box.h - (y - v.y0) / (v.y1 - v.y0) * box.h;
+  ctx.save();
+  ctx.lineWidth = 1; ctx.font = FONT.mono;
+  const sx = o.sx || niceStep(v.x1 - v.x0, o.nx || Math.max(3, Math.floor(box.w / 70)));
+  const sy = o.sy || niceStep(v.y1 - v.y0, o.ny || Math.max(3, Math.floor(box.h / 45)));
+  ctx.strokeStyle = T.grid; ctx.beginPath();
+  const xs = [], ys = [];
+  for (let i = Math.ceil(v.x0 / sx - 1e-9); i * sx <= v.x1 + 1e-9; i++) { const x = i * sx; xs.push(x); const px = Math.round(X(x)) + .5; ctx.moveTo(px, box.y); ctx.lineTo(px, box.y + box.h); }
+  const yt = o.yticks || null;
+  if (yt) yt.forEach(t => { const py = Math.round(Y(t[0])) + .5; ctx.moveTo(box.x, py); ctx.lineTo(box.x + box.w, py); });
+  else for (let i = Math.ceil(v.y0 / sy - 1e-9); i * sy <= v.y1 + 1e-9; i++) { const y = i * sy; ys.push(y); const py = Math.round(Y(y)) + .5; ctx.moveTo(box.x, py); ctx.lineTo(box.x + box.w, py); }
+  ctx.stroke();
+  ctx.strokeStyle = T.muted; ctx.beginPath();
+  if (v.y0 <= 0 && v.y1 >= 0) { const py = Math.round(Y(0)) + .5; ctx.moveTo(box.x, py); ctx.lineTo(box.x + box.w, py); }
+  if (v.x0 <= 0 && v.x1 >= 0) { const px = Math.round(X(0)) + .5; ctx.moveTo(px, box.y); ctx.lineTo(px, box.y + box.h); }
+  ctx.stroke();
+  ctx.strokeStyle = T.rule; ctx.strokeRect(box.x + .5, box.y + .5, box.w - 1, box.h - 1);
+  ctx.fillStyle = T.muted;
+  if (!o.noXLabels) {
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    const dx = decFor(sx);
+    xs.forEach(x => { const px = X(x); if (px > box.x + 8 && px < box.x + box.w - 8) ctx.fillText(n(x, dx), px, box.y + box.h + 4); });
+  }
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  if (yt) yt.forEach(t => ctx.fillText(t[1], box.x - 5, Y(t[0])));
+  else { const dy = decFor(sy); ys.forEach(y => { const py = Y(y); if (py > box.y + 4 && py < box.y + box.h - 4) ctx.fillText(n(y, dy), box.x - 5, py); }); }
+  if (o.xl) { ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillStyle = T.ink; ctx.fillText(o.xl, box.x + box.w - 4, box.y + box.h - 3); }
+  if (o.yl) { ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillStyle = T.ink; ctx.fillText(o.yl, box.x + 5, box.y + 4); }
+  if (o.title) { ctx.textAlign = 'left'; ctx.textBaseline = 'bottom'; ctx.fillStyle = T.muted; ctx.font = FONT.monoB; ctx.fillText(o.title, box.x, box.y - 5); }
+  ctx.restore();
+  return { X, Y, box, v, ix: px => v.x0 + (px - box.x) / box.w * (v.x1 - v.x0) };
+}
+function clipBox(ctx, box) { ctx.save(); ctx.beginPath(); ctx.rect(box.x, box.y, box.w, box.h); ctx.clip(); }
+function fplot(ctx, P, f, color, w = 2, dash = null, x0 = P.v.x0, x1 = P.v.x1, N = 400) {
+  clipBox(ctx, P.box);
+  ctx.strokeStyle = color; ctx.lineWidth = w; ctx.setLineDash(dash || []);
+  ctx.beginPath(); let pen = false;
+  for (let i = 0; i <= N; i++) {
+    const x = x0 + (x1 - x0) * i / N, y = f(x);
+    if (!isFinite(y)) { pen = false; continue; }
+    const py = clamp(P.Y(y), -1e4, 1e4);
+    if (!pen) { ctx.moveTo(P.X(x), py); pen = true; } else ctx.lineTo(P.X(x), py);
+  }
+  ctx.stroke(); ctx.restore();
+}
+function polyline(ctx, pts, color, w = 2, dash = null) {
+  if (pts.length < 2) return;
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w; ctx.setLineDash(dash || []); ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+  ctx.stroke(); ctx.restore();
+}
+function arrow(ctx, x0, y0, x1, y1, color, w = 2, head = 8) {
+  const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
+  if (L < 2) return;
+  const hd = Math.min(head, L * 0.6), ux = dx / L, uy = dy / L;
+  ctx.save(); ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - ux * hd * 0.7, y1 - uy * hd * 0.7); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - ux * hd - uy * hd * 0.45, y1 - uy * hd + ux * hd * 0.45);
+  ctx.lineTo(x1 - ux * hd + uy * hd * 0.45, y1 - uy * hd - ux * hd * 0.45);
+  ctx.closePath(); ctx.fill(); ctx.restore();
+}
+function text(ctx, s, x, y, color, font = FONT.mono, align = 'left', base = 'middle') {
+  ctx.save(); ctx.fillStyle = color; ctx.font = font; ctx.textAlign = align; ctx.textBaseline = base; ctx.fillText(s, x, y); ctx.restore();
+}
+function dot(ctx, x, y, r, fill, stroke) {
+  ctx.save(); ctx.beginPath(); ctx.arc(x, y, r, 0, TAU);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.5; ctx.stroke(); }
+  ctx.restore();
+}
+function vline(ctx, P, x, color, dash = [4, 4], label) {
+  const px = P.X(x); if (px < P.box.x - 1 || px > P.box.x + P.box.w + 1) return;
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(px, P.box.y); ctx.lineTo(px, P.box.y + P.box.h); ctx.stroke(); ctx.restore();
+  if (label) text(ctx, label, px + 4, P.box.y + 12, color, FONT.symS);
+}
+function hline(ctx, P, y, color, dash = [4, 4], label, w = 1.2, left = false) {
+  const py = P.Y(y); if (py < P.box.y - 1 || py > P.box.y + P.box.h + 1) return;
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w; ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(P.box.x, py); ctx.lineTo(P.box.x + P.box.w, py); ctx.stroke(); ctx.restore();
+  if (label) text(ctx, label, left ? P.box.x + 6 : P.box.x + P.box.w - 4, py - 9, color, FONT.symS, left ? 'left' : 'right');
+}
+function spring(ctx, x0, y, x1, coils, amp, color) {
+  const L = x1 - x0, lead = Math.min(10, L * 0.12);
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + lead, y);
+  const segs = coils * 2, dx = (L - 2 * lead) / segs;
+  for (let i = 0; i < segs; i++) ctx.lineTo(x0 + lead + dx * (i + 0.5), y + (i % 2 ? amp : -amp));
+  ctx.lineTo(x1 - lead, y); ctx.lineTo(x1, y); ctx.stroke(); ctx.restore();
+}
+function hatch(ctx, x, y, w, h, color) {
+  ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip(); ctx.strokeStyle = color; ctx.lineWidth = 1;
+  ctx.beginPath(); for (let i = -h; i < w + h; i += 6) { ctx.moveTo(x + i, y + h); ctx.lineTo(x + i + h, y); } ctx.stroke(); ctx.restore();
+}
+
+/* ---------- RK4 ---------- */
+function rk4(f, s, t, dt) {
+  const k1 = f(s, t);
+  const s2 = s.map((v, i) => v + dt / 2 * k1[i]); const k2 = f(s2, t + dt / 2);
+  const s3 = s.map((v, i) => v + dt / 2 * k2[i]); const k3 = f(s3, t + dt / 2);
+  const s4 = s.map((v, i) => v + dt * k3[i]); const k4 = f(s4, t + dt);
+  return s.map((v, i) => v + dt / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]));
+}
+function bisect(f, a, b, it = 60) {
+  let fa = f(a);
+  for (let i = 0; i < it; i++) { const m = (a + b) / 2, fm = f(m); if ((fm > 0) === (fa > 0)) { a = m; fa = fm; } else b = m; }
+  return (a + b) / 2;
+}
+
+/* ---------- Denetimler ---------- */
+let ctrlSeq = 0;
+function ctrls(root, prefix, specs, onChange) {
+  const box = root.querySelector('.ctrls');
+  const p = {}, el = {};
+  specs.forEach(c => {
+    const id = prefix + '-' + c.k;
+    const wrap = document.createElement('div');
+    wrap.className = 'ctrl' + (c.type === 'check' ? ' check' : '');
+    if (c.type === 'select') {
+      wrap.innerHTML = `<label for="${id}"><span>${c.label}</span></label><select id="${id}">${c.options.map(o => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+      const s = wrap.querySelector('select'); s.value = c.v; p[c.k] = c.v; el[c.k] = s;
+      s.addEventListener('change', () => { p[c.k] = s.value; onChange && onChange(c.k); });
+    } else if (c.type === 'check') {
+      wrap.innerHTML = `<label for="${id}"><input type="checkbox" id="${id}"${c.v ? ' checked' : ''}><span>${c.label}</span></label>`;
+      const i = wrap.querySelector('input'); p[c.k] = !!c.v; el[c.k] = i;
+      i.addEventListener('change', () => { p[c.k] = i.checked; onChange && onChange(c.k); });
+    } else if (c.type === 'number') {
+      wrap.innerHTML = `<label for="${id}"><span>${c.label}</span><output id="${id}-o"></output></label><input type="number" id="${id}" min="${c.min}" step="any" value="${c.v}" inputmode="decimal">`;
+      const i = wrap.querySelector('input'); p[c.k] = c.v; el[c.k] = i;
+      i.addEventListener('input', () => { const v = parseFloat(i.value); if (isFinite(v) && v > 0) { p[c.k] = v; onChange && onChange(c.k); } });
+    } else {
+      wrap.innerHTML = `<label for="${id}"><span>${c.label}</span><output id="${id}-o" for="${id}"></output></label><input type="range" id="${id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${c.v}">`;
+      const i = wrap.querySelector('input'), out = wrap.querySelector('output');
+      const fmt = c.f || (v => n(v, c.d != null ? c.d : 2) + (c.u ? ' ' + c.u : ''));
+      p[c.k] = +c.v; el[c.k] = i;
+      const show = () => { out.textContent = fmt(p[c.k]); };
+      show();
+      i.addEventListener('input', () => { p[c.k] = +i.value; show(); onChange && onChange(c.k); });
+      i._show = show;
+    }
+    box.appendChild(wrap);
+  });
+  /* programla değer atamak için */
+  p.$set = (k, v) => { p[k] = v; const i = el[k]; if (!i) return; if (i.type === 'checkbox') i.checked = !!v; else i.value = v; if (i._show) i._show(); };
+  p.$el = el;
+  Object.defineProperty(p, '$set', { enumerable: false }); Object.defineProperty(p, '$el', { enumerable: false });
+  return p;
+}
+function readout(root, items) {
+  const dl = root.querySelector('.readout');
+  const dd = {};
+  items.forEach(it => {
+    const d = document.createElement('div'); if (it.wide) d.className = 'wide';
+    d.innerHTML = `<dt>${it.label}</dt><dd>—</dd>`;
+    dl.appendChild(d); dd[it.k] = d.querySelector('dd');
+  });
+  return obj => { for (const k in obj) if (dd[k]) { const v = obj[k]; if (dd[k]._v !== v) { dd[k]._v = v; dd[k].innerHTML = v; } } };
+}
+const chip = (txt, kind = '') => `<span class="chip ${kind}">${txt}</span>`;
+
+/* ---------- Animasyon döngüsü ---------- */
+function register(lab) {
+  lab.visible = false;
+  if (lab.playing == null) lab.playing = !RM;
+  labs.push(lab);
+  lab.root._lab = lab;
+  io.observe(lab.root);
+  const pb = lab.root.querySelector('[data-act="play"]');
+  const sync = () => { if (pb) pb.textContent = lab.playing ? 'Durdur' : 'Oynat'; };
+  lab.setPlaying = v => { lab.playing = v; sync(); };
+  if (pb) pb.addEventListener('click', () => { lab.setPlaying(!lab.playing); if (lab.onPlay) lab.onPlay(lab.playing); lab.draw(); });
+  const rb = lab.root.querySelector('[data-act="reset"]');
+  if (rb) rb.addEventListener('click', () => { lab.reset && lab.reset(); lab.draw(); });
+  sync();
+  return lab;
+}
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.target._lab) e.target._lab.visible = e.isIntersecting; }), { rootMargin: '80px' });
+let lastT = 0;
+function frame(t) {
+  const dt = Math.min(0.05, Math.max(0, (t - lastT) / 1000)); lastT = t;
+  for (const l of labs) if (l.visible && l.playing && l.tick) { l.tick(dt); l.draw(); }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(t => { lastT = t; requestAnimationFrame(frame); });
+
+/* ---------- Adım adım türetimler ---------- */
+document.querySelectorAll('.derive').forEach((d, di) => {
+  const steps = [...d.querySelectorAll(':scope > .steps > .step')];
+  if (!steps.length) return;
+  let shown = 1;
+  const bar = document.createElement('div');
+  bar.className = 'derive-bar';
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="dv${di}-next">Sonraki adım →</button>` +
+    `<button type="button" class="btn" id="dv${di}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="dv${di}-reset">Baştan</button>` +
+    `<span class="derive-count" aria-live="polite"></span>`;
+  d.appendChild(bar);
+  const [bNext, bAll, bReset] = bar.querySelectorAll('button');
+  const cnt = bar.querySelector('.derive-count');
+  function render(rev) {
+    steps.forEach((s, j) => {
+      const locked = j >= shown;
+      s.classList.toggle('locked', locked);
+      s.classList.toggle('tail', j === shown - 1 && shown < steps.length);
+      if (locked) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden');
+      if (rev != null && j >= rev && j < shown) { s.classList.remove('rev'); void s.offsetWidth; s.classList.add('rev'); }
+    });
+    cnt.textContent = `Adım ${shown} / ${steps.length}`;
+    bNext.disabled = bAll.disabled = shown >= steps.length;
+    bReset.disabled = shown <= 1;
+  }
+  bNext.addEventListener('click', () => { if (shown < steps.length) { shown++; render(shown - 1); } });
+  bAll.addEventListener('click', () => { const r = shown; shown = steps.length; render(r); });
+  bReset.addEventListener('click', () => { shown = 1; render(); });
+  render();
+});
+
+/* ---------- Sorular ---------- */
+const quizSaved = store.get('quiz', {});
+const quizzes = [...document.querySelectorAll('.quiz')];
+quizzes.forEach((q, qi) => {
+  const ch = q.closest('.chapter');
+  const id = (ch ? ch.id : 'q') + '-' + qi;
+  const ans = q.dataset.answer;
+  const btns = [...q.querySelectorAll('.quiz-opts button')];
+  const why = q.querySelector('.quiz-why');
+  const verdict = why.querySelector('.verdict');
+  const letters = 'ABCD';
+  btns.forEach((b, j) => {
+    b.id = 'qz-' + id + '-' + b.dataset.k;
+    const k = document.createElement('span'); k.className = 'opt-k'; k.textContent = letters[j];
+    const body = document.createElement('span'); while (b.firstChild) body.appendChild(b.firstChild);
+    b.append(k, body);
+    b.addEventListener('click', () => choose(b.dataset.k, true));
+  });
+  function choose(k, save) {
+    const right = k === ans;
+    btns.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.k === ans) b.classList.add('ok');
+      if (b.dataset.k === k && !right) b.classList.add('no');
+    });
+    const li = btns.findIndex(b => b.dataset.k === ans);
+    verdict.textContent = right ? 'Doğru.' : `Yanlış, doğru cevap ${letters[li]}.`;
+    q.classList.add('done', right ? 'is-right' : 'is-wrong');
+    if (save) { quizSaved[id] = k; store.set('quiz', quizSaved); updateProgress(); }
+  }
+  q._reset = () => { btns.forEach(b => { b.disabled = false; b.classList.remove('ok', 'no'); }); q.classList.remove('done', 'is-right', 'is-wrong'); verdict.textContent = ''; };
+  q._id = id; q._ans = ans;
+  if (quizSaved[id]) choose(quizSaved[id], false);
+});
+
+/* ---------- İlerleme ve gezinme ---------- */
+const chapters = [...document.querySelectorAll('section.chapter')];
+const doneSet = new Set(store.get('done', []));
+const tocLinks = [...document.querySelectorAll('#toc a')];
+function updateProgress() {
+  const total = chapters.filter(c => c.id !== 'ozet').length;
+  const done = chapters.filter(c => c.id !== 'ozet' && doneSet.has(c.id)).length;
+  const right = quizzes.filter(q => quizSaved[q._id] === q._ans).length;
+  const answered = quizzes.filter(q => quizSaved[q._id]).length;
+  document.getElementById('prog-bar').style.width = (100 * done / total) + '%';
+  document.getElementById('prog-txt').textContent = `${done} / ${total} bölüm · ${right} / ${answered || 0} doğru`;
+  document.getElementById('sum-prog').textContent = `${done} / ${total} bölüm`;
+  tocLinks.forEach(a => a.classList.toggle('is-done', doneSet.has(a.getAttribute('href').slice(1))));
+  document.querySelectorAll('.done-btn').forEach(b => {
+    const on = doneSet.has(b.dataset.done);
+    b.classList.toggle('is-done', on);
+    b.textContent = on ? '✓ Tamamlandı' : (b.dataset.done === 'ozet' ? 'Özeti gözden geçirdim' : 'Bu bölümü tamamladım');
+  });
+}
+document.querySelectorAll('.done-btn').forEach((b, i) => {
+  b.id = 'done-' + b.dataset.done;
+  b.addEventListener('click', () => {
+    const k = b.dataset.done;
+    if (doneSet.has(k)) doneSet.delete(k); else doneSet.add(k);
+    store.set('done', [...doneSet]); updateProgress();
+  });
+});
+document.getElementById('reset-progress').addEventListener('click', () => {
+  doneSet.clear(); store.set('done', []);
+  for (const k in quizSaved) delete quizSaved[k]; store.set('quiz', {});
+  quizzes.forEach(q => q._reset()); updateProgress();
+});
+updateProgress();
+
+document.getElementById('st-ch').textContent = chapters.filter(c => c.id !== 'ozet').length;
+document.getElementById('st-lab').textContent = document.querySelectorAll('.lab').length;
+document.getElementById('st-q').textContent = quizzes.length;
+
+/* Kaydırma takibi */
+const spy = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    tocLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id ? 'true' : 'false'));
+  });
+}, { rootMargin: '-35% 0px -60% 0px' });
+chapters.forEach(c => spy.observe(c));
+
+/* Dar ekranda içindekiler kapalı başlar, bağlantıya basınca kapanır */
+const tocDet = document.getElementById('toc-details');
+const wide = window.matchMedia('(min-width: 1001px)');
+function syncToc() { tocDet.open = wide.matches; }
+syncToc(); wide.addEventListener('change', syncToc);
+tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
+tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+
+/* Alt indisli sembol: "f" + "s" gibi */
+function sym(ctx, main, sub, x, y, color, align = 'left') {
+  ctx.save(); ctx.fillStyle = color; ctx.textBaseline = 'middle';
+  ctx.font = FONT.sym; const w = ctx.measureText(main).width;
+  ctx.font = FONT.mono; const ws = sub ? ctx.measureText(sub).width : 0;
+  let x0 = align === 'center' ? x - (w + ws) / 2 : align === 'right' ? x - w - ws : x;
+  ctx.font = FONT.sym; ctx.textAlign = 'left'; ctx.fillText(main, x0, y);
+  if (sub) { ctx.font = FONT.mono; ctx.fillText(sub, x0 + w + 1, y + 5); }
+  ctx.restore();
+}
+
+
+/* =====================================================================
+   Laboratuvarlar · PHYS 202
+   ===================================================================== */
+const C_MPS = 299.792458;          /* c, m/μs */
+const HC = 1239.84;                /* eV·nm */
+const sci = (v, d = 2) => {
+  if (!isFinite(v)) return '—';
+  if (v === 0) return '0';
+  const e = Math.floor(Math.log10(Math.abs(v)));
+  if (e >= -2 && e <= 3) return n(v, Math.max(0, d - Math.max(0, e)));
+  return n(v / Math.pow(10, e), d) + '·10' + String(e).split('').map(c => '⁰¹²³⁴⁵⁶⁷⁸⁹'['0123456789'.indexOf(c)] || (c === '-' ? '⁻' : c)).join('');
+};
+const gam = b => 1 / Math.sqrt(1 - b * b);
+
+/* ---------- 1.1 Işık saati ---------- */
+(function () {
+  const root = document.getElementById('lab-saat'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => w >= 560 ? clamp(w * 0.44, 250, 330) : clamp(w * 1.1, 420, 560));
+  const lab = { root, t: 0 };
+  const p = ctrls(root, 'saat', [
+    { k: 'b', label: 'Hız u', min: 0, max: 0.99, step: 0.01, v: 0.6, f: v => n(v, 2) + ' c' }
+  ], () => { lab.t = 0; lab.draw(); });
+  const ro = readout(root, [
+    { k: 'g', label: 'γ' }, { k: 'tick', label: 'Bir tik · öz / lab' }, { k: 'cnt', label: 'Tik sayısı · sol / sağ' },
+    { k: 'L', label: 'Cetvel · L / L₀' }, { k: 'mu', label: 'Müon (τ₀ = 2,2 μs) · lab ömrü ve yolu', wide: true }
+  ]);
+  const T0 = 1.6;
+  lab.reset = () => { lab.t = 0; };
+  lab.tick = dt => { lab.t += dt; };
+  function tri(ph) { return ph < 0.5 ? ph * 2 : 2 - ph * 2; }
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const b = p.b, g = gam(b), wide = S.w >= 560;
+    const bw = wide ? S.w / 2 : S.w, bh = wide ? S.h : S.h / 2;
+    const D = Math.min(bh - 110, 150), cpx = 2 * D / T0;
+    function frame(ox, oy, title) {
+      text(ctx, title, ox + 12, oy + 16, T.muted, FONT.monoB);
+      ctx.strokeStyle = T.rule; ctx.strokeRect(ox + .5, oy + .5, bw - 1, bh - 1);
+    }
+    function clock(cx, top, ph, color) {
+      ctx.save(); ctx.strokeStyle = T.ink; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(cx - 22, top); ctx.lineTo(cx + 22, top); ctx.moveTo(cx - 22, top + D); ctx.lineTo(cx + 22, top + D); ctx.stroke(); ctx.restore();
+      dot(ctx, cx, top + D - tri(ph) * D, 5, color);
+    }
+    /* sol: saatin kendi çerçevesi */
+    const oxL = 0, oyL = 0, top = oyL + 34;
+    frame(oxL, oyL, 'SAATİN ÇERÇEVESİ · ÖZ ZAMAN');
+    const phL = (lab.t % T0) / T0;
+    clock(oxL + bw / 2, top, phL, T.energy);
+    const L0 = Math.min(bw * 0.55, 220), ry = top + D + 34;
+    ctx.fillStyle = T.vel; ctx.fillRect(oxL + bw / 2 - L0 / 2, ry, L0, 8);
+    text(ctx, 'L₀', oxL + bw / 2, ry + 22, T.vel, FONT.symS, 'center');
+    /* sağ: laboratuvar */
+    const oxR = wide ? bw : 0, oyR = wide ? 0 : bh, topR = oyR + 34;
+    frame(oxR, oyR, 'LABORATUVAR · SAAT u İLE GEÇİYOR');
+    const span = bw + 120, x0 = oxR - 60;
+    const xc = s => x0 + ((b * cpx * s) % span + span) % span;
+    const Tg = g * T0, phR = (lab.t % Tg) / Tg;
+    ctx.save(); ctx.beginPath(); ctx.rect(oxR, oyR, bw, bh); ctx.clip();
+    /* iz: son tik boyunca fotonun çapraz yolu */
+    const pts = [], s0 = Math.max(0, lab.t - Tg), base = b * cpx * lab.t;
+    for (let i = 0; i <= 60; i++) {
+      const s = s0 + (lab.t - s0) * i / 60, ph = (s % Tg) / Tg;
+      pts.push([xc(lab.t) - (base - b * cpx * s), topR + D - tri(ph) * D]);
+    }
+    polyline(ctx, pts, T.energy, 1.5, [4, 4]);
+    clock(xc(lab.t), topR, phR, T.energy);
+    const Lm = L0 / g, ryR = topR + D + 34;
+    ctx.fillStyle = T.vel; ctx.fillRect(xc(lab.t) - Lm / 2, ryR, Lm, 8);
+    text(ctx, 'L = L₀/γ', xc(lab.t), ryR + 22, T.vel, FONT.symS, 'center');
+    arrow(ctx, xc(lab.t) + 28, topR + D / 2, xc(lab.t) + 28 + 18 + 40 * b, topR + D / 2, T.force, 2);
+    ctx.restore();
+    const mu = 2.2 * g;
+    ro({
+      g: n(g, 3), tick: `1 : ${n(g, 3)}`,
+      cnt: `${Math.floor(lab.t / T0)} / ${Math.floor(lab.t / Tg)}`, L: n(1 / g, 3),
+      mu: `${n(mu, 2)} μs · ${n(b * C_MPS * mu, 0)} m (klasik: ${n(b * C_MPS * 2.2, 0)} m)`
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 2.1 Minkowski diyagramı ---------- */
+(function () {
+  const root = document.getElementById('lab-mink'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.62, 300, 460));
+  const PRE = {
+    bahar: { A: [10.4, 0.124], B: [23.6, 0.138], la: 'mavi', lb: 'kırmızı' },
+    k219: { A: [0, 0], B: [53.4, 0.465], la: '1', lb: '2' },
+    k249: { A: [0, 0], B: [524, 1.52], la: 'O', lb: 'ışık' },
+    isik: { A: [0, 0], B: [149.896229, 0.5], la: 'A', lb: 'B' }
+  };
+  const lab = { root };
+  const p = ctrls(root, 'mk', [
+    { k: 'pre', type: 'select', label: 'Olay çifti', v: 'bahar', options: [['bahar', 'Bahar 2026 S2 · iki flaş'], ['k219', 'Krane 2.19 · zaman benzeri'], ['k249', 'Krane 2.49 · orijin + lamba'], ['isik', 'Işık benzeri']] },
+    { k: 'u', label: 'O′ çerçevesinin hızı u', min: -0.95, max: 0.95, step: 0.001, v: 0.15, f: v => n(v, 3) + ' c' }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'o', label: 'O · Δx, Δt' }, { k: 'op', label: 'O′ · Δx′, Δt′' }, { k: 's2', label: 's² = (cΔt)² − Δx²' },
+    { k: 'type', label: 'Tür' }, { k: 'us', label: 'Eşzamanlı gören u', wide: true }
+  ]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const e = PRE[p.pre], b = p.u, g = gam(b);
+    const dx = e.B[0] - e.A[0], dct = (e.B[1] - e.A[1]) * C_MPS;
+    const m = Math.max(Math.abs(dx), Math.abs(dct), 1);
+    let x0 = Math.min(0, dx) - 0.35 * m, x1 = Math.max(0, dx) + 0.35 * m;
+    let y0 = Math.min(0, dct) - 0.35 * m, y1 = Math.max(0, dct) + 0.35 * m;
+    const box = { x: 46, y: 14, w: S.w - 60, h: S.h - 40 };
+    const sc = Math.min(box.w / (x1 - x0), box.h / (y1 - y0));
+    const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    x0 = cx - box.w / sc / 2; x1 = cx + box.w / sc / 2; y0 = cy - box.h / sc / 2; y1 = cy + box.h / sc / 2;
+    const P = chart(ctx, box, { x0, x1, y0, y1 }, { xl: 'Δx (m)', yl: 'cΔt (m)' });
+    clipBox(ctx, box);
+    const L = 4 * m;
+    polyline(ctx, [[P.X(-L), P.Y(-L)], [P.X(L), P.Y(L)]], T.energy, 1, [2, 4]);
+    polyline(ctx, [[P.X(-L), P.Y(L)], [P.X(L), P.Y(-L)]], T.energy, 1, [2, 4]);
+    polyline(ctx, [[P.X(-L * b), P.Y(-L)], [P.X(L * b), P.Y(L)]], T.force, 1.8);
+    polyline(ctx, [[P.X(-L), P.Y(-L * b)], [P.X(L), P.Y(L * b)]], T.force, 1.8);
+    polyline(ctx, [[P.X(dx - L), P.Y(dct - L * b)], [P.X(dx + L), P.Y(dct + L * b)]], T.force, 1.3, [6, 5]);
+    ctx.restore();
+    const lx = x1 - (x1 - x0) * 0.02;
+    text(ctx, 'x′', P.X(lx), P.Y(lx * b) - 10, T.force, FONT.sym, 'right');
+    const ly = y1 - (y1 - y0) * 0.04;
+    text(ctx, 'ct′', P.X(ly * b) + 8, P.Y(ly), T.force, FONT.sym);
+    dot(ctx, P.X(0), P.Y(0), 6, T.vel); text(ctx, e.la, P.X(0) + 9, P.Y(0) + 12, T.vel, FONT.monoB);
+    dot(ctx, P.X(dx), P.Y(dct), 6, T.force); text(ctx, e.lb, P.X(dx) + 9, P.Y(dct) - 10, T.force, FONT.monoB);
+    const dxp = g * (dx - b * dct), dctp = g * (dct - b * dx), s2 = dct * dct - dx * dx;
+    const typ = Math.abs(s2) < 1e-6 * m * m ? 'ışık benzeri' : s2 > 0 ? 'zaman benzeri' : 'uzay benzeri';
+    const simul = Math.abs(dctp) < 0.004 * m;
+    ro({
+      o: `${n(dx, 1)} m · ${n(dct / C_MPS, 3)} μs`,
+      op: `${n(dxp, 1)} m · ${n(dctp / C_MPS, 3)} μs`,
+      s2: `${n(s2, 0)} m² (iki çerçevede aynı)`,
+      type: chip(typ, s2 < 0 ? 'warn' : s2 > 0 ? 'good' : ''),
+      us: s2 < 0 ? `u = c²Δt/Δx = ${n(dct / dx, 3)} c ` + (simul ? chip('şu an eşzamanlı', 'good') : '') : 'Yok: |cΔt| ≥ |Δx|, sıra her çerçevede aynı'
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 2.2 Hız toplama ---------- */
+(function () {
+  const root = document.getElementById('lab-hiz'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.5, 240, 330));
+  const lab = { root };
+  const p = ctrls(root, 'hz', [
+    { k: 'u', label: 'O′ çerçevesinin hızı u', min: -0.99, max: 0.99, step: 0.01, v: 0.5, f: v => n(v, 2) + ' c' },
+    { k: 'vp', label: 'Cismin O′ e göre hızı v′', min: -0.99, max: 0.99, step: 0.01, v: 0.5, f: v => n(v, 2) + ' c' }
+  ], () => lab.draw());
+  const ro = readout(root, [{ k: 'gal', label: 'Galile · v′ + u' }, { k: 'rel', label: 'Göreli · O ya göre v' }, { k: 'gu', label: 'γ(u)' }]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const box = { x: 44, y: 14, w: S.w - 58, h: S.h - 38 };
+    const P = chart(ctx, box, { x0: -1, x1: 1, y0: -2, y1: 2 }, { xl: 'v′/c', yl: 'v/c', sx: 0.5, sy: 0.5 });
+    hline(ctx, P, 1, T.force, [5, 4], 'c', 1.2); hline(ctx, P, -1, T.force, [5, 4], '−c', 1.2);
+    fplot(ctx, P, v => v + p.u, T.muted, 1.6, [6, 5]);
+    fplot(ctx, P, v => (v + p.u) / (1 + p.u * v), T.acc, 2.4);
+    const vr = (p.vp + p.u) / (1 + p.u * p.vp);
+    dot(ctx, P.X(p.vp), P.Y(p.vp + p.u), 4.5, T.panel, T.muted);
+    dot(ctx, P.X(p.vp), P.Y(vr), 6, T.acc);
+    ro({ gal: n(p.vp + p.u, 3) + ' c' + (Math.abs(p.vp + p.u) > 1 ? ' ' + chip('c yi aşıyor', 'bad') : ''), rel: n(vr, 3) + ' c', gu: n(gam(p.u), 3) });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 3.1 Sinyalli yolculuk ---------- */
+(function () {
+  const root = document.getElementById('lab-sinyal'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.62, 320, 470));
+  const lab = { root };
+  const p = ctrls(root, 'sg', [
+    { k: 'b', label: 'Gemi hızı', min: 0.1, max: 0.95, step: 0.01, v: 0.6, f: v => n(v, 2) + ' c' },
+    { k: 'ts', label: 'Sinyal anı (gemi saati)', min: 0.5, max: 6, step: 0.1, v: 3, f: v => n(v, 1) + ' yıl' }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'k', label: 'γ · Doppler k' }, { k: 'a', label: 'A · sinyal (Dünya t, x)' }, { k: 'bb', label: 'B · Dünya alır (t = kτ)' },
+    { k: 'c', label: 'C · varış: gemi τ / Dünya t' }, { k: 'd', label: 'Gezegen uzaklığı (Dünya)', wide: true }
+  ]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const b = p.b, g = gam(b), k = Math.sqrt((1 + b) / (1 - b));
+    const tA = g * p.ts, xA = b * tA, tB = k * p.ts, tauC = k * tB, tC = g * tauC, xC = b * tC;
+    const box = { x: 44, y: 14, w: S.w - 58, h: S.h - 38 };
+    const yr = tC * 1.08, sc = box.h / yr;
+    const xr = box.w / sc, xL = Math.min(xC / 2 - xr / 2, -0.06 * xr);
+    const v = { x0: xL, x1: xL + xr, y0: 0, y1: yr };
+    const P = chart(ctx, box, v, { xl: 'x (ışık yılı)', yl: 'ct (yıl)' });
+    clipBox(ctx, box);
+    polyline(ctx, [[P.X(0), P.Y(0)], [P.X(0), P.Y(yr)]], T.ink, 2.2);
+    polyline(ctx, [[P.X(xC), P.Y(0)], [P.X(xC), P.Y(yr)]], T.muted, 1.8, [5, 4]);
+    polyline(ctx, [[P.X(0), P.Y(0)], [P.X(b * yr), P.Y(yr)]], T.vel, 2.4);
+    polyline(ctx, [[P.X(xA), P.Y(tA)], [P.X(0), P.Y(tB)], [P.X(xC), P.Y(tC)]], T.energy, 1.8, [6, 4]);
+    ctx.restore();
+    dot(ctx, P.X(xA), P.Y(tA), 5, T.vel); text(ctx, 'A', P.X(xA) + 8, P.Y(tA) + 2, T.vel, FONT.monoB);
+    dot(ctx, P.X(0), P.Y(tB), 5, T.energy); text(ctx, 'B', P.X(0) + 8, P.Y(tB) - 8, T.energy, FONT.monoB);
+    dot(ctx, P.X(xC), P.Y(tC), 5, T.force); text(ctx, 'C', P.X(xC) + 8, P.Y(tC) + 2, T.force, FONT.monoB);
+    text(ctx, 'Dünya', P.X(0) + 5, box.y + 12, T.ink, FONT.mono);
+    text(ctx, 'gezegen', P.X(xC) + 5, box.y + 12, T.muted, FONT.mono);
+    ro({
+      k: `${n(g, 3)} · ${n(k, 3)}`, a: `${n(tA, 2)} yıl · ${n(xA, 2)} ışık yılı`, bb: `${n(tB, 2)} yıl`,
+      c: `${n(tauC, 2)} yıl / ${n(tC, 2)} yıl`, d: `${n(xC, 2)} ışık yılı · τ_C = k²·τ_A = ${n(k * k, 2)} × ${n(p.ts, 1)}`
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 4.1 Enerji–momentum üçgeni ---------- */
+(function () {
+  const root = document.getElementById('lab-enerji'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => w >= 520 ? clamp(w * 0.46, 240, 320) : clamp(w * 0.95, 330, 420));
+  const MASS = { e: [0.511, 'elektron'], mu: [105.7, 'müon'], pi: [139.6, 'pion'], p: [938.3, 'proton'] };
+  const lab = { root };
+  const p = ctrls(root, 'en', [
+    { k: 'pt', type: 'select', label: 'Parçacık', v: 'p', options: [['e', 'Elektron · 0,511 MeV'], ['mu', 'Müon · 105,7 MeV'], ['pi', 'Pion · 139,6 MeV'], ['p', 'Proton · 938,3 MeV']] },
+    { k: 'lk', label: 'Kinetik enerji K', min: -3, max: 4, step: 0.01, v: -0.84, f: v => sci(Math.pow(10, v), 3) + ' MeV' }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'pc', label: 'pc' }, { k: 'E', label: 'E = K + mc²' }, { k: 'bg', label: 'β · γ' },
+    { k: 'cl', label: 'K ≈ (pc)²/2mc² hatası' }, { k: 'ur', label: 'K ≈ pc hatası' }, { k: 'reg', label: 'Bölge' }
+  ]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const m = MASS[p.pt][0], K = Math.pow(10, p.lk), E = K + m, pc = Math.sqrt(K * K + 2 * K * m);
+    const ecl = (pc * pc / (2 * m) - K) / K, eur = (pc - K) / K;
+    const wide = S.w >= 520, tw = wide ? S.w * 0.5 : S.w, th = wide ? S.h : S.h * 0.55;
+    const size = Math.min(tw - 70, th - 50), ox = 30, oy = th - 22;
+    const a = m / E * size, bpx = pc / E * size;
+    ctx.save(); ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.strokeStyle = T.ink; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + a, oy); ctx.stroke();
+    ctx.strokeStyle = T.vel; ctx.beginPath(); ctx.moveTo(ox + a, oy); ctx.lineTo(ox + a, oy - bpx); ctx.stroke();
+    ctx.strokeStyle = T.energy; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + a, oy - bpx); ctx.stroke(); ctx.restore();
+    text(ctx, 'mc²', ox + a / 2, oy + 12, T.ink, FONT.symS, 'center');
+    text(ctx, 'pc', ox + a + 8, oy - bpx / 2, T.vel, FONT.symS);
+    text(ctx, 'E', ox + a / 2 - 14, oy - bpx / 2 - 8, T.energy, FONT.sym, 'right');
+    /* hata çubukları, log ölçek: 0,01 % … 10⁴ % */
+    const bx = wide ? S.w * 0.54 : 24, by = wide ? 40 : th + 26, bw2 = (wide ? S.w * 0.42 : S.w - 48);
+    const lg = v => clamp((Math.log10(Math.max(Math.abs(v) * 100, 1e-2)) + 2) / 6, 0, 1);
+    [['klasik (pc)²/2mc²', ecl, T.acc], ['ultra göreli pc', eur, T.vel]].forEach((r, i) => {
+      const y = by + i * 54;
+      text(ctx, r[0], bx, y, T.muted, FONT.mono);
+      ctx.fillStyle = T.panel2; ctx.fillRect(bx, y + 9, bw2, 14);
+      ctx.fillStyle = r[2]; ctx.fillRect(bx, y + 9, bw2 * lg(r[1]), 14);
+    });
+    const ty = by + 2 * 54 + 4;
+    ['0,01 %', '1 %', '100 %', '10⁴ %'].forEach((s, i) => text(ctx, s, bx + bw2 * (i * 2) / 6, ty, T.muted, FONT.mono, i === 0 ? 'left' : 'center'));
+    const pct = v => (Math.abs(v) < 1e-4 ? '< 0,01' : n(v * 100, Math.abs(v) < 0.1 ? 2 : 0)) + ' %';
+    ro({
+      pc: sci(pc, 3) + ' MeV', E: sci(E, 4) + ' MeV', bg: `${n(pc / E, 4)} · ${n(E / m, 4)}`,
+      cl: pct(ecl), ur: pct(eur),
+      reg: pc < 0.1 * m ? chip('klasik: p²/2m', 'good') : pc > 10 * m ? chip('ultra göreli: K ≈ pc', 'warn') : chip('tam formül gerekli')
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 5.1 Planck tayfı ---------- */
+(function () {
+  const root = document.getElementById('lab-planck'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.52, 250, 340));
+  const lab = { root };
+  const p = ctrls(root, 'pl', [
+    { k: 'Tk', label: 'Sıcaklık T', min: 1500, max: 12000, step: 100, v: 4000, f: v => n(v, 0) + ' K' },
+    { k: 'rj', type: 'check', label: 'Rayleigh–Jeans eğrisini göster', v: true }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'lm', label: 'λ_max (Wien)' }, { k: 'I', label: 'σT⁴' }, { k: 'sun', label: 'Güneşe oran (T/5800)⁴' },
+    { k: 'ep', label: 'Tepe foton enerjisi' }, { k: 'reg', label: 'Tepe bölgesi' }
+  ]);
+  const HCK = 1.4388e7; /* nm·K */
+  const pl = (l, Tk) => Math.pow(l, -5) / (Math.exp(HCK / (l * Tk)) - 1);
+  const rj = (l, Tk) => Math.pow(l, -5) * (l * Tk / HCK);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const Tk = p.Tk, lmT = 2.898e6 / Tk, lmS = 2.898e6 / 5800;
+    const ymax = 1.12 * Math.max(pl(lmT, Tk), pl(lmS, 5800));
+    const box = { x: 44, y: 14, w: S.w - 58, h: S.h - 52 };
+    const P = chart(ctx, box, { x0: 0, x1: 3000, y0: 0, y1: ymax }, { xl: 'λ (nm)', yl: 'I(λ), bağıl', yticks: [[0, '0']] });
+    const gx0 = P.X(380), gx1 = P.X(750), gy = box.y + box.h + 22;
+    const grd = ctx.createLinearGradient(gx0, 0, gx1, 0);
+    ['#6A00C8', '#3B2BFF', '#0090FF', '#00C27A', '#B8D600', '#FFC400', '#FF7A00', '#E0001A'].forEach((c, i, a) => grd.addColorStop(i / (a.length - 1), c));
+    ctx.fillStyle = grd; ctx.fillRect(gx0, gy, gx1 - gx0, 6);
+    text(ctx, 'görünür', (gx0 + gx1) / 2, gy + 16, T.muted, FONT.mono, 'center');
+    fplot(ctx, P, l => pl(l, 5800), T.muted, 1.6, [6, 5], 30, 3000);
+    if (p.rj) fplot(ctx, P, l => rj(l, Tk), T.acc, 1.6, [3, 4], 30, 3000);
+    fplot(ctx, P, l => pl(l, Tk), T.energy, 2.6, null, 20, 3000, 500);
+    vline(ctx, P, lmT, T.energy, [3, 4], 'λmax');
+    const ep = HC / lmT;
+    ro({
+      lm: n(lmT, 0) + ' nm', I: sci(5.67e-8 * Math.pow(Tk, 4), 3) + ' W/m²', sun: n(Math.pow(Tk / 5800, 4), 3),
+      ep: n(ep, 2) + ' eV', reg: lmT < 380 ? chip('morötesi', 'warn') : lmT <= 750 ? chip('görünür', 'good') : chip('kızılötesi')
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 6.1 Fotoelektrik etki ---------- */
+(function () {
+  const root = document.getElementById('lab-fotoel'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.52, 250, 340));
+  const MET = { Na: 2.28, Co: 3.90, Al: 4.08, Zn: 4.31, Cu: 4.70, Ag: 4.73, Pt: 6.35 };
+  const lab = { root };
+  const p = ctrls(root, 'fe', [
+    { k: 'm', type: 'select', label: 'Metal', v: 'Na', options: Object.keys(MET).map(k => [k, `${k} · φ = ${n(MET[k], 2)} eV`]) },
+    { k: 'lam', label: 'Dalga boyu λ', min: 150, max: 700, step: 1, v: 435, f: v => n(v, 0) + ' nm' },
+    { k: 'I', label: 'Şiddet', min: 0, max: 100, step: 1, v: 60, f: v => n(v, 0) + ' %' }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'ef', label: 'Foton enerjisi hc/λ' }, { k: 'K', label: 'K_max = eV_s' }, { k: 'lc', label: 'Eşik dalga boyu λ_c' },
+    { k: 'cur', label: 'Elektron akımı', wide: true }
+  ]);
+  const H14 = 0.413567; /* eV / (10¹⁴ Hz) */
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const box = { x: 44, y: 14, w: S.w - 58, h: S.h - 40 };
+    const P = chart(ctx, box, { x0: 0, x1: 20, y0: -2, y1: 6 }, { xl: 'f (10¹⁴ Hz)', yl: 'K_max (eV)', sy: 1 });
+    clipBox(ctx, box);
+    ctx.fillStyle = T.panel2; ctx.globalAlpha = .6;
+    ctx.fillRect(P.X(2.998e3 / 750), box.y, P.X(2.998e3 / 380) - P.X(2.998e3 / 750), box.h);
+    ctx.globalAlpha = 1; ctx.restore();
+    text(ctx, 'görünür', P.X(5.9), box.y + 12, T.muted, FONT.mono, 'center');
+    Object.keys(MET).forEach(k => { if (k !== p.m) fplot(ctx, P, f => H14 * f - MET[k], T.rule, 1, null); });
+    const phi = MET[p.m], f0 = phi / H14;
+    fplot(ctx, P, f => H14 * f - phi, T.vel, 1.4, [5, 4], 0, f0);
+    fplot(ctx, P, f => H14 * f - phi, T.vel, 2.6, null, f0, 20);
+    const f = 2997.92 / p.lam, E = HC / p.lam, K = E - phi;
+    dot(ctx, P.X(f), P.Y(K), 6, K > 0 ? T.energy : T.panel, T.energy);
+    text(ctx, `eğim h = ${n(H14 / 1e14 * 1e15, 3)}·10⁻¹⁵ eV·s`, box.x + box.w - 8, box.y + box.h - 12, T.muted, FONT.mono, 'right');
+    ro({
+      ef: n(E, 3) + ' eV', K: K > 0 ? `${n(K, 3)} eV · V_s = ${n(K, 3)} V` : '—', lc: n(HC / phi, 0) + ' nm',
+      cur: K > 0 ? (p.I > 0 ? chip(`elektron var · akım ∝ şiddet (${n(p.I, 0)} %)`, 'good') : chip('foton yok, akım yok')) : chip('hf < φ: şiddet ne olursa olsun elektron yok', 'bad')
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 6.2 Compton saçılması ---------- */
+(function () {
+  const root = document.getElementById('lab-compton'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => w >= 560 ? clamp(w * 0.42, 250, 320) : clamp(w * 1.05, 420, 560));
+  const lab = { root };
+  const p = ctrls(root, 'cp', [
+    { k: 'E', label: 'Gelen foton enerjisi E', min: 10, max: 1500, step: 1, v: 184, f: v => n(v, 0) + ' keV' },
+    { k: 'th', label: 'Saçılma açısı θ', min: 0, max: 180, step: 1, v: 60, f: v => n(v, 0) + '°' }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'lam', label: 'λ → λ′' }, { k: 'dl', label: 'Δλ' }, { k: 'Ep', label: 'E′' }, { k: 'Ke', label: 'K_e = E − E′' },
+    { k: 'pe', label: 'Elektron: p, açı φ', wide: true }
+  ]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const E = p.E, th = rad(p.th), Ep = E / (1 + E / 511 * (1 - Math.cos(th))), Ke = E - Ep;
+    const px = E - Ep * Math.cos(th), py = Ep * Math.sin(th), pe = Math.hypot(px, py), phi = Math.atan2(py, px);
+    const wide = S.w >= 560, aw = wide ? S.w * 0.55 : S.w, ah = wide ? S.h : S.h * 0.55;
+    const ox = aw * 0.42, oy = ah * 0.5, sc = Math.min(aw * 0.5, ah * 0.42) / E;
+    arrow(ctx, ox - E * sc, oy, ox, oy, T.energy, 2.4);
+    arrow(ctx, ox, oy, ox + Ep * sc * Math.cos(th), oy - Ep * sc * Math.sin(th), T.energy, 2.4);
+    arrow(ctx, ox, oy, ox + pe * sc * Math.cos(phi), oy + pe * sc * Math.sin(phi), T.vel, 2.4);
+    polyline(ctx, [[ox + Ep * sc * Math.cos(th), oy - Ep * sc * Math.sin(th)], [ox + E * sc, oy]], T.vel, 1, [3, 4]);
+    polyline(ctx, [[ox, oy], [ox + E * sc, oy]], T.energy, 1, [3, 4]);
+    dot(ctx, ox, oy, 5, T.ink);
+    text(ctx, 'p', ox - E * sc / 2, oy - 10, T.energy, FONT.sym, 'center');
+    text(ctx, 'p′', ox + Ep * sc * Math.cos(th) * 0.55 - 10, oy - Ep * sc * Math.sin(th) * 0.55 - 6, T.energy, FONT.sym, 'right');
+    text(ctx, 'pₑ', ox + pe * sc * Math.cos(phi) * 0.6 + 6, oy + pe * sc * Math.sin(phi) * 0.6 + 12, T.vel, FONT.sym);
+    text(ctx, 'momentum (aynı ölçek)', 12, 16, T.muted, FONT.monoB);
+    const box = wide ? { x: aw + 40, y: 24, w: S.w - aw - 52, h: S.h - 50 } : { x: 44, y: ah + 20, w: S.w - 58, h: S.h - ah - 46 };
+    const P = chart(ctx, box, { x0: 0, x1: 180, y0: 0, y1: 5.2 }, { xl: 'θ (°)', yl: 'Δλ (pm)', sx: 45, sy: 1, title: 'Δλ = 2,426 pm · (1 − cos θ)' });
+    fplot(ctx, P, a => 2.426 * (1 - Math.cos(rad(a))), T.acc, 2.2);
+    dot(ctx, P.X(p.th), P.Y(2.426 * (1 - Math.cos(th))), 5, T.acc);
+    const lam = 1.23984 / E, lamp = 1.23984 / Ep;
+    ro({
+      lam: `${n(lam * 1000, 3)} → ${n(lamp * 1000, 3)} pm`, dl: n((lamp - lam) * 1000, 3) + ' pm', Ep: n(Ep, 2) + ' keV', Ke: n(Ke, 2) + ' keV',
+      pe: `${n(pe, 1)} keV/c · φ = ${n(deg(phi), 1)}° (geliş doğrultusunun öbür yanında)`
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 7.1 Gauss dalga paketi ---------- */
+(function () {
+  const root = document.getElementById('lab-paket'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.56, 270, 360));
+  const lab = { root, t: 0, playing: false };
+  const p = ctrls(root, 'pk', [
+    { k: 'sg', label: 'Başlangıç genişliği Δx₀', min: 0.3, max: 3, step: 0.05, v: 1, f: v => n(v, 2) },
+    { k: 'k0', label: 'Ortalama dalga sayısı k₀', min: 2, max: 10, step: 0.1, v: 6, f: v => n(v, 1) }
+  ], () => { lab.t = 0; lab.draw(); });
+  const ro = readout(root, [
+    { k: 'dx', label: 'Δx(t)' }, { k: 'dk', label: 'Δk = 1/(2Δx₀)' }, { k: 'pr', label: 'Δx · Δk' }, { k: 't', label: 't (ħ = m = 1)' }
+  ]);
+  lab.reset = () => { lab.t = 0; };
+  lab.tick = dt => { lab.t += dt * 0.8; if (p.k0 * lab.t > 26) lab.t = 0; };
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const sg = p.sg, k0 = p.k0, al = 1 / (4 * sg * sg), t = lab.t;
+    const top = { x: 40, y: 12, w: S.w - 52, h: (S.h - 40) * 0.66 };
+    const P = chart(ctx, top, { x0: -8, x1: 30, y0: -1.15, y1: 1.15 }, { xl: 'x', yl: 'ψ', noXLabels: false, yticks: [[-1, '−1'], [0, '0'], [1, '1']] });
+    const den = 1 + 4 * al * al * t * t, M = Math.pow(den, -0.25), ph0 = -0.5 * Math.atan(2 * al * t);
+    const amp = x => { const d = x - k0 * t; return M * Math.exp(-al * d * d / den); };
+    const re = x => { const d = x - k0 * t; return amp(x) * Math.cos(al * d * d * 2 * al * t / den + k0 * x - k0 * k0 * t / 2 + ph0); };
+    fplot(ctx, P, re, T.acc, 1.3, null, -8, 30, 900);
+    fplot(ctx, P, amp, T.acc, 2.6, null, -8, 30, 400);
+    fplot(ctx, P, x => -amp(x), T.acc, 2.6, null, -8, 30, 400);
+    const bot = { x: 40, y: top.y + top.h + 26, w: S.w - 52, h: S.h - top.h - 52 };
+    const dk = 1 / (2 * sg);
+    const Q = chart(ctx, bot, { x0: 0, x1: 16, y0: 0, y1: 1.15 }, { xl: 'k', yticks: [[0, '0']], title: '|A(k)|²' });
+    fplot(ctx, Q, k => Math.exp(-(k - k0) * (k - k0) / (2 * dk * dk)), T.vel, 2.2);
+    const dxt = sg * Math.sqrt(den);
+    ro({ dx: n(dxt, 2), dk: n(dk, 3), pr: n(dxt * dk, 3) + (t === 0 ? ' (en küçük: 1/2)' : ''), t: n(t, 2) });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 8.1 Sonsuz kuyu ---------- */
+(function () {
+  const root = document.getElementById('lab-kuyu'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.6, 290, 400));
+  const lab = { root };
+  const p = ctrls(root, 'ky', [
+    { k: 'lv', label: 'Durum n', min: 1, max: 8, step: 1, v: 1, f: v => n(v, 0) },
+    { k: 'a', label: 'Gölgeli bölgenin başı a/L', min: 0, max: 0.95, step: 0.01, v: 0.4 },
+    { k: 'w', label: 'Gölgeli bölgenin genişliği Δx/L', min: 0.01, max: 0.5, step: 0.01, v: 0.2 },
+    { k: 'Lnm', label: 'Kuyu genişliği L (elektron)', min: 0.05, max: 1, step: 0.01, v: 0.1, f: v => n(v, 2) + ' nm' },
+    { k: 'sq', type: 'check', label: '|ψ|² göster', v: true }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'E', label: 'Eₙ (elektron)' }, { k: 'r', label: 'Eₙ / E₁ · düğüm' }, { k: 'lam', label: 'λₙ = 2L/n' },
+    { k: 'Pq', label: 'P (kuantum)' }, { k: 'Pc', label: 'P (klasik = Δx/L)' }
+  ]);
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const lv = p.lv, top = (lv + 1) * (lv + 1) * 1.08, a = p.a, b = Math.min(1, p.a + p.w);
+    const box = { x: 46, y: 14, w: S.w - 60, h: S.h - 38 };
+    const P = chart(ctx, box, { x0: -0.08, x1: 1.08, y0: 0, y1: top }, { xl: 'x / L', yl: 'E / E₁', sx: 0.25, yticks: Array.from({ length: lv + 1 }, (_, i) => [(i + 1) * (i + 1), String((i + 1) * (i + 1))]) });
+    ctx.save(); ctx.strokeStyle = T.ink; ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.moveTo(P.X(0), box.y); ctx.lineTo(P.X(0), P.Y(0)); ctx.lineTo(P.X(1), P.Y(0)); ctx.lineTo(P.X(1), box.y); ctx.stroke(); ctx.restore();
+    for (let i = 1; i <= lv + 1; i++) polyline(ctx, [[P.X(0), P.Y(i * i)], [P.X(1), P.Y(i * i)]], i === lv ? T.energy : T.rule, i === lv ? 1.6 : 1, i === lv ? [5, 4] : null);
+    const gap = lv === 1 ? 3 : (lv * lv - (lv - 1) * (lv - 1));
+    const A = gap * 0.45, E0 = lv * lv;
+    const f = x => p.sq ? 2 * Math.pow(Math.sin(lv * PI * x), 2) / 2 : Math.sin(lv * PI * x);
+    /* gölge */
+    ctx.save(); ctx.beginPath(); ctx.moveTo(P.X(a), P.Y(E0));
+    for (let i = 0; i <= 80; i++) { const x = a + (b - a) * i / 80; ctx.lineTo(P.X(x), P.Y(E0 + A * f(x))); }
+    ctx.lineTo(P.X(b), P.Y(E0)); ctx.closePath(); ctx.fillStyle = T.acc; ctx.globalAlpha = .22; ctx.fill(); ctx.restore();
+    fplot(ctx, P, x => E0 + A * f(x), T.acc, 2.4, null, 0, 1);
+    const E1 = 0.37603 / (p.Lnm * p.Lnm);
+    const Pq = (b - a) - (Math.sin(2 * lv * PI * b) - Math.sin(2 * lv * PI * a)) / (2 * lv * PI);
+    ro({
+      E: sci(E1 * lv * lv, 3) + ' eV', r: `${lv * lv} · ${lv - 1}`, lam: n(2 * p.Lnm / lv, 3) + ' nm',
+      Pq: n(Pq, 4), Pc: n(b - a, 4)
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+/* ---------- 9.1 Basamaklı kutu çözücüsü ---------- */
+(function () {
+  const root = document.getElementById('lab-basamak'); if (!root) return;
+  const S = stage(root.querySelector('canvas'), w => clamp(w * 0.6, 290, 410));
+  const lab = { root };
+  const p = ctrls(root, 'sb', [
+    { k: 'U0', label: 'U₀ (I bölgesi)', min: 0, max: 60, step: 1, v: 0, f: v => n(v, 0) + ' ε' },
+    { k: 'U1', label: 'U₁ (II bölgesi)', min: 5, max: 300, step: 1, v: 100, f: v => n(v, 0) + ' ε' },
+    { k: 'lv', label: 'Durum n', min: 1, max: 8, step: 1, v: 3, f: v => n(v, 0) },
+    { k: 'sq', type: 'check', label: '|ψ|² göster', v: false }
+  ], () => lab.draw());
+  const ro = readout(root, [
+    { k: 'E', label: 'Eₙ (ε = ħ²/2mL²)' }, { k: 'r', label: 'Eₙ / U₁' }, { k: 'kk', label: 'k_I · k_II (1/L)' },
+    { k: 'P', label: 'P(I) · P(II)' }, { k: 'nd', label: 'Düğüm sayısı' }, { k: 'reg', label: 'II bölgesi', wide: true }
+  ]);
+  function sI(x, E, V) { if (E > V) { const k = Math.sqrt(E - V); return [Math.sin(k * x) / k, Math.cos(k * x)]; } const k = Math.sqrt(V - E) || 1e-9; return [Math.sinh(k * x) / k, Math.cosh(k * x)]; }
+  function tII(x, E, V) { if (E > V) { const q = Math.sqrt(E - V); return [Math.sin(q * (2 - x)) / q, -Math.cos(q * (2 - x))]; } const q = Math.sqrt(V - E) || 1e-9; return [Math.sinh(q * (2 - x)) / q, -Math.cosh(q * (2 - x))]; }
+  function W(E, U0, U1) { const a = sI(1, E, U0), b = tII(1, E, U1); return a[0] * b[1] - a[1] * b[0]; }
+  function eig(U0, U1, cnt) {
+    const out = [], lo = Math.min(U0, U1) + 1e-6, hi = Math.max(U0, U1) + Math.pow((cnt + 3) * PI / 2, 2) * 1.2, N = 4000;
+    let pE = lo, pw = W(lo, U0, U1);
+    for (let i = 1; i <= N && out.length < cnt; i++) {
+      const E = lo + (hi - lo) * i / N, w = W(E, U0, U1);
+      if ((w > 0) !== (pw > 0)) out.push(bisect(e => W(e, U0, U1) * (pw > 0 ? 1 : -1), pE, E));
+      pE = E; pw = w;
+    }
+    return out;
+  }
+  lab.draw = () => {
+    const ctx = S.ctx; S.clear();
+    const { U0, U1, lv } = p;
+    const ev = eig(U0, U1, lv), E = ev[lv - 1];
+    const psi = x => { const a = sI(1, E, U0)[0], b = tII(1, E, U1)[0]; return x <= 1 ? sI(x, E, U0)[0] : a / b * tII(x, E, U1)[0]; };
+    const N = 600, xs = [], ps = [];
+    for (let i = 0; i <= N; i++) { const x = 2 * i / N; xs.push(x); ps.push(psi(x)); }
+    let s1 = 0, s2 = 0, nodes = 0;
+    for (let i = 1; i <= N; i++) { const v = (ps[i] * ps[i] + ps[i - 1] * ps[i - 1]) / 2 * (2 / N); if (xs[i] <= 1) s1 += v; else s2 += v; if (i < N && ps[i] * ps[i - 1] < 0) nodes++; }
+    const norm = Math.sqrt(s1 + s2), mx = Math.max(...ps.map(Math.abs)) / norm;
+    const top = Math.max(U1, U0, E) * 1.3 + 5;
+    const box = { x: 46, y: 14, w: S.w - 60, h: S.h - 38 };
+    const P = chart(ctx, box, { x0: -0.1, x1: 2.1, y0: 0, y1: top }, { xl: 'x / L', yl: 'E (ε)', sx: 0.5 });
+    ctx.save(); ctx.fillStyle = T.panel2; ctx.globalAlpha = .5; ctx.fillRect(P.X(0), box.y, P.X(1) - P.X(0), box.h); ctx.restore();
+    ctx.save(); ctx.strokeStyle = T.ink; ctx.lineWidth = 2.4; ctx.beginPath();
+    ctx.moveTo(P.X(0), box.y); ctx.lineTo(P.X(0), P.Y(U0)); ctx.lineTo(P.X(1), P.Y(U0)); ctx.lineTo(P.X(1), P.Y(U1)); ctx.lineTo(P.X(2), P.Y(U1)); ctx.lineTo(P.X(2), box.y); ctx.stroke(); ctx.restore();
+    ev.forEach((e, i) => { if (i !== lv - 1) polyline(ctx, [[P.X(0), P.Y(e)], [P.X(2), P.Y(e)]], T.rule, 1); });
+    hline(ctx, P, E, T.energy, [5, 4], 'E' + String(lv).replace(/\d/g, d => '₀₁₂₃₄₅₆₇₈₉'[d]));
+    const A = Math.min(top * 0.16, Math.max(top * 0.08, (E - Math.min(U0, U1)) * 0.6));
+    const f = i => p.sq ? (ps[i] / norm) * (ps[i] / norm) / (mx * mx) : ps[i] / norm / mx;
+    polyline(ctx, xs.map((x, i) => [P.X(x), P.Y(E + A * f(i))]), T.acc, 2.4);
+    text(ctx, 'I', P.X(0.5), box.y + 12, T.muted, FONT.monoB, 'center');
+    text(ctx, 'II', P.X(1.5), box.y + 12, T.muted, FONT.monoB, 'center');
+    const kI = E > U0 ? Math.sqrt(E - U0) : -Math.sqrt(U0 - E), kII = Math.sqrt(Math.abs(U1 - E));
+    ro({
+      E: n(E, 2), r: n(E / U1, 3), kk: `${E > U0 ? n(kI, 2) : 'κ=' + n(-kI, 2)} · ${n(kII, 2)}`,
+      P: `${n(s1 / (s1 + s2), 3)} · ${n(s2 / (s1 + s2), 3)}`, nd: String(nodes),
+      reg: E < U1 ? chip('E < U₁: sönen üstel, düğüm yok, ψ = C sinh κ(2L − x)', 'good') : chip('E > U₁: salınım, I bölgesinden uzun dalga boyu', 'warn')
+    });
+  };
+  S.onDraw = lab.draw; register(lab); lab.draw();
+})();
+
+</script>
+<script>
+/* Site menüsü: aç/kapat, Esc, dışarı tıklama, odak yönetimi */
+(function () {
+  const nav = document.getElementById('site-nav'); if (!nav) return;
+  const btn = document.getElementById('nav-btn'), drawer = document.getElementById('nav-drawer'), scrim = document.getElementById('nav-scrim');
+  const links = [...drawer.querySelectorAll('a')];
+  const cur = nav.dataset.current;
+  links.forEach(a => { if (a.dataset.key === cur) a.setAttribute('aria-current', 'page'); });
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.classList.toggle('nav-lock', open);
+    /* çekmece görünür olduktan sonra odakla (visibility geçişi başlarken öğe odaklanamaz) */
+    if (open) setTimeout(() => (drawer.querySelector('a[aria-current]') || links[0]).focus({ preventScroll: true }), 60);
+  }
+  btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  scrim.addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { set(false); btn.focus(); }
+    if (e.key === 'Tab') {
+      const items = [btn, ...links, ...drawer.querySelectorAll('.nav-foot a')];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
