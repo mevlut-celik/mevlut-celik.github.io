@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PHYS 210 Yöntem Kiti</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PHYS 210 sınavlarındaki soru kalıpları ve onları çözmek için gereken yöntemlerin Türkçe öğretimi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas', 'select', 'option'] },
+  startup: { typeset: true, pageReady: () => MathJax.startup.defaultPageReady().then(fitMath) }
+};
+/* Dar ekranda sütuna sığmayan satır içi formülü kendi satırına alıp yatay kaydırılabilir yapar */
+function fitMath() {
+  const els = [...document.querySelectorAll('mjx-container:not([display="true"])')];
+  els.forEach(el => el.classList.remove('mj-wide'));
+  const wide = [];
+  els.forEach(el => {
+    let b = el.parentElement;
+    while (b && getComputedStyle(b).display === 'inline') b = b.parentElement;
+    if (!b) return;
+    const cs = getComputedStyle(b);
+    const avail = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (el.getBoundingClientRect().width > avail + 1) wide.push(el);
+  });
+  wide.forEach(el => el.classList.add('mj-wide'));
+}
+let fitW = window.innerWidth, fitT = 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === fitW) return;
+  fitW = window.innerWidth; clearTimeout(fitT); fitT = setTimeout(fitMath, 200);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<style>
+/* Düzen: üstte milimetrik kâğıt bandı ve altında faz renk çemberi şeridi; sol yapışkan içindekiler + 48rem okuma sütunu.
+   Laboratuvarlar sütun genişliğinde "çalışma tezgâhı" panelleri; renkler matematiksel anlam taşır
+   (yol/kontur kırmızı, vektör alanı camgöbeği, normal/akı macenta, kutup/tekillik amber). */
+:root {
+  --bg: #F2F5F9;
+  --panel: #FFFFFF;
+  --panel-2: #E7ECF3;
+  --canvas: #FAFCFE;
+  --ink: #111A27;
+  --muted: #556274;
+  --rule: #D0D9E4;
+  --grid: #E1E8F0;
+  --accent: #1D5BB5;
+  --accent-soft: #DCE8FA;
+  --on-accent: #FFFFFF;
+  --force: #C2362B;
+  --vel: #0E7F86;
+  --acc: #A3207A;
+  --energy: #B06A00;
+  --good: #2E7D32;
+  --bad: #B3261E;
+  --good-soft: #E3F2DF;
+  --bad-soft: #F8E3E1;
+  --font-display: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-body: 1.0625rem;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1018; --panel: #111824; --panel-2: #172030; --canvas: #0E141E;
+    --ink: #E3EAF4; --muted: #8E9BB0; --rule: #243043; --grid: #19222F;
+    --accent: #7FB0FF; --accent-soft: #16294A; --on-accent: #0B1018;
+    --force: #FF7A6E; --vel: #4FD0D6; --acc: #F07BC8; --energy: #F0B43C;
+    --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1018; --panel: #111824; --panel-2: #172030; --canvas: #0E141E;
+  --ink: #E3EAF4; --muted: #8E9BB0; --rule: #243043; --grid: #19222F;
+  --accent: #7FB0FF; --accent-soft: #16294A; --on-accent: #0B1018;
+  --force: #FF7A6E; --vel: #4FD0D6; --acc: #F07BC8; --energy: #F0B43C;
+  --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+mjx-container { color: inherit; position: relative; }
+mjx-assistive-mml { max-width: 100% !important; }
+mjx-container.mj-wide { display: block !important; max-width: 100%; overflow-x: auto; overflow-y: hidden; margin: .3rem 0; padding-bottom: .15rem; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .25rem; margin: .6rem 0 !important; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Üst bant ---------- */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.hero-in {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.75rem 2.25rem;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.5rem; align-items: end;
+}
+.eyebrow {
+  font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: 0 0 .75rem;
+}
+.hero h1 {
+  font: 600 clamp(2.4rem, 6vw, 3.9rem)/1.02 var(--font-display);
+  letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+.hero h1 i { font-style: italic; font-weight: 500; color: var(--accent); }
+.hero .lede { font-size: 1.12rem; color: var(--ink); max-width: 38rem; margin: 0; }
+.hero-card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: grid; gap: .85rem;
+}
+.hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero-stats div { display: grid; }
+.hero-stats b { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.hero-stats span { font: 500 .72rem/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend i { width: 1.4rem; height: 3px; border-radius: 2px; display: inline-block; position: relative; }
+.legend i::after { content: ""; position: absolute; right: -2px; top: -3px; border-left: 6px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+.hero-how { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .92rem; }
+.hero-how li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .6rem; }
+.hero-how b { font: 500 .72rem/1.9 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+
+/* ---------- İskelet ---------- */
+.shell {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3.25rem;
+}
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 2rem 2rem; }
+.side summary { display: none; }
+.toc-title { font: 500 .72rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem; }
+.progress { height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; margin: .2rem 0 .45rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.progress-txt { font: 400 .8rem/1.4 var(--font-mono); color: var(--muted); margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.toc a {
+  display: grid; grid-template-columns: 1.6rem 1fr 1rem; gap: .35rem; align-items: baseline;
+  text-decoration: none; color: var(--muted); padding: .38rem .5rem; border-radius: 5px; font-size: .9rem; line-height: 1.35;
+}
+.toc a:hover { background: var(--panel-2); color: var(--ink); }
+.toc a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.toc .n { font: 500 .78rem/1.5 var(--font-mono); color: var(--accent); }
+.toc .ok { color: var(--good); font-size: .85rem; visibility: hidden; }
+.toc a.is-done .ok { visibility: visible; }
+.side-foot { margin-top: 1.2rem; display: grid; gap: .5rem; font-size: .82rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
+
+main { min-width: 0; max-width: 48rem; padding-block: 1rem 6rem; }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side {
+    max-height: none; overflow: visible; z-index: 30; padding-block: 0;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .side summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    list-style: none; cursor: pointer; padding-block: .75rem; font-weight: 500;
+  }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary .sum-prog { font: 400 .8rem var(--font-mono); color: var(--muted); }
+  .side details[open] .toc-wrap { padding-bottom: 1rem; max-height: 70vh; overflow-y: auto; }
+  .toc-title { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem 1.75rem; }
+}
+
+/* ---------- Bölümler ---------- */
+.chapter { padding-top: 3.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
+.ch-head .eyebrow .sess { color: var(--accent); }
+.chapter h2 { font: 600 clamp(1.8rem, 4vw, 2.45rem)/1.12 var(--font-display); margin: 0 0 .8rem; text-wrap: balance; letter-spacing: -.005em; }
+.ch-lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 42rem; }
+.chapter h3 { font: 600 1.42rem/1.25 var(--font-display); margin: 2.6rem 0 .6rem; text-wrap: balance; }
+.chapter h3 .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-left: .5rem; vertical-align: .25em; white-space: nowrap; }
+.chapter p, .chapter li { max-width: 44rem; }
+.chapter ul, .chapter ol { padding-left: 1.3rem; }
+.chapter li + li { margin-top: .3rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 1rem 0; }
+.kv dt { font: 500 .78rem/1.9 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 0; }
+
+/* Kutular: sonuç / örnek / sınav */
+.box {
+  --lbl: var(--accent);
+  position: relative; margin: 1.9rem 0 1.4rem; padding: 1.15rem 1.2rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--lbl) 38%, var(--rule)); border-radius: var(--radius); background: var(--panel);
+}
+.box-label {
+  position: absolute; top: -.72em; left: .85rem; padding: 0 .45rem;
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--panel) 50%);
+  font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--lbl);
+}
+.box > :first-child:not(.box-label), .box > .box-label + * { margin-top: 0; }
+.box > :last-child { margin-bottom: .2rem; }
+.box.ex { --lbl: var(--energy); }
+.box.exam { --lbl: var(--force); }
+.box.ext { --lbl: var(--acc); }
+.box p { margin: .5rem 0; }
+
+/* Adım adım türetim */
+.derive { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.derive-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .85rem 1.15rem .2rem; }
+.derive-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.derive-head h4 { margin: 0; font: 600 1.05rem/1.35 var(--font-body); }
+.steps { list-style: none; margin: .5rem 0 0; padding: .3rem 1.15rem .2rem; counter-reset: st; }
+.step { counter-increment: st; position: relative; padding: .1rem 0 1.05rem 2.55rem; max-width: none !important; }
+.step + .step { margin-top: 0 !important; }
+.step::before {
+  content: counter(st); position: absolute; left: 0; top: .12rem; width: 1.7rem; height: 1.7rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--panel);
+  font: 600 .8rem/1.55rem var(--font-mono); text-align: center; z-index: 1;
+}
+.step::after { content: ""; position: absolute; left: .82rem; top: 1.9rem; bottom: .15rem; width: 1.5px; background: var(--rule); }
+.step.tail::after, .step:last-child::after { display: none; }
+.step > p:first-child { margin-top: .1rem; }
+.step p { margin: .35rem 0; }
+.step.locked { visibility: hidden; max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.step.rev { animation: rise .4s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .step.rev { animation: none; } }
+.derive-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); border-radius: 0 0 var(--radius) var(--radius); }
+.derive-count { margin-left: auto; font: 500 .82rem var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Düğmeler */
+.btn {
+  font: 500 .88rem/1.2 var(--font-body); padding: .5rem .85rem; border-radius: 5px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--panel); color: var(--accent);
+  min-height: 2.25rem;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--panel); }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+.btn-primary:disabled { background: var(--accent); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+
+/* Laboratuvar */
+.lab { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.lab-head { padding: .95rem 1.15rem .7rem; }
+.lab-tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--vel); }
+.lab-head h4 { margin: .15rem 0 .25rem; font: 600 1.12rem/1.3 var(--font-body); }
+.lab-head p { margin: 0; color: var(--muted); font-size: .94rem; }
+.view { position: relative; overflow: hidden; background: var(--canvas); border-block: 1px solid var(--rule); }
+.view canvas { display: block; width: 100%; touch-action: pan-y; }
+.view .hint { position: absolute; right: .6rem; top: .45rem; font: 500 .72rem var(--font-mono); color: var(--muted); pointer-events: none; }
+.ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .7rem 1.4rem; padding: .95rem 1.15rem .35rem; }
+.ctrl { display: grid; gap: .15rem; min-width: 0; }
+.ctrl label { display: flex; justify-content: space-between; gap: .6rem; font-size: .86rem; color: var(--ink); }
+.ctrl output { font: 500 .84rem var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); margin: .25rem 0; min-height: 1.4rem; }
+.ctrl select, .ctrl input[type="number"] {
+  font: 400 .9rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .4rem .5rem; width: 100%; min-height: 2.25rem;
+}
+.ctrl.check label { justify-content: flex-start; align-items: center; gap: .5rem; padding-top: 1.2rem; }
+.ctrl.check input { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: .55rem 1.15rem .3rem; }
+.readout { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .45rem; padding: .65rem 1.15rem .9rem; margin: 0; }
+.readout > div { background: var(--panel-2); border-radius: 5px; padding: .42rem .65rem .48rem; min-width: 0; }
+.readout dt { font: 500 .74rem/1.35 var(--font-mono); color: var(--muted); }
+.readout dd { margin: .1rem 0 0; font: 500 .95rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.readout > div.wide { grid-column: 1 / -1; }
+.chip { display: inline-block; font: 600 .74rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .5rem; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.warn { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.lab-try { margin: 0; padding: .1rem 1.15rem 1.05rem; font-size: .9rem; color: var(--muted); }
+.lab-try b { color: var(--ink); font-weight: 600; }
+.lab-note { font-size: .86rem; color: var(--muted); padding: 0 1.15rem .8rem; margin: 0; }
+
+/* Tablolar */
+.tbl-wrap { overflow-x: auto; margin: 1.2rem 0; }
+table.tbl { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.tbl th, .tbl td { padding: .5rem .7rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+.tbl th { font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.tbl td.c, .tbl th.c { text-align: center; }
+.tbl td.num { font-family: var(--font-mono); }
+
+/* Sorular */
+.quiz-set { margin: 2.4rem 0 1rem; }
+.quiz-set > h3 { margin-top: 0; }
+.quiz { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 1rem 1.15rem 1rem; margin: .9rem 0; }
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+.quiz-opts { display: grid; gap: .45rem; }
+.quiz-opts button {
+  display: grid; grid-template-columns: 1.7rem 1fr; gap: .55rem; align-items: center; text-align: left;
+  font: 400 .95rem/1.45 var(--font-body); color: var(--ink); background: var(--panel); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 5px; padding: .5rem .65rem; min-height: 2.6rem;
+}
+.quiz-opts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-opts button:disabled { cursor: default; }
+.quiz-opts button > span:last-child { min-width: 0; }
+.opt-k { font: 600 .78rem/1 var(--font-mono); color: var(--muted); width: 1.55rem; height: 1.55rem; border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; }
+.quiz-opts button.ok { border-color: var(--good); background: var(--good-soft); }
+.quiz-opts button.ok .opt-k { background: var(--good); color: var(--panel); border-color: var(--good); }
+.quiz-opts button.no { border-color: var(--bad); background: var(--bad-soft); }
+.quiz-opts button.no .opt-k { background: var(--bad); color: var(--panel); border-color: var(--bad); }
+.quiz-why { margin: .75rem 0 0; font-size: .93rem; }
+.quiz:not(.done) .quiz-why { visibility: hidden; max-height: 0; overflow: hidden; margin: 0; }
+.quiz-why .verdict { font-weight: 600; margin-right: .3rem; }
+.quiz.is-right .verdict { color: var(--good); }
+.quiz.is-wrong .verdict { color: var(--bad); }
+
+.ch-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--rule); }
+.ch-foot .btn.is-done { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.ch-foot a { font-size: .92rem; }
+
+/* Formül kartı */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1.2rem; }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.card h5 { margin: 0; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.card mjx-container[display="true"] { margin: .35rem 0 !important; }
+
+footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* Çözüm defteri eklemeleri */
+.topic { padding-top: 3.2rem; }
+.topic + .topic { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.topic h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.prob { padding-top: 2.2rem; }
+.prob + .prob { border-top: 1px dashed var(--rule); margin-top: 2.2rem; }
+.prob-head { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: center; }
+.pid { font: 600 .78rem/1.5 var(--font-mono); color: var(--accent); background: var(--accent-soft); padding: .05rem .5rem; border-radius: 4px; }
+.lvl { font: 500 .76rem/1.5 var(--font-mono); color: var(--muted); }
+.prob h3 { margin: .35rem 0 .2rem; font: 600 1.4rem/1.25 var(--font-display); text-wrap: balance; }
+.box.q { --lbl: var(--vel); }
+.box.q p { margin: .4rem 0; }
+.tip { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); max-width: 44rem; }
+.tip b { color: var(--force); font-weight: 600; }
+.solved { display: inline-flex; gap: .55rem; align-items: center; font-size: .92rem; color: var(--muted); margin-top: 1rem; cursor: pointer; padding: .35rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.solved input { accent-color: var(--good); width: 1.05rem; height: 1.05rem; }
+.solved:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 0; }
+.toc .grp { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .9rem 0 .25rem .5rem; list-style: none; }
+.toc .grp:first-child { margin-top: 0; }
+.toc a { grid-template-columns: 3.6rem 1fr 1rem; }
+.toc .n { font-size: .72rem; }
+.toc a.is-done .ok { visibility: visible; }
+.mini { margin: 1rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.mini .ctrls { padding-top: .7rem; }
+.note-src { font-size: .85rem; color: var(--muted); }
+
+/* Yöntem kiti eklemeleri */
+.part { padding-top: 3.2rem; }
+.part + .part { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.part h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.method { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); padding: 1.1rem 1.2rem 1rem; }
+.m-head { display: flex; gap: .9rem; align-items: flex-start; }
+.m-no { flex: none; font: 600 1.25rem/1 var(--font-mono); color: var(--on-accent); background: var(--accent); border-radius: 6px; padding: .5rem .55rem; min-width: 2.9rem; text-align: center; }
+.m-head h3 { margin: .05rem 0 .2rem; font: 600 1.38rem/1.25 var(--font-display); text-wrap: balance; }
+.m-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+.m-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 1.4rem; margin-top: 1rem; }
+@media (max-width: 720px) { .m-grid { grid-template-columns: minmax(0, 1fr); } }
+.m-block h4 { margin: 0 0 .35rem; font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.m-block.when h4 { color: var(--vel); }
+.m-block.trap h4 { color: var(--force); }
+.m-block ul, .m-block ol { margin: 0; padding-left: 1.2rem; font-size: .95rem; }
+.m-block li + li { margin-top: .3rem; }
+.m-block.trap ul { list-style: none; padding-left: 0; }
+.m-block.trap li { padding-left: 1.3rem; position: relative; }
+.m-block.trap li::before { content: "✗"; position: absolute; left: 0; color: var(--force); font-weight: 600; }
+.m-recipe { margin-top: 1rem; }
+.m-recipe ol { counter-reset: r; list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.m-recipe li { counter-increment: r; position: relative; padding-left: 2.2rem; }
+.m-recipe li::before { content: counter(r); position: absolute; left: 0; top: .05rem; width: 1.55rem; height: 1.55rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .78rem/1.55rem var(--font-mono); text-align: center; }
+.method .derive { margin: 1.1rem 0 .4rem; }
+.m-foot { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-top: .8rem; font-size: .9rem; color: var(--muted); }
+.m-foot .links { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.nb { font: 500 .76rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--accent); text-decoration: none; border: 1px solid var(--rule); }
+.nb:hover { border-color: var(--accent); }
+.learned { display: inline-flex; gap: .5rem; align-items: center; cursor: pointer; margin-left: auto; padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.learned input { accent-color: var(--good); width: 1rem; height: 1rem; }
+.learned:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.proto { counter-reset: p; list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: .6rem; }
+.proto li { counter-increment: p; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; align-items: start; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .7rem .9rem; }
+.proto li::before { content: counter(p); font: 600 1.3rem/1 var(--font-display); color: var(--accent); padding-top: .15rem; }
+.proto b { display: block; }
+.math-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1rem; }
+.math-card { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.math-card h4 { margin: 0 0 .2rem; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.math-card p { margin: .3rem 0; font-size: .92rem; }
+.math-card mjx-container[display="true"] { margin: .3rem 0 !important; }
+.plan { display: grid; gap: .7rem; margin-top: 1rem; }
+.plan > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .75rem .95rem; }
+@media (max-width: 560px) { .plan > div { grid-template-columns: 1fr; gap: .3rem; } }
+.plan .when-t { font: 600 .82rem/1.5 var(--font-mono); color: var(--accent); }
+.plan p { margin: 0; }
+td .nb { display: inline-block; margin: .1rem 0; }
+/* Grid öğeleri içerikteki uzun formül yüzünden sütunu genişletmesin */
+.m-recipe li, .m-grid > *, .m-head > div, .proto li > span, .plan > div > * { min-width: 0; }
+/* Tablo alıştırmaları: cevap hücreleri dokununca açılır */
+.drill { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.drill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .9rem 1.15rem .2rem; }
+.drill-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.drill-head h4 { margin: 0; font: 600 1.05rem/1.4 var(--font-body); }
+.drill-head .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-left: .4rem; white-space: nowrap; }
+.drill .tbl-wrap { margin: .4rem 0 0; padding: 0 1.15rem; }
+.drill .tbl td { vertical-align: top; }
+.drill td.ans { padding: .3rem .4rem; }
+.cell { all: unset; box-sizing: border-box; display: block; position: relative; width: 100%; min-height: 1.9rem; padding: .2rem .35rem; border-radius: 4px; cursor: pointer; }
+.cell > .c-in { visibility: hidden; }
+.cell::after { content: "?"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .82rem/1 var(--font-mono); }
+.cell:hover::after { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+.cell.shown > .c-in { visibility: visible; }
+.cell.shown::after { content: none; }
+.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.drill-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); margin-top: .6rem; }
+
+
+/* PHYS 202 eklemeleri */
+.hero { position: relative; }
+/* Tayf şeridi: görünür ışığın gerçek renkleri, iki temada da aynı */
+.hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+  background: linear-gradient(90deg, #6A00C8 0%, #3B2BFF 14%, #0090FF 30%, #00C27A 46%, #B8D600 60%, #FFC400 72%, #FF7A00 84%, #E0001A 100%);
+  opacity: .85;
+}
+.box.mine { --lbl: var(--bad); background: color-mix(in srgb, var(--bad) 5%, var(--panel)); }
+.box.mine p { margin: .4rem 0; }
+.slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
+.src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
+figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
+figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
+.fig .s-ink { stroke: var(--ink); fill: none; }
+.fig .s-muted { stroke: var(--muted); fill: none; }
+.fig .s-psi { stroke: var(--acc); fill: none; }
+.fig .s-en { stroke: var(--energy); fill: none; }
+.fig .s-vel { stroke: var(--vel); fill: none; }
+.fig .s-force { stroke: var(--force); fill: none; }
+.fig .f-region { fill: var(--panel-2); stroke: none; }
+.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig text.t-ink { fill: var(--ink); }
+.fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
+.fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
+.fig text.t-sym { fill: var(--ink); font: italic 600 15px var(--font-display); }
+.pattern td { vertical-align: top; font-size: .92rem; }
+.pattern td:first-child { white-space: nowrap; }
+.odds { display: inline-block; min-width: 3.2rem; text-align: center; font: 600 .74rem/1.5 var(--font-mono); padding: .05rem .4rem; border-radius: 99px; }
+.odds.hi { background: var(--good-soft); color: var(--good); }
+.odds.md { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.odds.lo { background: var(--panel-2); color: var(--muted); }
+.cheat { columns: 2 19rem; column-gap: 1rem; margin-top: 1rem; }
+.cheat .math-card { break-inside: avoid; margin-bottom: .8rem; }
+.hero-links { display: flex; flex-wrap: wrap; gap: .4rem .8rem; font-size: .88rem; }
+.hero-links a { font-weight: 500; }
+/* Deneme sınavı */
+.exam-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin: 1.2rem 0 0; padding: .7rem 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); }
+.clock { display: grid; margin-right: auto; }
+.clock-lbl { font: 500 .7rem/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.clock b { font: 600 1.6rem/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.clock b.over { color: var(--bad); }
+.clock-btns { display: flex; flex-wrap: wrap; gap: .45rem; }
+details.sol { margin: 1.1rem 0 .4rem; }
+details.sol > summary { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none; font: 500 .9rem/1.2 var(--font-body); color: var(--accent); padding: .5rem .85rem; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 5px; background: var(--panel); min-height: 2.25rem; }
+details.sol > summary::-webkit-details-marker { display: none; }
+details.sol > summary::before { content: "▸"; transition: transform .2s; }
+details.sol[open] > summary::before { transform: rotate(90deg); }
+details.sol > summary:hover { background: var(--accent-soft); }
+.rubric { margin: .6rem 0 0; padding: .6rem .9rem .6rem 2rem; font-size: .9rem; color: var(--muted); background: var(--panel-2); border-radius: var(--radius); }
+.rubric::before { content: "Puan nereden gelir"; display: block; margin-left: -1.1rem; font: 600 .7rem/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.box.q ol { margin: .3rem 0; padding-left: 1.2rem; }
+@media (max-width: 1000px) { .exam-bar { position: static; } }
+
+/* PHYS 210: faz renk çemberi şeridi (arg z → renk tonu), iki temada aynı */
+.hero::after {
+  background: linear-gradient(90deg, hsl(0 80% 55%), hsl(60 80% 50%), hsl(120 65% 45%), hsl(180 70% 45%), hsl(240 70% 60%), hsl(300 70% 55%), hsl(360 80% 55%));
+}
+.pg { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.fig .s-acc { stroke: var(--acc); fill: none; }
+.fig .f-soft { fill: var(--accent-soft); stroke: none; }
+.fig .f-pole { fill: var(--energy); }
+.fig text.t-acc { fill: var(--acc); font: italic 600 14px var(--font-display); }
+.fig text.t-force { fill: var(--force); font: italic 600 14px var(--font-display); }
+.clock-sel { font: 500 .88rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: .4rem .5rem; min-height: 2.25rem; }
+.clock-btns .clock-lbl { align-self: center; }
+/* ---------- Site menüsü (hamburger) ---------- */
+.nav-btn {
+  position: fixed; z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  right: calc(max(16px, env(safe-area-inset-right, 0px)) - 4px);
+  width: 44px; height: 44px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  display: grid; place-content: center; gap: 4px; padding: 0;
+}
+.nav-btn:hover { border-color: var(--accent); }
+.nav-btn span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.site-nav.open .nav-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav.open .nav-btn span:nth-child(2) { opacity: 0; }
+.site-nav.open .nav-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* kapalı çekmece ekran dışına itildiğinde sayfayı genişletmesin diye kırpan katman */
+.nav-layer { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.site-nav.open .nav-layer { pointer-events: auto; }
+.nav-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 38%, transparent); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+.nav-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 86vw); overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--rule);
+  padding: calc(env(safe-area-inset-top, 0px) + 68px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) 18px;
+  transform: translateX(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+}
+.site-nav.open .nav-drawer { transform: none; visibility: visible; }
+.site-nav.open .nav-scrim { opacity: 1; visibility: visible; }
+.nav-title { font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem .8rem; }
+.nav-drawer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.nav-drawer li a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 6px; text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+.nav-drawer li a b { font-weight: 600; font-size: 1rem; }
+.nav-drawer li a span { font-size: .85rem; color: var(--muted); }
+.nav-drawer li a:hover { background: var(--panel-2); }
+.nav-drawer li a[aria-current="page"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); }
+.nav-drawer li a[aria-current="page"] b { color: var(--accent); }
+.nav-foot { margin: 1.4rem 0 0 .8rem; font-size: .85rem; color: var(--muted); }
+.nav-foot a { color: var(--muted); }
+body.nav-lock { overflow: hidden; }
+.hero-in { padding-top: 4.2rem; }
+@media (max-width: 1000px) {
+  .hero-in { padding-top: 4rem; }
+  .side summary { padding-right: 52px; }
+  .nav-btn { width: 40px; height: 40px; top: calc(env(safe-area-inset-top, 0px) + 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .nav-drawer, .nav-scrim, .nav-btn span { transition: none; } }
+
+@media (min-width: 1001px) { .exam-bar { top: calc(env(safe-area-inset-top, 0px) + 62px); } }
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav" data-current="kit" aria-label="PHYS 210 sayfaları">
+  <button type="button" class="nav-btn" id="nav-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
+  <div class="nav-layer">
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <p class="nav-title">PHYS 210 · Matematiksel Yöntemler II</p>
+    <ul>
+      <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>MT1 · MT2 · final, çözümlü</span></a></li>
+    </ul>
+    <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
+  </div>
+  </div>
+</nav>
+
+<header class="hero" lang="tr">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Kalıp ve yöntem odaklı</span><span>MT1 · MT2 · final</span></p>
+      <h1>PHYS 210 <i>Yöntem Kiti</i></h1>
+      <p class="lede">Beş sınavın 21 sorusu on dört soru tipine iner; her tip tek bir yöntemle çözülür. Bu kit önce hangi sınavda hangi tipin geldiğini gösterir, sonra her yöntemi reçetesi, tuzakları ve yeni bir örnekle öğretir.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div><b id="st-m">14</b><span>yöntem</span></div>
+        <div><b id="st-l">0</b><span>öğrendiğin</span></div>
+        <div><b id="st-q">0</b><span>tanıma sorusu</span></div>
+      </div>
+      <ul class="hero-how">
+        <li><b>1 · Kalıp</b><span>Beş sınav, soru tipleri, puanlar.</span></li>
+        <li><b>2 · Protokol</b><span>Her soruda aynı 5 adım.</span></li>
+        <li><b>3 · Yöntem</b><span>Ne zaman, tuzaklar, reçete, yeni örnek.</span></li>
+        <li><b>4 · Tanı</b><span>Soru kökünü görünce yöntemi seç.</span></li>
+        <li><b>5 · Tahmin</b><span>Sınav sınav olası sorular; hücreye dokun, cevap açılsın.</span></li>
+      </ul>
+      <p class="hero-links"><a href="../notlar/">Matematiksel Yöntemler Defteri →</a> <a href="../cozumler/">Çözüm Defteri →</a> <a href="../deneme/">Deneme Sınavları →</a></p>
+    </div>
+  </div>
+</header>
+
+<div class="shell" lang="tr">
+  <aside class="side">
+    <details id="toc-details" open>
+      <summary><span>Kit</span><span class="sum-prog" id="sum-prog">0 / 14</span></summary>
+      <div class="toc-wrap">
+        <p class="toc-title">İçindekiler</p>
+        <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
+        <p class="progress-txt" id="prog-txt">0 / 14 yöntem öğrenildi</p>
+        <ol class="toc" id="toc"></ol>
+        <div class="side-foot"><button type="button" class="linkbtn" id="reset-progress">İşaretleri sıfırla</button></div>
+      </div>
+    </details>
+  </aside>
+
+  <main id="main">
+
+<!-- ================================================= KALIP -->
+<section class="part" id="kalip" data-toc="Sınavların kalıbı">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm A</span><span class="sess">Bahar 2026 · Yaz 2025</span></p>
+    <h2>Sınavların kalıbı</h2>
+    <p class="ch-lede">Bahar 2026 (Rafatov) üç sınav: iki ara sınav %30 + %30, final %40. Yaz 2025 (Demirel) iki sınav, konular ters sırada. Soru tipleri iki hocada da aynı.</p>
+  </header>
+  <div class="tbl-wrap"><table class="tbl pattern">
+    <thead><tr><th>Sınav</th><th>Sorular (puan)</th><th>Yöntem</th></tr></thead>
+    <tbody>
+      <tr><td><span class="slot">B26 MT1</span><br>90 dk</td><td>S1 \((\mathbf u\cdot\nabla)\mathbf r\) indisle (15) · S2 gradyan: normal, en hızlı artış, yönlü türev (25) · S3 düzlem + üçgende akı (30) · S4 çizgi integrali + potansiyel (30)</td><td><a class="nb" href="#y1">Y1</a> <a class="nb" href="#y2">Y2</a> <a class="nb" href="#y5">Y5</a> <a class="nb" href="#y4">Y4</a></td></tr>
+      <tr><td><span class="slot">B26 MT2</span><br>100 dk</td><td>S1 silindirik diklik + \(d\tau\) (20) · S2 karede sirkülasyon + Stokes (25) · S3 ikinci derece denklemin kökleri (15) · S4 Cauchy, \(|z|=1\) (15) · S5 \(\int(1-2z)dz\) iki yol (25)</td><td><a class="nb" href="#y8">Y8</a> <a class="nb" href="#y7">Y7</a> <a class="nb" href="#y9">Y9</a> <a class="nb" href="#y11">Y11</a></td></tr>
+      <tr><td><span class="slot">B26 Final</span><br>100 dk</td><td>S1 harmonik eşlenik, kutupsal (15+5) · S2 Laurent, bütün bölgeler (15) · S3 tekillik sınıflandırma (15) · S4 iki yarım çember, kapalı integral (25) · S5 PV + Jordan ile reel integral (30)</td><td><a class="nb" href="#y10">Y10</a> <a class="nb" href="#y12">Y12</a> <a class="nb" href="#y13">Y13</a> <a class="nb" href="#y11">Y11</a> <a class="nb" href="#y14">Y14</a></td></tr>
+      <tr><td><span class="slot">Y25 MT1</span><br>120 dk</td><td>S1 tanh, kaldırılabilir tekillik, Laurent (15) · S2 harmonik eşlenik + Cauchy türev formülü (25) · S3 tekillik, rezidü, kontur (35) · S4 PV ile reel integral (25)</td><td><a class="nb" href="#y9">Y9</a> <a class="nb" href="#y10">Y10</a> <a class="nb" href="#y13">Y13</a> <a class="nb" href="#y14">Y14</a></td></tr>
+      <tr><td><span class="slot">Y25 Final</span><br>150 dk</td><td>S1 indis kanıtı + helis Frenet (20) · S2 yarım küre akısı, küresel + diverjans (45) · S3 eğik dikdörtgende Stokes (35)</td><td><a class="nb" href="#y1">Y1</a> <a class="nb" href="#y3">Y3</a> <a class="nb" href="#y8">Y8</a> <a class="nb" href="#y6">Y6</a> <a class="nb" href="#y7">Y7</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Altı gözlem</h3>
+  <ol class="proto">
+    <li><span><b>Her vektör sınavı bir indis gösterimi sorusuyla açılıyor</b> (B26 MT1 S1, Y25 final S1a). Kısa, 8–15 puan, \(\partial_ix_j=\delta_{ij}\) ve \(\epsilon\epsilon\) özdeşliğiyle biter.</span></li>
+    <li><span><b>“Aynı integrali iki yoldan” en sevilen biçim.</b> Çizgi integrali doğrudan + potansiyel (B26 MT1 S4); sirkülasyon doğrudan + Stokes (B26 MT2 S2, Y25 final S3); akı doğrudan + diverjans (Y25 final S2); karmaşık integral iki yoldan + Newton–Leibniz (B26 MT2 S5, final S4). İki sonucun eşit çıkması kendi kontrolünüzdür.</span></li>
+    <li><span><b>Eğrisel koordinatlar ayrı bir soru olarak geliyor:</b> diklik, ölçek çarpanları, hacim elemanı (B26 MT2 S1, Y25 final S2a–c). Teğet vektörleri yazıp nokta çarpımı almak yeterli.</span></li>
+    <li><span><b>Harmonik eşlenik iki dönemde de çıktı</b> (B26 final S1 kutupsal, Y25 MT1 S2 Kartezyen). Önce Laplace'ı kontrol edin; puanın bir kısmı oradadır.</span></li>
+    <li><span><b>Her karmaşık sınavında bir reel integral var ve kutup reel eksende</b> (B26 final S5: \(x=\pi\); Y25 MT1 S4: \(x=0\)). PV ve \(-\pi i\,\mathrm{Res}\) girintisi ezber olmalı.</span></li>
+    <li><span><b>Hoca anahtarı sınavdan sonra düzeltiyor.</b> B26 MT1 S3'te \(\hat{\mathbf j}\), MT2 S2'de \(\sin\theta\) kaldırılmış. Soru kâğıdındaki ifadeyle çalışın; belirsizlik varsa varsayımınızı yazın.</span></li>
+  </ol>
+
+  <h3>Güz 2026 için tahmin</h3>
+  <div class="tbl-wrap"><table class="tbl pattern">
+    <thead><tr><th>Sınav</th><th>En olası tipler</th><th>Olasılık</th></tr></thead>
+    <tbody>
+      <tr><td><span class="slot">MT1</span></td><td>İndis kanıtı · gradyan/yönlü türev/teğet düzlem · düzlem + yüzey integrali · çizgi integrali + potansiyel; olası ek: Frenet</td><td><span class="odds hi">yüksek</span></td></tr>
+      <tr><td><span class="slot">MT2</span></td><td>Eğrisel koordinat (silindirik/küresel) · Stokes ya da diverjans iki yoldan · karmaşık kökler · Cauchy formülü · karmaşık yol integrali</td><td><span class="odds hi">yüksek</span></td></tr>
+      <tr><td><span class="slot">Final</span></td><td>Harmonik eşlenik · Laurent bölgeleri · tekillik · yol bağımlılığı · rezidüyle reel integral (PV)</td><td><span class="odds hi">yüksek</span></td></tr>
+      <tr><td><span class="slot">—</span></td><td>Konform dönüşüm, sonsuzdaki rezidü, dal noktası integrali</td><td><span class="odds lo">düşük</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================= PROTOKOL -->
+<section class="part" id="protokol" data-toc="Beş adımlık protokol">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm B</span><span class="sess">Her soruda</span></p>
+    <h2>Beş adımlık sınav protokolü</h2>
+    <p class="ch-lede">Rafatov kâğıdın başına “Provide details of the solutions!” yazıyor. Puan, kurulumun her satırında.</p>
+  </header>
+  <ol class="proto">
+    <li><span><b>Tipi tanı, yöntemi yaz.</b> İlk satır: “Korunumlu mu kontrol ediyorum”, “Kutup içeride mi bakıyorum”. Bölüm A'daki tablo tipleri listeliyor.</span></li>
+    <li><span><b>Geometriyi çiz.</b> Yol, yüzey, normalin yönü, kontur ve kutuplar. Yön ve işaret hatalarının çoğu çizilmeyen şekilden gelir.</span></li>
+    <li><span><b>Ön koşulu kontrol et.</b> \(\nabla\times\mathbf F=0\)? Bölge basit bağlantılı mı? \(\nabla^2u=0\)? Kutup konturun içinde mi? Teorem koşulu (Jordan, Teorem 1) sağlanıyor mu?</span></li>
+    <li><span><b>Kur, sonra hesapla.</b> Parametrizasyon, \(\hat{\mathbf n}\,d\sigma\), ölçek çarpanları, rezidü formülü. Kurulum doğruysa hesap hatası küçük puan kaybettirir.</span></li>
+    <li><span><b>İkinci yoldan kontrol et.</b> Soru zaten iki yol istemiyorsa bile: potansiyelle, Stokes ile, kısmi kesirle, ya da limitle (\(R\to\infty\) sonucu gerçel mi, işareti mantıklı mı?).</span></li>
+  </ol>
+</section>
+
+<!-- ================================================= ALET -->
+<section class="part" id="alet" data-toc="Alet çantası">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm C</span><span class="sess">Ezber</span></p>
+    <h2>Alet çantası</h2>
+    <p class="ch-lede">Bahar sınavları teoremleri veriyor, Yaz sınavları uzun bir liste veriyordu. Aşağıdakiler hiçbir kâğıtta verilmedi.</p>
+  </header>
+  <div class="math-grid">
+    <div class="math-card"><h4>İndis</h4>
+      \[ \partial_ix_j=\delta_{ij},\ \ \partial_ir=\frac{x_i}{r},\ \ \partial_i\frac1r=-\frac{x_i}{r^3} \]
+      <p>Simetrik × antisimetrik = 0: \(\epsilon_{ijk}\partial_i\partial_j=0\), \(\epsilon_{ijk}A_iA_j=0\).</p></div>
+    <div class="math-card"><h4>Düzlem ve yüzey</h4>
+      \[ \mathbf n=\overrightarrow{P_1P_2}\times\overrightarrow{P_1P_3},\quad \mathbf n\cdot(\mathbf r-\mathbf r_1)=0 \]
+      \[ \hat{\mathbf n}\,d\sigma=\frac{\nabla g}{|\partial_zg|}dx\,dy\ (\text{ya da }\partial_x,\partial_y) \]</div>
+    <div class="math-card"><h4>Trigonometrik integraller</h4>
+      \[ \int_0^{2\pi}\sin^2=\int_0^{2\pi}\cos^2=\pi,\quad \int_0^{2\pi}\sin^4=\frac{3\pi}{4} \]
+      \[ \int_0^{\pi/2}\cos^2\theta\sin\theta\,d\theta=\tfrac13,\quad \int_0^\pi\sin\theta\,d\theta=2 \]</div>
+    <div class="math-card"><h4>Karmaşık sabitler</h4>
+      \[ e^{i\pi}=-1,\ \ \cosh i\pi=-1,\ \ \sin(i x)=i\sinh x,\ \ \sqrt{\pm i}=\pm\tfrac{1\pm i}{\sqrt2} \]
+      <p>\(\sqrt{-i}=\pm\frac{1-i}{\sqrt2}\), \(\sqrt{i}=\pm\frac{1+i}{\sqrt2}\), \(\sqrt{2i}=\pm(1+i)\).</p></div>
+    <div class="math-card"><h4>Seriler</h4>
+      \[ e^z=\sum\frac{z^n}{n!},\ \ \sin z=z-\frac{z^3}{6}+\frac{z^5}{120},\ \ \cos z=1-\frac{z^2}{2}+\frac{z^4}{24} \]
+      \[ \frac{1}{1-w}=\sum w^n\ (|w|\lt1) \]</div>
+    <div class="math-card"><h4>Rezidü kısayolları</h4>
+      \[ \frac{N}{D}:\ \frac{N(z_0)}{D'(z_0)},\qquad \frac{g(z)}{(z-z_0)^2}:\ g'(z_0) \]
+      <p>Girinti (saat yönünde yarım çember): \(-\pi i\,\mathrm{Res}\). Sonsuzda: \(-c_{-1}\).</p></div>
+  </div>
+</section>
+
+
+<!-- ================================================= YÖNTEMLER -->
+<section class="part" id="yontemler" data-toc="Yöntem kartları">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm D</span><span class="sess">14 yöntem</span></p>
+    <h2>Yöntem kartları</h2>
+    <p class="ch-lede">Her kartın örneği yeni bir soru. Alttaki etiketler aynı yöntemi kullanan çözüm defteri sorularını açar.</p>
+  </header>
+
+  <article class="method" id="y1" data-short="İndis kanıtı">
+    <div class="m-head"><span class="m-no">Y1</span><div><h3>İndis gösterimiyle özdeşlik</h3><p>MT1 ve vektör finalinin ilk sorusu.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Use index notation to simplify/prove”.</li><li>\(\nabla\), \(\times\), \(\cdot\) iç içe; \(\mathbf r\) ya da sabit vektör var.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Aynı kukla indisi iki farklı toplamda kullanmak.</li><li>\(\epsilon\epsilon\) özdeşliğinden önce ortak indisi başa almamak.</li><li>Türevin çarpanlardan birine etkisini unutmak (çarpım kuralı).</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Bileşene indir: \((\nabla\times\mathbf F)_i=\epsilon_{ijk}\partial_jF_k\).</li><li>\(\partial_ix_j=\delta_{ij}\), \(\partial_ir=x_i/r\).</li><li>\(\epsilon\epsilon\to\delta\delta\), deltalarla indis değiştir.</li><li>Vektör diline çevir, sonucu kutula.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\nabla\cdot(\mathbf r/r)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\partial_i\Big(\dfrac{x_i}{r}\Big)=\dfrac{\partial_ix_i}{r}+x_i\,\partial_i\dfrac1r=\dfrac3r-x_i\dfrac{x_i}{r^3}=\dfrac3r-\dfrac{r^2}{r^3}=\boxed{\dfrac2r}\).</p></li>
+        <li class="step"><p>Kontrol (küresel): \(\tfrac{1}{r^2}\partial_r(r^2\cdot1)=2/r\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m1-1">B26 MT1 S1</a><a class="nb" data-p="su25f-1">Y25 F S1</a><a class="nb" data-p="v1">Boas 6.3.12</a><a class="nb" data-p="v2">∇×∇×A</a></span><label class="learned"><input type="checkbox" id="ln-y1"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y2" data-short="Gradyan, yönlü türev">
+    <div class="m-head"><span class="m-no">Y2</span><div><h3>Gradyan: normal, en hızlı artış, yönlü türev, teğet düzlem</h3><p>B26 MT1 S2 (25 puan).</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Level surface”, “most rapidly”, “rate of change in the direction of”.</li><li>“Tangent plane”, “normal line”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Yön vektörünü birim yapmamak.</li><li>“Unit normal” isteniyorsa \(\nabla f\)'yi normalize etmeyi unutmak.</li><li>Noktanın gerçekten seviye yüzeyinde olduğunu kontrol etmemek.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\nabla f\)'yi genel olarak yaz, sonra noktada hesapla.</li><li>Normal \(\pm\nabla f/|\nabla f|\); en hızlı artış \(\nabla f\), hızı \(|\nabla f|\).</li><li>\(df/ds=\nabla f\cdot\hat{\mathbf v}\).</li><li>Teğet düzlem \(\nabla f(P)\cdot(\mathbf r-\mathbf r_P)=0\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(f=xy^2+yz\), \((1,1,2)\)'de \(2\hat{\mathbf i}-\hat{\mathbf j}+2\hat{\mathbf k}\) yönünde (Boas 6.6.3)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\nabla f=(y^2,\ 2xy+z,\ y)=(1,4,1)\); \(\hat{\mathbf v}=(2,-1,2)/3\).</p></li>
+        <li class="step"><p>\(df/ds=(2-4+2)/3=\boxed{0}\): bu yön seviye yüzeyine teğet.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m1-2">B26 MT1 S2</a><a class="nb" data-p="v3">Boas 6.6.5</a></span><label class="learned"><input type="checkbox" id="ln-y2"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y3" data-short="Frenet çerçevesi">
+    <div class="m-head"><span class="m-no">Y3</span><div><h3>Uzay eğrisi: \(\hat{\mathbf u},\hat{\mathbf n},\hat{\mathbf b}\), \(\kappa\), \(\tau\)</h3><p>Y25 final S1b (12 puan).</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Unit tangent, principal normal, binormal”, “radius of curvature/torsion”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(d/ds\) yerine \(d/dt\) kullanıp \(v\) ile bölmemek.</li><li>\(\hat{\mathbf n}\)'yi \(\mathbf a\)'nın yönü sanmak (yalnızca sabit süratte doğru).</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\mathbf v,\mathbf a,\dot{\mathbf a}\); \(\mathbf v\times\mathbf a\).</li><li>\(\hat{\mathbf u}=\mathbf v/v\), \(\hat{\mathbf b}=\frac{\mathbf v\times\mathbf a}{|\mathbf v\times\mathbf a|}\), \(\hat{\mathbf n}=\hat{\mathbf b}\times\hat{\mathbf u}\).</li><li>\(\kappa=|\mathbf v\times\mathbf a|/v^3\), \(\tau=(\mathbf v\times\mathbf a)\cdot\dot{\mathbf a}/|\mathbf v\times\mathbf a|^2\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\mathbf r=(\cos t,\sin t,t)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\mathbf v=(-\sin t,\cos t,1)\), \(v=\sqrt2\); \(\mathbf a=(-\cos t,-\sin t,0)\); \(\mathbf v\times\mathbf a=(\sin t,-\cos t,1)\), \(|\cdot|=\sqrt2\).</p></li>
+        <li class="step"><p>\(\kappa=\sqrt2/2^{3/2}=\tfrac12\); \(\dot{\mathbf a}=(\sin t,-\cos t,0)\) ⇒ \(\tau=1/2\). Genel formülle (\(a=b=1\)) aynı.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="su25f-1">Y25 F S1</a></span><label class="learned"><input type="checkbox" id="ln-y3"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y4" data-short="Potansiyel, çizgi integrali">
+    <div class="m-head"><span class="m-no">Y4</span><div><h3>Çizgi integrali ve potansiyel fonksiyon</h3><p>B26 MT1 S4 (30 puan).</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Line integral along the path shown”, “verify conservative”, “find scalar potential”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Parçalarda sabit olan koordinatı unutmak (\(dx=0\)).</li><li>Potansiyelde \(\psi(y,z)\) yerine sabit yazmak.</li><li>Yönü ters alıp işareti kaybetmek.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Üç çapraz türev eşitliği ⇒ \(\nabla\times\mathbf F=0\).</li><li>\(\varphi=\int F_xdx+\psi(y,z)\), sonra \(\varphi_y\), \(\varphi_z\) ile \(\psi\).</li><li>Doğrudan: her parçayı ayrı parametrize et.</li><li>\(\varphi(B)-\varphi(A)\) ile karşılaştır.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\mathbf F=(yz,\ xz,\ xy)\), \((0,0,0)\to(1,2,3)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\partial_yF_x=z=\partial_xF_y\), \(\partial_zF_x=y=\partial_xF_z\), \(\partial_zF_y=x=\partial_yF_z\) ⇒ \(\varphi=xyz\).</p></li>
+        <li class="step"><p>\(\int=\varphi(1,2,3)-0=\boxed{6}\), hangi yol olursa olsun.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m1-4">B26 MT1 S4</a><a class="nb" data-p="v4">Boas 6.8.1</a><a class="nb" data-p="v5">Boas örnek 6</a></span><label class="learned"><input type="checkbox" id="ln-y4"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y5" data-short="Düzlem, yüzey integrali">
+    <div class="m-head"><span class="m-no">Y5</span><div><h3>Düzlem ve yüzey integrali (akı)</h3><p>B26 MT1 S3 (30 puan).</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Plane through the points”, “flux across the region”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(d\sigma\)'yı \(dx\,dy\) sanmak (\(|\hat{\mathbf n}\cdot\hat{\mathbf k}|\) çarpanı).</li><li>İzdüşüm bölgesinin sınırlarını yanlış kurmak.</li><li>Normal yönünü belirtmemek.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Normal: çapraz çarpım; düzlem denklemi.</li><li>Yönü seç ve yaz.</li><li>Bir koordinat düzlemine izdüşür: \(\hat{\mathbf n}\,d\sigma=\frac{\nabla g}{|\partial_zg|}dx\,dy\).</li><li>Yüzeyde \(z\)'yi \(x,y\) cinsinden yerine koy, integrali al.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\mathbf F=z\hat{\mathbf k}\), \(x+y+z=1\) (ilk sekizde bir, yukarı)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\hat{\mathbf n}\,d\sigma=(1,1,1)\,dx\,dy\) ⇒ \(\mathbf F\cdot\hat{\mathbf n}\,d\sigma=z\,dx\,dy=(1-x-y)\,dx\,dy\).</p></li>
+        <li class="step"><p>Üçgen \(x,y\ge0,\ x+y\le1\): \(\iint(1-x-y)=\boxed{1/6}\) (tetrahedron hacmi: şaşırtıcı değil).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m1-3">B26 MT1 S3</a></span><label class="learned"><input type="checkbox" id="ln-y5"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y6" data-short="Diverjans teoremi">
+    <div class="m-head"><span class="m-no">Y6</span><div><h3>Diverjans teoremi ve kapak hilesi</h3><p>Y25 final S2 (45 puan).</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Closed surface”, “using the divergence theorem”, yarım küre/silindir.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Açık yüzeyde teoremi doğrudan uygulamak (kapak akısını çıkarmayı unutmak).</li><li>Kapağın normalini dışa (aşağı) almamak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\nabla\cdot\mathbf F\)'yi uygun koordinatta yaz.</li><li>Hacim integrali (\(d\tau\) ile).</li><li>Açık yüzeyse: \(\Phi_S=\iiint\nabla\cdot\mathbf F-\Phi_{\text{kapak}}\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\mathbf F=(x^3,y^3,z^3)\), yarıçapı \(R\) olan küre</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\nabla\cdot\mathbf F=3(x^2+y^2+z^2)=3r^2\).</p></li>
+        <li class="step"><p>\(\int_0^R3r^2\cdot4\pi r^2\,dr=\boxed{\tfrac{12\pi R^5}{5}}\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="su25f-2">Y25 F S2</a><a class="nb" data-p="v8">Küp akısı</a></span><label class="learned"><input type="checkbox" id="ln-y6"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y7" data-short="Stokes / Green">
+    <div class="m-head"><span class="m-no">Y7</span><div><h3>Stokes ve Green: sirkülasyonu iki yoldan</h3><p>B26 MT2 S2, Y25 final S3.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Circulation”, “verify Stokes’ theorem”, kapalı düzlem eğrisi.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Yön: sağ el kuralı; şekildeki ok yönüyle normal uyumlu mu?</li><li>Eğrisel koordinatta \(d\mathbf r\) ve rotasyonel determinantında \(h_i\)'leri unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Sınırı parçalara böl, her parçada \(\mathbf F\cdot d\mathbf r\).</li><li>\(\nabla\times\mathbf F\), en kolay yüzey, \(\hat{\mathbf n}\,d\sigma\).</li><li>İkisini karşılaştır.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\mathbf F=(z,x,y)\), \(z=0\)'da birim çember</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Doğrudan: \(z=0\) ⇒ \(\oint x\,dy=\int_0^{2\pi}\cos^2t\,dt=\pi\).</p></li>
+        <li class="step"><p>\(\nabla\times\mathbf F=(1,1,1)\), disk normali \(\hat{\mathbf k}\): \(1\cdot\pi=\pi\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m2-2">B26 MT2 S2</a><a class="nb" data-p="su25f-3">Y25 F S3</a><a class="nb" data-p="v6">Boas 6.8.2</a><a class="nb" data-p="v7">Boas 6.8.7</a><a class="nb" data-p="v9">Yarım küre</a></span><label class="learned"><input type="checkbox" id="ln-y7"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y8" data-short="Eğrisel koordinatlar">
+    <div class="m-head"><span class="m-no">Y8</span><div><h3>Eğrisel koordinatlar: diklik, \(h_i\), elemanlar</h3><p>B26 MT2 S1, Y25 final S2a–e.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Show orthogonal”, “scale factors”, “element of volume”, “Jacobian”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Birim olmayan teğet vektörle diverjans formülünü karıştırmak.</li><li>Küresel \(\theta\)'nın kutup açısı olduğunu unutmak (\(h_\phi=r\sin\theta\)).</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\mathbf r(u_1,u_2,u_3)\) yaz; \(\partial\mathbf r/\partial u_i\) teğetler.</li><li>Nokta çarpımları ⇒ diklik; uzunluklar ⇒ \(h_i\).</li><li>\(d\tau=h_1h_2h_3\,du_1du_2du_3\), \(d\sigma_i\), \(\nabla\) formülleri.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\iint_{\mathbb R^2}e^{-(x^2+y^2)}dA\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Kutupsal: \(dA=r\,dr\,d\theta\) ⇒ \(\int_0^{2\pi}\!\int_0^\infty e^{-r^2}r\,dr\,d\theta=2\pi\cdot\tfrac12=\boxed{\pi}\).</p></li>
+        <li class="step"><p>Sonuç: \(\int_{-\infty}^{\infty}e^{-x^2}dx=\sqrt\pi\). Kartezyen'de imkânsız olan integral \(h_\theta=r\) çarpanıyla basitleşti.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m2-1">B26 MT2 S1</a><a class="nb" data-p="su25f-2">Y25 F S2</a><a class="nb" data-p="v10">Küresel ∇</a></span><label class="learned"><input type="checkbox" id="ln-y8"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y9" data-short="Kökler, üstel, log">
+    <div class="m-head"><span class="m-no">Y9</span><div><h3>Kökler, üstel ve logaritma</h3><p>B26 MT2 S3, Y25 MT1 S1a.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Find the roots”, “simplify”, “real and imaginary parts”, \(\tanh\), \(i^i\).</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(n\) kökün yalnızca birini yazmak.</li><li>Esas argümanı yanlış çeyrekte almak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Kutupsal biçime geç.</li><li>\(r^{1/n}e^{i(\theta+2\pi k)/n}\), \(k=0..n-1\).</li><li>Hiperbolik/trigonometrik ifadeleri üstele çevir.</li><li>Kontrol: Vieta (toplam, çarpım) ya da yerine koyma.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(z^3=1+i\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(1+i=\sqrt2e^{i\pi/4}\) ⇒ \(z_k=2^{1/6}\exp\big(i(\tfrac{\pi}{12}+\tfrac{2\pi k}{3})\big)\), \(k=0,1,2\).</p></li>
+        <li class="step"><p>Açılar \(15^\circ,\ 135^\circ,\ 255^\circ\); yarıçap \(2^{1/6}\approx1{,}122\). Kökler toplamı 0 ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m2-3">B26 MT2 S3</a><a class="nb" data-p="c1">z⁴ = −16</a><a class="nb" data-p="c2">Log, iⁱ</a></span><label class="learned"><input type="checkbox" id="ln-y9"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y10" data-short="Harmonik eşlenik">
+    <div class="m-head"><span class="m-no">Y10</span><div><h3>Cauchy–Riemann ve harmonik eşlenik</h3><p>B26 final S1, Y25 MT1 S2.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Can \(v\) be the imaginary part of an analytic function?”, “find \(u\)”, “express \(f\) in terms of \(z\)”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Laplace kontrolünü atlamak.</li><li>Kutupsal CR'de \(r\) çarpanını yanlış tarafa koymak (\(ru_r=v_\theta\)).</li><li>İntegral sabitini fonksiyon (\(\psi(\theta)\), \(g(y)\)) olarak yazmamak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(\nabla^2v=0\)?</li><li>Bir CR denklemini integralle, öbürüyle \(\psi\)'yi bul.</li><li>\(f\)'yi \(z\) cinsinden yaz (Milne-Thomson: \(y=0\)).</li><li>\(f'=u_x+iv_x\) ya da \(e^{-i\theta}(u_r+iv_r)\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(u=r^3\cos3\theta\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(v_\theta=ru_r=3r^3\cos3\theta\) ⇒ \(v=r^3\sin3\theta+\phi(r)\); \(v_r=-u_\theta/r=3r^2\sin3\theta\) ⇒ \(\phi'=0\).</p></li>
+        <li class="step"><p>\(f=r^3e^{3i\theta}=\boxed{z^3}\) (+ \(iC\)).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26f-1">B26 F S1</a><a class="nb" data-p="su25m1-2">Y25 MT1 S2</a><a class="nb" data-p="c3">u = x² − y² + 2x</a></span><label class="learned"><input type="checkbox" id="ln-y10"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y11" data-short="Cauchy, yol integrali">
+    <div class="m-head"><span class="m-no">Y11</span><div><h3>Cauchy formülü ve yol bağımlılığı</h3><p>B26 MT2 S4–S5, final S4, Y25 MT1 S2c.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Use Cauchy theorem/integral formula”, “along the upper/lower half”, “is it path independent?”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Kutbun içeride olup olmadığını kontrol etmemek.</li><li>Paydadaki katsayıyı (\(2z+i\)) dışarı almamak.</li><li>Analitik olmayan integrandda (\(\bar z\)) antitürev kullanmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Tekillikleri bul, konturla karşılaştır.</li><li>İçerideki her kutup için \(\frac{n!}{2\pi i}\)-formülü (ya da rezidü).</li><li>Açık yolda: integrand tam/analitikse antitürev; değilse parametrize et.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\oint_{|z-1|=1}\dfrac{z^2}{z^2-1}dz\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Kutuplar \(\pm1\); yalnızca \(z=1\) içeride. \(\dfrac{z^2/(z+1)}{z-1}\) ⇒ \(2\pi i\cdot\tfrac12=\boxed{\pi i}\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26m2-4">B26 MT2 S4</a><a class="nb" data-p="s26m2-5">B26 MT2 S5</a><a class="nb" data-p="s26f-4">B26 F S4</a><a class="nb" data-p="c4">Cauchy ×2</a></span><label class="learned"><input type="checkbox" id="ln-y11"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y12" data-short="Laurent bölgeleri">
+    <div class="m-head"><span class="m-no">Y12</span><div><h3>Laurent serisi: bütün bölgeler</h3><p>B26 final S2, Y25 MT1 S1c.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Find all Laurent (or Taylor) expansions about \(z_0\)”, “first four terms”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Bölge sayısını yanlış saymak (her kutup bir sınır).</li><li>Merkezdeki kutbun terimini açmaya çalışmak (zaten Laurent terimi).</li><li>Geometrik serinin oranını \(|\,|\lt1\) koşuluna göre seçmemek.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Kısmi kesir; \(w=z-z_0\).</li><li>Merkezden kutuplara uzaklıklar ⇒ bölgeler.</li><li>Her kesir için bölgeye uyan geometrik seri.</li><li>Rezidü: delikli diskteki \(1/w\) katsayısı.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\dfrac{e^z}{z-1}\), \(z=1\) etrafında</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(e^z=e\,e^{w}\) ⇒ \(\dfrac{e^z}{z-1}=e\Big(\dfrac1w+1+\dfrac w2+\dots\Big)\), \(0\lt|z-1|\lt\infty\).</p></li>
+        <li class="step"><p>Basit kutup, \(\mathrm{Res}=e\). Tek bölge, çünkü başka tekillik yok.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26f-2">B26 F S2</a><a class="nb" data-p="su25m1-1">Y25 MT1 S1</a><a class="nb" data-p="c5">üç bölge</a></span><label class="learned"><input type="checkbox" id="ln-y12"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y13" data-short="Tekillik sınıflandırma">
+    <div class="m-head"><span class="m-no">Y13</span><div><h3>Tekillikleri sınıflandırmak ve rezidü</h3><p>B26 final S3, Y25 MT1 S1b, S3.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Find and classify the singularities”, “residues at the poles”.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Payın da sıfır olduğu noktayı kontrol etmemek (kaldırılabilir ya da mertebe düşer).</li><li>Sonsuz sayıda tekilliği (\(n\pi\), \(2\pi ik\)) genel olarak yazmamak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Paydanın sıfırları; her birinin mertebesi.</li><li>Payın aynı noktadaki sıfır mertebesi.</li><li>Fark ⇒ kutup mertebesi; \(\le0\) ⇒ kaldırılabilir; sonsuz esas kısım ⇒ esaslı.</li><li>Limitle kontrol: \((z-z_0)^mf\to\) sonlu, sıfırdan farklı.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(f=\dfrac{z}{1-e^z}\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(1-e^z=0\) ⇔ \(z=2\pi ik\), hepsi basit sıfır.</p></li>
+        <li class="step"><p>\(z=0\): pay da basit sıfır ⇒ kaldırılabilir (\(\lim=-1\)). \(z=2\pi ik\), \(k\ne0\): basit kutup, \(\mathrm{Res}=\dfrac{2\pi ik}{-e^{2\pi ik}}=-2\pi ik\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26f-3">B26 F S3</a><a class="nb" data-p="su25m1-3">Y25 MT1 S3</a><a class="nb" data-p="c6">üç rezidü</a><a class="nb" data-p="c12">∞'da rezidü</a></span><label class="learned"><input type="checkbox" id="ln-y13"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y14" data-short="Reel integral (rezidü)">
+    <div class="m-head"><span class="m-no">Y14</span><div><h3>Rezidüyle reel integral: tip seç, konturu kapat</h3><p>B26 final S5 (30 puan), Y25 MT1 S4.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Use the residue theorem to find \(\int_{-\infty}^\infty\)”, \(\int_0^{2\pi}\), \(\int_0^\infty\).</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(\cos mz\)'yi doğrudan kullanmak (üst yarı düzlemde büyür); \(e^{imz}\) alın.</li><li>Reel eksendeki kutbu unutmak ya da \(2\pi i\) ile saymak (\(\pi i\) olmalı).</li><li>\(\int_0^\infty\)'u çift fonksiyonda \(\tfrac12\int_{-\infty}^\infty\)'a çevirmeyi unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Tip: trig (birim çember), rasyonel (Teorem 1), Fourier (Jordan), eksende kutup (PV + girinti), dal noktası (anahtar deliği).</li><li>Kontur içindeki rezidüler.</li><li>Yayların limitlerini teoremle gerekçelendir.</li><li>Re / Im ayır, sayısal büyüklüğü kontrol et.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(\int_0^{2\pi}\dfrac{d\theta}{2+\sin\theta}\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(z=e^{i\theta}\): \(\oint\dfrac{2\,dz}{z^2+4iz-1}\); kökler \(i(-2\pm\sqrt3)\), içeride \(i(-2+\sqrt3)\).</p></li>
+        <li class="step"><p>\(\mathrm{Res}=\dfrac{2}{2i\sqrt3}\) ⇒ \(2\pi i\cdot\dfrac{1}{i\sqrt3}=\boxed{\dfrac{2\pi}{\sqrt3}}\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26f-5">B26 F S5</a><a class="nb" data-p="su25m1-4">Y25 MT1 S4</a><a class="nb" data-p="c7">Tip I</a><a class="nb" data-p="c8">Tip II</a><a class="nb" data-p="c9">Tip III</a><a class="nb" data-p="c10">Tip IV</a><a class="nb" data-p="c11">Tip V</a></span><label class="learned"><input type="checkbox" id="ln-y14"> Öğrendim</label></div>
+  </article>
+</section>
+
+
+<!-- ================================================= TANIMA -->
+<section class="part" id="tanima" data-toc="Tanıma antrenmanı">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm E</span><span class="sess">Soru kökünü görünce yöntemi seç</span></p>
+    <h2>Tanıma antrenmanı</h2>
+    <p class="ch-lede">Yalnızca ilk hamleyi seçin. Soruların hiçbiri defterde yok.</p>
+  </header>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“\(\int_C\mathbf F\cdot d\mathbf r\) along the helix from \(t=0\) to \(t=2\pi\), \(\mathbf F=(2x,2y,2z)\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Helisi parametrize edip uzun integral</button><button type="button" data-k="b">\(\mathbf F=\nabla(x^2+y^2+z^2)\): uç noktalardaki fark</button><button type="button" data-k="c">Stokes</button><button type="button" data-k="d">Diverjans teoremi</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y4. Potansiyel görünür hâlde; yol önemsiz.</p></div>
+  <div class="quiz" data-answer="d"><p class="quiz-q">“Find the flux of \(\mathbf F\) through the curved surface of the upper hemisphere.”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Stokes</button><button type="button" data-k="b">Green</button><button type="button" data-k="c">Yalnızca diverjans teoremi</button><button type="button" data-k="d">Doğrudan (\(\hat{\mathbf r}R^2\sin\theta\,d\theta\,d\phi\)) ya da diverjans − kapak</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y6. Yüzey kapalı değil; teorem için tabanı ekleyip çıkarın (Y25 final S2).</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“Determine whether \(u=x^3-3xy^2\) can be the real part of an analytic function.”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">\(\nabla^2u=0\) kontrolü, sonra CR ile \(v\)</button><button type="button" data-k="b">Cauchy integral formülü</button><button type="button" data-k="c">Laurent serisi</button><button type="button" data-k="d">\(u\)'yu türevle, \(f'\)'yi bul, bitti</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y10. \(6x-6x=0\) ✓; \(f=z^3\).</p></div>
+  <div class="quiz" data-answer="c"><p class="quiz-q">“\(\oint_{|z|=3}\dfrac{e^{z}}{z(z-1)(z-5)}dz\)”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Üç kutbun hepsi için rezidü</button><button type="button" data-k="b">Antitürev</button><button type="button" data-k="c">Yalnızca \(0\) ve \(1\) içeride: iki rezidü</button><button type="button" data-k="d">Sonuç 0, integrand analitik</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y11. \(z=5\) dışarıda. \(\mathrm{Res}_0=\frac15\), \(\mathrm{Res}_1=-\frac e4\).</p></div>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“\(\int_{-\infty}^\infty\dfrac{x\sin x}{x^2+4}dx\)”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Teorem 1 ile \(\frac{z\sin z}{z^2+4}\)</button><button type="button" data-k="b">\(\frac{ze^{iz}}{z^2+4}\), Jordan, sanal kısım</button><button type="button" data-k="c">Birim çember dönüşümü</button><button type="button" data-k="d">Anahtar deliği konturu</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y14. \(f\sim1/z\) yetmez Teorem 1 için; Jordan yeter. Sonuç \(\pi e^{-2}\).</p></div>
+  <div class="quiz" data-answer="d"><p class="quiz-q">“Show that the spherical coordinate system is orthogonal.”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Laplasyeni hesapla</button><button type="button" data-k="b">Jakobiyenin determinantı</button><button type="button" data-k="c">\(\hat{\mathbf r}\times\hat{\boldsymbol\theta}\)</button><button type="button" data-k="d">\(\partial\mathbf r/\partial u_i\) teğetlerinin karşılıklı nokta çarpımları</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y8. Determinant hacim elemanını verir, dikliği değil.</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“Find all Laurent expansions of \(\dfrac{1}{z^2-1}\) about \(z=1\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">İki bölge: \(0\lt|z-1|\lt2\), \(|z-1|>2\)</button><button type="button" data-k="b">Tek bölge \(|z|\lt1\)</button><button type="button" data-k="c">Üç bölge</button><button type="button" data-k="d">Taylor serisi yeter</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y12. Öbür kutup \(-1\), uzaklığı 2. Merkez kutup olduğu için içteki bölge delikli disk.</p></div>
+  <div class="quiz" data-answer="c"><p class="quiz-q">“Use index notation to show \(\nabla\times(f\nabla f)=0\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Stokes teoremi</button><button type="button" data-k="b">Kutupsal koordinatlar</button><button type="button" data-k="c">\(\epsilon_{ijk}\partial_j(f\partial_kf)=\epsilon_{ijk}(\partial_jf)(\partial_kf)+f\epsilon_{ijk}\partial_j\partial_kf\), ikisi de 0</button><button type="button" data-k="d">Potansiyel bul</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y1. Simetrik × antisimetrik iki kez.</p></div>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“Classify the singularity of \(\dfrac{z-\sin z}{z^5}\) at \(z=0\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">5. mertebe kutup</button><button type="button" data-k="b">Pay \(z^3/6\): \(5-3=2\), ikinci mertebe kutup</button><button type="button" data-k="c">Kaldırılabilir</button><button type="button" data-k="d">Esaslı</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y13. \(z-\sin z=\frac{z^3}{6}-\frac{z^5}{120}+\dots\) ⇒ \(f=\frac{1}{6z^2}-\frac{1}{120}+\dots\); yalnızca çift kuvvetler, rezidü 0.</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“The circulation of \(\mathbf F\) around the boundary of a square in the plane \(\theta=\pi/4\) (cylindrical).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Dört kenar (\(d\theta=0\), \(\mathbf F\cdot d\mathbf r=F_rdr+F_zdz\)) ya da \(\hat{\mathbf e}_\theta\) yönünde Stokes</button><button type="button" data-k="b">Diverjans teoremi</button><button type="button" data-k="c">Kartezyen'e çevirip Green</button><button type="button" data-k="d">Sonuç her zaman 0</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y7 + Y8. B26 MT2 S2'nin kendisi.</p></div>
+</section>
+
+<!-- ================================================= TAHMİN -->
+<section class="part" id="tahmin" data-toc="Tahmin tabloları">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm F</span><span class="sess">Güz 2026</span></p>
+    <h2>Tahmin tabloları</h2>
+    <p class="ch-lede">Kâğıda kendin doldur, sonra soru işaretli hücreye dokun. Tam çözümleri deneme sınavları sayfasında.</p>
+  </header>
+
+  <div class="drill" id="tb1">
+    <div class="drill-head"><span class="tag">Tablo 1 · olası sorular</span><h4>Sınav sınav yeni soru kökleri</h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Sınav</th><th>Soru kökü</th><th>İlk hamle</th><th>Cevap</th></tr></thead>
+      <tbody>
+        <tr><td><span class="slot">MT1</span></td><td>\(\nabla\cdot[(\mathbf a\cdot\mathbf r)\mathbf r]\), \(\mathbf a\) sabit</td><td class="ans">Y1, çarpım kuralı</td><td class="ans">\(4\,\mathbf a\cdot\mathbf r\)</td></tr>
+        <tr><td><span class="slot">MT1</span></td><td>\(f=2xz-y^2+3x\), \(P(1,2,0)\): teğet düzlem ve \((2,1,-2)\) yönünde türev</td><td class="ans">Y2, \(\nabla f=(3,-4,2)\)</td><td class="ans">\(3x-4y+2z=-5\) · \(-2/3\)</td></tr>
+        <tr><td><span class="slot">MT1</span></td><td>\(A(2,0,0)\), \(B(0,4,0)\), \(C(0,0,4)\) üçgeninden \(\mathbf F=x\hat{\mathbf i}+z\hat{\mathbf k}\) akısı (yukarı)</td><td class="ans">Y5, \(2x+y+z=4\)</td><td class="ans">\(32/3\)</td></tr>
+        <tr><td><span class="slot">MT1</span></td><td>\(\mathbf F=(2xy+z^3,\ x^2+2y,\ 3xz^2)\), \((0,0,0)\to(1,2,1)\)</td><td class="ans">Y4, \(\varphi=x^2y+xz^3+y^2\)</td><td class="ans">7</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>\(\mathbf F=r^2\hat{\mathbf e}_\theta\), çeyrek disk sınırı (\(r\le a\))</td><td class="ans">Y7, \((\nabla\times\mathbf F)_z=3r\)</td><td class="ans">\(\pi a^3/2\)</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>\(z^2+(1-i)z-i=0\)</td><td class="ans">Y9, \(\Delta=2i\), \(\sqrt{2i}=1+i\)</td><td class="ans">\(i\) ve \(-1\)</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>\(\int_0^{1+i}\bar z\,dz\): doğru ve kırık yol</td><td class="ans">Y11, parametrize (analitik değil)</td><td class="ans">1 ve \(1+i\)</td></tr>
+        <tr><td><span class="slot">Final</span></td><td>\(u=e^x(x\cos y-y\sin y)\)'nin eşleniği</td><td class="ans">Y10, Milne-Thomson</td><td class="ans">\(f=ze^z\)</td></tr>
+        <tr><td><span class="slot">Final</span></td><td>\(\dfrac{\sin z}{z^3(e^z-1)}\)'in tekillikleri</td><td class="ans">Y13, sıfır sayma</td><td class="ans">0: 3. mertebe; \(2\pi ik\): basit</td></tr>
+        <tr><td><span class="slot">Final</span></td><td>\(\int\frac{\sin x}{x(x^2+1)}dx\)</td><td class="ans">Y14, PV + girinti</td><td class="ans">\(\pi(1-e^{-1})\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb2">
+    <div class="drill-head"><span class="tag">Tablo 2 · reel integraller</span><h4>Hangi kontur, hangi teorem?</h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>İntegral</th><th>Kontur / teorem</th><th>Sonuç</th></tr></thead>
+      <tbody>
+        <tr><td>\(\int_0^{2\pi}\frac{d\theta}{5+3\cos\theta}\)</td><td class="ans">Birim çember, \(z=-1/3\)</td><td class="ans">\(\pi/2\)</td></tr>
+        <tr><td>\(\int_{-\infty}^\infty\frac{dx}{(x^2+1)(x^2+4)}\)</td><td class="ans">Üst yarı düzlem, Teorem 1</td><td class="ans">\(\pi/6\)</td></tr>
+        <tr><td>\(\int_{-\infty}^\infty\frac{\cos2x}{x^2+1}dx\)</td><td class="ans">\(e^{2iz}\), Jordan</td><td class="ans">\(\pi e^{-2}\)</td></tr>
+        <tr><td>\(\mathrm{PV}\int_{-\infty}^\infty\frac{dx}{x(x-1)}\)</td><td class="ans">İki girinti, \(\pi i\sum\mathrm{Res}\)</td><td class="ans">0</td></tr>
+        <tr><td>\(\int_0^\infty\frac{dx}{\sqrt x\,(1+x)}\)</td><td class="ans">Anahtar deliği, \(m=\tfrac12\)</td><td class="ans">\(\pi\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+
+  <div class="drill" id="tb3">
+    <div class="drill-head"><span class="tag">Tablo 3 · ezber</span><h4>Eğrisel koordinat elemanları</h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Sistem</th><th>\(h_i\)</th><th>\(d\tau\)</th><th>\(r=\) sabit yüzeyi</th></tr></thead>
+      <tbody>
+        <tr><td>Silindirik \((r,\theta,z)\)</td><td class="ans">\(1,\ r,\ 1\)</td><td class="ans">\(r\,dr\,d\theta\,dz\)</td><td class="ans">\(r\,d\theta\,dz\)</td></tr>
+        <tr><td>Küresel \((r,\theta,\phi)\)</td><td class="ans">\(1,\ r,\ r\sin\theta\)</td><td class="ans">\(r^2\sin\theta\,dr\,d\theta\,d\phi\)</td><td class="ans">\(r^2\sin\theta\,d\theta\,d\phi\)</td></tr>
+        <tr><td>Kutupsal (düzlem)</td><td class="ans">\(1,\ r\)</td><td class="ans">\(dA=r\,dr\,d\theta\)</td><td class="ans">\(ds=r\,d\theta\)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
+</section>
+
+<!-- ================================================= HARİTA -->
+<section class="part" id="harita" data-toc="Yöntem haritası">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm G</span><span class="sess">43 soru × 14 yöntem</span></p>
+    <h2>Çözüm defterinin yöntem haritası</h2>
+    <p class="ch-lede">Etiketler soruyu çözüm defterinde açar.</p>
+  </header>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Yöntem</th><th>Sorular</th></tr></thead>
+    <tbody>
+      <tr><td>Y1 · İndis</td><td><a class="nb" data-p="s26m1-1">B26 MT1 S1</a> <a class="nb" data-p="su25f-1">Y25 F S1</a> <a class="nb" data-p="v1">V1</a> <a class="nb" data-p="v2">V2</a></td></tr>
+      <tr><td>Y2 · Gradyan</td><td><a class="nb" data-p="s26m1-2">B26 MT1 S2</a> <a class="nb" data-p="v3">V3</a></td></tr>
+      <tr><td>Y3 · Frenet</td><td><a class="nb" data-p="su25f-1">Y25 F S1</a></td></tr>
+      <tr><td>Y4 · Potansiyel</td><td><a class="nb" data-p="s26m1-4">B26 MT1 S4</a> <a class="nb" data-p="v4">V4</a> <a class="nb" data-p="v5">V5</a></td></tr>
+      <tr><td>Y5 · Düzlem, akı</td><td><a class="nb" data-p="s26m1-3">B26 MT1 S3</a></td></tr>
+      <tr><td>Y6 · Diverjans</td><td><a class="nb" data-p="su25f-2">Y25 F S2</a> <a class="nb" data-p="v8">V8</a></td></tr>
+      <tr><td>Y7 · Stokes, Green</td><td><a class="nb" data-p="s26m2-2">B26 MT2 S2</a> <a class="nb" data-p="su25f-3">Y25 F S3</a> <a class="nb" data-p="v6">V6</a> <a class="nb" data-p="v7">V7</a> <a class="nb" data-p="v9">V9</a></td></tr>
+      <tr><td>Y8 · Eğrisel</td><td><a class="nb" data-p="s26m2-1">B26 MT2 S1</a> <a class="nb" data-p="su25f-2">Y25 F S2</a> <a class="nb" data-p="v10">V10</a></td></tr>
+      <tr><td>Y9 · Kökler, log</td><td><a class="nb" data-p="s26m2-3">B26 MT2 S3</a> <a class="nb" data-p="su25m1-1">Y25 MT1 S1</a> <a class="nb" data-p="c1">C1</a> <a class="nb" data-p="c2">C2</a></td></tr>
+      <tr><td>Y10 · CR</td><td><a class="nb" data-p="s26f-1">B26 F S1</a> <a class="nb" data-p="su25m1-2">Y25 MT1 S2</a> <a class="nb" data-p="c3">C3</a></td></tr>
+      <tr><td>Y11 · Cauchy, yol</td><td><a class="nb" data-p="s26m2-4">B26 MT2 S4</a> <a class="nb" data-p="s26m2-5">B26 MT2 S5</a> <a class="nb" data-p="s26f-4">B26 F S4</a> <a class="nb" data-p="c4">C4</a></td></tr>
+      <tr><td>Y12 · Laurent</td><td><a class="nb" data-p="s26f-2">B26 F S2</a> <a class="nb" data-p="su25m1-1">Y25 MT1 S1</a> <a class="nb" data-p="c5">C5</a></td></tr>
+      <tr><td>Y13 · Tekillik</td><td><a class="nb" data-p="s26f-3">B26 F S3</a> <a class="nb" data-p="su25m1-3">Y25 MT1 S3</a> <a class="nb" data-p="c6">C6</a> <a class="nb" data-p="c12">C12</a></td></tr>
+      <tr><td>Y14 · Reel integral</td><td><a class="nb" data-p="s26f-5">B26 F S5</a> <a class="nb" data-p="su25m1-4">Y25 MT1 S4</a> <a class="nb" data-p="c7">C7</a> <a class="nb" data-p="c8">C8</a> <a class="nb" data-p="c9">C9</a> <a class="nb" data-p="c10">C10</a> <a class="nb" data-p="c11">C11</a></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ================================================= PLAN -->
+<section class="part" id="plan" data-toc="Çalışma planı">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm H</span><span class="sess">Her sınavdan önceki hafta</span></p>
+    <h2>Çalışma planı</h2>
+    <p class="ch-lede">Sınav tarihleri açıklanınca takvime oturtun. Her blok yaklaşık 6–7 saat.</p>
+  </header>
+  <div class="plan">
+    <div><span class="when-t">MT1 · 1. gün</span><p>Konu defterinde Bölüm 1–5; her bölümün çözümlü sorusunu önce kâğıtta çözün. Yöntem kartları Y1–Y5.</p></div>
+    <div><span class="when-t">MT1 · 2. gün</span><p>Bahar 2026 MT1'i 90 dakikada, çözümlere bakmadan. Sonra deneme sınavları sayfasındaki MT1 denemesi.</p></div>
+    <div><span class="when-t">MT2 · 1. gün</span><p>Bölüm 6–10; Y6–Y9 ve Y11. Silindirik ve küresel \(h_i\)'leri ezberden yazabilene kadar.</p></div>
+    <div><span class="when-t">MT2 · 2. gün</span><p>Bahar 2026 MT2 (100 dk) ve MT2 denemesi. Y25 final S2–S3'ü iki yoldan çözün.</p></div>
+    <div><span class="when-t">Final · 1. gün</span><p>Bölüm 9–12; Y10, Y12–Y14. Tablo 2'deki beş integrali kâğıtta.</p></div>
+    <div><span class="when-t">Final · 2. gün</span><p>Bahar 2026 finali, Yaz 2025 MT1 ve final denemesi. Final kümülatif ise MT1/MT2 denemelerinden birer soru ekleyin.</p></div>
+    <div><span class="when-t">Sınav sabahı</span><p>Bölüm A'daki altı gözlemi ve protokolü okuyun. Formül kartını bir kez yazın.</p></div>
+  </div>
+</section>
+  </main>
+</div>
+
+<script>
+'use strict';
+/* Yöntem kiti: adım adım örnekler, tanıma soruları, "öğrendim" işaretleri, deftere bağlantılar */
+const NOTEBOOK = '../cozumler/';
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('m210k.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('m210k.' + k, JSON.stringify(v)); } catch (e) { /* depolama yoksa geç */ } }
+};
+
+/* Deftere bağlantılar */
+document.querySelectorAll('a.nb[data-p]').forEach(a => { a.href = NOTEBOOK + '#' + a.dataset.p; a.target = '_blank'; a.rel = 'noopener'; a.title = 'Çözüm defterinde aç'; });
+
+/* Adım adım örnekler */
+document.querySelectorAll('.derive').forEach((d, di) => {
+  const steps = [...d.querySelectorAll(':scope > .steps > .step')];
+  if (!steps.length) return;
+  let shown = 1;
+  const bar = document.createElement('div');
+  bar.className = 'derive-bar';
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="kd${di}-next">Sonraki adım →</button>` +
+    `<button type="button" class="btn" id="kd${di}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="kd${di}-reset">Baştan</button><span class="derive-count" aria-live="polite"></span>`;
+  d.appendChild(bar);
+  const [bNext, bAll, bReset] = bar.querySelectorAll('button');
+  const cnt = bar.querySelector('.derive-count');
+  function render(rev) {
+    steps.forEach((s, j) => {
+      const locked = j >= shown;
+      s.classList.toggle('locked', locked);
+      s.classList.toggle('tail', j === shown - 1 && shown < steps.length);
+      if (locked) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden');
+      if (rev != null && j >= rev && j < shown) { s.classList.remove('rev'); void s.offsetWidth; s.classList.add('rev'); }
+    });
+    cnt.textContent = `Adım ${shown} / ${steps.length}`;
+    bNext.disabled = bAll.disabled = shown >= steps.length;
+    bReset.disabled = shown <= 1;
+  }
+  bNext.addEventListener('click', () => { if (shown < steps.length) { shown++; render(shown - 1); } });
+  bAll.addEventListener('click', () => { const r = shown; shown = steps.length; render(r); });
+  bReset.addEventListener('click', () => { shown = 1; render(); });
+  render();
+});
+
+/* Tanıma soruları */
+const quizSaved = store.get('quiz', {});
+const quizzes = [...document.querySelectorAll('.quiz')];
+quizzes.forEach((q, qi) => {
+  const id = 'tq' + qi, ans = q.dataset.answer, letters = 'ABCD';
+  const btns = [...q.querySelectorAll('.quiz-opts button')];
+  const verdict = q.querySelector('.verdict');
+  btns.forEach((b, j) => {
+    b.id = id + '-' + b.dataset.k;
+    const k = document.createElement('span'); k.className = 'opt-k'; k.textContent = letters[j];
+    const body = document.createElement('span'); while (b.firstChild) body.appendChild(b.firstChild);
+    b.append(k, body);
+    b.addEventListener('click', () => choose(b.dataset.k, true));
+  });
+  function choose(k, save) {
+    const right = k === ans;
+    btns.forEach(b => { b.disabled = true; if (b.dataset.k === ans) b.classList.add('ok'); if (b.dataset.k === k && !right) b.classList.add('no'); });
+    verdict.textContent = right ? 'Doğru.' : `Yanlış, doğru cevap ${letters[btns.findIndex(b => b.dataset.k === ans)]}.`;
+    q.classList.add('done', right ? 'is-right' : 'is-wrong');
+    if (save) { quizSaved[id] = k; store.set('quiz', quizSaved); }
+  }
+  q._reset = () => { btns.forEach(b => { b.disabled = false; b.classList.remove('ok', 'no'); }); q.classList.remove('done', 'is-right', 'is-wrong'); verdict.textContent = ''; };
+  if (quizSaved[id]) choose(quizSaved[id], false);
+});
+document.getElementById('st-q').textContent = quizzes.length;
+
+/* İçindekiler */
+const toc = document.getElementById('toc');
+const parts = [...document.querySelectorAll('section.part')];
+const methods = [...document.querySelectorAll('article.method')];
+parts.forEach(p => {
+  const eb = p.querySelector('.eyebrow span');
+  const li = document.createElement('li');
+  li.innerHTML = `<a href="#${p.id}"><span class="n">${eb ? eb.textContent.replace('Bölüm ', '') : ''}</span><span>${p.dataset.toc}</span><span class="ok"></span></a>`;
+  toc.appendChild(li);
+  if (p.id === 'yontemler') methods.forEach(m => {
+    const l2 = document.createElement('li');
+    l2.innerHTML = `<a href="#${m.id}"><span class="n">${m.querySelector('.m-no').textContent}</span><span>${m.dataset.short}</span><span class="ok">✓</span></a>`;
+    toc.appendChild(l2);
+  });
+});
+const tocLinks = [...toc.querySelectorAll('a')];
+
+/* Öğrendim işaretleri */
+const learned = new Set(store.get('learned', []));
+function update() {
+  const n = methods.filter(m => learned.has(m.id)).length;
+  document.getElementById('prog-bar').style.width = (100 * n / methods.length) + '%';
+  document.getElementById('prog-txt').textContent = `${n} / ${methods.length} yöntem öğrenildi`;
+  document.getElementById('sum-prog').textContent = `${n} / ${methods.length}`;
+  document.getElementById('st-l').textContent = n;
+  document.getElementById('st-m').textContent = methods.length;
+  tocLinks.forEach(a => a.classList.toggle('is-done', learned.has(a.getAttribute('href').slice(1))));
+}
+methods.forEach(m => {
+  const cb = m.querySelector('.learned input'); if (!cb) return;
+  cb.checked = learned.has(m.id);
+  cb.addEventListener('change', () => { if (cb.checked) learned.add(m.id); else learned.delete(m.id); store.set('learned', [...learned]); update(); });
+});
+document.getElementById('reset-progress').addEventListener('click', () => {
+  learned.clear(); store.set('learned', []); methods.forEach(m => { const cb = m.querySelector('.learned input'); if (cb) cb.checked = false; });
+  for (const k in quizSaved) delete quizSaved[k]; store.set('quiz', {}); quizzes.forEach(q => q._reset()); update();
+});
+update();
+
+/* Kaydırma takibi, dar ekran */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) tocLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id ? 'true' : 'false'));
+}), { rootMargin: '-30% 0px -65% 0px' });
+[...parts.filter(p => p.id !== 'yontemler'), ...methods].forEach(x => spy.observe(x));
+const tocDet = document.getElementById('toc-details');
+const wide = window.matchMedia('(min-width: 1001px)');
+function syncToc() { tocDet.open = wide.matches; }
+syncToc(); wide.addEventListener('change', syncToc);
+tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
+tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+
+/* Tablo alıştırmaları: her cevap hücresi bir düğme; dokununca açılır, tekrar dokununca kapanır */
+document.querySelectorAll('.drill').forEach((t, ti) => {
+  const cells = [...t.querySelectorAll('td.ans')].map((td, ci) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'cell'; b.id = `dr${ti}-c${ci}`; b.setAttribute('aria-label', 'Cevabı göster');
+    const inner = document.createElement('span'); inner.className = 'c-in';
+    while (td.firstChild) inner.appendChild(td.firstChild);
+    b.appendChild(inner); td.appendChild(b);
+    b.addEventListener('click', () => set(b, !b.classList.contains('shown')));
+    return b;
+  });
+  function set(b, on) { b.classList.toggle('shown', on); b.setAttribute('aria-label', on ? 'Cevabı gizle' : 'Cevabı göster'); count(); }
+  const bar = t.querySelector('.drill-bar');
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="dr${ti}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="dr${ti}-hide">Gizle</button><span class="derive-count" aria-live="polite"></span>`;
+  const cnt = bar.querySelector('.derive-count');
+  function count() { cnt.textContent = `${cells.filter(c => c.classList.contains('shown')).length} / ${cells.length} hücre açık`; }
+  bar.querySelector(`#dr${ti}-all`).addEventListener('click', () => cells.forEach(c => set(c, true)));
+  bar.querySelector(`#dr${ti}-hide`).addEventListener('click', () => cells.forEach(c => set(c, false)));
+  count();
+});
+
+</script>
+<script>
+/* Site menüsü: aç/kapat, Esc, dışarı tıklama, odak yönetimi */
+(function () {
+  const nav = document.getElementById('site-nav'); if (!nav) return;
+  const btn = document.getElementById('nav-btn'), drawer = document.getElementById('nav-drawer'), scrim = document.getElementById('nav-scrim');
+  const links = [...drawer.querySelectorAll('a')];
+  const cur = nav.dataset.current;
+  links.forEach(a => { if (a.dataset.key === cur) a.setAttribute('aria-current', 'page'); });
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.classList.toggle('nav-lock', open);
+    /* çekmece görünür olduktan sonra odakla (visibility geçişi başlarken öğe odaklanamaz) */
+    if (open) setTimeout(() => (drawer.querySelector('a[aria-current]') || links[0]).focus({ preventScroll: true }), 60);
+  }
+  btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  scrim.addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { set(false); btn.focus(); }
+    if (e.key === 'Tab') {
+      const items = [btn, ...links, ...drawer.querySelectorAll('.nav-foot a')];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>

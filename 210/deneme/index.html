@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PHYS 210 Deneme Sınavları</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PHYS 210 çıkmış sınavlarının kalıbından üretilmiş, süreli ve çözümlü üç deneme sınavı (MT1, MT2, final).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas', 'select', 'option'] },
+  startup: { typeset: true, pageReady: () => MathJax.startup.defaultPageReady().then(fitMath) }
+};
+/* Dar ekranda sütuna sığmayan satır içi formülü kendi satırına alıp yatay kaydırılabilir yapar */
+function fitMath() {
+  const els = [...document.querySelectorAll('mjx-container:not([display="true"])')];
+  els.forEach(el => el.classList.remove('mj-wide'));
+  const wide = [];
+  els.forEach(el => {
+    let b = el.parentElement;
+    while (b && getComputedStyle(b).display === 'inline') b = b.parentElement;
+    if (!b) return;
+    const cs = getComputedStyle(b);
+    const avail = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (el.getBoundingClientRect().width > avail + 1) wide.push(el);
+  });
+  wide.forEach(el => el.classList.add('mj-wide'));
+}
+let fitW = window.innerWidth, fitT = 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth === fitW) return;
+  fitW = window.innerWidth; clearTimeout(fitT); fitT = setTimeout(fitMath, 200);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<style>
+/* Düzen: üstte milimetrik kâğıt bandı ve altında faz renk çemberi şeridi; sol yapışkan içindekiler + 48rem okuma sütunu.
+   Laboratuvarlar sütun genişliğinde "çalışma tezgâhı" panelleri; renkler matematiksel anlam taşır
+   (yol/kontur kırmızı, vektör alanı camgöbeği, normal/akı macenta, kutup/tekillik amber). */
+:root {
+  --bg: #F2F5F9;
+  --panel: #FFFFFF;
+  --panel-2: #E7ECF3;
+  --canvas: #FAFCFE;
+  --ink: #111A27;
+  --muted: #556274;
+  --rule: #D0D9E4;
+  --grid: #E1E8F0;
+  --accent: #1D5BB5;
+  --accent-soft: #DCE8FA;
+  --on-accent: #FFFFFF;
+  --force: #C2362B;
+  --vel: #0E7F86;
+  --acc: #A3207A;
+  --energy: #B06A00;
+  --good: #2E7D32;
+  --bad: #B3261E;
+  --good-soft: #E3F2DF;
+  --bad-soft: #F8E3E1;
+  --font-display: "STIX Two Text", "STIX Two", "Times New Roman", Georgia, serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-body: 1.0625rem;
+  --radius: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1018; --panel: #111824; --panel-2: #172030; --canvas: #0E141E;
+    --ink: #E3EAF4; --muted: #8E9BB0; --rule: #243043; --grid: #19222F;
+    --accent: #7FB0FF; --accent-soft: #16294A; --on-accent: #0B1018;
+    --force: #FF7A6E; --vel: #4FD0D6; --acc: #F07BC8; --energy: #F0B43C;
+    --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1018; --panel: #111824; --panel-2: #172030; --canvas: #0E141E;
+  --ink: #E3EAF4; --muted: #8E9BB0; --rule: #243043; --grid: #19222F;
+  --accent: #7FB0FF; --accent-soft: #16294A; --on-accent: #0B1018;
+  --force: #FF7A6E; --vel: #4FD0D6; --acc: #F07BC8; --energy: #F0B43C;
+  --good: #A3D977; --bad: #FF7F76; --good-soft: #1F3317; --bad-soft: #3A1E1E;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 40; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+mjx-container { color: inherit; position: relative; }
+mjx-assistive-mml { max-width: 100% !important; }
+mjx-container.mj-wide { display: block !important; max-width: 100%; overflow-x: auto; overflow-y: hidden; margin: .3rem 0; padding-bottom: .15rem; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .25rem; margin: .6rem 0 !important; }
+b, strong { font-weight: 600; }
+em { font-style: italic; }
+.mono { font-family: var(--font-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Üst bant ---------- */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+}
+.hero-in {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.75rem 2.25rem;
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 2.5rem; align-items: end;
+}
+.eyebrow {
+  font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: 0 0 .75rem;
+}
+.hero h1 {
+  font: 600 clamp(2.4rem, 6vw, 3.9rem)/1.02 var(--font-display);
+  letter-spacing: -.01em; margin: 0 0 1rem; text-wrap: balance;
+}
+.hero h1 i { font-style: italic; font-weight: 500; color: var(--accent); }
+.hero .lede { font-size: 1.12rem; color: var(--ink); max-width: 38rem; margin: 0; }
+.hero-card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 1rem 1.1rem; display: grid; gap: .85rem;
+}
+.hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero-stats div { display: grid; }
+.hero-stats b { font: 600 1.7rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.hero-stats span { font: 500 .72rem/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend i { width: 1.4rem; height: 3px; border-radius: 2px; display: inline-block; position: relative; }
+.legend i::after { content: ""; position: absolute; right: -2px; top: -3px; border-left: 6px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent; }
+.hero-how { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; font-size: .92rem; }
+.hero-how li { display: grid; grid-template-columns: 6.6rem 1fr; gap: .6rem; }
+.hero-how b { font: 500 .72rem/1.9 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--accent); }
+
+/* ---------- İskelet ---------- */
+.shell {
+  max-width: 76rem; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); gap: 3.25rem;
+}
+.side { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 2rem 2rem; }
+.side summary { display: none; }
+.toc-title { font: 500 .72rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem; }
+.progress { height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; margin: .2rem 0 .45rem; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.progress-txt { font: 400 .8rem/1.4 var(--font-mono); color: var(--muted); margin: 0 0 1.1rem; font-variant-numeric: tabular-nums; }
+.toc { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+.toc a {
+  display: grid; grid-template-columns: 1.6rem 1fr 1rem; gap: .35rem; align-items: baseline;
+  text-decoration: none; color: var(--muted); padding: .38rem .5rem; border-radius: 5px; font-size: .9rem; line-height: 1.35;
+}
+.toc a:hover { background: var(--panel-2); color: var(--ink); }
+.toc a[aria-current="true"] { background: var(--accent-soft); color: var(--ink); }
+.toc .n { font: 500 .78rem/1.5 var(--font-mono); color: var(--accent); }
+.toc .ok { color: var(--good); font-size: .85rem; visibility: hidden; }
+.toc a.is-done .ok { visibility: visible; }
+.side-foot { margin-top: 1.2rem; display: grid; gap: .5rem; font-size: .82rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
+
+main { min-width: 0; max-width: 48rem; padding-block: 1rem 6rem; }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .side {
+    max-height: none; overflow: visible; z-index: 30; padding-block: 0;
+    background: var(--bg); border-bottom: 1px solid var(--rule);
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .side summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    list-style: none; cursor: pointer; padding-block: .75rem; font-weight: 500;
+  }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary .sum-prog { font: 400 .8rem var(--font-mono); color: var(--muted); }
+  .side details[open] .toc-wrap { padding-bottom: 1rem; max-height: 70vh; overflow-y: auto; }
+  .toc-title { display: none; }
+  .hero-in { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem 1.75rem; }
+}
+
+/* ---------- Bölümler ---------- */
+.chapter { padding-top: 3.5rem; }
+.chapter + .chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
+.ch-head .eyebrow .sess { color: var(--accent); }
+.chapter h2 { font: 600 clamp(1.8rem, 4vw, 2.45rem)/1.12 var(--font-display); margin: 0 0 .8rem; text-wrap: balance; letter-spacing: -.005em; }
+.ch-lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 42rem; }
+.chapter h3 { font: 600 1.42rem/1.25 var(--font-display); margin: 2.6rem 0 .6rem; text-wrap: balance; }
+.chapter h3 .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-left: .5rem; vertical-align: .25em; white-space: nowrap; }
+.chapter p, .chapter li { max-width: 44rem; }
+.chapter ul, .chapter ol { padding-left: 1.3rem; }
+.chapter li + li { margin-top: .3rem; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 1rem 0; }
+.kv dt { font: 500 .78rem/1.9 var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 0; }
+
+/* Kutular: sonuç / örnek / sınav */
+.box {
+  --lbl: var(--accent);
+  position: relative; margin: 1.9rem 0 1.4rem; padding: 1.15rem 1.2rem .8rem;
+  border: 1px solid color-mix(in srgb, var(--lbl) 38%, var(--rule)); border-radius: var(--radius); background: var(--panel);
+}
+.box-label {
+  position: absolute; top: -.72em; left: .85rem; padding: 0 .45rem;
+  background: linear-gradient(to bottom, var(--bg) 50%, var(--panel) 50%);
+  font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--lbl);
+}
+.box > :first-child:not(.box-label), .box > .box-label + * { margin-top: 0; }
+.box > :last-child { margin-bottom: .2rem; }
+.box.ex { --lbl: var(--energy); }
+.box.exam { --lbl: var(--force); }
+.box.ext { --lbl: var(--acc); }
+.box p { margin: .5rem 0; }
+
+/* Adım adım türetim */
+.derive { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); }
+.derive-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .85rem 1.15rem .2rem; }
+.derive-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.derive-head h4 { margin: 0; font: 600 1.05rem/1.35 var(--font-body); }
+.steps { list-style: none; margin: .5rem 0 0; padding: .3rem 1.15rem .2rem; counter-reset: st; }
+.step { counter-increment: st; position: relative; padding: .1rem 0 1.05rem 2.55rem; max-width: none !important; }
+.step + .step { margin-top: 0 !important; }
+.step::before {
+  content: counter(st); position: absolute; left: 0; top: .12rem; width: 1.7rem; height: 1.7rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); background: var(--panel);
+  font: 600 .8rem/1.55rem var(--font-mono); text-align: center; z-index: 1;
+}
+.step::after { content: ""; position: absolute; left: .82rem; top: 1.9rem; bottom: .15rem; width: 1.5px; background: var(--rule); }
+.step.tail::after, .step:last-child::after { display: none; }
+.step > p:first-child { margin-top: .1rem; }
+.step p { margin: .35rem 0; }
+.step.locked { visibility: hidden; max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.step.rev { animation: rise .4s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .step.rev { animation: none; } }
+.derive-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); border-radius: 0 0 var(--radius) var(--radius); }
+.derive-count { margin-left: auto; font: 500 .82rem var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Düğmeler */
+.btn {
+  font: 500 .88rem/1.2 var(--font-body); padding: .5rem .85rem; border-radius: 5px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); background: var(--panel); color: var(--accent);
+  min-height: 2.25rem;
+}
+.btn:hover { background: var(--accent-soft); }
+.btn:disabled { opacity: .45; cursor: default; background: var(--panel); }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 86%, var(--ink)); }
+.btn-primary:disabled { background: var(--accent); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--muted); }
+
+/* Laboratuvar */
+.lab { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.lab-head { padding: .95rem 1.15rem .7rem; }
+.lab-tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--vel); }
+.lab-head h4 { margin: .15rem 0 .25rem; font: 600 1.12rem/1.3 var(--font-body); }
+.lab-head p { margin: 0; color: var(--muted); font-size: .94rem; }
+.view { position: relative; overflow: hidden; background: var(--canvas); border-block: 1px solid var(--rule); }
+.view canvas { display: block; width: 100%; touch-action: pan-y; }
+.view .hint { position: absolute; right: .6rem; top: .45rem; font: 500 .72rem var(--font-mono); color: var(--muted); pointer-events: none; }
+.ctrls { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .7rem 1.4rem; padding: .95rem 1.15rem .35rem; }
+.ctrl { display: grid; gap: .15rem; min-width: 0; }
+.ctrl label { display: flex; justify-content: space-between; gap: .6rem; font-size: .86rem; color: var(--ink); }
+.ctrl output { font: 500 .84rem var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctrl input[type="range"] { width: 100%; accent-color: var(--accent); margin: .25rem 0; min-height: 1.4rem; }
+.ctrl select, .ctrl input[type="number"] {
+  font: 400 .9rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 5px; padding: .4rem .5rem; width: 100%; min-height: 2.25rem;
+}
+.ctrl.check label { justify-content: flex-start; align-items: center; gap: .5rem; padding-top: 1.2rem; }
+.ctrl.check input { accent-color: var(--accent); width: 1.05rem; height: 1.05rem; }
+.lab-actions { display: flex; flex-wrap: wrap; gap: .5rem; padding: .55rem 1.15rem .3rem; }
+.readout { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .45rem; padding: .65rem 1.15rem .9rem; margin: 0; }
+.readout > div { background: var(--panel-2); border-radius: 5px; padding: .42rem .65rem .48rem; min-width: 0; }
+.readout dt { font: 500 .74rem/1.35 var(--font-mono); color: var(--muted); }
+.readout dd { margin: .1rem 0 0; font: 500 .95rem/1.35 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.readout > div.wide { grid-column: 1 / -1; }
+.chip { display: inline-block; font: 600 .74rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .5rem; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.warn { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.lab-try { margin: 0; padding: .1rem 1.15rem 1.05rem; font-size: .9rem; color: var(--muted); }
+.lab-try b { color: var(--ink); font-weight: 600; }
+.lab-note { font-size: .86rem; color: var(--muted); padding: 0 1.15rem .8rem; margin: 0; }
+
+/* Tablolar */
+.tbl-wrap { overflow-x: auto; margin: 1.2rem 0; }
+table.tbl { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.tbl th, .tbl td { padding: .5rem .7rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: middle; }
+.tbl th { font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.tbl td.c, .tbl th.c { text-align: center; }
+.tbl td.num { font-family: var(--font-mono); }
+
+/* Sorular */
+.quiz-set { margin: 2.4rem 0 1rem; }
+.quiz-set > h3 { margin-top: 0; }
+.quiz { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 1rem 1.15rem 1rem; margin: .9rem 0; }
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+.quiz-opts { display: grid; gap: .45rem; }
+.quiz-opts button {
+  display: grid; grid-template-columns: 1.7rem 1fr; gap: .55rem; align-items: center; text-align: left;
+  font: 400 .95rem/1.45 var(--font-body); color: var(--ink); background: var(--panel); cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 5px; padding: .5rem .65rem; min-height: 2.6rem;
+}
+.quiz-opts button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz-opts button:disabled { cursor: default; }
+.quiz-opts button > span:last-child { min-width: 0; }
+.opt-k { font: 600 .78rem/1 var(--font-mono); color: var(--muted); width: 1.55rem; height: 1.55rem; border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; }
+.quiz-opts button.ok { border-color: var(--good); background: var(--good-soft); }
+.quiz-opts button.ok .opt-k { background: var(--good); color: var(--panel); border-color: var(--good); }
+.quiz-opts button.no { border-color: var(--bad); background: var(--bad-soft); }
+.quiz-opts button.no .opt-k { background: var(--bad); color: var(--panel); border-color: var(--bad); }
+.quiz-why { margin: .75rem 0 0; font-size: .93rem; }
+.quiz:not(.done) .quiz-why { visibility: hidden; max-height: 0; overflow: hidden; margin: 0; }
+.quiz-why .verdict { font-weight: 600; margin-right: .3rem; }
+.quiz.is-right .verdict { color: var(--good); }
+.quiz.is-wrong .verdict { color: var(--bad); }
+
+.ch-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px dashed var(--rule); }
+.ch-foot .btn.is-done { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.ch-foot a { font-size: .92rem; }
+
+/* Formül kartı */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1.2rem; }
+.card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.card h5 { margin: 0; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.card mjx-container[display="true"] { margin: .35rem 0 !important; }
+
+footer.end { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+
+/* Çözüm defteri eklemeleri */
+.topic { padding-top: 3.2rem; }
+.topic + .topic { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.topic h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.prob { padding-top: 2.2rem; }
+.prob + .prob { border-top: 1px dashed var(--rule); margin-top: 2.2rem; }
+.prob-head { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: center; }
+.pid { font: 600 .78rem/1.5 var(--font-mono); color: var(--accent); background: var(--accent-soft); padding: .05rem .5rem; border-radius: 4px; }
+.lvl { font: 500 .76rem/1.5 var(--font-mono); color: var(--muted); }
+.prob h3 { margin: .35rem 0 .2rem; font: 600 1.4rem/1.25 var(--font-display); text-wrap: balance; }
+.box.q { --lbl: var(--vel); }
+.box.q p { margin: .4rem 0; }
+.tip { margin: .9rem 0 0; font-size: .95rem; color: var(--muted); max-width: 44rem; }
+.tip b { color: var(--force); font-weight: 600; }
+.solved { display: inline-flex; gap: .55rem; align-items: center; font-size: .92rem; color: var(--muted); margin-top: 1rem; cursor: pointer; padding: .35rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.solved input { accent-color: var(--good); width: 1.05rem; height: 1.05rem; }
+.solved:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 0; }
+.toc .grp { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .9rem 0 .25rem .5rem; list-style: none; }
+.toc .grp:first-child { margin-top: 0; }
+.toc a { grid-template-columns: 3.6rem 1fr 1rem; }
+.toc .n { font-size: .72rem; }
+.toc a.is-done .ok { visibility: visible; }
+.mini { margin: 1rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.mini .ctrls { padding-top: .7rem; }
+.note-src { font-size: .85rem; color: var(--muted); }
+
+/* Yöntem kiti eklemeleri */
+.part { padding-top: 3.2rem; }
+.part + .part { border-top: 1px solid var(--rule); margin-top: 3rem; }
+.part h2 { font: 600 clamp(1.8rem, 4vw, 2.4rem)/1.12 var(--font-display); margin: 0 0 .7rem; text-wrap: balance; }
+.method { margin: 2.2rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); padding: 1.1rem 1.2rem 1rem; }
+.m-head { display: flex; gap: .9rem; align-items: flex-start; }
+.m-no { flex: none; font: 600 1.25rem/1 var(--font-mono); color: var(--on-accent); background: var(--accent); border-radius: 6px; padding: .5rem .55rem; min-width: 2.9rem; text-align: center; }
+.m-head h3 { margin: .05rem 0 .2rem; font: 600 1.38rem/1.25 var(--font-display); text-wrap: balance; }
+.m-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+.m-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 1.4rem; margin-top: 1rem; }
+@media (max-width: 720px) { .m-grid { grid-template-columns: minmax(0, 1fr); } }
+.m-block h4 { margin: 0 0 .35rem; font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.m-block.when h4 { color: var(--vel); }
+.m-block.trap h4 { color: var(--force); }
+.m-block ul, .m-block ol { margin: 0; padding-left: 1.2rem; font-size: .95rem; }
+.m-block li + li { margin-top: .3rem; }
+.m-block.trap ul { list-style: none; padding-left: 0; }
+.m-block.trap li { padding-left: 1.3rem; position: relative; }
+.m-block.trap li::before { content: "✗"; position: absolute; left: 0; color: var(--force); font-weight: 600; }
+.m-recipe { margin-top: 1rem; }
+.m-recipe ol { counter-reset: r; list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.m-recipe li { counter-increment: r; position: relative; padding-left: 2.2rem; }
+.m-recipe li::before { content: counter(r); position: absolute; left: 0; top: .05rem; width: 1.55rem; height: 1.55rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .78rem/1.55rem var(--font-mono); text-align: center; }
+.method .derive { margin: 1.1rem 0 .4rem; }
+.m-foot { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-top: .8rem; font-size: .9rem; color: var(--muted); }
+.m-foot .links { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.nb { font: 500 .76rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--accent); text-decoration: none; border: 1px solid var(--rule); }
+.nb:hover { border-color: var(--accent); }
+.learned { display: inline-flex; gap: .5rem; align-items: center; cursor: pointer; margin-left: auto; padding: .3rem .6rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); }
+.learned input { accent-color: var(--good); width: 1rem; height: 1rem; }
+.learned:has(input:checked) { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+.proto { counter-reset: p; list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: .6rem; }
+.proto li { counter-increment: p; display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem; align-items: start; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .7rem .9rem; }
+.proto li::before { content: counter(p); font: 600 1.3rem/1 var(--font-display); color: var(--accent); padding-top: .15rem; }
+.proto b { display: block; }
+.math-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); gap: .8rem; margin-top: 1rem; }
+.math-card { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: .8rem 1rem .6rem; min-width: 0; }
+.math-card h4 { margin: 0 0 .2rem; font: 600 .72rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.math-card p { margin: .3rem 0; font-size: .92rem; }
+.math-card mjx-container[display="true"] { margin: .3rem 0 !important; }
+.plan { display: grid; gap: .7rem; margin-top: 1rem; }
+.plan > div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .75rem .95rem; }
+@media (max-width: 560px) { .plan > div { grid-template-columns: 1fr; gap: .3rem; } }
+.plan .when-t { font: 600 .82rem/1.5 var(--font-mono); color: var(--accent); }
+.plan p { margin: 0; }
+td .nb { display: inline-block; margin: .1rem 0; }
+/* Grid öğeleri içerikteki uzun formül yüzünden sütunu genişletmesin */
+.m-recipe li, .m-grid > *, .m-head > div, .proto li > span, .plan > div > * { min-width: 0; }
+/* Tablo alıştırmaları: cevap hücreleri dokununca açılır */
+.drill { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.drill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .8rem; padding: .9rem 1.15rem .2rem; }
+.drill-head .tag { font: 600 .7rem/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.drill-head h4 { margin: 0; font: 600 1.05rem/1.4 var(--font-body); }
+.drill-head .src { font: 500 .7rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-left: .4rem; white-space: nowrap; }
+.drill .tbl-wrap { margin: .4rem 0 0; padding: 0 1.15rem; }
+.drill .tbl td { vertical-align: top; }
+.drill td.ans { padding: .3rem .4rem; }
+.cell { all: unset; box-sizing: border-box; display: block; position: relative; width: 100%; min-height: 1.9rem; padding: .2rem .35rem; border-radius: 4px; cursor: pointer; }
+.cell > .c-in { visibility: hidden; }
+.cell::after { content: "?"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font: 600 .82rem/1 var(--font-mono); }
+.cell:hover::after { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+.cell.shown > .c-in { visibility: visible; }
+.cell.shown::after { content: none; }
+.cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.drill-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .75rem 1.15rem .9rem; border-top: 1px solid var(--rule); background: var(--panel-2); margin-top: .6rem; }
+
+
+/* PHYS 202 eklemeleri */
+.hero { position: relative; }
+/* Tayf şeridi: görünür ışığın gerçek renkleri, iki temada da aynı */
+.hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+  background: linear-gradient(90deg, #6A00C8 0%, #3B2BFF 14%, #0090FF 30%, #00C27A 46%, #B8D600 60%, #FFC400 72%, #FF7A00 84%, #E0001A 100%);
+  opacity: .85;
+}
+.box.mine { --lbl: var(--bad); background: color-mix(in srgb, var(--bad) 5%, var(--panel)); }
+.box.mine p { margin: .4rem 0; }
+.slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
+.src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
+figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
+figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
+.fig .s-ink { stroke: var(--ink); fill: none; }
+.fig .s-muted { stroke: var(--muted); fill: none; }
+.fig .s-psi { stroke: var(--acc); fill: none; }
+.fig .s-en { stroke: var(--energy); fill: none; }
+.fig .s-vel { stroke: var(--vel); fill: none; }
+.fig .s-force { stroke: var(--force); fill: none; }
+.fig .f-region { fill: var(--panel-2); stroke: none; }
+.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig text.t-ink { fill: var(--ink); }
+.fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
+.fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
+.fig text.t-sym { fill: var(--ink); font: italic 600 15px var(--font-display); }
+.pattern td { vertical-align: top; font-size: .92rem; }
+.pattern td:first-child { white-space: nowrap; }
+.odds { display: inline-block; min-width: 3.2rem; text-align: center; font: 600 .74rem/1.5 var(--font-mono); padding: .05rem .4rem; border-radius: 99px; }
+.odds.hi { background: var(--good-soft); color: var(--good); }
+.odds.md { background: color-mix(in srgb, var(--energy) 18%, var(--panel)); color: var(--energy); }
+.odds.lo { background: var(--panel-2); color: var(--muted); }
+.cheat { columns: 2 19rem; column-gap: 1rem; margin-top: 1rem; }
+.cheat .math-card { break-inside: avoid; margin-bottom: .8rem; }
+.hero-links { display: flex; flex-wrap: wrap; gap: .4rem .8rem; font-size: .88rem; }
+.hero-links a { font-weight: 500; }
+/* Deneme sınavı */
+.exam-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; margin: 1.2rem 0 0; padding: .7rem 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); }
+.clock { display: grid; margin-right: auto; }
+.clock-lbl { font: 500 .7rem/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.clock b { font: 600 1.6rem/1.1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.clock b.over { color: var(--bad); }
+.clock-btns { display: flex; flex-wrap: wrap; gap: .45rem; }
+details.sol { margin: 1.1rem 0 .4rem; }
+details.sol > summary { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none; font: 500 .9rem/1.2 var(--font-body); color: var(--accent); padding: .5rem .85rem; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule)); border-radius: 5px; background: var(--panel); min-height: 2.25rem; }
+details.sol > summary::-webkit-details-marker { display: none; }
+details.sol > summary::before { content: "▸"; transition: transform .2s; }
+details.sol[open] > summary::before { transform: rotate(90deg); }
+details.sol > summary:hover { background: var(--accent-soft); }
+.rubric { margin: .6rem 0 0; padding: .6rem .9rem .6rem 2rem; font-size: .9rem; color: var(--muted); background: var(--panel-2); border-radius: var(--radius); }
+.rubric::before { content: "Puan nereden gelir"; display: block; margin-left: -1.1rem; font: 600 .7rem/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.box.q ol { margin: .3rem 0; padding-left: 1.2rem; }
+@media (max-width: 1000px) { .exam-bar { position: static; } }
+
+/* PHYS 210: faz renk çemberi şeridi (arg z → renk tonu), iki temada aynı */
+.hero::after {
+  background: linear-gradient(90deg, hsl(0 80% 55%), hsl(60 80% 50%), hsl(120 65% 45%), hsl(180 70% 45%), hsl(240 70% 60%), hsl(300 70% 55%), hsl(360 80% 55%));
+}
+.pg { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.fig .s-acc { stroke: var(--acc); fill: none; }
+.fig .f-soft { fill: var(--accent-soft); stroke: none; }
+.fig .f-pole { fill: var(--energy); }
+.fig text.t-acc { fill: var(--acc); font: italic 600 14px var(--font-display); }
+.fig text.t-force { fill: var(--force); font: italic 600 14px var(--font-display); }
+.clock-sel { font: 500 .88rem var(--font-body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: .4rem .5rem; min-height: 2.25rem; }
+.clock-btns .clock-lbl { align-self: center; }
+/* ---------- Site menüsü (hamburger) ---------- */
+.nav-btn {
+  position: fixed; z-index: 60;
+  top: calc(env(safe-area-inset-top, 0px) + 10px);
+  right: calc(max(16px, env(safe-area-inset-right, 0px)) - 4px);
+  width: 44px; height: 44px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  display: grid; place-content: center; gap: 4px; padding: 0;
+}
+.nav-btn:hover { border-color: var(--accent); }
+.nav-btn span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.site-nav.open .nav-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-nav.open .nav-btn span:nth-child(2) { opacity: 0; }
+.site-nav.open .nav-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* kapalı çekmece ekran dışına itildiğinde sayfayı genişletmesin diye kırpan katman */
+.nav-layer { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.site-nav.open .nav-layer { pointer-events: auto; }
+.nav-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 38%, transparent); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s; }
+.nav-drawer {
+  position: absolute; top: 0; right: 0; bottom: 0; width: min(340px, 86vw); overflow-y: auto;
+  background: var(--panel); border-left: 1px solid var(--rule);
+  padding: calc(env(safe-area-inset-top, 0px) + 68px) max(18px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 20px) 18px;
+  transform: translateX(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+}
+.site-nav.open .nav-drawer { transform: none; visibility: visible; }
+.site-nav.open .nav-scrim { opacity: 1; visibility: visible; }
+.nav-title { font: 600 .72rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem .8rem; }
+.nav-drawer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.nav-drawer li a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 6px; text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+.nav-drawer li a b { font-weight: 600; font-size: 1rem; }
+.nav-drawer li a span { font-size: .85rem; color: var(--muted); }
+.nav-drawer li a:hover { background: var(--panel-2); }
+.nav-drawer li a[aria-current="page"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, var(--rule)); }
+.nav-drawer li a[aria-current="page"] b { color: var(--accent); }
+.nav-foot { margin: 1.4rem 0 0 .8rem; font-size: .85rem; color: var(--muted); }
+.nav-foot a { color: var(--muted); }
+body.nav-lock { overflow: hidden; }
+.hero-in { padding-top: 4.2rem; }
+@media (max-width: 1000px) {
+  .hero-in { padding-top: 4rem; }
+  .side summary { padding-right: 52px; }
+  .nav-btn { width: 40px; height: 40px; top: calc(env(safe-area-inset-top, 0px) + 5px); }
+}
+@media (prefers-reduced-motion: reduce) { .nav-drawer, .nav-scrim, .nav-btn span { transition: none; } }
+
+@media (min-width: 1001px) { .exam-bar { top: calc(env(safe-area-inset-top, 0px) + 62px); } }
+</style>
+</head>
+<body>
+<nav class="site-nav" id="site-nav" data-current="deneme" aria-label="PHYS 210 sayfaları">
+  <button type="button" class="nav-btn" id="nav-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
+  <div class="nav-layer">
+  <div class="nav-scrim" id="nav-scrim"></div>
+  <div class="nav-drawer" id="nav-drawer">
+    <p class="nav-title">PHYS 210 · Matematiksel Yöntemler II</p>
+    <ul>
+      <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>MT1 · MT2 · final, çözümlü</span></a></li>
+    </ul>
+    <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
+  </div>
+  </div>
+</nav>
+
+<header class="hero" lang="tr">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Kalıptan üretilmiş denemeler</span><span>MT1 · MT2 · final</span></p>
+      <h1>PHYS 210 <i>Deneme Sınavları</i></h1>
+      <p class="lede">Bahar 2026'nın üç sınavının yapısıyla yazılmış üç yeni sınav. Sorular gerçek sınavlardaki gibi İngilizce, çözümler Türkçe ve kapalı. Süreyi seçip başlatın, kâğıt kalemle çözün, sonra çözümleri açıp puan listesiyle kendinizi notlayın.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div><b id="st-p">14</b><span>soru</span></div>
+        <div><b id="st-t">3</b><span>sınav</span></div>
+        <div><b id="st-s">0</b><span>çözdüğün</span></div>
+      </div>
+      <ul class="hero-how">
+        <li><b>1 · Süre</b><span>MT1 için 90, MT2 ve final için 100 dakika.</span></li>
+        <li><b>2 · Çöz</b><span>Çözümleri açmadan; yöntem kitindeki protokolle.</span></li>
+        <li><b>3 · Puanla</b><span>Her sorunun altındaki puan listesiyle.</span></li>
+      </ul>
+      <p class="hero-links"><a href="../notlar/">Matematiksel Yöntemler Defteri →</a> <a href="../cozumler/">Çözüm Defteri →</a> <a href="../kit/">Yöntem Kiti →</a></p>
+    </div>
+  </div>
+</header>
+
+<div class="shell" lang="tr">
+  <aside class="side">
+    <details id="toc-details" open>
+      <summary><span>Sorular</span><span class="sum-prog" id="sum-prog">0 çözüldü</span></summary>
+      <div class="toc-wrap">
+        <p class="toc-title">Sorular</p>
+        <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
+        <p class="progress-txt" id="prog-txt">0 / 0 çözüldü</p>
+        <ol class="toc" id="toc"></ol>
+        <div class="side-foot"><button type="button" class="linkbtn" id="reset-progress">İşaretleri sıfırla</button></div>
+      </div>
+    </details>
+  </aside>
+
+  <main id="main">
+    <div class="exam-bar" id="exam-bar">
+      <div class="clock" aria-live="polite"><span class="clock-lbl">Kalan süre</span><b id="clock">1:30:00</b></div>
+      <div class="clock-btns">
+        <label class="clock-lbl" for="clk-dur">Sınav</label>
+        <select id="clk-dur" class="clock-sel"><option value="90">MT1 · 90 dk</option><option value="100">MT2 / final · 100 dk</option></select>
+        <button type="button" class="btn btn-primary" id="clk-start">Süreyi başlat</button>
+        <button type="button" class="btn btn-ghost" id="clk-reset">Sıfırla</button>
+      </div>
+      <div class="clock-btns">
+        <button type="button" class="btn" id="open-all">Tüm çözümleri aç</button>
+        <button type="button" class="btn btn-ghost" id="close-all">Çözümleri kapat</button>
+      </div>
+    </div>
+
+<!-- ================================================= MT1 -->
+<section class="topic" id="d-mt1" data-topic="Midterm 1 (vektör analizi)">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Deneme 1</span><span class="sess">4 soru · 90 dk · Bahar 2026 MT1 yapısı</span></p>
+    <h2>PHYS 210 Midterm 1 (practice)</h2>
+    <p class="ch-lede">İndis, gradyan, düzlem ve akı, çizgi integrali ve potansiyel. Puanlar B26 MT1 ile aynı.</p>
+  </header>
+
+  <article class="prob" id="d1-1" data-short="İndis: ∇×(a×r), ∇·[(a·r)r]">
+    <div class="prob-head"><span class="pid">MT1 · Q1</span><span class="slot">indis</span><span class="lvl">15 puan</span></div>
+    <h3>Index notation</h3>
+    <div class="box q"><span class="box-label">Q1</span><p>Let \(\mathbf a\) be a constant vector and \(\mathbf r\) the position vector. Use index notation to (a) show that \(\nabla\times(\mathbf a\times\mathbf r)=2\mathbf a\); (b) simplify \(\nabla\cdot[(\mathbf a\cdot\mathbf r)\,\mathbf r]\).</p></div>
+    <p class="tip"><b>Neden bu soru?</b> B26 MT1 S1 ve Y25 final S1a gibi: \(\partial_ix_j=\delta_{ij}\) ve \(\epsilon\epsilon\).</p>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\epsilon\epsilon\to\delta\delta\); çarpım kuralı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\epsilon_{ijk}\partial_j(\epsilon_{kmn}a_mx_n)=\epsilon_{kij}\epsilon_{kmn}a_m\delta_{jn}=(\delta_{im}\delta_{jn}-\delta_{in}\delta_{jm})a_m\delta_{jn}=3a_i-a_i=\boxed{2a_i}\).</p></li>
+        <li class="step"><p>(b) \(\partial_i[(a_jx_j)x_i]=a_j\delta_{ij}x_i+(a_jx_j)\delta_{ii}=\mathbf a\cdot\mathbf r+3\,\mathbf a\cdot\mathbf r=\boxed{4\,\mathbf a\cdot\mathbf r}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) bileşen yazımı 3, \(\epsilon\epsilon\) özdeşliği 3, sonuç 2 · (b) çarpım kuralı 4, sonuç 3</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d1-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d1-2" data-short="Gradyan, teğet düzlem">
+    <div class="prob-head"><span class="pid">MT1 · Q2</span><span class="slot">gradyan</span><span class="lvl">25 puan</span></div>
+    <h3>A scalar field</h3>
+    <div class="box q"><span class="box-label">Q2</span><p>\(f(x,y,z)=2xz-y^2+3x\). At \(P(1,2,0)\) find (i) the unit normal to the level surface through \(P\) and the equation of the tangent plane; (ii) the direction of most rapid increase and its rate; (iii) the rate of change of \(f\) in the direction of \(\mathbf v=2\hat{\mathbf i}+\hat{\mathbf j}-2\hat{\mathbf k}\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\nabla f(P)=(3,-4,2)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\nabla f=(2z+3,\ -2y,\ 2x)=(3,-4,2)\), \(|\nabla f|=\sqrt{29}\).</p></li>
+        <li class="step"><p>(i) \(\hat{\mathbf n}=\pm(3,-4,2)/\sqrt{29}\); \(f(P)=-1\), teğet düzlem \(3(x-1)-4(y-2)+2z=0\Rightarrow\boxed{3x-4y+2z=-5}\).</p></li>
+        <li class="step"><p>(ii) Yön \((3,-4,2)\), hız \(\sqrt{29}\approx5{,}39\). (iii) \(\hat{\mathbf v}=(2,1,-2)/3\): \((6-4-4)/3=\boxed{-2/3}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>gradyan 5 · birim normal 4 · teğet düzlem 6 · yön ve hız 5 · yönlü türev (birim vektörle) 5</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d1-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d1-3" data-short="Üçgen: düzlem ve akı">
+    <div class="prob-head"><span class="pid">MT1 · Q3</span><span class="slot">akı</span><span class="lvl">30 puan</span></div>
+    <h3>Flux through a triangle</h3>
+    <div class="box q"><span class="box-label">Q3</span><p>The triangle \(S\) has vertices \(A(2,0,0)\), \(B(0,4,0)\), \(C(0,0,4)\). (i) Find a vector normal to its plane; (ii) find the equation of the plane; (iii) find the flux of \(\mathbf F=x\hat{\mathbf i}+z\hat{\mathbf k}\) across \(S\), with the normal pointing away from the origin.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(xy\) düzlemine izdüşüm</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(i) \(\overrightarrow{AB}\times\overrightarrow{AC}=(-2,4,0)\times(-2,0,4)=(16,8,8)=8(2,1,1)\). (ii) \(\boxed{2x+y+z=4}\).</p></li>
+        <li class="step"><p>(iii) \(\hat{\mathbf n}=(2,1,1)/\sqrt6\) (orijinden uzağa), \(|\hat{\mathbf n}\cdot\hat{\mathbf k}|=1/\sqrt6\): \(\mathbf F\cdot\hat{\mathbf n}\,d\sigma=(2x+z)\,dx\,dy\), \(z=4-2x-y\) ⇒ \(4-y\).</p></li>
+        <li class="step"><p>Bölge \(x,y\ge0\), \(2x+y\le4\): \(\int_0^4(4-y)\cdot\frac{4-y}{2}dy=\boxed{\tfrac{32}{3}}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(i) 7 · (ii) 8 · (iii) \(\hat{\mathbf n}\,d\sigma\) 6, bölge sınırları 5, sonuç 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d1-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d1-4" data-short="Kırık yol, potansiyel">
+    <div class="prob-head"><span class="pid">MT1 · Q4</span><span class="slot">potansiyel</span><span class="lvl">30 puan</span></div>
+    <h3>Line integral and potential</h3>
+    <div class="box q"><span class="box-label">Q4</span><p>\(\mathbf F=(2xy+z^3)\hat{\mathbf i}+(x^2+2y)\hat{\mathbf j}+3xz^2\hat{\mathbf k}\). (i) Find \(\int_C\mathbf F\cdot d\mathbf r\) along \(C\): \((0,0,0)\to(1,0,0)\to(1,0,1)\to(1,2,1)\) (straight segments). (ii) Verify that \(\mathbf F\) is conservative and find \(\varphi\) with \(\mathbf F=\nabla\varphi\). (iii) Use \(\varphi\) to check (i).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Üç parça, bir potansiyel</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(i) \(x\) ekseni (\(y=z=0\)): \(F_x=0\) ⇒ 0. \(z:0\to1\) (\(x=1,y=0\)): \(\int_0^13z^2dz=1\). \(y:0\to2\) (\(x=1,z=1\)): \(\int_0^2(1+2y)dy=6\). Toplam \(\boxed7\).</p></li>
+        <li class="step"><p>(ii) \(\partial_yF_x=2x=\partial_xF_y\), \(\partial_zF_x=3z^2=\partial_xF_z\), \(\partial_zF_y=0=\partial_yF_z\). \(\varphi=x^2y+xz^3+\psi(y,z)\); \(\psi_y=2y\), \(\psi_z=0\) ⇒ \(\boxed{\varphi=x^2y+xz^3+y^2}\).</p></li>
+        <li class="step"><p>(iii) \(\varphi(1,2,1)-\varphi(0,0,0)=2+1+4=7\) ✓.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(i) her parça 3, toplam 1 · (ii) üç eşitlik 6, \(\varphi\) 9 · (iii) 5</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d1-4"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= MT2 -->
+<section class="topic" id="d-mt2" data-topic="Midterm 2 (eğrisel, Stokes, karmaşık)">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Deneme 2</span><span class="sess">5 soru · 100 dk · Bahar 2026 MT2 yapısı</span></p>
+    <h2>PHYS 210 Midterm 2 (practice)</h2>
+    <p class="ch-lede">Gerçek sınavda kâğıdın başında diverjans/Stokes, eğrisel koordinat formülleri, Cauchy formülü ve CR verilir.</p>
+  </header>
+
+  <article class="prob" id="d2-1" data-short="Küresel: diklik, dτ">
+    <div class="prob-head"><span class="pid">MT2 · Q1</span><span class="slot">eğrisel</span><span class="lvl">20 puan</span></div>
+    <h3>Spherical coordinates</h3>
+    <div class="box q"><span class="box-label">Q1</span><p>With \(x=r\sin\theta\cos\phi\), \(y=r\sin\theta\sin\phi\), \(z=r\cos\theta\): (i) show that the system is orthogonal; (ii) find the scale factors and the volume element \(d\tau\); (iii) write the surface element on the sphere \(r=R\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Teğetler ve uzunlukları</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\mathbf u_r=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta)\), \(\mathbf u_\theta=r(\cos\theta\cos\phi,\cos\theta\sin\phi,-\sin\theta)\), \(\mathbf u_\phi=r\sin\theta(-\sin\phi,\cos\phi,0)\).</p></li>
+        <li class="step"><p>(i) \(\mathbf u_r\cdot\mathbf u_\theta=r(\sin\theta\cos\theta-\cos\theta\sin\theta)=0\); \(\mathbf u_r\cdot\mathbf u_\phi=0\); \(\mathbf u_\theta\cdot\mathbf u_\phi=0\) ✓.</p></li>
+        <li class="step"><p>(ii) \(h=(1,\ r,\ r\sin\theta)\), \(d\tau=\boxed{r^2\sin\theta\,dr\,d\theta\,d\phi}\). (iii) \(d\boldsymbol\sigma_r=\hat{\mathbf r}\,R^2\sin\theta\,d\theta\,d\phi\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>teğetler 6 · diklik 6 · ölçek çarpanları ve \(d\tau\) 6 · yüzey elemanı 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d2-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d2-2" data-short="Çeyrek disk: Stokes">
+    <div class="prob-head"><span class="pid">MT2 · Q2</span><span class="slot">Stokes</span><span class="lvl">25 puan</span></div>
+    <h3>Circulation around a quarter disk</h3>
+    <div class="box q"><span class="box-label">Q2</span><p>\(\mathbf F=rz\,\hat{\mathbf e}_r+r^2\,\hat{\mathbf e}_\theta\) (cylindrical). \(C\) is the boundary of the quarter disk \(0\le r\le a\), \(0\le\theta\le\pi/2\), \(z=0\), counterclockwise seen from \(+z\). (i) Find \(\oint_C\mathbf F\cdot d\mathbf r\) directly; (ii) verify with Stokes's theorem.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(z=0\)'da yalnızca \(F_\theta\) kalır</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(i) \(z=0\) ⇒ \(\mathbf F\cdot d\mathbf r=r^2\cdot r\,d\theta\) (radyal kenarlarda \(d\theta=0\), \(F_r=0\)). Yay \(r=a\): \(\int_0^{\pi/2}a^3d\theta=\boxed{\pi a^3/2}\).</p></li>
+        <li class="step"><p>(ii) \((\nabla\times\mathbf F)_z=\frac1r\big[\partial_r(rF_\theta)-\partial_\theta F_r\big]=\frac1r\partial_r(r^3)=3r\). \(\iint3r\cdot r\,dr\,d\theta=3\cdot\frac{a^3}{3}\cdot\frac\pi2=\pi a^3/2\) ✓.</p></li>
+        <li class="step"><p>Not: \(\nabla\times\mathbf F\)'nin \(\hat{\mathbf e}_\theta\) bileşeni (\(\partial_zF_r=r\)) sıfır değildir, ama \(\hat{\mathbf n}=\hat{\mathbf k}\) olduğu için akıya girmez.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(i) kenarlar 6, yay 9 · (ii) rotasyonel 5, yüzey integrali 5</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d2-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d2-3" data-short="z² + (1 − i)z − i = 0">
+    <div class="prob-head"><span class="pid">MT2 · Q3</span><span class="slot">kök</span><span class="lvl">15 puan</span></div>
+    <h3>A complex quadratic</h3>
+    <div class="box q"><span class="box-label">Q3</span><p>Find the roots of \(z^2+(1-i)z-i=0\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\Delta=2i\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\Delta=(1-i)^2+4i=-2i+4i=2i\); \(2i=2e^{i\pi/2}\) ⇒ \(\sqrt{\Delta}=\pm(1+i)\).</p></li>
+        <li class="step"><p>\(z=\frac{-(1-i)\pm(1+i)}{2}\) ⇒ \(\boxed{z_1=i,\ z_2=-1}\). Kontrol: \((z-i)(z+1)=z^2+(1-i)z-i\) ✓.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>diskriminant 5 · karekök (kutupsal) 5 · kökler 5</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d2-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d2-4" data-short="Cauchy: |z| = 2">
+    <div class="prob-head"><span class="pid">MT2 · Q4</span><span class="slot">Cauchy</span><span class="lvl">15 puan</span></div>
+    <h3>Cauchy's integral formula</h3>
+    <div class="box q"><span class="box-label">Q4</span><p>Find \(\displaystyle\oint_{|z|=2}\Big(\frac{e^{\pi z}}{z-i}+\frac{\cos z}{z+3}+\frac{z}{(2z-1)^2}\Big)dz\), positively oriented.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Terim terim</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(z=i\) içeride: \(2\pi ie^{i\pi}=-2\pi i\). \(z=-3\) dışarıda: 0.</p></li>
+        <li class="step"><p>\(\frac{z}{(2z-1)^2}=\frac{z/4}{(z-1/2)^2}\): türev formülü \(2\pi i\cdot\frac14=\frac{\pi i}{2}\).</p></li>
+        <li class="step"><p>Toplam \(\boxed{-\tfrac{3\pi i}{2}}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>kutupların yeri 4 · ilk terim 4 · türev formülü (4 çarpanıyla) 5 · toplam 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d2-4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d2-5" data-short="∫ z̄ dz iki yol">
+    <div class="prob-head"><span class="pid">MT2 · Q5</span><span class="slot">yol</span><span class="lvl">25 puan</span></div>
+    <h3>A path-dependent integral</h3>
+    <div class="box q"><span class="box-label">Q5</span><p>Find \(\int_C\bar z\,dz\) from \(0\) to \(1+i\) (i) along the straight line; (ii) along \(0\to1\to1+i\). (iii) Is the integral path independent? Explain, and find \(\oint\bar z\,dz\) around the triangle formed by the two paths.</p></div>
+    <p class="tip"><b>Neden bu soru?</b> B26 MT2 S5'te integrand tam fonksiyondu ve cevap “evet, bağımsız”dı. Aynı soru cevabı “hayır” olan bir integrandla gelebilir.</p>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\bar z\) analitik değil</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(i) \(z=(1+i)t\): \(\int_0^1(1-i)t(1+i)\,dt=\int_0^12t\,dt=\boxed1\).</p></li>
+        <li class="step"><p>(ii) \(\int_0^1x\,dx=\frac12\); \(z=1+iy\): \(\int_0^1(1-iy)\,i\,dy=i+\frac12\). Toplam \(\boxed{1+i}\).</p></li>
+        <li class="step"><p>(iii) Hayır: \(u=x,\ v=-y\), \(u_x=1\ne v_y=-1\); \(\bar z\) hiçbir yerde analitik değil. Saat yönünün tersine üçgen (kırık yol, sonra doğru geri): \((1+i)-1=i\). Genel: \(\oint\bar z\,dz=2i\cdot\text{alan}=2i\cdot\frac12\) ✓.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(i) 8 · (ii) 10 · (iii) CR gerekçesi 4, kapalı integral 3</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d2-5"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= FINAL -->
+<section class="topic" id="d-fin" data-topic="Final (karmaşık analiz)">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Deneme 3</span><span class="sess">5 soru · 100 dk · Bahar 2026 final yapısı</span></p>
+    <h2>PHYS 210 Final (practice)</h2>
+    <p class="ch-lede">Gerçek sınavda genelleştirilmiş Cauchy formülü, \(m\). mertebe rezidü formülü ve kutupsal CR verilir.</p>
+  </header>
+
+  <article class="prob" id="d3-1" data-short="Harmonik eşlenik">
+    <div class="prob-head"><span class="pid">Final · Q1</span><span class="slot">CR</span><span class="lvl">15 + 5 bonus</span></div>
+    <h3>A harmonic function</h3>
+    <div class="box q"><span class="box-label">Q1</span><p>Show that \(u(x,y)=e^x(x\cos y-y\sin y)\) is harmonic, find its harmonic conjugate \(v\), and express \(f=u+iv\) in terms of \(z\). Bonus: \(f'(i\pi)\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Milne-Thomson kısayolu</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(u_x=e^x(x\cos y-y\sin y+\cos y)\), \(u_{xx}=e^x(x\cos y-y\sin y+2\cos y)\); \(u_{yy}=e^x(-x\cos y+y\sin y-2\cos y)\) ⇒ \(\nabla^2u=0\) ✓.</p></li>
+        <li class="step"><p>\(f'=u_x-iu_y\); \(y=0\): \(u_x(z,0)=e^z(z+1)\), \(u_y(z,0)=0\) ⇒ \(f'(z)=(z+1)e^z\) ⇒ \(\boxed{f=ze^z}\) (+ \(iC\)).</p></li>
+        <li class="step"><p>\(v=\mathrm{Im}(ze^z)=e^x(x\sin y+y\cos y)+C\). Bonus: \(f'(i\pi)=(1+i\pi)e^{i\pi}=\boxed{-1-i\pi}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>Laplace 5 · \(v\) (CR ile ya da \(f\)'den) 7 · \(f(z)\) 3 · bonus 5</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d3-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d3-2" data-short="Laurent, z = 1">
+    <div class="prob-head"><span class="pid">Final · Q2</span><span class="slot">Laurent</span><span class="lvl">15 puan</span></div>
+    <h3>Laurent expansions</h3>
+    <div class="box q"><span class="box-label">Q2</span><p>Find all Laurent (or Taylor) expansions of \(f(z)=\dfrac{1}{(z-1)(z-3)}\) about \(z=1\), with their regions of convergence. What is the residue at \(z=1\)?</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(w=z-1\), \(f=\frac{1}{w(w-2)}\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Öbür kutup \(z=3\), uzaklığı 2 ⇒ bölgeler \(0\lt|w|\lt2\) ve \(|w|>2\).</p></li>
+        <li class="step"><p>\(0\lt|w|\lt2\): \(\frac{1}{w-2}=-\frac12\sum\big(\frac w2\big)^n\) ⇒ \(f=-\sum_{n\ge0}\frac{(z-1)^{n-1}}{2^{n+1}}=-\frac{1}{2(z-1)}-\frac14-\dots\). Rezidü \(\boxed{-1/2}\).</p></li>
+        <li class="step"><p>\(|w|>2\): \(\frac{1}{w-2}=\frac1w\sum\big(\frac2w\big)^n\) ⇒ \(f=\sum_{n\ge0}\frac{2^n}{(z-1)^{n+2}}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>bölgeler 4 · iç seri 5 · dış seri 4 · rezidü 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d3-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d3-3" data-short="sin z / (z³(eᶻ − 1))">
+    <div class="prob-head"><span class="pid">Final · Q3</span><span class="slot">tekillik</span><span class="lvl">15 puan</span></div>
+    <h3>Classify the singularities</h3>
+    <div class="box q"><span class="box-label">Q3</span><p>Find and classify the singularities of \(f(z)=\dfrac{\sin z}{z^3(e^z-1)}\). Find the residue at \(z=2\pi i\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Sıfır mertebeleri</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Payda: \(z^3\) ve \(e^z-1\) (\(z=2\pi ik\)'de basit sıfır). \(z=0\)'da toplam mertebe 4, pay \(\sin z\) basit sıfır ⇒ <b>3. mertebe kutup</b>.</p></li>
+        <li class="step"><p>\(z=2\pi ik\), \(k\ne0\): pay \(\sin(2\pi ik)=i\sinh(2\pi k)\ne0\) ⇒ <b>basit kutup</b>.</p></li>
+        <li class="step"><p>\(\mathrm{Res}=\frac{N}{D'}\), \(D'=3z^2(e^z-1)+z^3e^z=z^3\) (\(z=2\pi i\)'de): \(\frac{\sin2\pi i}{(2\pi i)^3}=\frac{i\sinh2\pi}{-8\pi^3i}=\boxed{-\frac{\sinh2\pi}{8\pi^3}}\approx-1{,}079\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>\(z=0\) 6 · \(2\pi ik\) 5 · rezidü 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d3-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d3-4" data-short="(1 + 3z)/z² iki yarım çember">
+    <div class="prob-head"><span class="pid">Final · Q4</span><span class="slot">yol</span><span class="lvl">25 puan</span></div>
+    <h3>Two semicircles</h3>
+    <div class="box q"><span class="box-label">Q4</span><p>(i) Find \(J_1=\int_{-2}^{2}\dfrac{1+3z}{z^2}dz\) along the upper half of \(|z|=2\); (ii) \(J_2\) along the lower half. Explain why \(J_1\ne J_2\). (iii) Find \(\oint_{|z|=2}\dfrac{1+3z}{z^2}dz\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Antitürev \(-1/z+3\log z\), argüman değişimi önemli</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(i) Üst yol: \(\arg z:\pi\to0\). \(\big[-\frac1z+3\ln|z|+3i\arg z\big]=\big(-\tfrac12+3\ln2\big)-\big(\tfrac12+3\ln2+3\pi i\big)=\boxed{-1-3\pi i}\).</p></li>
+        <li class="step"><p>(ii) Alt yol: \(\arg z:-\pi\to0\): \(\boxed{-1+3\pi i}\). Farklılar: iki yol arasında \(z=0\)'da kutup; \(\log z\) tek değerli değil.</p></li>
+        <li class="step"><p>(iii) \(J_2-J_1=\boxed{6\pi i}=2\pi i\cdot3\) (\(1/z\) katsayısı 3) ✓. (Doğrudan \(z=2e^{i\theta}\) ile de aynı.)</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(i) 8 · (ii) 6, gerekçe 4 · (iii) 7</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d3-4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="d3-5" data-short="Rezidü: iki reel integral">
+    <div class="prob-head"><span class="pid">Final · Q5</span><span class="slot">rezidü</span><span class="lvl">30 puan</span></div>
+    <h3>Real integrals by residues</h3>
+    <div class="box q"><span class="box-label">Q5</span><p>Use the residue theorem to find (a) \(J_1=\int_{-\infty}^{\infty}\dfrac{\cos x}{x^2+2x+2}dx\) and \(J_2=\int_{-\infty}^{\infty}\dfrac{\sin x}{x^2+2x+2}dx\); (b) \(J_3=\int_{-\infty}^{\infty}\dfrac{\sin x}{x(x^2+1)}dx\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Jordan; (b) için girinti</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(f=\frac{e^{iz}}{z^2+2z+2}\), kutuplar \(-1\pm i\); üstteki \(z_0=-1+i\): \(\mathrm{Res}=\frac{e^{iz_0}}{2i}=\frac{e^{-1}e^{-i}}{2i}\).</p></li>
+        <li class="step"><p>\(J_1+iJ_2=2\pi i\,\mathrm{Res}=\frac\pi e(\cos1-i\sin1)\) ⇒ \(\boxed{J_1=\frac\pi e\cos1\approx0{,}624}\), \(\boxed{J_2=-\frac\pi e\sin1\approx-0{,}973}\).</p></li>
+        <li class="step"><p>(b) \(g=\frac{e^{iz}}{z(z^2+1)}\): \(\mathrm{Res}_i=\frac{e^{-1}}{i\cdot2i}=-\frac{1}{2e}\), \(\mathrm{Res}_0=1\) (eksende). \(\mathrm{PV}\!\int g=2\pi i\big(-\frac{1}{2e}\big)+\pi i\cdot1=\pi i(1-e^{-1})\).</p></li>
+        <li class="step"><p>\(J_3=\mathrm{Im}=\boxed{\pi(1-e^{-1})}\approx1{,}986\) (integrand \(x=0\)'da sonlu; PV gerçek integrale eşit).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) kontur ve Jordan 4, rezidü 6, Re/Im 5 · (b) eksendeki kutup ve \(\pi i\) 8, sonuç 7</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-d3-5"> Çözdüm</label>
+  </article>
+
+  <footer class="end">Bu sınavlar Bahar 2026 ve Yaz 2025 sınavlarının yapısından türetilmiş tahminlerdir; gerçek sınavların içeriğini garanti etmez. Bütün sonuçlar sayısal olarak doğrulandı.</footer>
+</section>
+  </main>
+</div>
+
+<script>
+'use strict';
+/* Çözüm defteri: adım adım açma, "çözdüm" işaretleri, içindekiler, trokoit çizimi */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('m210e.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('m210e.' + k, JSON.stringify(v)); } catch (e) { /* depolama yoksa geç */ } }
+};
+
+/* ---------- Adım adım ---------- */
+const steppers = [];
+document.querySelectorAll('.derive').forEach((d, di) => {
+  const steps = [...d.querySelectorAll(':scope > .steps > .step')];
+  if (!steps.length) return;
+  let shown = 1;
+  const bar = document.createElement('div');
+  bar.className = 'derive-bar';
+  bar.innerHTML = `<button type="button" class="btn btn-primary" id="dv${di}-next">Sonraki adım →</button>` +
+    `<button type="button" class="btn" id="dv${di}-all">Tümünü göster</button>` +
+    `<button type="button" class="btn btn-ghost" id="dv${di}-reset">Baştan</button>` +
+    `<span class="derive-count" aria-live="polite"></span>`;
+  d.appendChild(bar);
+  const [bNext, bAll, bReset] = bar.querySelectorAll('button');
+  const cnt = bar.querySelector('.derive-count');
+  function render(rev) {
+    steps.forEach((s, j) => {
+      const locked = j >= shown;
+      s.classList.toggle('locked', locked);
+      s.classList.toggle('tail', j === shown - 1 && shown < steps.length);
+      if (locked) s.setAttribute('aria-hidden', 'true'); else s.removeAttribute('aria-hidden');
+      if (rev != null && j >= rev && j < shown) { s.classList.remove('rev'); void s.offsetWidth; s.classList.add('rev'); }
+    });
+    cnt.textContent = `Adım ${shown} / ${steps.length}`;
+    bNext.disabled = bAll.disabled = shown >= steps.length;
+    bReset.disabled = shown <= 1;
+  }
+  bNext.addEventListener('click', () => { if (shown < steps.length) { shown++; render(shown - 1); } });
+  bAll.addEventListener('click', () => { const r = shown; shown = steps.length; render(r); });
+  bReset.addEventListener('click', () => { shown = 1; render(); });
+  steppers.push({ all() { shown = steps.length; render(); }, reset() { shown = 1; render(); } });
+  render();
+});
+document.getElementById('open-all').addEventListener('click', () => steppers.forEach(s => s.all()));
+document.getElementById('close-all').addEventListener('click', () => steppers.forEach(s => s.reset()));
+
+/* ---------- İçindekiler ---------- */
+const toc = document.getElementById('toc');
+const topics = [...document.querySelectorAll('section.topic')];
+const probs = [...document.querySelectorAll('article.prob')];
+topics.forEach((t, i) => {
+  const g = document.createElement('li'); g.className = 'grp'; const eb = t.querySelector('.eyebrow span');
+  g.textContent = `${eb ? eb.textContent : 'Konu ' + (i + 1)} · ${t.dataset.topic}`; toc.appendChild(g);
+  t.querySelectorAll('article.prob').forEach(p => {
+    const li = document.createElement('li');
+    const pid = p.querySelector('.pid').textContent.replace('T&M ', '');
+    li.innerHTML = `<a href="#${p.id}"><span class="n">${pid}</span><span>${p.dataset.short}</span><span class="ok">✓</span></a>`;
+    toc.appendChild(li);
+  });
+});
+const tocLinks = [...toc.querySelectorAll('a')];
+
+/* ---------- Çözdüm işaretleri ---------- */
+const solved = new Set(store.get('solved', []));
+function update() {
+  const n = probs.filter(p => solved.has(p.id)).length;
+  document.getElementById('prog-bar').style.width = (100 * n / probs.length) + '%';
+  document.getElementById('prog-txt').textContent = `${n} / ${probs.length} çözüldü`;
+  document.getElementById('sum-prog').textContent = `${n} / ${probs.length} çözüldü`;
+  document.getElementById('st-s').textContent = n;
+  tocLinks.forEach(a => a.classList.toggle('is-done', solved.has(a.getAttribute('href').slice(1))));
+}
+probs.forEach(p => {
+  const cb = p.querySelector('.solved input'); if (!cb) return;
+  cb.checked = solved.has(p.id);
+  cb.addEventListener('change', () => { if (cb.checked) solved.add(p.id); else solved.delete(p.id); store.set('solved', [...solved]); update(); });
+});
+document.getElementById('reset-progress').addEventListener('click', () => {
+  solved.clear(); store.set('solved', []); probs.forEach(p => { const cb = p.querySelector('.solved input'); if (cb) cb.checked = false; }); update();
+});
+document.getElementById('st-p').textContent = probs.length;
+document.getElementById('st-t').textContent = topics.filter(t => !t.classList.contains('exam-sec')).length;
+update();
+
+/* Kaydırma takibi ve dar ekran davranışı */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) tocLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + e.target.id ? 'true' : 'false'));
+}), { rootMargin: '-30% 0px -65% 0px' });
+probs.forEach(p => spy.observe(p));
+const tocDet = document.getElementById('toc-details');
+const wide = window.matchMedia('(min-width: 1001px)');
+function syncToc() { tocDet.open = wide.matches; }
+syncToc(); wide.addEventListener('change', syncToc);
+tocLinks.forEach(a => a.addEventListener('click', () => { if (!wide.matches) tocDet.open = false; }));
+tocDet.addEventListener('toggle', () => { if (wide.matches && !tocDet.open) tocDet.open = true; });
+
+
+
+/* ---------- Deneme sınavları: çözüm kutuları ve süre seçmeli sayaç ---------- */
+const sols = [...document.querySelectorAll('details.sol')];
+document.getElementById('open-all').addEventListener('click', () => sols.forEach(d => { d.open = true; }));
+document.getElementById('close-all').addEventListener('click', () => sols.forEach(d => { d.open = false; }));
+(function () {
+  const el = document.getElementById('clock'), bStart = document.getElementById('clk-start'), bReset = document.getElementById('clk-reset'), sel = document.getElementById('clk-dur');
+  let st = store.get('clock', null);
+  if (!st || !st.dur) st = { end: null, left: +sel.value * 60000, dur: +sel.value };
+  sel.value = String(st.dur);
+  let timer = 0;
+  const fmt = ms => {
+    const s = Math.max(0, Math.round(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+    return `${h}:${String(m).padStart(2, '0')}:${String(x).padStart(2, '0')}`;
+  };
+  const left = () => st.end ? st.end - Date.now() : st.left;
+  function render() {
+    const l = left();
+    el.textContent = l <= 0 ? 'Süre doldu' : fmt(l);
+    el.classList.toggle('over', l <= 0);
+    bStart.textContent = st.end ? 'Duraklat' : (st.left < st.dur * 60000 ? 'Devam et' : 'Süreyi başlat');
+    if (l <= 0 && st.end) { st = { end: null, left: 0, dur: st.dur }; store.set('clock', st); clearInterval(timer); bStart.textContent = 'Süreyi başlat'; bStart.disabled = true; }
+  }
+  function restart(dur) { clearInterval(timer); st = { end: null, left: dur * 60000, dur }; store.set('clock', st); bStart.disabled = false; render(); }
+  bStart.addEventListener('click', () => {
+    if (st.end) { st = { end: null, left: st.end - Date.now(), dur: st.dur }; clearInterval(timer); }
+    else { st = { end: Date.now() + st.left, left: null, dur: st.dur }; timer = setInterval(render, 1000); }
+    store.set('clock', st); render();
+  });
+  bReset.addEventListener('click', () => restart(st.dur));
+  sel.addEventListener('change', () => restart(+sel.value));
+  if (st.end) timer = setInterval(render, 1000);
+  render();
+})();
+
+</script>
+<script>
+/* Site menüsü: aç/kapat, Esc, dışarı tıklama, odak yönetimi */
+(function () {
+  const nav = document.getElementById('site-nav'); if (!nav) return;
+  const btn = document.getElementById('nav-btn'), drawer = document.getElementById('nav-drawer'), scrim = document.getElementById('nav-scrim');
+  const links = [...drawer.querySelectorAll('a')];
+  const cur = nav.dataset.current;
+  links.forEach(a => { if (a.dataset.key === cur) a.setAttribute('aria-current', 'page'); });
+  function set(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.classList.toggle('nav-lock', open);
+    /* çekmece görünür olduktan sonra odakla (visibility geçişi başlarken öğe odaklanamaz) */
+    if (open) setTimeout(() => (drawer.querySelector('a[aria-current]') || links[0]).focus({ preventScroll: true }), 60);
+  }
+  btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  scrim.addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => {
+    if (!nav.classList.contains('open')) return;
+    if (e.key === 'Escape') { set(false); btn.focus(); }
+    if (e.key === 'Tab') {
+      const items = [btn, ...links, ...drawer.querySelectorAll('.nav-foot a')];
+      const i = items.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
+      else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
