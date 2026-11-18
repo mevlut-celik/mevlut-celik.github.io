@@ -7,7 +7,7 @@
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>PHYS 210 Deneme Sınavları</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="PHYS 210 çıkmış sınavlarının kalıbından üretilmiş, süreli ve çözümlü üç deneme sınavı (MT1, MT2, final).">
+<meta name="description" content="PHYS 210 için süreli ve çözümlü beş deneme sınavı: Güz 2026 MT1 formatında iki sınav ve formül sayfası, çıkmış sınavların kalıbından üç sınav (MT1, MT2, final).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
@@ -574,7 +574,7 @@ body.nav-lock { overflow: hidden; }
       <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
       <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
       <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
-      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>MT1 · MT2 · final, çözümlü</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 formatında 2 sınav + 3 sınav</span></a></li>
     </ul>
     <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
   </div>
@@ -584,18 +584,18 @@ body.nav-lock { overflow: hidden; }
 <header class="hero" lang="tr">
   <div class="hero-in">
     <div>
-      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Kalıptan üretilmiş denemeler</span><span>MT1 · MT2 · final</span></p>
+      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Güz 2026 MT1 formatı</span><span>5 sınav · çözümlü</span></p>
       <h1>PHYS 210 <i>Deneme Sınavları</i></h1>
-      <p class="lede">Bahar 2026'nın üç sınavının yapısıyla yazılmış üç yeni sınav. Sorular gerçek sınavlardaki gibi İngilizce, çözümler Türkçe ve kapalı. Süreyi seçip başlatın, kâğıt kalemle çözün, sonra çözümleri açıp puan listesiyle kendinizi notlayın.</p>
+      <p class="lede">En üstte Güz 2026 MT1'in duyurulan formatıyla (5 soru, 120 dk, formül sayfası verilir, Green yok) yazılmış iki sınav ve formül sayfası; altında Bahar 2026'nın üç sınavının yapısıyla yazılmış üç sınav. Sorular gerçek sınavlardaki gibi İngilizce, çözümler Türkçe ve kapalı. Süreyi seçip başlatın, kâğıt kalemle çözün, sonra çözümleri açıp puan listesiyle kendinizi notlayın.</p>
     </div>
     <div class="hero-card">
       <div class="hero-stats">
-        <div><b id="st-p">14</b><span>soru</span></div>
-        <div><b id="st-t">3</b><span>sınav</span></div>
+        <div><b id="st-p">24</b><span>soru</span></div>
+        <div><b id="st-t">5</b><span>sınav</span></div>
         <div><b id="st-s">0</b><span>çözdüğün</span></div>
       </div>
       <ul class="hero-how">
-        <li><b>1 · Süre</b><span>MT1 için 90, MT2 ve final için 100 dakika.</span></li>
+        <li><b>1 · Süre</b><span>Güz MT1 denemeleri 120 dakika; eski kalıp MT1 90, MT2 ve final 100 dakika.</span></li>
         <li><b>2 · Çöz</b><span>Çözümleri açmadan; yöntem kitindeki protokolle.</span></li>
         <li><b>3 · Puanla</b><span>Her sorunun altındaki puan listesiyle.</span></li>
       </ul>
@@ -620,10 +620,10 @@ body.nav-lock { overflow: hidden; }
 
   <main id="main">
     <div class="exam-bar" id="exam-bar">
-      <div class="clock" aria-live="polite"><span class="clock-lbl">Kalan süre</span><b id="clock">1:30:00</b></div>
+      <div class="clock" aria-live="polite"><span class="clock-lbl">Kalan süre</span><b id="clock">2:00:00</b></div>
       <div class="clock-btns">
         <label class="clock-lbl" for="clk-dur">Sınav</label>
-        <select id="clk-dur" class="clock-sel"><option value="90">MT1 · 90 dk</option><option value="100">MT2 / final · 100 dk</option></select>
+        <select id="clk-dur" class="clock-sel"><option value="120">Güz MT1 · 120 dk</option><option value="90">MT1 · 90 dk</option><option value="100">MT2 / final · 100 dk</option></select>
         <button type="button" class="btn btn-primary" id="clk-start">Süreyi başlat</button>
         <button type="button" class="btn btn-ghost" id="clk-reset">Sıfırla</button>
       </div>
@@ -633,10 +633,248 @@ body.nav-lock { overflow: hidden; }
       </div>
     </div>
 
+
+<!-- ================================================= GÜZ 2026 MT1 FORMATI -->
+<section class="topic exam-sec" id="d-gf" data-topic="Formül sayfası">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Güz 2026</span><span class="sess">MT1 · 20 Kasım 2026, Cuma 17:40–19:40 · P1</span></p>
+    <h2>Güz 2026 MT1 formatı ve formül sayfası</h2>
+    <p class="ch-lede">Dersin bu dönemki hocası değişti. Sınıfa yapılan duyuruya göre MT1'de beş soru var ve formüller kâğıdın ilk sayfasında veriliyor. Ezber gerekmiyor; puan, formülü doğru yere koymaktan geliyor.</p>
+  </header>
+  <div class="box exam"><span class="box-label">Duyuru</span>
+    <p><b>5 soru, her konudan bir tane:</b> vektörler (cebir, indis, uzay eğrisi, gradyan) · dik eğrisel koordinatlar · yüzey integrali · çizgi integrali · Stokes ya da diverjans teoremi. <b>Green teoremi yok.</b> Süre 120 dakika.</p>
+    <p>Aşağıdaki iki deneme bu dağılımla yazıldı: her biri 5 soru, soru başına 20 puan. Eski hocaların sınavlarından üretilen Deneme 1–3 sayfanın altında duruyor.</p>
+  </div>
+
+  <h3>Sınavda verilecek türden formül sayfası</h3>
+  <p class="tip"><b>Nasıl kullanılır?</b> Denemeyi çözerken bu kartlara bakmakta serbestsin; gerçek sınavda da önünde olacaklar. Asıl iş, hangi \(h_i\)'nin nereye gireceğini ve normalin yönünü doğru seçmek.</p>
+  <div class="math-grid">
+    <div class="math-card"><h4>İndis</h4>
+      \[ \epsilon_{ijk}\epsilon_{imn}=\delta_{jm}\delta_{kn}-\delta_{jn}\delta_{km} \]
+      \[ (\mathbf A\times\mathbf B)_i=\epsilon_{ijk}A_jB_k,\quad (\nabla\times\mathbf A)_i=\epsilon_{ijk}\partial_jA_k \]</div>
+    <div class="math-card"><h4>Uzay eğrisi</h4>
+      \[ \frac{d\mathbf T}{ds}=\kappa\mathbf N,\ \ \frac{d\mathbf N}{ds}=-\kappa\mathbf T+\tau\mathbf B,\ \ \frac{d\mathbf B}{ds}=-\tau\mathbf N \]
+      \[ \kappa=\frac{|\dot{\mathbf r}\times\ddot{\mathbf r}|}{|\dot{\mathbf r}|^3},\qquad \tau=\frac{(\dot{\mathbf r}\times\ddot{\mathbf r})\cdot\dddot{\mathbf r}}{|\dot{\mathbf r}\times\ddot{\mathbf r}|^2} \]</div>
+    <div class="math-card"><h4>Dik eğrisel: elemanlar</h4>
+      \[ h_i=\Big|\frac{\partial\mathbf r}{\partial u_i}\Big|,\quad ds^2=\sum h_i^2\,du_i^2,\quad d\tau=h_1h_2h_3\,du_1du_2du_3 \]
+      <p>Silindirik \((1,\ r,\ 1)\) · küresel \((1,\ r,\ r\sin\theta)\).</p></div>
+    <div class="math-card"><h4>Dik eğrisel: gradyan, diverjans</h4>
+      \[ \nabla f=\sum_i\frac{1}{h_i}\frac{\partial f}{\partial u_i}\hat{\mathbf e}_i \]
+      \[ \nabla\cdot\mathbf V=\frac{1}{h_1h_2h_3}\Big[\partial_1(h_2h_3V_1)+\partial_2(h_3h_1V_2)+\partial_3(h_1h_2V_3)\Big] \]</div>
+    <div class="math-card"><h4>Dik eğrisel: rotasyonel, Laplace</h4>
+      \[ \nabla\times\mathbf V=\frac{1}{h_1h_2h_3}\begin{vmatrix}h_1\hat{\mathbf e}_1&h_2\hat{\mathbf e}_2&h_3\hat{\mathbf e}_3\\ \partial_1&\partial_2&\partial_3\\ h_1V_1&h_2V_2&h_3V_3\end{vmatrix} \]
+      \[ \nabla^2f=\frac{1}{h_1h_2h_3}\sum_i\partial_i\Big(\frac{h_1h_2h_3}{h_i^2}\,\partial_if\Big) \]</div>
+    <div class="math-card"><h4>Yüzey ve teoremler</h4>
+      \[ g(x,y,z)=0:\ \ \hat{\mathbf n}\,d\sigma=\frac{\nabla g}{|\partial_zg|}\,dx\,dy \]
+      <p>Diverjans (kapalı yüzey, dış normal):</p>
+      \[ \oint_S\mathbf V\cdot\hat{\mathbf n}\,d\sigma=\int_V\nabla\cdot\mathbf V\,d\tau \]
+      <p>Stokes (yol yönü ile normal sağ el kuralıyla):</p>
+      \[ \oint_C\mathbf V\cdot d\mathbf r=\int_S(\nabla\times\mathbf V)\cdot\hat{\mathbf n}\,d\sigma \]</div>
+  </div>
+</section>
+
+<!-- ================================================= DENEME A -->
+<section class="topic" id="d-ga" data-topic="Deneme A (5 soru · 120 dk)">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Güz MT1 · A</span><span class="sess">5 soru · 120 dk · soru başına 20 puan</span></p>
+    <h2>PHYS 210 Midterm 1 (practice A)</h2>
+    <p class="ch-lede">Vektör cebiri ve indis, paraboloidal-silindirik koordinatlar, paraboloid üzerinde alan ve akı, sarmal boyunca iş, silindirde diverjans teoremi.</p>
+  </header>
+
+  <article class="prob" id="ga-1" data-short="İndis + üçlü çarpım + yönlü türev">
+    <div class="prob-head"><span class="pid">A · Q1</span><span class="slot">vektör</span><span class="lvl">20 puan</span></div>
+    <h3>Vectors</h3>
+    <div class="box q"><span class="box-label">Q1</span><p>(a) Using index notation, prove \(\nabla\cdot(\mathbf A\times\mathbf B)=\mathbf B\cdot(\nabla\times\mathbf A)-\mathbf A\cdot(\nabla\times\mathbf B)\).</p><p>(b) Find the volume of the parallelepiped with edges \(\mathbf a=(1,2,-1)\), \(\mathbf b=(2,0,1)\), \(\mathbf c=(0,1,3)\).</p><p>(c) Find the rate of change of \(\varphi=x^2y-z\) at \((1,1,2)\) in the direction of \(\mathbf a\).</p></div>
+    <p class="tip"><b>Neden bu soru?</b> “Vektörler” başlığı geniş; indis kanıtı, üçlü çarpım ve gradyanın üçü de bu başlıkta. Kısa parçalarla hepsini yokluyor.</p>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Çarpım kuralı ve \(\epsilon\)'nin döngüsel simetrisi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\partial_i(\epsilon_{ijk}A_jB_k)=\epsilon_{ijk}(\partial_iA_j)B_k+\epsilon_{ijk}A_j(\partial_iB_k)\).</p></li>
+        <li class="step"><p>Birinci terim: \(\epsilon_{ijk}=\epsilon_{kij}\) ⇒ \(B_k\,\epsilon_{kij}\partial_iA_j=B_k(\nabla\times\mathbf A)_k\). İkinci terim: \(\epsilon_{ijk}=-\epsilon_{jik}\) ⇒ \(-A_j\,\epsilon_{jik}\partial_iB_k=-A_j(\nabla\times\mathbf B)_j\). Toplam \(\boxed{\mathbf B\cdot(\nabla\times\mathbf A)-\mathbf A\cdot(\nabla\times\mathbf B)}\).</p></li>
+        <li class="step"><p>(b) \(\mathbf b\times\mathbf c=(0\cdot3-1\cdot1,\ 1\cdot0-2\cdot3,\ 2\cdot1-0)=(-1,-6,2)\); \(\mathbf a\cdot(\mathbf b\times\mathbf c)=-1-12-2=-15\). Hacim \(\boxed{15}\) (mutlak değer).</p></li>
+        <li class="step"><p>(c) \(\nabla\varphi=(2xy,\ x^2,\ -1)=(2,1,-1)\), \(\hat{\mathbf a}=(1,2,-1)/\sqrt6\): \(\nabla\varphi\cdot\hat{\mathbf a}=(2+2+1)/\sqrt6=\boxed{5/\sqrt6}\approx2{,}04\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) bileşen yazımı 3, çarpım kuralı 2, iki indis kaydırması 3 · (b) çapraz çarpım 3, sonuç ve mutlak değer 2 · (c) gradyan 3, birim vektör 2, sonuç 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-ga-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ga-2" data-short="Paraboloidal-silindirik: h, dτ, ∇²">
+    <div class="prob-head"><span class="pid">A · Q2</span><span class="slot">eğrisel</span><span class="lvl">20 puan</span></div>
+    <h3>Parabolic cylindrical coordinates</h3>
+    <div class="box q"><span class="box-label">Q2</span><p>Parabolic cylindrical coordinates \((u,v,z)\) are defined by \(x=\tfrac12(u^2-v^2)\), \(y=uv\), \(z=z\).</p><p>(a) Show that the system is orthogonal. (b) Find the scale factors, the unit vectors \(\hat{\mathbf e}_u,\hat{\mathbf e}_v\) in terms of \(\hat{\mathbf i},\hat{\mathbf j}\), and the volume element. (c) For \(\Phi=u^2+v^2\) find \(\nabla\Phi\) and \(\nabla^2\Phi\), and check \(\nabla^2\Phi\) in Cartesian coordinates.</p></div>
+    <p class="tip"><b>Neden bu soru?</b> Standart dışı bir sistem verip formül sayfasındaki genel ifadeleri kullandırmak, “formül veriyorum” diyen hocanın en olası sorusu.</p>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(h_u=h_v=\sqrt{u^2+v^2}\), \(h_z=1\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\partial_u\mathbf r=(u,\ v,\ 0)\), \(\partial_v\mathbf r=(-v,\ u,\ 0)\), \(\partial_z\mathbf r=(0,0,1)\). Nokta çarpımlar: \(-uv+uv=0\), diğer ikisi de 0 ⇒ dik.</p></li>
+        <li class="step"><p>(b) \(h_u=h_v=\sqrt{u^2+v^2}\), \(h_z=1\). \(\hat{\mathbf e}_u=\dfrac{u\,\hat{\mathbf i}+v\,\hat{\mathbf j}}{\sqrt{u^2+v^2}}\), \(\hat{\mathbf e}_v=\dfrac{-v\,\hat{\mathbf i}+u\,\hat{\mathbf j}}{\sqrt{u^2+v^2}}\). \(\boxed{d\tau=(u^2+v^2)\,du\,dv\,dz}\).</p></li>
+        <li class="step"><p>(c) \(\nabla\Phi=\dfrac{1}{h_u}2u\,\hat{\mathbf e}_u+\dfrac{1}{h_v}2v\,\hat{\mathbf e}_v=\dfrac{2(u\,\hat{\mathbf e}_u+v\,\hat{\mathbf e}_v)}{\sqrt{u^2+v^2}}\).</p></li>
+        <li class="step"><p>\(h_uh_vh_z/h_u^2=1\) olduğundan \(\nabla^2\Phi=\dfrac{1}{u^2+v^2}(\Phi_{uu}+\Phi_{vv})=\boxed{\dfrac{4}{u^2+v^2}}\).</p></li>
+        <li class="step"><p>Kontrol: \(x^2+y^2=\tfrac14(u^2+v^2)^2\) ⇒ \(\Phi=2\rho\) (\(\rho=\sqrt{x^2+y^2}\)). Silindirikte \(\nabla^2(2\rho)=\tfrac{2}{\rho}=\tfrac{4}{u^2+v^2}\) ✓.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) teğet vektörler 3, diklik 2 · (b) ölçek çarpanları 4, birim vektörler 2, \(d\tau\) 2 · (c) gradyan 2, Laplace formülünü doğru kurmak 3, kontrol 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-ga-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ga-3" data-short="Paraboloid: alan ve akı">
+    <div class="prob-head"><span class="pid">A · Q3</span><span class="slot">yüzey</span><span class="lvl">20 puan</span></div>
+    <h3>A paraboloidal bowl</h3>
+    <div class="box q"><span class="box-label">Q3</span><p>\(S\) is the part of the paraboloid \(z=x^2+y^2\) with \(0\le z\le1\).</p><p>(a) Find the area of \(S\). (b) Find the flux of \(\mathbf F=x\,\hat{\mathbf i}+y\,\hat{\mathbf j}+z\,\hat{\mathbf k}\) through \(S\), with the normal having a positive \(z\)-component.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(g=z-x^2-y^2\), \(xy\) düzlemine izdüşüm, kutupsal</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\nabla g=(-2x,\ -2y,\ 1)\), \(|\partial_zg|=1\) ⇒ \(\hat{\mathbf n}\,d\sigma=(-2x,-2y,1)\,dx\,dy\) (bu normalin \(z\) bileşeni pozitif), \(d\sigma=\sqrt{1+4\rho^2}\,dx\,dy\). İzdüşüm bölgesi \(\rho\le1\).</p></li>
+        <li class="step"><p>(a) \(A=\int_0^{2\pi}\!\!\int_0^1\sqrt{1+4\rho^2}\,\rho\,d\rho\,d\theta=2\pi\Big[\tfrac{(1+4\rho^2)^{3/2}}{12}\Big]_0^1=\boxed{\tfrac{\pi}{6}\big(5\sqrt5-1\big)}\approx5{,}33\).</p></li>
+        <li class="step"><p>(b) \(\mathbf F\cdot\hat{\mathbf n}\,d\sigma=(-2x^2-2y^2+z)\,dx\,dy=(-2\rho^2+\rho^2)\,dx\,dy=-\rho^2\,dx\,dy\).</p></li>
+        <li class="step"><p>\(\Phi=-\int_0^{2\pi}\!\!\int_0^1\rho^3\,d\rho\,d\theta=\boxed{-\tfrac{\pi}{2}}\).</p></li>
+        <li class="step"><p>Kontrol (diverjansla): kapağı \(z=1\) diski olan katıda \(\nabla\cdot\mathbf F=3\), hacim \(\int_0^1\pi z\,dz=\pi/2\) ⇒ toplam dışa akı \(3\pi/2\). Disk \(\pi\) veriyor; paraboloidden dışa (aşağı) akı \(\pi/2\), yukarı yönle \(-\pi/2\) ✓.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>\(\hat{\mathbf n}\,d\sigma\) ve yön 5 · (a) integral kurulumu 4, sonuç 3 · (b) integrand 4, sonuç 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-ga-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ga-4" data-short="Sarmal boyunca iki alan">
+    <div class="prob-head"><span class="pid">A · Q4</span><span class="slot">çizgi</span><span class="lvl">20 puan</span></div>
+    <h3>Work along a helix</h3>
+    <div class="box q"><span class="box-label">Q4</span><p>\(C\) is the helix \(\mathbf r(t)=(\cos t,\ \sin t,\ t)\), \(0\le t\le\pi\).</p><p>(a) Show that \(\mathbf F=yz\,\hat{\mathbf i}+xz\,\hat{\mathbf j}+(xy+2z)\,\hat{\mathbf k}\) is conservative, find its potential and evaluate \(\int_C\mathbf F\cdot d\mathbf r\).</p><p>(b) For \(\mathbf G=-y\,\hat{\mathbf i}+x\,\hat{\mathbf j}\), evaluate \(\int\mathbf G\cdot d\mathbf r\) along \(C\) and along the straight segment with the same end points. Explain the difference.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Uçlar \((1,0,0)\to(-1,0,\pi)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\nabla\times\mathbf F=(x-x,\ y-y,\ z-z)=\mathbf 0\) ⇒ korunumlu. \(\varphi=xyz+\psi(z)\), \(\partial_z\varphi=xy+\psi'=xy+2z\) ⇒ \(\boxed{\varphi=xyz+z^2}\).</p></li>
+        <li class="step"><p>\(\int_C\mathbf F\cdot d\mathbf r=\varphi(-1,0,\pi)-\varphi(1,0,0)=\boxed{\pi^2}\). (Doğrudan: integrand \(t\cos2t+\tfrac12\sin2t+2t\); ilk iki terim \([0,\pi]\)'de 0 verir.)</p></li>
+        <li class="step"><p>(b) Sarmalda \(\mathbf G\cdot d\mathbf r=(-\sin t)(-\sin t)\,dt+\cos t\cos t\,dt=dt\) ⇒ \(\boxed{\pi}\).</p></li>
+        <li class="step"><p>Doğru parça \((1-2s,\ 0,\ \pi s)\): \(y=0\), \(dy=0\) ⇒ \(\mathbf G\cdot d\mathbf r=0\) ⇒ \(\boxed0\).</p></li>
+        <li class="step"><p>Fark, \(\nabla\times\mathbf G=2\hat{\mathbf k}\neq\mathbf 0\) olmasından: \(\mathbf G\) korunumlu değil, integral yola bağlı. \(\mathbf F\) için iki yol aynı sonucu verir.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) rotasyonel 3, potansiyel 4, sonuç 3 · (b) sarmal 4, doğru parça 3, açıklama 3</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-ga-4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="ga-5" data-short="Silindirde diverjans teoremi">
+    <div class="prob-head"><span class="pid">A · Q5</span><span class="slot">diverjans</span><span class="lvl">20 puan</span></div>
+    <h3>Divergence theorem</h3>
+    <div class="box q"><span class="box-label">Q5</span><p>\(\mathbf F=x\,\hat{\mathbf i}+y\,\hat{\mathbf j}+z^2\,\hat{\mathbf k}\).</p><p>(a) Verify the divergence theorem for the closed cylinder \(x^2+y^2\le a^2\), \(0\le z\le h\). (b) Use the divergence theorem to find the upward flux of \(\mathbf F\) through the hemisphere \(z=\sqrt{a^2-x^2-y^2}\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\nabla\cdot\mathbf F=2+2z\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) Hacim: \(\int(2+2z)\,d\tau=\pi a^2\int_0^h(2+2z)\,dz=\boxed{\pi a^2(2h+h^2)}\).</p></li>
+        <li class="step"><p>Yan yüzey: \(\hat{\mathbf n}=(x,y,0)/a\), \(\mathbf F\cdot\hat{\mathbf n}=(x^2+y^2)/a=a\); alan \(2\pi ah\) ⇒ \(2\pi a^2h\).</p></li>
+        <li class="step"><p>Üst kapak \(z=h\), \(\hat{\mathbf n}=\hat{\mathbf k}\): \(F_z=h^2\) ⇒ \(\pi a^2h^2\). Alt kapak \(z=0\), \(\hat{\mathbf n}=-\hat{\mathbf k}\): \(-z^2=0\) ⇒ 0. Toplam \(\pi a^2(2h+h^2)\) ✓.</p></li>
+        <li class="step"><p>(b) Yarım küreyi \(z=0\) diskiyle kapat. Diskte \(\mathbf F\cdot(-\hat{\mathbf k})=-z^2=0\), yani tüm akı yarım küreden geçer.</p></li>
+        <li class="step"><p>\(\int(2+2z)\,d\tau=2\cdot\tfrac23\pi a^3+2\int_0^a z\,\pi(a^2-z^2)\,dz=\tfrac43\pi a^3+2\cdot\tfrac{\pi a^4}{4}=\boxed{\tfrac43\pi a^3+\tfrac{\pi a^4}{2}}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) diverjans 2, hacim integrali 4, üç yüzey (yan 4, üst 2, alt 1) · (b) kapatma fikri 3, hacim integrali 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-ga-5"> Çözdüm</label>
+  </article>
+</section>
+
+<!-- ================================================= DENEME B -->
+<section class="topic" id="d-gb" data-topic="Deneme B (5 soru · 120 dk)">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Güz MT1 · B</span><span class="sess">5 soru · 120 dk · soru başına 20 puan</span></p>
+    <h2>PHYS 210 Midterm 1 (practice B)</h2>
+    <p class="ch-lede">İndis kanıtı ve uzay eğrisi, küresel koordinatlarda diverjans ve rotasyonel, koni üzerinde yüzey integralleri, parametreli korunumlu alan, yarım kürede Stokes.</p>
+  </header>
+
+  <article class="prob" id="gb-1" data-short="∇×(∇×A) + eğri: s, κ, τ">
+    <div class="prob-head"><span class="pid">B · Q1</span><span class="slot">vektör</span><span class="lvl">20 puan</span></div>
+    <h3>Vectors and a space curve</h3>
+    <div class="box q"><span class="box-label">Q1</span><p>(a) Using index notation, prove \(\nabla\times(\nabla\times\mathbf A)=\nabla(\nabla\cdot\mathbf A)-\nabla^2\mathbf A\).</p><p>(b) For the curve \(\mathbf r(t)=(2t,\ t^2,\ \ln t)\), \(t>0\): find the arc length from \(t=1\) to \(t=e\), and the unit tangent, the curvature and the torsion at \(t=1\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\epsilon\epsilon\) özdeşliği; \(|\dot{\mathbf r}|=2t+1/t\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \([\nabla\times(\nabla\times\mathbf A)]_i=\epsilon_{ijk}\partial_j\epsilon_{kmn}\partial_mA_n=\epsilon_{kij}\epsilon_{kmn}\partial_j\partial_mA_n=(\delta_{im}\delta_{jn}-\delta_{in}\delta_{jm})\partial_j\partial_mA_n\).</p></li>
+        <li class="step"><p>\(=\partial_i(\partial_jA_j)-\partial_j\partial_jA_i=\boxed{[\nabla(\nabla\cdot\mathbf A)-\nabla^2\mathbf A]_i}\).</p></li>
+        <li class="step"><p>(b) \(\dot{\mathbf r}=(2,\ 2t,\ 1/t)\), \(|\dot{\mathbf r}|^2=4+4t^2+1/t^2=(2t+1/t)^2\). Yay uzunluğu \(\int_1^e(2t+1/t)\,dt=(e^2-1)+1=\boxed{e^2}\).</p></li>
+        <li class="step"><p>\(t=1\): \(\dot{\mathbf r}=(2,2,1)\), \(|\dot{\mathbf r}|=3\) ⇒ \(\mathbf T=\tfrac13(2,2,1)\). \(\ddot{\mathbf r}=(0,2,-1)\), \(\dddot{\mathbf r}=(0,0,2)\).</p></li>
+        <li class="step"><p>\(\dot{\mathbf r}\times\ddot{\mathbf r}=(-4,\ 2,\ 4)\), boyu 6. \(\kappa=6/27=\boxed{2/9}\); \(\tau=(-4,2,4)\cdot(0,0,2)/36=\boxed{2/9}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) iki \(\epsilon\) yazımı 3, özdeşlik 3, sonuç 2 · (b) yay uzunluğu 4, \(\mathbf T\) 2, \(\kappa\) 3, \(\tau\) 3</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-gb-1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="gb-2" data-short="Küresel: h, div, rot, hacim">
+    <div class="prob-head"><span class="pid">B · Q2</span><span class="slot">eğrisel</span><span class="lvl">20 puan</span></div>
+    <h3>Spherical coordinates</h3>
+    <div class="box q"><span class="box-label">Q2</span><p>(a) Starting from \(x=r\sin\theta\cos\phi\), \(y=r\sin\theta\sin\phi\), \(z=r\cos\theta\), show that the spherical system is orthogonal and find \(h_r,h_\theta,h_\phi\) and \(d\tau\).</p><p>(b) Find \(\nabla\cdot(r^n\hat{\mathbf e}_r)\). For which \(n\) is it zero (\(r\ne0\))?</p><p>(c) Find \(\nabla\times(r\sin\theta\,\hat{\mathbf e}_\phi)\) and show that it equals \(2\hat{\mathbf k}\).</p><p>(d) Find the volume of the region \(r\le a\), \(0\le\theta\le\pi/3\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(h=(1,\ r,\ r\sin\theta)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\partial_r\mathbf r=(\sin\theta\cos\phi,\ \sin\theta\sin\phi,\ \cos\theta)\), \(\partial_\theta\mathbf r=r(\cos\theta\cos\phi,\ \cos\theta\sin\phi,\ -\sin\theta)\), \(\partial_\phi\mathbf r=r\sin\theta(-\sin\phi,\ \cos\phi,\ 0)\). Üç nokta çarpım da 0. Boylar \(1,\ r,\ r\sin\theta\) ⇒ \(d\tau=r^2\sin\theta\,dr\,d\theta\,d\phi\).</p></li>
+        <li class="step"><p>(b) \(\nabla\cdot\mathbf V=\dfrac{1}{r^2\sin\theta}\partial_r(r^2\sin\theta\cdot r^n)=\boxed{(n+2)\,r^{n-1}}\); \(n=-2\) için sıfır (Coulomb alanı).</p></li>
+        <li class="step"><p>(c) \(V_\phi=r\sin\theta\), \(h_\phi V_\phi=r^2\sin^2\theta\). Determinanttan: \((\nabla\times\mathbf V)_r=\dfrac{1}{r^2\sin\theta}\partial_\theta(r^2\sin^2\theta)=2\cos\theta\), \((\nabla\times\mathbf V)_\theta=-\dfrac{1}{r\sin\theta}\partial_r(r^2\sin^2\theta)=-2\sin\theta\).</p></li>
+        <li class="step"><p>\(\nabla\times\mathbf V=2(\cos\theta\,\hat{\mathbf e}_r-\sin\theta\,\hat{\mathbf e}_\theta)=\boxed{2\hat{\mathbf k}}\). Kontrol: \(r\sin\theta\,\hat{\mathbf e}_\phi=-y\,\hat{\mathbf i}+x\,\hat{\mathbf j}\), rotasyoneli \(2\hat{\mathbf k}\) ✓.</p></li>
+        <li class="step"><p>(d) \(\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_0^a r^2\sin\theta\,dr\,d\theta\,d\phi=2\pi\cdot\tfrac12\cdot\tfrac{a^3}{3}=\boxed{\tfrac{\pi a^3}{3}}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) teğet vektörler ve diklik 4, \(h\) ve \(d\tau\) 2 · (b) 4 · (c) bileşenler 4, \(\hat{\mathbf k}\)'ye dönüşüm 2 · (d) 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-gb-2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="gb-3" data-short="Koni: dσ, kütle, sıfır akı">
+    <div class="prob-head"><span class="pid">B · Q3</span><span class="slot">yüzey</span><span class="lvl">20 puan</span></div>
+    <h3>Surface integrals on a cone</h3>
+    <div class="box q"><span class="box-label">Q3</span><p>\(S\) is the cone \(z=\sqrt{x^2+y^2}\), \(0\le z\le2\).</p><p>(a) Express \(d\sigma\) in terms of \(dx\,dy\) and find the area of \(S\). (b) Find the mass of \(S\) if its surface density is \(\sigma=x^2+y^2\). (c) Find the flux of \(\mathbf F=x\,\hat{\mathbf i}+y\,\hat{\mathbf j}+z\,\hat{\mathbf k}\) through \(S\). Explain the result geometrically.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(g=z-\rho\), \(|\nabla g|=\sqrt2\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\nabla g=(-x/\rho,\ -y/\rho,\ 1)\), \(|\nabla g|=\sqrt2\), \(|\partial_zg|=1\) ⇒ \(\boxed{d\sigma=\sqrt2\,dx\,dy}\). İzdüşüm \(\rho\le2\): alan \(\sqrt2\cdot4\pi=\boxed{4\sqrt2\,\pi}\).</p></li>
+        <li class="step"><p>(b) \(M=\sqrt2\int_0^{2\pi}\!\!\int_0^2\rho^2\cdot\rho\,d\rho\,d\theta=\sqrt2\cdot2\pi\cdot4=\boxed{8\sqrt2\,\pi}\).</p></li>
+        <li class="step"><p>(c) \(\mathbf F\cdot\nabla g=-x^2/\rho-y^2/\rho+z=-\rho+z=0\) koni üzerinde ⇒ akı \(\boxed0\) (hangi normal seçilirse seçilsin).</p></li>
+        <li class="step"><p>Geometri: koni orijinden çıkan doğrulardan oluşur; \(\mathbf F=\mathbf r\) her noktada bu doğrular boyunca, yani yüzeye teğettir. Yüzeyden hiç alan çizgisi geçmez.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) \(d\sigma\) 4, alan 2 · (b) kurulum 4, sonuç 3 · (c) \(\mathbf F\cdot\hat{\mathbf n}=0\) 5, yorum 2</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-gb-3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="gb-4" data-short="a'yı bul, potansiyel, iki integral">
+    <div class="prob-head"><span class="pid">B · Q4</span><span class="slot">çizgi</span><span class="lvl">20 puan</span></div>
+    <h3>A field with a parameter</h3>
+    <div class="box q"><span class="box-label">Q4</span><p>\(\mathbf G=(axy-z^3)\,\hat{\mathbf i}+(a-2)x^2\,\hat{\mathbf j}+(1-a)xz^2\,\hat{\mathbf k}\).</p><p>(a) Find the constant \(a\) for which \(\mathbf G\) is conservative, and find the potential. (b) With that \(a\), evaluate \(\int_C\mathbf G\cdot d\mathbf r\) along \(C:\ \mathbf r(t)=(t,\ t^2,\ t^3)\), \(0\le t\le1\). (c) Evaluate the same integral directly for \(a=0\).</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>Üç rotasyonel bileşeni sıfıra eşitle</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\partial_yG_x=\partial_xG_y\): \(ax=2(a-2)x\) ⇒ \(a=4\). \(\partial_zG_x=\partial_xG_z\): \(-3z^2=(1-a)z^2\) ⇒ \(a=4\) ✓. \(\partial_zG_y=0=\partial_yG_z\) ✓. Yani \(\boxed{a=4}\).</p></li>
+        <li class="step"><p>\(\mathbf G=(4xy-z^3,\ 2x^2,\ -3xz^2)\): \(\varphi=2x^2y-xz^3+\psi(y,z)\); \(\partial_y\varphi=2x^2\), \(\partial_z\varphi=-3xz^2\) ⇒ \(\psi=\) sabit, \(\boxed{\varphi=2x^2y-xz^3}\).</p></li>
+        <li class="step"><p>(b) \(\varphi(1,1,1)-\varphi(0,0,0)=2-1=\boxed1\). (Doğrudan: \(8t^3-10t^9\) ⇒ \(2-1=1\) ✓.)</p></li>
+        <li class="step"><p>(c) \(a=0\): \(\mathbf G=(-z^3,\ -2x^2,\ xz^2)\) ⇒ \(G_x=-t^9\), \(G_y=-2t^2\), \(G_z=t^7\); \(d\mathbf r=(1,\ 2t,\ 3t^2)\,dt\).</p></li>
+        <li class="step"><p>\(\int_0^1(-t^9-4t^3+3t^9)\,dt=\int_0^1(2t^9-4t^3)\,dt=\tfrac15-1=\boxed{-\tfrac45}\).</p></li>
+      </ol></div>
+    <ul class="rubric"><li>(a) koşullar 4, \(a\) 2, potansiyel 4 · (b) 4 · (c) parametrizasyon 3, sonuç 3</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-gb-4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="gb-5" data-short="Yarım kürede Stokes">
+    <div class="prob-head"><span class="pid">B · Q5</span><span class="slot">Stokes</span><span class="lvl">20 puan</span></div>
+    <h3>Stokes' theorem</h3>
+    <div class="box q"><span class="box-label">Q5</span><p>Verify Stokes' theorem for \(\mathbf F=y\,\hat{\mathbf i}+z\,\hat{\mathbf j}+x\,\hat{\mathbf k}\) on the hemisphere \(x^2+y^2+z^2=a^2\), \(z\ge0\), with the outward normal. Then explain why the flat disk \(x^2+y^2\le a^2\), \(z=0\) gives the same surface integral.</p></div>
+    <details class="sol"><summary>Çözümü aç</summary>
+    <div class="derive"><div class="derive-head"><span class="tag">Çözüm</span><h4>\(\nabla\times\mathbf F=(-1,-1,-1)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Rotasyonel: \((\partial_yx-\partial_zz,\ \partial_zy-\partial_xx,\ \partial_xz-\partial_yy)=(-1,-1,-1)\).</p></li>
+        <li class="step"><p>Sınır: \(z=0\) çemberi, dış normalle uyumlu yön yukarıdan bakınca saat yönünün tersi: \(\mathbf r=(a\cos t,\ a\sin t,\ 0)\). \(\mathbf F\cdot d\mathbf r=y\,dx+z\,dy+x\,dz=-a^2\sin^2t\,dt\) ⇒ \(\oint=\boxed{-\pi a^2}\).</p></li>
+        <li class="step"><p>Yüzey: \(\hat{\mathbf n}=\mathbf r/a\), \((\nabla\times\mathbf F)\cdot\hat{\mathbf n}=-(x+y+z)/a\). \(x\) ve \(y\) terimleri simetriden 0 verir.</p></li>
+        <li class="step"><p>\(-\tfrac1a\int z\,d\sigma=-\tfrac1a\int_0^{2\pi}\!\!\int_0^{\pi/2}a\cos\theta\cdot a^2\sin\theta\,d\theta\,d\phi=-\tfrac1a\cdot\pi a^3=\boxed{-\pi a^2}\) ✓.</p></li>
+        <li class="step"><p>Disk: aynı sınır, \(\hat{\mathbf n}=\hat{\mathbf k}\): \(\int(-1)\,dA=-\pi a^2\). Stokes sonucu yalnızca sınıra bağlı olduğundan aynı sınırı paylaşan her yüzey aynı değeri verir.</p></li>
+      </ol></div>
+    <ul class="rubric"><li>rotasyonel 3 · çizgi integrali (yön dahil) 6 · yüzey integrali 7 · disk açıklaması 4</li></ul>
+    </details>
+    <label class="solved"><input type="checkbox" id="sv-gb-5"> Çözdüm</label>
+  </article>
+</section>
+
 <!-- ================================================= MT1 -->
 <section class="topic" id="d-mt1" data-topic="Midterm 1 (vektör analizi)">
   <header class="ch-head">
-    <p class="eyebrow"><span>Deneme 1</span><span class="sess">4 soru · 90 dk · Bahar 2026 MT1 yapısı</span></p>
+    <p class="eyebrow"><span>Deneme 1</span><span class="sess">4 soru · 90 dk · eski kalıp (Bahar 2026 MT1)</span></p>
     <h2>PHYS 210 Midterm 1 (practice)</h2>
     <p class="ch-lede">İndis, gradyan, düzlem ve akı, çizgi integrali ve potansiyel. Puanlar B26 MT1 ile aynı.</p>
   </header>
@@ -711,7 +949,7 @@ body.nav-lock { overflow: hidden; }
   <header class="ch-head">
     <p class="eyebrow"><span>Deneme 2</span><span class="sess">5 soru · 100 dk · Bahar 2026 MT2 yapısı</span></p>
     <h2>PHYS 210 Midterm 2 (practice)</h2>
-    <p class="ch-lede">Gerçek sınavda kâğıdın başında diverjans/Stokes, eğrisel koordinat formülleri, Cauchy formülü ve CR verilir.</p>
+    <p class="ch-lede">Gerçek sınavda kâğıdın başında diverjans/Stokes, eğrisel koordinat formülleri, Cauchy formülü ve CR verilir. Güz 2026'da Q1 (eğrisel) ve Q2 (Stokes) MT1 konusu; MT1'e hazırlanırken bu ikisini de çöz.</p>
   </header>
 
   <article class="prob" id="d2-1" data-short="Küresel: diklik, dτ">
