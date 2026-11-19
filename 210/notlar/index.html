@@ -7,7 +7,7 @@
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Matematiksel Yöntemler Defteri</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="PHYS 210 (vektör analizi ve karmaşık değişkenli fonksiyonlar) konularının Türkçe, adım adım ve etkileşimli anlatımı.">
+<meta name="description" content="PHYS 210 (vektör analizi, kısmi diferansiyel denklemler ve karmaşık değişkenli fonksiyonlar) konularının Türkçe, adım adım ve etkileşimli anlatımı.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
@@ -460,7 +460,7 @@ td .nb { display: inline-block; margin: .1rem 0; }
 .slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
 .src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
 figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
-figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig > svg { display: block; width: 100%; height: auto; }
 figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
 .fig .s-ink { stroke: var(--ink); fill: none; }
 .fig .s-muted { stroke: var(--muted); fill: none; }
@@ -469,7 +469,7 @@ figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem 
 .fig .s-vel { stroke: var(--vel); fill: none; }
 .fig .s-force { stroke: var(--force); fill: none; }
 .fig .f-region { fill: var(--panel-2); stroke: none; }
-.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig > svg text { font: 500 12px var(--font-mono); fill: var(--muted); }
 .fig text.t-ink { fill: var(--ink); }
 .fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
 .fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
@@ -571,10 +571,10 @@ body.nav-lock { overflow: hidden; }
     <p class="nav-title">PHYS 210 · Matematiksel Yöntemler II</p>
     <ul>
       <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
-      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
-      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
-      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
-      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 formatında 2 sınav + 3 sınav</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>15 bölüm · çözümlü sorular</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>54 soru · 5 çıkmış sınav</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 18 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 · MT2 · eski kalıp</span></a></li>
     </ul>
     <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
   </div>
@@ -586,14 +586,14 @@ body.nav-lock { overflow: hidden; }
     <div>
       <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Math. Methods in Physics II</span><span>Boas · Hildebrand · senin notların</span></p>
       <h1>Matematiksel Yöntemler <i>Defteri</i></h1>
-      <p class="lede">Vektör analizinden rezidü teoremine, dersin tamamı: izlencenin sırası ve kendi el yazısı notlarının akışıyla. Her bölümün başında notlarının hangi sayfalarına karşılık geldiği yazıyor; her bölüm, çıkmış sınavlardaki bir soru tipine bağlanıyor.</p>
-      <p class="lede"><b>Güz 2026 MT1 (20 Kasım):</b> Bölüm 1–7, Green teoremi hariç. Beş soru, formüller kâğıtta veriliyor. Bu formatla yazılmış iki deneme, deneme sınavları sayfasında.</p>
+      <p class="lede">Vektör analizi, kısmi diferansiyel denklemler ve karmaşık analiz: dersin tamamı, izlencenin sırasıyla. Vektör ve karmaşık kısımlar kendi el yazısı notlarının akışını izliyor; notlarda olmayan kısmi diferansiyel denklemler Boas'ın 13. bölümünden. Her bölümün başında notlarının hangi sayfalarına karşılık geldiği yazıyor; her bölüm, çıkmış sınavlardaki bir soru tipine bağlanıyor.</p>
+      <p class="lede"><b>Güz 2026 MT1 (20 Kasım):</b> Bölüm 1–7, Green teoremi hariç. Beş soru, formüller kâğıtta veriliyor. Bu formatla yazılmış iki deneme, deneme sınavları sayfasında. <b>MT2 (28 Aralık):</b> Bölüm 8–10 (kısmi diferansiyel denklemler), muhtemelen karmaşık analizin başıyla birlikte.</p>
     </div>
     <div class="hero-card">
       <div class="hero-stats">
-        <div><b id="st-ch">12</b><span>bölüm</span></div>
+        <div><b id="st-ch">15</b><span>bölüm</span></div>
         <div><b id="st-lab">0</b><span>çözümlü adım dizisi</span></div>
-        <div><b id="st-q">36</b><span>soru</span></div>
+        <div><b id="st-q">45</b><span>soru</span></div>
       </div>
       <ul class="hero-how">
         <li><b>Türetim</b><span>“Sonraki adım” ile bir satır ilerleyin. Açmadan önce sonraki adımı tahmin edin.</span></li>
@@ -614,11 +614,11 @@ body.nav-lock { overflow: hidden; }
 <div class="shell" lang="tr">
   <aside class="side">
     <details id="toc-details" open>
-      <summary><span>İçindekiler</span><span class="sum-prog" id="sum-prog">0 / 12</span></summary>
+      <summary><span>İçindekiler</span><span class="sum-prog" id="sum-prog">0 / 15</span></summary>
       <div class="toc-wrap">
         <p class="toc-title">İçindekiler</p>
         <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
-        <p class="progress-txt" id="prog-txt">0 / 12 bölüm · 0 doğru cevap</p>
+        <p class="progress-txt" id="prog-txt">0 / 15 bölüm · 0 doğru cevap</p>
         <ol class="toc" id="toc">
           <li><a href="#indis"><span class="n">01</span><span>Vektör cebiri ve indis gösterimi</span><span class="ok">✓</span></a></li>
           <li><a href="#egri"><span class="n">02</span><span>Uzay eğrileri ve Frenet–Serret</span><span class="ok">✓</span></a></li>
@@ -627,11 +627,14 @@ body.nav-lock { overflow: hidden; }
           <li><a href="#aki"><span class="n">05</span><span>Akı ve diverjans teoremi</span><span class="ok">✓</span></a></li>
           <li><a href="#stokes"><span class="n">06</span><span>Green ve Stokes teoremleri</span><span class="ok">✓</span></a></li>
           <li><a href="#egrisel"><span class="n">07</span><span>Dik eğrisel koordinatlar</span><span class="ok">✓</span></a></li>
-          <li><a href="#karmasik"><span class="n">08</span><span>Karmaşık sayılar ve fonksiyonlar</span><span class="ok">✓</span></a></li>
-          <li><a href="#analitik"><span class="n">09</span><span>Analitiklik ve Cauchy–Riemann</span><span class="ok">✓</span></a></li>
-          <li><a href="#cauchy"><span class="n">10</span><span>Karmaşık integral ve Cauchy</span><span class="ok">✓</span></a></li>
-          <li><a href="#laurent"><span class="n">11</span><span>Laurent serisi ve tekillikler</span><span class="ok">✓</span></a></li>
-          <li><a href="#rezidu"><span class="n">12</span><span>Rezidüler ve reel integraller</span><span class="ok">✓</span></a></li>
+          <li><a href="#kdd"><span class="n">08</span><span>Kısmi dif. denklemler: temeller</span><span class="ok">✓</span></a></li>
+          <li><a href="#laplace"><span class="n">09</span><span>Laplace denklemi</span><span class="ok">✓</span></a></li>
+          <li><a href="#isidalga"><span class="n">10</span><span>Isı ve dalga denklemleri</span><span class="ok">✓</span></a></li>
+          <li><a href="#karmasik"><span class="n">11</span><span>Karmaşık sayılar ve fonksiyonlar</span><span class="ok">✓</span></a></li>
+          <li><a href="#analitik"><span class="n">12</span><span>Analitiklik ve Cauchy–Riemann</span><span class="ok">✓</span></a></li>
+          <li><a href="#cauchy"><span class="n">13</span><span>Karmaşık integral ve Cauchy</span><span class="ok">✓</span></a></li>
+          <li><a href="#laurent"><span class="n">14</span><span>Laurent serisi ve tekillikler</span><span class="ok">✓</span></a></li>
+          <li><a href="#rezidu"><span class="n">15</span><span>Rezidüler ve reel integraller</span><span class="ok">✓</span></a></li>
           <li><a href="#ozet"><span class="n">∑</span><span>Formül kartı</span><span class="ok">✓</span></a></li>
         </ol>
         <div class="side-foot">
@@ -1123,7 +1126,7 @@ body.nav-lock { overflow: hidden; }
     <ol class="steps">
       <li class="step"><p>\(\nabla^2f=\dfrac1r\partial_r(r\,\partial_rf)+\dfrac{1}{r^2}\partial_\theta^2f+\partial_z^2f\).</p></li>
       <li class="step"><p>\(\dfrac1r\partial_r(r\cdot2r\cos2\theta)=4\cos2\theta\), \(\dfrac{1}{r^2}(-4r^2\cos2\theta)=-4\cos2\theta\) ⇒ \(\nabla^2f=\boxed{0}\).</p></li>
-      <li class="step"><p>Şaşırtıcı değil: \(r^2\cos2\theta=x^2-y^2=\mathrm{Re}\,z^2\), analitik bir fonksiyonun gerçel kısmı (Bölüm 9). Kartezyen'de \(2-2=0\).</p></li>
+      <li class="step"><p>Şaşırtıcı değil: \(r^2\cos2\theta=x^2-y^2=\mathrm{Re}\,z^2\), analitik bir fonksiyonun gerçel kısmı (Bölüm 12). Kartezyen'de \(2-2=0\).</p></li>
     </ol>
   </div>
 
@@ -1145,13 +1148,307 @@ body.nav-lock { overflow: hidden; }
       <p class="quiz-why"><span class="verdict"></span>\(\frac{1}{r^2}\partial_r(r^2\cdot(-1/r^2))=\frac{1}{r^2}\partial_r(-1)=0\).</p>
     </div>
   </div>
-  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="egrisel">Bu bölümü tamamladım</button><a href="#karmasik">Sonraki: Karmaşık sayılar ve fonksiyonlar →</a></div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="egrisel">Bu bölümü tamamladım</button><a href="#kdd">Sonraki: Kısmi diferansiyel denklemler →</a></div>
 </section>
+
+<!-- ============================================================ 8 · KDD -->
+<section class="chapter" id="kdd" data-ch="kdd">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 8</span><span class="sess">Boas §13.1 · Fourier: Boas §7.5–7.9</span></p>
+    <h2>Kısmi diferansiyel denklemler: kavramlar ve temel yöntemler</h2>
+    <p class="ch-lede">Güz 2026 izlencesinin ikinci kısmı ve MT2'nin (28 Aralık) en olası konusu. Eski dönemlerin sınavlarında ve senin notlarında bu konu yok; anlatım dersin kitabı Boas'ın 13. bölümüne dayanıyor. Bu bölüm dili ve üç temel yöntemi kuruyor: doğrudan integral, karakteristikler ve dalga denklemi için d'Alembert çözümü.</p>
+  </header>
+
+  <h3>Dil: mertebe, doğrusallık, homojenlik</h3>
+  <p>Bilinmeyen birden fazla değişkenin fonksiyonudur: \(u(x,y)\), \(u(x,t)\), \(u(r,\theta)\). Denklemin <b>mertebesi</b> en yüksek türevin mertebesidir. \(u\) ve türevleri yalnızca birinci dereceden geçiyor ve birbirleriyle çarpılmıyorsa denklem <b>doğrusaldır</b>; \(u\) içermeyen bir terim (kaynak) yoksa <b>homojendir</b>.</p>
+  <div class="box"><span class="box-label">Süperpozisyon</span>
+    <p>Doğrusal homojen bir denklemin iki çözümü \(u_1\), \(u_2\) ise her \(c_1u_1+c_2u_2\) de çözümdür. Değişkenlerine ayırma yöntemi tamamen buna dayanır: önce tek tek basit “ürün çözümleri” bulunur, sonra sınır koşulunu sağlayacak biçimde toplanır.</p>
+  </div>
+
+  <h3>Fiziğin denklemleri</h3>
+  <div class="box"><span class="box-label">Boas'ın gösterimiyle</span>
+    \[ \nabla^2u=0\ \ (\text{Laplace}),\qquad \nabla^2u=\frac{1}{\alpha^2}\frac{\partial u}{\partial t}\ \ (\text{ısı, difüzyon}),\qquad \nabla^2u=\frac{1}{v^2}\frac{\partial^2u}{\partial t^2}\ \ (\text{dalga}) \]
+    \[ \nabla^2u=f\ \ (\text{Poisson}),\qquad \nabla^2F+k^2F=0\ \ (\text{Helmholtz}) \]
+    <p>Laplace: kararlı hal sıcaklığı, yükü olmayan bölgede elektrostatik potansiyel, kütlesi olmayan bölgede kütleçekim potansiyeli. Helmholtz, ısı ya da dalga denkleminden zaman ayrıldığında geriye kalan uzay denklemidir.</p>
+  </div>
+  <p><b>Koşullar.</b> Sınır koşulu ya \(u\)'yu (Dirichlet: “uç 0°C'de tutuluyor”) ya da normal türevi verir (Neumann: “uç yalıtılmış”, \(\partial u/\partial x=0\)). Başlangıç koşulu ısı denkleminde yalnızca \(u(x,0)\)'dır; dalga denklemi zamanda ikinci mertebe olduğundan hem \(u(x,0)\) hem \(u_t(x,0)\) gerekir.</p>
+
+  <h3>İkinci mertebe denklemlerin sınıflandırılması</h3>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ Au_{xx}+Bu_{xy}+Cu_{yy}+(\text{alt mertebe terimler})=0,\qquad \Delta=B^2-4AC \]
+    <p>\(\Delta\lt0\): <b>eliptik</b> (Laplace, \(\Delta=-4\)) · \(\Delta=0\): <b>parabolik</b> (ısı: \(u_t=\alpha^2u_{xx}\), \(A=\alpha^2\), \(B=C=0\)) · \(\Delta>0\): <b>hiperbolik</b> (dalga: \(u_{tt}-v^2u_{xx}=0\), \(\Delta=4v^2\)).</p>
+  </div>
+  <p>Tür yalnızca ikinci mertebe terimlere bakar; \(u_x\), \(u\) gibi terimler türü değiştirmez. Katsayılar değişkenlere bağlıysa tür bölgeden bölgeye değişebilir: \(yu_{xx}+u_{yy}=0\) için \(\Delta=-4y\), yani \(y>0\)'da eliptik, \(y\lt0\)'da hiperbolik.</p>
+
+  <h3>Doğrudan integral ve birinci mertebe denklemler</h3>
+  <p>Bir değişkene göre integral alınca integral “sabiti”, öbür değişkenin <b>keyfi bir fonksiyonu</b> olur: \(u_x=0\Rightarrow u=f(y)\); \(u_{xy}=0\Rightarrow u=f(x)+g(y)\); \(u_{xx}=0\Rightarrow u=x\,f(y)+g(y)\). Sonra verilen koşullardan bu fonksiyonlar bulunur.</p>
+  <p>\(a\,u_x+b\,u_y=0\) (\(a,b\) sabit) denklemi, \(u\)'nun \((a,b)\) yönündeki türevinin sıfır olduğunu söyler. Demek ki \(u\), \(bx-ay=\) sabit doğruları (<b>karakteristikler</b>) boyunca değişmez ve yalnızca bu birleşime bağlıdır: \(\boxed{u=f(bx-ay)}\).</p>
+  <div class="box ex"><span class="box-label">Örnek</span>
+    <p>\(u_x+2u_y=0\), \(u(x,0)=\sin x\). \(u=f(2x-y)\); \(y=0\)'da \(f(2x)=\sin x\) ⇒ \(f(s)=\sin(s/2)\) ⇒ \(u=\sin\!\big(x-\tfrac y2\big)\). Kontrol: \(u_x+2u_y=\cos(\cdot)-\cos(\cdot)=0\) ✓.</p>
+  </div>
+
+  <h3>Dalga denkleminin d'Alembert çözümü</h3>
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>\(u_{tt}=v^2u_{xx}\), sonsuz uzun tel</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Yeni değişkenler \(\xi=x-vt\), \(\eta=x+vt\). Zincir kuralı: \(u_x=u_\xi+u_\eta\), \(u_t=v(-u_\xi+u_\eta)\).</p></li>
+      <li class="step"><p>\(u_{xx}=u_{\xi\xi}+2u_{\xi\eta}+u_{\eta\eta}\), \(u_{tt}=v^2(u_{\xi\xi}-2u_{\xi\eta}+u_{\eta\eta})\) ⇒ \(u_{tt}-v^2u_{xx}=-4v^2u_{\xi\eta}=0\).</p></li>
+      <li class="step"><p>\(u_{\xi\eta}=0\) doğrudan integralle: \(u=f(\xi)+g(\eta)=f(x-vt)+g(x+vt)\). Biri sağa, biri sola \(v\) hızıyla, şeklini bozmadan giden iki dalga.</p></li>
+      <li class="step"><p>Başlangıç koşulları \(u(x,0)=\varphi(x)\), \(u_t(x,0)=\psi(x)\): \(f+g=\varphi\) ve \(v(-f'+g')=\psi\) ⇒ \(-f+g=\frac1v\int_0^x\psi(s)\,ds+c\).</p></li>
+      <li class="step"><p>İki denklemden \(f\) ve \(g\) çözülür:</p>\[ \boxed{u(x,t)=\frac{\varphi(x-vt)+\varphi(x+vt)}{2}+\frac{1}{2v}\int_{x-vt}^{x+vt}\psi(s)\,ds} \]</li>
+    </ol>
+  </div>
+
+  <h3>Değişkenlerine ayırma: genel plan</h3>
+  <ol class="proto">
+    <li><span><b>Ürün dene.</b> \(u=X(x)Y(y)\) ya da \(X(x)T(t)\) yaz, denklemi \(XY\)'ye böl. Her taraf tek bir değişkene bağlı kalır; ikisi ancak aynı sabite (ayırma sabiti) eşitse her yerde eşit olabilir.</span></li>
+    <li><span><b>Sabitin işaretini sınır koşulu seçer.</b> İki uçta sıfır olması gereken fonksiyon salınmalıdır: \(X''+k^2X=0\), \(X=\sin kx\). \(+k^2\) seçilirse \(X=\sinh,\cosh\) iki noktada sıfır olamaz.</span></li>
+    <li><span><b>Homojen koşullar \(k\)'yı kesikli yapar:</b> \(\sin kL=0\Rightarrow k=n\pi/L\).</span></li>
+    <li><span><b>Fiziksel olmayanı at:</b> sonsuzda büyüyen üstel, \(r=0\)'da sonsuz olan \(r^{-n}\) ve \(\ln r\), zamanla büyüyen çözüm.</span></li>
+    <li><span><b>Topla ve Fourier katsayısını bul:</b> geriye kalan tek homojen olmayan koşul (bir kenardaki sıcaklık, başlangıç şekli) Fourier serisiyle sağlanır.</span></li>
+  </ol>
+  <div class="box"><span class="box-label">Fourier: yarım aralık serileri (\(0\lt x\lt L\))</span>
+    \[ f(x)=\sum_{n=1}^\infty b_n\sin\frac{n\pi x}{L},\qquad b_n=\frac2L\int_0^Lf(x)\sin\frac{n\pi x}{L}\,dx \]
+    \[ f(x)=\frac{a_0}{2}+\sum_{n=1}^\infty a_n\cos\frac{n\pi x}{L},\qquad a_n=\frac2L\int_0^Lf(x)\cos\frac{n\pi x}{L}\,dx \]
+    <p>Sık çıkanlar (sinüs serisi): \(f=1\): \(b_n=\frac{4}{n\pi}\) (tek \(n\), çiftlerde 0) · \(f=x\): \(b_n=\frac{2L(-1)^{n+1}}{n\pi}\) · \(f=x(L-x)\): \(b_n=\frac{8L^2}{n^3\pi^3}\) (tek \(n\)).</p>
+  </div>
+
+  <div class="derive ornek">
+    <div class="derive-head"><span class="tag">Çözümlü soru</span><h4>\(u_{tt}=4u_{xx}\), \(u(x,0)=\sin x\), \(u_t(x,0)=\cos x\)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>\(v=2\). Konum kısmı: \(\tfrac12[\sin(x-2t)+\sin(x+2t)]=\sin x\cos2t\).</p></li>
+      <li class="step"><p>Hız kısmı: \(\dfrac{1}{4}\int_{x-2t}^{x+2t}\cos s\,ds=\dfrac14[\sin(x+2t)-\sin(x-2t)]=\tfrac12\cos x\sin2t\).</p></li>
+      <li class="step"><p>\(\boxed{u=\sin x\cos2t+\tfrac12\cos x\sin2t}\). Kontrol: \(u(x,0)=\sin x\) ✓, \(u_t(x,0)=\cos x\cos0=\cos x\) ✓, her terimde \(u_{tt}=-4\cdot(\text{terim})\) ve \(u_{xx}=-(\text{terim})\) ⇒ \(u_{tt}=4u_{xx}\) ✓.</p></li>
+      <li class="step"><p>Her terim bir \(x\) fonksiyonu çarpı bir \(t\) fonksiyonu: değişkenlerine ayırma da aynı cevabı verirdi. d'Alembert her zaman çalışır, ayırma ise sınırlı bölgelerde (bağlı tel) daha kullanışlıdır.</p></li>
+    </ol>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">\(u_{xx}+4u_{xy}+4u_{yy}+u_x=0\) hangi türden?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Eliptik</button><button type="button" data-k="b">Parabolik</button><button type="button" data-k="c">Hiperbolik</button><button type="button" data-k="d">Bölgeye bağlı</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(\Delta=4^2-4\cdot1\cdot4=0\). \(u_x\) terimi türü etkilemez.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">\(u_{xy}=0\)'ın genel çözümü?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(f(x)\,g(y)\)</button><button type="button" data-k="b">\(f(x)+g(y)\)</button><button type="button" data-k="c">\(f(x+y)\)</button><button type="button" data-k="d">\(c\,xy\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(y\)'ye göre integral: \(u_x=F(x)\); \(x\)'e göre: \(u=f(x)+g(y)\). Çarpım genel çözüm değildir.</p>
+    </div>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Dalga denklemi neden iki, ısı denklemi neden tek başlangıç koşulu ister?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Zamanda mertebeleri 2 ve 1</button><button type="button" data-k="b">Dalga hiperbolik olduğu için</button><button type="button" data-k="c">Isıda sınır koşulu yeterli olduğu için</button><button type="button" data-k="d">Dalganın iki uzay boyutu olduğu için</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(u_{tt}\) için hem başlangıç konumu hem başlangıç hızı gerekir; \(u_t\) için yalnızca başlangıç değeri.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="kdd">Bu bölümü tamamladım</button><a href="#laplace">Sonraki: Laplace denklemi →</a></div>
+</section>
+
+<!-- ============================================================ 9 · LAPLACE -->
+<section class="chapter" id="laplace" data-ch="laplace">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 9</span><span class="sess">Boas §13.2 · kutupsal ve küresel: §13.5–13.7</span></p>
+    <h2>Laplace denklemi: şerit, dikdörtgen ve disk</h2>
+    <p class="ch-lede">Kararlı hal sıcaklığı ve kaynaksız bölgede potansiyel. Değişkenlerine ayırmanın en temiz örneği: zaman yok, yalnızca geometri ve kenar değerleri. Sınavın en olası sorusu, bir kenarı sıcak tutulan bir levhadır.</p>
+  </header>
+
+  <h3>Kararlı hal ve ortalama değer</h3>
+  <p>Isı denkleminde sıcaklık artık değişmiyorsa (\(\partial u/\partial t=0\)) geriye \(\nabla^2u=0\) kalır. Laplace denklemini sağlayan (harmonik) bir fonksiyonun bir noktadaki değeri, o nokta merkezli her çember üzerindeki ortalamasına eşittir. Bu yüzden harmonik bir fonksiyonun en büyük ve en küçük değeri sınırdadır; levhanın içinde “sıcak nokta” olmaz. Cevabını kontrol etmek için iyi bir test.</p>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Boas §13.2: yarı sonsuz levha, alt kenar 100°</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Levha \(0\lt x\lt10\), \(y>0\). Yan kenarlar \(x=0\) ve \(x=10\) 0°'de, alt kenar \(y=0\) 100°'de, \(y\to\infty\)'da \(T\to0\). \(T=X(x)Y(y)\): \(\dfrac{X''}{X}=-\dfrac{Y''}{Y}=-k^2\).</p></li>
+      <li class="step"><p>\(X=\sin kx,\ \cos kx\); \(Y=e^{ky},\ e^{-ky}\). İşaret: \(X\) iki kenarda sıfır olacak, o yüzden salınmalı (\(-k^2\)).</p></li>
+      <li class="step"><p>\(T(0,y)=0\) ⇒ \(\cos\) gider. \(T(10,y)=0\) ⇒ \(\sin10k=0\), \(k=n\pi/10\). \(y\to\infty\)'da sınırlı kalmalı ⇒ \(e^{ky}\) gider.</p></li>
+      <li class="step"><p>\(T=\sum b_ne^{-n\pi y/10}\sin\dfrac{n\pi x}{10}\). \(y=0\)'da \(\sum b_n\sin\dfrac{n\pi x}{10}=100\) ⇒ \(f=1\) serisinden \(b_n=\dfrac{400}{n\pi}\) (tek \(n\)).</p></li>
+      <li class="step"><p>\[ \boxed{T=\frac{400}{\pi}\sum_{n\ \text{tek}}\frac1n\,e^{-n\pi y/10}\sin\frac{n\pi x}{10}} \] \(T(5,5)\): ilk terim \(\tfrac{400}{\pi}e^{-\pi/2}\approx26{,}5\), ikincisi \(-0{,}4\) ⇒ \(\approx26{,}1°\). Seri kapalı biçimde de toplanır: \(T=\tfrac{200}{\pi}\arctan\dfrac{\sin(\pi x/10)}{\sinh(\pi y/10)}\).</p></li>
+    </ol>
+  </div>
+
+  <figure class="fig"><svg viewBox="0 0 600 300" role="img" aria-label="Dikdörtgen levha ve kenar koşulları">
+  <rect x="170" y="40" width="280" height="200" class="f-soft"/>
+  <line class="s-ink" stroke-width="2" x1="170" y1="40" x2="170" y2="240"/>
+  <line class="s-ink" stroke-width="2" x1="450" y1="40" x2="450" y2="240"/>
+  <line class="s-ink" stroke-width="2" x1="170" y1="40" x2="450" y2="40"/>
+  <line class="s-acc" stroke-width="5" x1="170" y1="240" x2="450" y2="240"/>
+  <text class="t-ink" x="112" y="145.0">u = 0</text>
+  <text class="t-ink" x="462" y="145.0">u = 0</text>
+  <text class="t-ink" x="288.0" y="30">u = 0</text>
+  <text class="t-acc" x="276.0" y="266">u = f(x)</text>
+  <text class="t-sym" x="278.0" y="146.0">∇²u = 0</text>
+  <text class="t-ink" x="156" y="258">0</text><text class="t-ink" x="446" y="258">a</text>
+  <text class="t-ink" x="152" y="46">b</text>
+</svg><figcaption>Sonlu levha: üç kenar 0, alt kenar \(f(x)\). Sıfır olan iki karşılıklı kenar sinüsü, sıfır olan üçüncü kenar \(\sinh\)'ın biçimini seçer.</figcaption></figure>
+
+  <h3>Sonlu dikdörtgen</h3>
+  <div class="box"><span class="box-label">Sonuç</span>
+    <p>\(0\lt x\lt a\), \(0\lt y\lt b\); \(x=0\), \(x=a\) ve \(y=b\) kenarları 0, alt kenar \(T(x,0)=f(x)\):</p>
+    \[ T=\sum_{n=1}^\infty b_n\,\frac{\sinh\big(n\pi(b-y)/a\big)}{\sinh(n\pi b/a)}\,\sin\frac{n\pi x}{a},\qquad b_n=\frac2a\int_0^af(x)\sin\frac{n\pi x}{a}\,dx \]
+    <p>\(\sinh(n\pi(b-y)/a)\), \(y=b\)'de sıfırdır; paydadaki \(\sinh(n\pi b/a)\) ise \(y=0\)'da kesri 1 yapar. Sıcak kenar üstteyse \(\sinh(n\pi y/a)\) gelir; sıcak kenar yandaysa \(x\) ile \(y\)'nin rolleri değişir (\(y\)'de sinüs, \(x\)'te \(\sinh\)).</p>
+  </div>
+  <p><b>Birden fazla sıcak kenar:</b> her kenar için ayrı bir problem çöz (diğer üç kenar 0), sonuçları topla. Kare için kısa yol: dört kenar 100° ise her yer 100°; simetri yüzünden tek bir kenar 100° iken merkez tam 25°, iki kenar 100° iken 50°.</p>
+
+  <h3>Kutupsal koordinatlar: disk ve halka</h3>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ \nabla^2u=u_{rr}+\frac1ru_r+\frac{1}{r^2}u_{\theta\theta}=0,\qquad u=R(r)\Theta(\theta) \]
+    \[ \Theta''+n^2\Theta=0\ (n\ \text{tam sayı, }2\pi\text{ periyot}),\qquad r^2R''+rR'-n^2R=0\Rightarrow R=r^n,\ r^{-n}\ \ (n=0:\ 1,\ \ln r) \]
+    <p><b>Disk içi</b> (\(r\lt a\)): \(r^{-n}\) ve \(\ln r\) merkezde sonsuz olduğu için atılır:</p>
+    \[ u(r,\theta)=\frac{a_0}{2}+\sum_{n=1}^\infty\Big(\frac ra\Big)^n(a_n\cos n\theta+b_n\sin n\theta) \]
+    <p>\(a_n,b_n\): sınır değeri \(u(a,\theta)=f(\theta)\)'nın tam Fourier katsayıları, \(a_n=\frac1\pi\int_0^{2\pi}f\cos n\theta\,d\theta\). <b>Disk dışı:</b> \((a/r)^n\). <b>Halka:</b> hepsi kalır, iki sınırdan iki denklem.</p>
+  </div>
+  <p>Merkezdeki değer \(a_0/2\), yani sınırdaki ortalama: ortalama değer özelliğinin kendisi.</p>
+  <div class="box ex"><span class="box-label">Örnek</span>
+    <p>Birim diskte \(u(1,\theta)=\sin^3\theta\). Önce özdeşlik: \(\sin^3\theta=\tfrac14(3\sin\theta-\sin3\theta)\). Her sinüse kendi \(r^n\)'ini ekle: \(\boxed{u=\tfrac14\big(3r\sin\theta-r^3\sin3\theta\big)}\). İntegral gerekmedi: sınır değeri zaten birkaç sinüs ve kosinüsün toplamıysa katsayılar doğrudan okunur.</p>
+  </div>
+  <div class="box ext"><span class="box-label">İleri · silindir ve küre</span>
+    <p>Eksenel simetrili küre problemlerinde ayırma Legendre polinomlarına götürür: \(u=\sum_l\big(A_lr^l+B_lr^{-l-1}\big)P_l(\cos\theta)\), \(P_0=1\), \(P_1=\cos\theta\), \(P_2=\tfrac12(3\cos^2\theta-1)\) (Boas §13.7). Silindirde radyal kısım Bessel fonksiyonudur (§13.5). İzlencede bu iki konu ayrıca yazmıyor; derste işlenirse bu kutuya dön.</p>
+  </div>
+
+  <div class="derive ornek">
+    <div class="derive-head"><span class="tag">Çözümlü soru</span><h4>\(2\times1\) levha, üst kenar 100°, merkezdeki sıcaklık</h4></div>
+    <ol class="steps">
+      <li class="step"><p>\(0\lt x\lt2\), \(0\lt y\lt1\); \(x=0\), \(x=2\), \(y=0\) kenarları 0°, \(y=1\) kenarı 100°. Yan kenarlar sıfır ⇒ \(\sin(n\pi x/2)\). Alt kenar sıfır ⇒ \(\sinh(n\pi y/2)\).</p></li>
+      <li class="step"><p>\(T=\sum c_n\sinh\dfrac{n\pi y}{2}\sin\dfrac{n\pi x}{2}\). \(y=1\): \(c_n\sinh\dfrac{n\pi}{2}=\dfrac{400}{n\pi}\) (tek \(n\)).</p></li>
+      <li class="step"><p>\[ \boxed{T=\frac{400}{\pi}\sum_{n\ \text{tek}}\frac1n\,\frac{\sinh(n\pi y/2)}{\sinh(n\pi/2)}\,\sin\frac{n\pi x}{2}} \]</p></li>
+      <li class="step"><p>Merkez \((1,\tfrac12)\): \(n=1\): \(\tfrac{400}{\pi}\cdot\tfrac{\sinh(\pi/4)}{\sinh(\pi/2)}\approx48{,}1\); \(n=3\): \(\approx-4{,}0\); \(n=5\): \(\approx+0{,}5\) ⇒ \(T\approx\boxed{44{,}5°}\).</p></li>
+      <li class="step"><p>Akıl kontrolü: levha sonsuz geniş olsaydı sıcaklık \(100y\), merkezde 50° olurdu. Soğuk yan kenarlar merkezi biraz aşağı çeker; 44,5° makul.</p></li>
+    </ol>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Yarı sonsuz levha probleminde \(e^{ky}\) çözümü neden atılır?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(y\to\infty\)'da sıcaklık sınırlı kalmalı</button><button type="button" data-k="b">\(x=0\) kenarında sıfır olmadığı için</button><button type="button" data-k="c">Fourier serisi yakınsamadığı için</button><button type="button" data-k="d">\(k\) negatif olduğu için</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(e^{ky}\) sınırsız büyür; levhanın uzak ucu 0°'ye yaklaşmalı.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Birim diskte \(u(1,\theta)=3+2\cos\theta-\sin2\theta\). Merkezde \(u\)?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">0</button><button type="button" data-k="b">3</button><button type="button" data-k="c">5</button><button type="button" data-k="d">4</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(u=3+2r\cos\theta-r^2\sin2\theta\); \(r=0\)'da 3, sınır değerinin ortalaması.</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">\(1\lt r\lt2\) halkasında hangi radyal fonksiyonlar tutulur?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Yalnızca \(r^n\)</button><button type="button" data-k="b">Yalnızca \(r^{-n}\)</button><button type="button" data-k="c">\(r^n\) ve \(r^{-n}\); \(n=0\)'da 1 ve \(\ln r\)</button><button type="button" data-k="d">Bessel fonksiyonları</button></div>
+      <p class="quiz-why"><span class="verdict"></span>Halkada \(r=0\) ve \(r=\infty\) bölgenin dışında; hiçbir çözüm atılmaz, iki sınır koşulu iki katsayıyı belirler.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="laplace">Bu bölümü tamamladım</button><a href="#isidalga">Sonraki: Isı ve dalga denklemleri →</a></div>
+</section>
+
+<!-- ============================================================ 10 · ISI VE DALGA -->
+<section class="chapter" id="isidalga" data-ch="isidalga">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Bölüm 10</span><span class="sess">Boas §13.3–13.4</span></p>
+    <h2>Isı ve dalga denklemleri</h2>
+    <p class="ch-lede">Zamana bağlı iki denklem, aynı plan: uzayda sinüsler, zamanda ısı için sönen bir üstel, dalga için bir salınım. Farkı başlangıç koşulu sayısı ve zamanın çözüme nasıl girdiği yaratır.</p>
+  </header>
+
+  <h3>Isı denklemi: uçları 0°'de tutulan çubuk</h3>
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>\(u_t=\alpha^2u_{xx}\), \(u(0,t)=u(L,t)=0\), \(u(x,0)=f(x)\)</h4></div>
+    <ol class="steps">
+      <li class="step"><p>\(u=X(x)T(t)\): \(\dfrac{X''}{X}=\dfrac{T'}{\alpha^2T}=-k^2\). Sabit negatif: pozitif olsaydı sıcaklık zamanla üstel büyürdü, ayrıca \(X\) iki uçta sıfır olamazdı.</p></li>
+      <li class="step"><p>\(X=\sin kx\), \(k=n\pi/L\); \(T=e^{-k^2\alpha^2t}\).</p></li>
+      <li class="step"><p>\[ \boxed{u=\sum_{n=1}^\infty b_n\,e^{-(n\pi\alpha/L)^2t}\sin\frac{n\pi x}{L}},\qquad b_n=\frac2L\int_0^Lf(x)\sin\frac{n\pi x}{L}\,dx \]</p></li>
+      <li class="step"><p>Başlangıçta her yer 100° ise \(b_n=400/(n\pi)\) (tek \(n\)): \(u=\dfrac{400}{\pi}\sum_{\text{tek}}\dfrac1ne^{-(n\pi\alpha/L)^2t}\sin\dfrac{n\pi x}{L}\).</p></li>
+      <li class="step"><p>\(n\). mod \(n^2\) kat hızlı söner. Kısa süre sonra yalnızca ilk terim kalır; zaman sabiti \(\tau_1=L^2/(\pi^2\alpha^2)\). Çubuk iki kat uzunsa dört kat yavaş soğur.</p></li>
+    </ol>
+  </div>
+
+  <h3>Uçlar 0°'de değilse: kararlı hal + geçici kısım</h3>
+  <div class="box"><span class="box-label">Sonuç</span>
+    <p>\(u(0,t)=T_1\), \(u(L,t)=T_2\) ise doğrudan ayırma çalışmaz (koşullar homojen değil). Çözümü ikiye böl:</p>
+    \[ u(x,t)=u_s(x)+w(x,t),\qquad u_s=T_1+(T_2-T_1)\frac xL\ \ (u_s''=0) \]
+    <p>\(w\) uçlarda 0 olan ısı problemidir; başlangıç değeri \(w(x,0)=f(x)-u_s(x)\). Sonra yukarıdaki seri.</p>
+  </div>
+
+  <h3>Yalıtılmış uçlar</h3>
+  <p>\(u_x(0,t)=u_x(L,t)=0\) ise \(X'\) uçlarda sıfır olmalı: \(X=\cos(n\pi x/L)\) ve \(n=0\) (sabit) da izinli.</p>
+  \[ u=\frac{a_0}{2}+\sum_{n=1}^\infty a_ne^{-(n\pi\alpha/L)^2t}\cos\frac{n\pi x}{L},\qquad t\to\infty:\ u\to\frac{a_0}{2}=\frac1L\int_0^Lf\,dx . \]
+  <p>Isı dışarı kaçamaz; sonunda her yer ilk sıcaklığın ortalamasına gelir.</p>
+
+  <h3>Dalga denklemi: iki ucu bağlı tel</h3>
+  <div class="box"><span class="box-label">Sonuç</span>
+    \[ y_{tt}=v^2y_{xx},\quad y(0,t)=y(L,t)=0:\qquad y=\sum_{n=1}^\infty\sin\frac{n\pi x}{L}\big(A_n\cos\omega_nt+B_n\sin\omega_nt\big),\quad \omega_n=\frac{n\pi v}{L} \]
+    \[ A_n=\frac2L\int_0^Ly(x,0)\sin\frac{n\pi x}{L}\,dx,\qquad \omega_nB_n=\frac2L\int_0^Ly_t(x,0)\sin\frac{n\pi x}{L}\,dx \]
+    <p>Frekanslar \(\nu_n=\dfrac{nv}{2L}\): temel frekans \(v/2L\) ve onun tam katları (harmonikler). Bırakılan tel (\(y_t=0\)): yalnızca \(A_n\). Vurulan tel (\(y=0\)): yalnızca \(B_n\).</p>
+  </div>
+
+  <figure class="fig"><svg viewBox="0 0 600 300" role="img" aria-label="Telin ilk üç titreşim modu">
+  <line class="s-muted" stroke-width="1" x1="110" y1="55" x2="530" y2="55"/>
+  <polyline points="110.0,55.0 113.5,55.7 117.0,56.4 120.5,57.0 124.0,57.7 127.5,58.4 131.0,59.1 134.5,59.7 138.0,60.4 141.5,61.1 145.0,61.7 148.5,62.4 152.0,63.0 155.5,63.7 159.0,64.3 162.5,64.9 166.0,65.6 169.5,66.2 173.0,66.8 176.5,67.4 180.0,68.0 183.5,68.6 187.0,69.2 190.5,69.7 194.0,70.3 197.5,70.8 201.0,71.4 204.5,71.9 208.0,72.4 211.5,72.9 215.0,73.4 218.5,73.9 222.0,74.3 225.5,74.8 229.0,75.2 232.5,75.6 236.0,76.0 239.5,76.4 243.0,76.8 246.5,77.2 250.0,77.5 253.5,77.8 257.0,78.2 260.5,78.5 264.0,78.8 267.5,79.0 271.0,79.3 274.5,79.5 278.0,79.7 281.5,79.9 285.0,80.1 288.5,80.3 292.0,80.4 295.5,80.6 299.0,80.7 302.5,80.8 306.0,80.9 309.5,80.9 313.0,81.0 316.5,81.0 320.0,81.0 323.5,81.0 327.0,81.0 330.5,80.9 334.0,80.9 337.5,80.8 341.0,80.7 344.5,80.6 348.0,80.4 351.5,80.3 355.0,80.1 358.5,79.9 362.0,79.7 365.5,79.5 369.0,79.3 372.5,79.0 376.0,78.8 379.5,78.5 383.0,78.2 386.5,77.8 390.0,77.5 393.5,77.2 397.0,76.8 400.5,76.4 404.0,76.0 407.5,75.6 411.0,75.2 414.5,74.8 418.0,74.3 421.5,73.9 425.0,73.4 428.5,72.9 432.0,72.4 435.5,71.9 439.0,71.4 442.5,70.8 446.0,70.3 449.5,69.7 453.0,69.2 456.5,68.6 460.0,68.0 463.5,67.4 467.0,66.8 470.5,66.2 474.0,65.6 477.5,64.9 481.0,64.3 484.5,63.7 488.0,63.0 491.5,62.4 495.0,61.7 498.5,61.1 502.0,60.4 505.5,59.7 509.0,59.1 512.5,58.4 516.0,57.7 519.5,57.0 523.0,56.4 526.5,55.7 530.0,55.0" class="s-vel" stroke-width="1.4" stroke-dasharray="5 4" opacity=".6"/>
+  <polyline points="110.0,55.0 113.5,54.3 117.0,53.6 120.5,53.0 124.0,52.3 127.5,51.6 131.0,50.9 134.5,50.3 138.0,49.6 141.5,48.9 145.0,48.3 148.5,47.6 152.0,47.0 155.5,46.3 159.0,45.7 162.5,45.1 166.0,44.4 169.5,43.8 173.0,43.2 176.5,42.6 180.0,42.0 183.5,41.4 187.0,40.8 190.5,40.3 194.0,39.7 197.5,39.2 201.0,38.6 204.5,38.1 208.0,37.6 211.5,37.1 215.0,36.6 218.5,36.1 222.0,35.7 225.5,35.2 229.0,34.8 232.5,34.4 236.0,34.0 239.5,33.6 243.0,33.2 246.5,32.8 250.0,32.5 253.5,32.2 257.0,31.8 260.5,31.5 264.0,31.2 267.5,31.0 271.0,30.7 274.5,30.5 278.0,30.3 281.5,30.1 285.0,29.9 288.5,29.7 292.0,29.6 295.5,29.4 299.0,29.3 302.5,29.2 306.0,29.1 309.5,29.1 313.0,29.0 316.5,29.0 320.0,29.0 323.5,29.0 327.0,29.0 330.5,29.1 334.0,29.1 337.5,29.2 341.0,29.3 344.5,29.4 348.0,29.6 351.5,29.7 355.0,29.9 358.5,30.1 362.0,30.3 365.5,30.5 369.0,30.7 372.5,31.0 376.0,31.2 379.5,31.5 383.0,31.8 386.5,32.2 390.0,32.5 393.5,32.8 397.0,33.2 400.5,33.6 404.0,34.0 407.5,34.4 411.0,34.8 414.5,35.2 418.0,35.7 421.5,36.1 425.0,36.6 428.5,37.1 432.0,37.6 435.5,38.1 439.0,38.6 442.5,39.2 446.0,39.7 449.5,40.3 453.0,40.8 456.5,41.4 460.0,42.0 463.5,42.6 467.0,43.2 470.5,43.8 474.0,44.4 477.5,45.1 481.0,45.7 484.5,46.3 488.0,47.0 491.5,47.6 495.0,48.3 498.5,48.9 502.0,49.6 505.5,50.3 509.0,50.9 512.5,51.6 516.0,52.3 519.5,53.0 523.0,53.6 526.5,54.3 530.0,55.0" class="s-vel" stroke-width="2.4"/>
+  <circle cx="110.0" cy="55" r="4" class="f-pole"/>
+  <circle cx="530.0" cy="55" r="4" class="f-pole"/>
+  <text class="t-ink" x="20" y="60">n = 1</text>
+  <text class="t-sym" x="544" y="60">1v/2L</text>
+  <line class="s-muted" stroke-width="1" x1="110" y1="150" x2="530" y2="150"/>
+  <polyline points="110.0,150.0 113.5,151.4 117.0,152.7 120.5,154.1 124.0,155.4 127.5,156.7 131.0,158.0 134.5,159.3 138.0,160.6 141.5,161.8 145.0,163.0 148.5,164.2 152.0,165.3 155.5,166.4 159.0,167.4 162.5,168.4 166.0,169.3 169.5,170.2 173.0,171.0 176.5,171.8 180.0,172.5 183.5,173.2 187.0,173.8 190.5,174.3 194.0,174.7 197.5,175.1 201.0,175.4 204.5,175.7 208.0,175.9 211.5,176.0 215.0,176.0 218.5,176.0 222.0,175.9 225.5,175.7 229.0,175.4 232.5,175.1 236.0,174.7 239.5,174.3 243.0,173.8 246.5,173.2 250.0,172.5 253.5,171.8 257.0,171.0 260.5,170.2 264.0,169.3 267.5,168.4 271.0,167.4 274.5,166.4 278.0,165.3 281.5,164.2 285.0,163.0 288.5,161.8 292.0,160.6 295.5,159.3 299.0,158.0 302.5,156.7 306.0,155.4 309.5,154.1 313.0,152.7 316.5,151.4 320.0,150.0 323.5,148.6 327.0,147.3 330.5,145.9 334.0,144.6 337.5,143.3 341.0,142.0 344.5,140.7 348.0,139.4 351.5,138.2 355.0,137.0 358.5,135.8 362.0,134.7 365.5,133.6 369.0,132.6 372.5,131.6 376.0,130.7 379.5,129.8 383.0,129.0 386.5,128.2 390.0,127.5 393.5,126.8 397.0,126.2 400.5,125.7 404.0,125.3 407.5,124.9 411.0,124.6 414.5,124.3 418.0,124.1 421.5,124.0 425.0,124.0 428.5,124.0 432.0,124.1 435.5,124.3 439.0,124.6 442.5,124.9 446.0,125.3 449.5,125.7 453.0,126.2 456.5,126.8 460.0,127.5 463.5,128.2 467.0,129.0 470.5,129.8 474.0,130.7 477.5,131.6 481.0,132.6 484.5,133.6 488.0,134.7 491.5,135.8 495.0,137.0 498.5,138.2 502.0,139.4 505.5,140.7 509.0,142.0 512.5,143.3 516.0,144.6 519.5,145.9 523.0,147.3 526.5,148.6 530.0,150.0" class="s-vel" stroke-width="1.4" stroke-dasharray="5 4" opacity=".6"/>
+  <polyline points="110.0,150.0 113.5,148.6 117.0,147.3 120.5,145.9 124.0,144.6 127.5,143.3 131.0,142.0 134.5,140.7 138.0,139.4 141.5,138.2 145.0,137.0 148.5,135.8 152.0,134.7 155.5,133.6 159.0,132.6 162.5,131.6 166.0,130.7 169.5,129.8 173.0,129.0 176.5,128.2 180.0,127.5 183.5,126.8 187.0,126.2 190.5,125.7 194.0,125.3 197.5,124.9 201.0,124.6 204.5,124.3 208.0,124.1 211.5,124.0 215.0,124.0 218.5,124.0 222.0,124.1 225.5,124.3 229.0,124.6 232.5,124.9 236.0,125.3 239.5,125.7 243.0,126.2 246.5,126.8 250.0,127.5 253.5,128.2 257.0,129.0 260.5,129.8 264.0,130.7 267.5,131.6 271.0,132.6 274.5,133.6 278.0,134.7 281.5,135.8 285.0,137.0 288.5,138.2 292.0,139.4 295.5,140.7 299.0,142.0 302.5,143.3 306.0,144.6 309.5,145.9 313.0,147.3 316.5,148.6 320.0,150.0 323.5,151.4 327.0,152.7 330.5,154.1 334.0,155.4 337.5,156.7 341.0,158.0 344.5,159.3 348.0,160.6 351.5,161.8 355.0,163.0 358.5,164.2 362.0,165.3 365.5,166.4 369.0,167.4 372.5,168.4 376.0,169.3 379.5,170.2 383.0,171.0 386.5,171.8 390.0,172.5 393.5,173.2 397.0,173.8 400.5,174.3 404.0,174.7 407.5,175.1 411.0,175.4 414.5,175.7 418.0,175.9 421.5,176.0 425.0,176.0 428.5,176.0 432.0,175.9 435.5,175.7 439.0,175.4 442.5,175.1 446.0,174.7 449.5,174.3 453.0,173.8 456.5,173.2 460.0,172.5 463.5,171.8 467.0,171.0 470.5,170.2 474.0,169.3 477.5,168.4 481.0,167.4 484.5,166.4 488.0,165.3 491.5,164.2 495.0,163.0 498.5,161.8 502.0,160.6 505.5,159.3 509.0,158.0 512.5,156.7 516.0,155.4 519.5,154.1 523.0,152.7 526.5,151.4 530.0,150.0" class="s-vel" stroke-width="2.4"/>
+  <circle cx="110.0" cy="150" r="4" class="f-pole"/>
+  <circle cx="320.0" cy="150" r="4" class="f-pole"/>
+  <circle cx="530.0" cy="150" r="4" class="f-pole"/>
+  <text class="t-ink" x="20" y="155">n = 2</text>
+  <text class="t-sym" x="544" y="155">2v/2L</text>
+  <line class="s-muted" stroke-width="1" x1="110" y1="245" x2="530" y2="245"/>
+  <polyline points="110.0,245.0 113.5,247.0 117.0,249.1 120.5,251.1 124.0,253.0 127.5,254.9 131.0,256.8 134.5,258.6 138.0,260.3 141.5,261.9 145.0,263.4 148.5,264.8 152.0,266.0 155.5,267.2 159.0,268.2 162.5,269.0 166.0,269.7 169.5,270.3 173.0,270.7 176.5,270.9 180.0,271.0 183.5,270.9 187.0,270.7 190.5,270.3 194.0,269.7 197.5,269.0 201.0,268.2 204.5,267.2 208.0,266.0 211.5,264.8 215.0,263.4 218.5,261.9 222.0,260.3 225.5,258.6 229.0,256.8 232.5,254.9 236.0,253.0 239.5,251.1 243.0,249.1 246.5,247.0 250.0,245.0 253.5,243.0 257.0,240.9 260.5,238.9 264.0,237.0 267.5,235.1 271.0,233.2 274.5,231.4 278.0,229.7 281.5,228.1 285.0,226.6 288.5,225.2 292.0,224.0 295.5,222.8 299.0,221.8 302.5,221.0 306.0,220.3 309.5,219.7 313.0,219.3 316.5,219.1 320.0,219.0 323.5,219.1 327.0,219.3 330.5,219.7 334.0,220.3 337.5,221.0 341.0,221.8 344.5,222.8 348.0,224.0 351.5,225.2 355.0,226.6 358.5,228.1 362.0,229.7 365.5,231.4 369.0,233.2 372.5,235.1 376.0,237.0 379.5,238.9 383.0,240.9 386.5,243.0 390.0,245.0 393.5,247.0 397.0,249.1 400.5,251.1 404.0,253.0 407.5,254.9 411.0,256.8 414.5,258.6 418.0,260.3 421.5,261.9 425.0,263.4 428.5,264.8 432.0,266.0 435.5,267.2 439.0,268.2 442.5,269.0 446.0,269.7 449.5,270.3 453.0,270.7 456.5,270.9 460.0,271.0 463.5,270.9 467.0,270.7 470.5,270.3 474.0,269.7 477.5,269.0 481.0,268.2 484.5,267.2 488.0,266.0 491.5,264.8 495.0,263.4 498.5,261.9 502.0,260.3 505.5,258.6 509.0,256.8 512.5,254.9 516.0,253.0 519.5,251.1 523.0,249.1 526.5,247.0 530.0,245.0" class="s-vel" stroke-width="1.4" stroke-dasharray="5 4" opacity=".6"/>
+  <polyline points="110.0,245.0 113.5,243.0 117.0,240.9 120.5,238.9 124.0,237.0 127.5,235.1 131.0,233.2 134.5,231.4 138.0,229.7 141.5,228.1 145.0,226.6 148.5,225.2 152.0,224.0 155.5,222.8 159.0,221.8 162.5,221.0 166.0,220.3 169.5,219.7 173.0,219.3 176.5,219.1 180.0,219.0 183.5,219.1 187.0,219.3 190.5,219.7 194.0,220.3 197.5,221.0 201.0,221.8 204.5,222.8 208.0,224.0 211.5,225.2 215.0,226.6 218.5,228.1 222.0,229.7 225.5,231.4 229.0,233.2 232.5,235.1 236.0,237.0 239.5,238.9 243.0,240.9 246.5,243.0 250.0,245.0 253.5,247.0 257.0,249.1 260.5,251.1 264.0,253.0 267.5,254.9 271.0,256.8 274.5,258.6 278.0,260.3 281.5,261.9 285.0,263.4 288.5,264.8 292.0,266.0 295.5,267.2 299.0,268.2 302.5,269.0 306.0,269.7 309.5,270.3 313.0,270.7 316.5,270.9 320.0,271.0 323.5,270.9 327.0,270.7 330.5,270.3 334.0,269.7 337.5,269.0 341.0,268.2 344.5,267.2 348.0,266.0 351.5,264.8 355.0,263.4 358.5,261.9 362.0,260.3 365.5,258.6 369.0,256.8 372.5,254.9 376.0,253.0 379.5,251.1 383.0,249.1 386.5,247.0 390.0,245.0 393.5,243.0 397.0,240.9 400.5,238.9 404.0,237.0 407.5,235.1 411.0,233.2 414.5,231.4 418.0,229.7 421.5,228.1 425.0,226.6 428.5,225.2 432.0,224.0 435.5,222.8 439.0,221.8 442.5,221.0 446.0,220.3 449.5,219.7 453.0,219.3 456.5,219.1 460.0,219.0 463.5,219.1 467.0,219.3 470.5,219.7 474.0,220.3 477.5,221.0 481.0,221.8 484.5,222.8 488.0,224.0 491.5,225.2 495.0,226.6 498.5,228.1 502.0,229.7 505.5,231.4 509.0,233.2 512.5,235.1 516.0,237.0 519.5,238.9 523.0,240.9 526.5,243.0 530.0,245.0" class="s-vel" stroke-width="2.4"/>
+  <circle cx="110.0" cy="245" r="4" class="f-pole"/>
+  <circle cx="250.0" cy="245" r="4" class="f-pole"/>
+  <circle cx="390.0" cy="245" r="4" class="f-pole"/>
+  <circle cx="530.0" cy="245" r="4" class="f-pole"/>
+  <text class="t-ink" x="20" y="250">n = 3</text>
+  <text class="t-sym" x="544" y="250">3v/2L</text>
+</svg><figcaption>İlk üç mod: \(n\). modun \(n-1\) iç düğümü var. Bir noktadan çekilen telde, o noktada düğümü olan modlar hiç uyarılmaz.</figcaption></figure>
+
+  <div class="derive">
+    <div class="derive-head"><span class="tag">Adım adım</span><h4>Ortasından \(h\) kadar çekilip bırakılan tel</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Başlangıç şekli üçgen: \(y(x,0)=2hx/L\) (\(x\lt L/2\)), \(2h(L-x)/L\) (\(x>L/2\)); \(y_t(x,0)=0\) ⇒ \(B_n=0\).</p></li>
+      <li class="step"><p>\(A_n=\dfrac2L\Big[\int_0^{L/2}\dfrac{2hx}{L}\sin\dfrac{n\pi x}{L}dx+\int_{L/2}^L\dfrac{2h(L-x)}{L}\sin\dfrac{n\pi x}{L}dx\Big]\). Kısmi integrasyonla \(\boxed{A_n=\dfrac{8h}{n^2\pi^2}\sin\dfrac{n\pi}{2}}\).</p></li>
+      <li class="step"><p>Çift \(n\)'ler sıfır: bu modların ortada düğümü var, ama tel tam ortadan çekildi. \(y=\dfrac{8h}{\pi^2}\Big[\sin\dfrac{\pi x}{L}\cos\dfrac{\pi vt}{L}-\dfrac19\sin\dfrac{3\pi x}{L}\cos\dfrac{3\pi vt}{L}+\dots\Big]\).</p></li>
+      <li class="step"><p>Genel kural: tel \(x=d\)'den çekilirse \(A_n=\dfrac{2hL^2}{n^2\pi^2d(L-d)}\sin\dfrac{n\pi d}{L}\). \(d=L/3\) için 3'ün katı olan modlar eksik. Katsayılar \(1/n^2\) ile düştüğü için ses temel frekansın baskın olduğu yumuşak bir tondur.</p></li>
+    </ol>
+  </div>
+
+  <div class="derive ornek">
+    <div class="derive-head"><span class="tag">Çözümlü soru</span><h4>Bir ucu birden 100°'ye çıkarılan çubuk</h4></div>
+    <ol class="steps">
+      <li class="step"><p>Uzunluk \(L\), başlangıçta her yer 0°. \(t=0\)'dan itibaren \(x=0\) ucu 0°'de, \(x=L\) ucu 100°'de tutuluyor. Kararlı hal: \(u_s=100x/L\).</p></li>
+      <li class="step"><p>Geçici kısım: \(w(x,0)=0-u_s=-100x/L\). \(f=x\) serisinden \(b_n=-\dfrac{100}{L}\cdot\dfrac{2L(-1)^{n+1}}{n\pi}=\dfrac{200(-1)^n}{n\pi}\).</p></li>
+      <li class="step"><p>\[ \boxed{u=\frac{100x}{L}+\frac{200}{\pi}\sum_{n=1}^\infty\frac{(-1)^n}{n}\,e^{-(n\pi\alpha/L)^2t}\sin\frac{n\pi x}{L}} \]</p></li>
+      <li class="step"><p>Kontrol: \(t=0\)'da seri tam olarak \(-100x/L\)'nin Fourier serisi, yani \(u=0\) ✓. \(x=L\)'de bütün sinüsler sıfır, \(u=100\) ✓. \(t\to\infty\): \(u\to100x/L\) ✓.</p></li>
+    </ol>
+  </div>
+
+  <div class="quiz-set">
+    <h3>Kendini sına</h3>
+    <div class="quiz" data-answer="a">
+      <p class="quiz-q">Isı denkleminde ayırma sabiti neden \(-k^2\) seçilir?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">Pozitif olsa çözüm zamanla üstel büyürdü</button><button type="button" data-k="b">\(\sinh\) sınır koşulunu sağlasın diye</button><button type="button" data-k="c">Fourier serisi yalnızca negatiflerde vardır</button><button type="button" data-k="d">Denklem parabolik olduğu için</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(T'=+k^2\alpha^2T\) olsaydı \(T=e^{k^2\alpha^2t}\) büyürdü; ayrıca \(\sinh\) iki uçta sıfır olamaz.</p>
+    </div>
+    <div class="quiz" data-answer="b">
+      <p class="quiz-q">Uzunluğu \(L\), iki ucu bağlı telde dalga hızı \(v\). Temel frekans?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">\(v/L\)</button><button type="button" data-k="b">\(v/2L\)</button><button type="button" data-k="c">\(2v/L\)</button><button type="button" data-k="d">\(\pi v/L\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(\omega_1=\pi v/L\), \(\nu_1=\omega_1/2\pi=v/2L\): dalga boyu \(2L\).</p>
+    </div>
+    <div class="quiz" data-answer="c">
+      <p class="quiz-q">Yalıtılmış çubukta \(u(x,0)=x\) (\(0\lt x\lt L\)). Uzun süre sonra sıcaklık?</p>
+      <div class="quiz-opts"><button type="button" data-k="a">0</button><button type="button" data-k="b">\(L\)</button><button type="button" data-k="c">\(L/2\)</button><button type="button" data-k="d">\(x\)</button></div>
+      <p class="quiz-why"><span class="verdict"></span>\(a_0/2=\frac1L\int_0^Lx\,dx=L/2\): ilk sıcaklığın ortalaması.</p>
+    </div>
+  </div>
+  <div class="ch-foot"><button type="button" class="btn done-btn" data-done="isidalga">Bu bölümü tamamladım</button><a href="#karmasik">Sonraki: Karmaşık sayılar ve fonksiyonlar →</a></div>
+</section>
+
 
 <!-- ============================================================ 8 -->
 <section class="chapter" id="karmasik" data-ch="karmasik">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm 8</span><span class="sess">Notların s. 58–69 · Boas 46–76</span></p>
+    <p class="eyebrow"><span>Bölüm 11</span><span class="sess">Notların s. 58–69 · Boas 46–76</span></p>
     <h2>Karmaşık sayılar ve temel fonksiyonlar</h2>
     <p class="ch-lede">Bahar 2026 MT2 S3 karmaşık katsayılı bir ikinci derece denklemin köklerini, Yaz 2025 MT1 S1a \(\tanh(i\pi+\ln2)\)'yi sordu. İkisi de kutupsal biçim ve üstel tanımlarla birkaç satırda biter.</p>
   </header>
@@ -1187,7 +1484,7 @@ body.nav-lock { overflow: hidden; }
     <ol class="steps">
       <li class="step"><p>\((1+i)^8=(\sqrt2e^{i\pi/4})^8=16e^{2\pi i}=\boxed{16}\).</p></li>
       <li class="step"><p>\(e^z=-2=2e^{i\pi}\) ⇒ \(z=\ln2+i(\pi+2\pi k)\). Gerçel üstel negatif olamaz ama karmaşık üstel olabilir.</p></li>
-      <li class="step"><p>\(\sin z=2\): \(z=-i\log\big(2i+\sqrt{1-4}\big)=-i\log\big(i(2\pm\sqrt3)\big)\) ⇒ \(\boxed{z=\tfrac\pi2+2\pi k\pm i\ln(2+\sqrt3)}\), \(\ln(2+\sqrt3)\approx1{,}317\). Karmaşık düzlemde \(|\sin z|\) sınırsız (Bölüm 8).</p></li>
+      <li class="step"><p>\(\sin z=2\): \(z=-i\log\big(2i+\sqrt{1-4}\big)=-i\log\big(i(2\pm\sqrt3)\big)\) ⇒ \(\boxed{z=\tfrac\pi2+2\pi k\pm i\ln(2+\sqrt3)}\), \(\ln(2+\sqrt3)\approx1{,}317\). Karmaşık düzlemde \(|\sin z|\) sınırsız (Bölüm 11).</p></li>
     </ol>
   </div>
 
@@ -1216,7 +1513,7 @@ body.nav-lock { overflow: hidden; }
 <!-- ============================================================ 9 -->
 <section class="chapter" id="analitik" data-ch="analitik">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm 9</span><span class="sess">Notların s. 70–75 · Boas 666–671</span></p>
+    <p class="eyebrow"><span>Bölüm 12</span><span class="sess">Notların s. 70–75 · Boas 666–671</span></p>
     <h2>Analitik fonksiyonlar, Cauchy–Riemann ve harmonik fonksiyonlar</h2>
     <p class="ch-lede">Bahar 2026 final S1 ve Yaz 2025 MT1 S2 aynı soruydu: sanal kısım verilmiş, gerçel kısmı bulun ve \(f(z)\)'yi \(z\) cinsinden yazın. Biri kutupsal, biri Kartezyen koordinatlarda.</p>
   </header>
@@ -1244,7 +1541,7 @@ body.nav-lock { overflow: hidden; }
   </div>
 
   <div class="box exam"><span class="box-label">Çıkmış soru · Yaz 2025 MT1 S2</span>
-    <p>\(v=9x^2y-3y^3\). \(u_x=v_y=9x^2-9y^2\) ⇒ \(u=3x^3-9xy^2+g(y)\); \(u_y=-18xy+g'=-v_x=-18xy\) ⇒ \(g=C\). \(f=3x^3-9xy^2+i(9x^2y-3y^3)=3z^3\). \(f'(1-i)=9(1-i)^2=-18i\). (c) \(\oint_{|z-1|=9}\dfrac{f(z)}{(z-(1-i))^2}dz=2\pi i\,f'(1-i)=36\pi\) (Bölüm 10).</p>
+    <p>\(v=9x^2y-3y^3\). \(u_x=v_y=9x^2-9y^2\) ⇒ \(u=3x^3-9xy^2+g(y)\); \(u_y=-18xy+g'=-v_x=-18xy\) ⇒ \(g=C\). \(f=3x^3-9xy^2+i(9x^2y-3y^3)=3z^3\). \(f'(1-i)=9(1-i)^2=-18i\). (c) \(\oint_{|z-1|=9}\dfrac{f(z)}{(z-(1-i))^2}dz=2\pi i\,f'(1-i)=36\pi\) (Bölüm 13).</p>
     <p><b>Kısayol (Milne-Thomson):</b> \(f'(z)=u_x-iu_y\)'de \(x=z\), \(y=0\) koyun; ya da \(f(z)=u(z,0)+iv(z,0)\) (sabit dışında). Burada \(v(z,0)=0\), \(u_x(z,0)=9z^2\) ⇒ \(f=3z^3\).</p>
   </div>
 
@@ -1281,13 +1578,13 @@ body.nav-lock { overflow: hidden; }
 <!-- ============================================================ 10 -->
 <section class="chapter" id="cauchy" data-ch="cauchy">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm 10</span><span class="sess">Notların s. 75–81 · Boas 671–681</span></p>
+    <p class="eyebrow"><span>Bölüm 13</span><span class="sess">Notların s. 75–81 · Boas 671–681</span></p>
     <h2>Karmaşık integraller, Cauchy teoremi ve integral formülü</h2>
     <p class="ch-lede">Üç çıkmış soru: bir kontur içinde yalnızca bir terimin kutbu kalıyor (Bahar MT2 S4); aynı integral iki yol üzerinde (Bahar MT2 S5, final S4); türev formülüyle (Yaz MT1 S2c). Hepsinde ilk iş, kutupların konturun içinde olup olmadığına bakmak.</p>
   </header>
 
   <h3>Çizgi integrali</h3>
-  <p>\(\int_Cf(z)\,dz=\int_C(u\,dx-v\,dy)+i\int_C(v\,dx+u\,dy)\). Pratikte yolu parametrize edin: doğru parçası \(z=z_A+(z_B-z_A)t\), çember \(z=z_0+\rho e^{i\theta}\), \(dz=i\rho e^{i\theta}d\theta\). <b>ML eşitsizliği:</b> \(\big|\int_Cf\,dz\big|\le M\cdot L\) (\(M\): \(|f|\)'nin üst sınırı, \(L\): yol uzunluğu); limit teoremlerinin (Bölüm 12) temeli.</p>
+  <p>\(\int_Cf(z)\,dz=\int_C(u\,dx-v\,dy)+i\int_C(v\,dx+u\,dy)\). Pratikte yolu parametrize edin: doğru parçası \(z=z_A+(z_B-z_A)t\), çember \(z=z_0+\rho e^{i\theta}\), \(dz=i\rho e^{i\theta}d\theta\). <b>ML eşitsizliği:</b> \(\big|\int_Cf\,dz\big|\le M\cdot L\) (\(M\): \(|f|\)'nin üst sınırı, \(L\): yol uzunluğu); limit teoremlerinin (Bölüm 15) temeli.</p>
   \[ \oint_{|z-a|=\rho}\frac{dz}{(z-a)^n}=\int_0^{2\pi}\frac{i\rho e^{i\theta}}{\rho^ne^{in\theta}}d\theta=\begin{cases}2\pi i,&amp;n=1\\0,&amp;n\ne1\end{cases} \]
 
   <h3>Cauchy teoremi ve yoldan bağımsızlık</h3>
@@ -1358,7 +1655,7 @@ body.nav-lock { overflow: hidden; }
 <!-- ============================================================ 11 -->
 <section class="chapter" id="laurent" data-ch="laurent">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm 11</span><span class="sess">Notların s. 81–98 · Boas 681–689</span></p>
+    <p class="eyebrow"><span>Bölüm 14</span><span class="sess">Notların s. 81–98 · Boas 681–689</span></p>
     <h2>Taylor ve Laurent serileri, tekilliklerin sınıflandırılması</h2>
     <p class="ch-lede">Bahar 2026 finalinin S2'si “bütün Laurent açılımlarını bölgeleriyle bulun”, S3'ü “tekillikleri sınıflandırın” dedi. Yaz 2025 MT1 S1'in iki şıkkı da aynıydı. İkisi de geometrik seri ve sıfır mertebesi saymaya iner.</p>
   </header>
@@ -1401,7 +1698,7 @@ body.nav-lock { overflow: hidden; }
     <dt>Kaldırılabilir</dt><dd>Esas kısım yok; \(\lim_{z\to z_0}f\) sonlu. Örnek: \(\dfrac{\sin(z-\pi)}{z-\pi}\), \(z=\pi\) (Yaz MT1 S1b).</dd>
     <dt>\(m\). mertebe kutup</dt><dd>Esas kısım \(b_m/(z-z_0)^m\)'de biter; \((z-z_0)^mf\) sonlu ve sıfırdan farklı bir limite gider.</dd>
     <dt>Esaslı</dt><dd>Esas kısım sonsuz terimli. Örnek \(e^{1/z}=\sum\frac{1}{n!z^n}\), \(z=0\). Yakınında \(f\) neredeyse her değeri alır (Picard).</dd>
-    <dt>Dal noktası</dt><dd>Laurent serisi yok; \(\sqrt z\), \(\log z\) (Bölüm 8).</dd>
+    <dt>Dal noktası</dt><dd>Laurent serisi yok; \(\sqrt z\), \(\log z\) (Bölüm 11).</dd>
   </dl>
   <div class="box"><span class="box-label">Sonuç · sıfır sayma kuralı (notların s. 98)</span>
     <p>\(f=g/h\), \(g\)'nin \(z_0\)'da \(n\). mertebe, \(h\)'nin \(m\). mertebe sıfırı varsa: \(m>n\) ise \((m-n)\). mertebe kutup; \(m\le n\) ise kaldırılabilir. Sıfır mertebesi = \(z_0\)'da sıfır olmayan ilk türevin mertebesi.</p>
@@ -1450,13 +1747,13 @@ body.nav-lock { overflow: hidden; }
 <!-- ============================================================ 12 -->
 <section class="chapter" id="rezidu" data-ch="rezidu">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm 12</span><span class="sess">Notların s. 96–115 · Boas 682–716 · Hildebrand 575–596</span></p>
+    <p class="eyebrow"><span>Bölüm 15</span><span class="sess">Notların s. 96–115 · Boas 682–716 · Hildebrand 575–596</span></p>
     <h2>Rezidüler, rezidü teoremi ve reel integraller</h2>
     <p class="ch-lede">Bahar 2026 finalinin en büyük sorusu (30 puan): reel eksende kutbu olan bir Fourier integrali. Yaz 2025 MT1'in 60 puanı (S3 ve S4) yine rezidülerdi. Bu bölüm, beş integral tipini ve onları kapatan limit teoremlerini toplar.</p>
   </header>
 
   <h3>Rezidü ve hesaplama kuralları</h3>
-  <p>\(\mathrm{Res}\{f,z_0\}=b_1\): Laurent serisindeki \(1/(z-z_0)\) katsayısı. Çünkü \(\oint\) alınınca yalnızca bu terim yaşar (Bölüm 10).</p>
+  <p>\(\mathrm{Res}\{f,z_0\}=b_1\): Laurent serisindeki \(1/(z-z_0)\) katsayısı. Çünkü \(\oint\) alınınca yalnızca bu terim yaşar (Bölüm 13).</p>
   <div class="box"><span class="box-label">Sonuç</span>
     \[ \text{basit kutup: }\ \mathrm{Res}=\lim_{z\to z_0}(z-z_0)f(z)=\frac{N(z_0)}{D'(z_0)}\quad\big(f=N/D\big) \]
     \[ m.\ \text{mertebe kutup: }\ \mathrm{Res}=\frac{1}{(m-1)!}\lim_{z\to z_0}\frac{d^{m-1}}{dz^{m-1}}\big[(z-z_0)^mf(z)\big] \]
@@ -1568,6 +1865,11 @@ body.nav-lock { overflow: hidden; }
       \[ h_i=|\partial\mathbf r/\partial u_i|,\quad d\tau=h_1h_2h_3\,du_1du_2du_3 \]
       \[ \text{silindirik }(1,r,1),\quad \text{küresel }(1,r,r\sin\theta) \]
       \[ \nabla\cdot\mathbf F=\tfrac{1}{h_1h_2h_3}\textstyle\sum_i\partial_i\big(\tfrac{h_1h_2h_3}{h_i}F_i\big) \]</div>
+    <div class="card"><h5>Kısmi diferansiyel denklemler</h5>
+      \[ \Delta=B^2-4AC:\ \lt0\ \text{eliptik},\ =0\ \text{parabolik},\ >0\ \text{hiperbolik} \]
+      \[ u=\tfrac12[\varphi(x-vt)+\varphi(x+vt)]+\tfrac{1}{2v}\textstyle\int_{x-vt}^{x+vt}\psi \]
+      \[ b_n=\tfrac2L\textstyle\int_0^Lf\sin\frac{n\pi x}{L}dx;\ \ \text{ısı: }e^{-(n\pi\alpha/L)^2t},\ \text{tel: }\omega_n=\frac{n\pi v}{L} \]
+      <p>Levha: sinüs + \(\sinh\) ya da \(e^{-ky}\). Disk: \(r^n(a_n\cos n\theta+b_n\sin n\theta)\).</p></div>
     <div class="card"><h5>Karmaşık sayılar</h5>
       \[ z^{1/n}=r^{1/n}e^{i(\theta+2\pi k)/n},\quad \log z=\ln|z|+i(\theta+2\pi k) \]
       \[ \sin(iz)=i\sinh z,\quad \cos(iz)=\cosh z,\quad z^a=e^{a\log z} \]</div>

@@ -7,7 +7,7 @@
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>PHYS 210 Çözüm Defteri</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="PHYS 210 çıkmış sınav soruları ve Boas problem setlerinden seçilmiş soruların Türkçe, adım adım çözümleri.">
+<meta name="description" content="PHYS 210 çıkmış sınav soruları, Boas problem setlerinden seçilmiş sorular ve kısmi diferansiyel denklem sorularının Türkçe, adım adım çözümleri.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,500;0,600;1,500;1,600&display=swap">
@@ -460,7 +460,7 @@ td .nb { display: inline-block; margin: .1rem 0; }
 .slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
 .src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
 figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
-figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig > svg { display: block; width: 100%; height: auto; }
 figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
 .fig .s-ink { stroke: var(--ink); fill: none; }
 .fig .s-muted { stroke: var(--muted); fill: none; }
@@ -469,7 +469,7 @@ figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem 
 .fig .s-vel { stroke: var(--vel); fill: none; }
 .fig .s-force { stroke: var(--force); fill: none; }
 .fig .f-region { fill: var(--panel-2); stroke: none; }
-.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig > svg text { font: 500 12px var(--font-mono); fill: var(--muted); }
 .fig text.t-ink { fill: var(--ink); }
 .fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
 .fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
@@ -571,10 +571,10 @@ body.nav-lock { overflow: hidden; }
     <p class="nav-title">PHYS 210 · Matematiksel Yöntemler II</p>
     <ul>
       <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
-      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
-      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
-      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
-      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 formatında 2 sınav + 3 sınav</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>15 bölüm · çözümlü sorular</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>54 soru · 5 çıkmış sınav</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 18 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 · MT2 · eski kalıp</span></a></li>
     </ul>
     <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
   </div>
@@ -584,9 +584,9 @@ body.nav-lock { overflow: hidden; }
 <header class="hero" lang="tr">
   <div class="hero-in">
     <div>
-      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Bahar 2026 · Yaz 2025</span><span>Boas problem setleri</span></p>
+      <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Bahar 2026 · Yaz 2025 · Güz 2026</span><span>Boas problem setleri</span></p>
       <h1>PHYS 210 <i>Çözüm Defteri</i></h1>
-      <p class="lede">İki dönemin beş sınavındaki 21 soru ve Boas problem setlerinden seçilmiş vektör ve karmaşık analiz soruları; Türkçe, adım adım. Hocaların el yazısı anahtarlarıyla karşılaştırıldı, sayısal sonuçlar ayrıca hesaplandı.</p>
+      <p class="lede">İki dönemin beş sınavındaki 21 soru ve Boas problem setlerinden seçilmiş vektör ve karmaşık analiz soruları; Güz 2026 izlencesine eklenen kısmi diferansiyel denklemler için 11 soru. Türkçe, adım adım. Hocaların el yazısı anahtarlarıyla karşılaştırıldı, sayısal sonuçlar ayrıca hesaplandı.</p>
     </div>
     <div class="hero-card">
       <div class="hero-stats">
@@ -1110,6 +1110,163 @@ body.nav-lock { overflow: hidden; }
         <li class="step"><p>\(\nabla^2f=\tfrac{1}{r^2}\partial_r(r^2\partial_rf)\), \(f=1/r\): \(\tfrac{1}{r^2}\partial_r(-1)=0\). İki sonuç aynı şey: \(\nabla(1/r)=-\hat{\mathbf r}/r^2\).</p></li>
       </ol></div>
     <label class="solved"><input type="checkbox" id="sv-v10"> Çözdüm</label>
+  </article>
+</section>
+
+
+<!-- ================================================= KISMİ DİFERANSİYEL DENKLEMLER -->
+<section class="topic" id="pde" data-topic="Kısmi diferansiyel denklemler">
+  <header class="ch-head">
+    <p class="eyebrow"><span>Güz 2026 izlencesi</span><span class="sess">Boas §13.1–13.4 · MT2 hazırlığı</span></p>
+    <h2>Kısmi diferansiyel denklemler</h2>
+    <p class="ch-lede">Bu konu eski dönemlerin sınavlarında ve problem setlerinde yoktu; sorular Boas'ın 13. bölümündeki standart tiplere göre yazıldı. Sıra, konu defterindeki Bölüm 8–10 ile aynı: tür ve basit yöntemler, Laplace, ısı ve dalga.</p>
+  </header>
+
+  <article class="prob" id="p1" data-short="Dört denklemin türü">
+    <div class="prob-head"><span class="pid">KDD 1</span><span class="slot">tür</span><span class="lvl">§13.1</span></div>
+    <h3>Sınıflandırma ve genel çözüm</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Türlerini belirleyin: (a) \(u_{xx}-4u_{xy}+3u_{yy}=0\); (b) \(u_{xx}+2u_{xy}+u_{yy}=0\); (c) \(u_{xx}+u_{yy}+2u_x=0\); (d) \(x\,u_{xx}+u_{yy}=0\). (a) ve (b) için \(u=f(y+mx)\) deneyerek genel çözümü bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(\Delta=B^2-4AC\); \(Am^2+Bm+C=0\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\Delta=16-12=4>0\): hiperbolik. (b) \(\Delta=4-4=0\): parabolik. (c) \(\Delta=-4\): eliptik (\(2u_x\) türü değiştirmez). (d) \(\Delta=-4x\): \(x>0\)'da eliptik, \(x\lt0\)'da hiperbolik, \(x=0\) çizgisinde parabolik.</p></li>
+        <li class="step"><p>\(u=f(y+mx)\) için \(u_{xx}=m^2f''\), \(u_{xy}=mf''\), \(u_{yy}=f''\) ⇒ denklem \((Am^2+Bm+C)f''=0\).</p></li>
+        <li class="step"><p>(a) \(m^2-4m+3=0\) ⇒ \(m=1,3\): \(\boxed{u=f(y+x)+g(y+3x)}\). İki ayrı gerçel kök: hiperbolik denklemin iki karakteristik ailesi.</p></li>
+        <li class="step"><p>(b) \(m^2+2m+1=0\) ⇒ \(m=-1\) çift kök. İkinci çözüm \(x\) ile çarpılarak elde edilir: \(\boxed{u=f(y-x)+x\,g(y-x)}\). Kontrol: \(x g\) için \(u_{xx}+2u_{xy}+u_{yy}=(-2g'+xg'')+2(g'-xg'')+xg''=0\) ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p1"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p2" data-short="u_xy = x + y, iki koşul">
+    <div class="prob-head"><span class="pid">KDD 2</span><span class="slot">doğrudan integral</span><span class="lvl">§13.1</span></div>
+    <h3>\(u_{xy}=x+y\)</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(u_{xy}=x+y\), \(u(x,0)=x^2\), \(u(0,y)=\sin y\) problemini çözün.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Her integralde bir keyfi fonksiyon</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(y\)'ye göre: \(u_x=xy+\tfrac12y^2+F(x)\). \(x\)'e göre: \(u=\tfrac12x^2y+\tfrac12xy^2+f(x)+g(y)\) (\(f'=F\)).</p></li>
+        <li class="step"><p>\(u(x,0)=f(x)+g(0)=x^2\), \(u(0,y)=f(0)+g(y)=\sin y\). Toplayınca \(f(x)+g(y)=x^2+\sin y-[f(0)+g(0)]\), ve \(f(0)+g(0)=u(0,0)=0\).</p></li>
+        <li class="step"><p>\(\boxed{u=\tfrac12x^2y+\tfrac12xy^2+x^2+\sin y}\). Kontrol: \(u_{xy}=x+y\) ✓, iki koşul ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p2"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p3" data-short="2u_x + 3u_y = 0">
+    <div class="prob-head"><span class="pid">KDD 3</span><span class="slot">karakteristik</span><span class="lvl">§13.1</span></div>
+    <h3>Birinci mertebe, sabit katsayılı</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(2u_x+3u_y=0\), \(u(x,0)=e^{-x^2}\). Çözün ve sonucu geometrik olarak yorumlayın.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(au_x+bu_y=0\Rightarrow u=f(bx-ay)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(a=2\), \(b=3\): \(u=f(3x-2y)\). Kontrol: \(2\cdot3f'+3\cdot(-2)f'=0\) ✓.</p></li>
+        <li class="step"><p>\(y=0\): \(f(3x)=e^{-x^2}\) ⇒ \(f(s)=e^{-s^2/9}\) ⇒ \(\boxed{u=e^{-(3x-2y)^2/9}=e^{-(x-2y/3)^2}}\).</p></li>
+        <li class="step"><p>Yorum: \(u\), \(3x-2y=\) sabit doğruları (yönü \((2,3)\)) boyunca sabit. \(y\) yüksekliğinde aynı Gauss tepesi \(x=2y/3\)'e kaymıştır; \(y\)'yi zaman gibi düşünürsen tepe \(2/3\) hızıyla şeklini bozmadan ilerler.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p3"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p4" data-short="d'Alembert: iki başlangıç">
+    <div class="prob-head"><span class="pid">KDD 4</span><span class="slot">d'Alembert</span><span class="lvl">§13.4</span></div>
+    <h3>Sonsuz telde iki başlangıç koşulu</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(u_{tt}=v^2u_{xx}\), \(-\infty\lt x\lt\infty\). (a) \(v=1\), \(u(x,0)=\dfrac{1}{1+x^2}\), \(u_t(x,0)=0\). (b) \(u(x,0)=0\), \(u_t(x,0)=2xe^{-x^2}\).</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(u=\tfrac12[\varphi(x-vt)+\varphi(x+vt)]+\tfrac{1}{2v}\int_{x-vt}^{x+vt}\psi\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(\psi=0\): \(\boxed{u=\tfrac12\Big[\dfrac{1}{1+(x-t)^2}+\dfrac{1}{1+(x+t)^2}\Big]}\). Başlangıçtaki tepe yarı yüksekliğinde iki tepeye ayrılır; biri sağa, biri sola birim hızla gider.</p></li>
+        <li class="step"><p>(b) \(\varphi=0\): \(\int2se^{-s^2}ds=-e^{-s^2}\) ⇒ \(\boxed{u=\dfrac{1}{2v}\Big[e^{-(x-vt)^2}-e^{-(x+vt)^2}\Big]}\).</p></li>
+        <li class="step"><p>Kontrol (b): \(t=0\)'da \(u=0\) ✓; \(u_t(x,0)=\tfrac{1}{2v}\big[2vx\,e^{-x^2}+2vx\,e^{-x^2}\big]=2xe^{-x^2}\) ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p4"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p5" data-short="x(π − x) serisi ve yarı sonsuz şerit">
+    <div class="prob-head"><span class="pid">KDD 5</span><span class="slot">Laplace</span><span class="lvl">§13.2</span></div>
+    <h3>Fourier katsayısından levhaya</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>(a) \(f(x)=x(\pi-x)\)'in \((0,\pi)\)'de sinüs serisini bulun. (b) \(0\lt x\lt\pi\), \(y>0\) şeridinde \(\nabla^2u=0\); \(u(0,y)=u(\pi,y)=0\), \(y\to\infty\)'da \(u\to0\), \(u(x,0)=x(\pi-x)\). (c) \(u(\pi/2,1)\)'i yaklaşık hesaplayın.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki kısmi integrasyon, sonra \(e^{-ny}\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>(a) \(b_n=\dfrac2\pi\int_0^\pi x(\pi-x)\sin nx\,dx=\dfrac2\pi\cdot\dfrac{2\big(1-(-1)^n\big)}{n^3}\) ⇒ \(\boxed{b_n=\dfrac{8}{\pi n^3}}\) (tek \(n\)), çiftlerde 0.</p></li>
+        <li class="step"><p>(b) Yan kenarlar ⇒ \(\sin nx\); sonsuzda sınırlı ⇒ \(e^{-ny}\): \(\boxed{u=\dfrac8\pi\sum_{n\ \text{tek}}\dfrac{1}{n^3}e^{-ny}\sin nx}\).</p></li>
+        <li class="step"><p>(c) \(n=1\): \(\tfrac8\pi e^{-1}\approx0{,}937\); \(n=3\): \(\tfrac{8}{27\pi}e^{-3}(-1)\approx-0{,}005\) ⇒ \(u\approx\boxed{0{,}932}\). \(1/n^3\) ve \(e^{-ny}\) birlikte seriyi çok hızlı yakınsatır.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p5"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p6" data-short="Kare: iki sıcak kenar">
+    <div class="prob-head"><span class="pid">KDD 6</span><span class="slot">Laplace</span><span class="lvl">§13.2</span></div>
+    <h3>İki kenarı sıcak kare levha</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Kenarı 1 olan kare levhanın \(y=0\) ve \(x=0\) kenarları 100°, diğer iki kenarı 0°'de. Kararlı hal sıcaklığını seri olarak yazın ve merkezdeki sıcaklığı integral almadan bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Süperpozisyon ve simetri</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Problemi ikiye böl: \(u=u_1+u_2\). \(u_1\): yalnızca alt kenar 100°. \(u_2\): yalnızca sol kenar 100°.</p></li>
+        <li class="step"><p>\(u_1=\dfrac{400}{\pi}\sum_{\text{tek}}\dfrac{\sinh n\pi(1-y)}{n\sinh n\pi}\sin n\pi x\); \(u_2\) aynı ifadede \(x\leftrightarrow y\): \(\dfrac{400}{\pi}\sum_{\text{tek}}\dfrac{\sinh n\pi(1-x)}{n\sinh n\pi}\sin n\pi y\).</p></li>
+        <li class="step"><p>Merkez: dört kenarın her biri sırayla 100° olan dört problemi düşün. Toplamları “her kenar 100°” problemidir, çözümü her yerde 100°. Kare simetrik olduğundan dördü merkezde aynı değeri verir: her biri 25°.</p></li>
+        <li class="step"><p>İki sıcak kenar: \(u(\tfrac12,\tfrac12)=25+25=\boxed{50°}\). (Seriden kontrol: \(u_1\)'in merkez değeri \(25{,}000\).)</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p6"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p7" data-short="Disk: yarısı sıcak">
+    <div class="prob-head"><span class="pid">KDD 7</span><span class="slot">disk</span><span class="lvl">§13.2, kutupsal</span></div>
+    <h3>Üst yarısı 100°, alt yarısı 0° olan disk</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Birim diskin sınırında \(u(1,\theta)=100\) (\(0\lt\theta\lt\pi\)), \(u(1,\theta)=0\) (\(\pi\lt\theta\lt2\pi\)). Disk içindeki kararlı hal sıcaklığını bulun. Merkezde sıcaklık kaç?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(u=\frac{a_0}{2}+\sum r^n(a_n\cos n\theta+b_n\sin n\theta)\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\tfrac{a_0}{2}=\tfrac{1}{2\pi}\int_0^{\pi}100\,d\theta=50\). \(a_n=\tfrac1\pi\int_0^\pi100\cos n\theta\,d\theta=0\).</p></li>
+        <li class="step"><p>\(b_n=\tfrac1\pi\int_0^\pi100\sin n\theta\,d\theta=\dfrac{100(1-(-1)^n)}{n\pi}\) ⇒ tek \(n\) için \(\dfrac{200}{n\pi}\).</p></li>
+        <li class="step"><p>\(\boxed{u=50+\dfrac{200}{\pi}\sum_{n\ \text{tek}}\dfrac{r^n}{n}\sin n\theta}\). Merkez: \(\boxed{50°}\), sınırdaki ortalama.</p></li>
+        <li class="step"><p>İsteğe bağlı: seri kapalı biçimde toplanır, \(u=50+\tfrac{100}{\pi}\arctan\dfrac{2r\sin\theta}{1-r^2}\). Örneğin \(r=0{,}6\), \(\theta=0{,}8\)'de iki ifade de \(79{,}65\) verir.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p7"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p8" data-short="Yalıtılmış çubuk, u(x,0) = x">
+    <div class="prob-head"><span class="pid">KDD 8</span><span class="slot">ısı</span><span class="lvl">§13.3</span></div>
+    <h3>Uçları yalıtılmış çubuk</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>\(u_t=\alpha^2u_{xx}\), \(0\lt x\lt L\), \(u_x(0,t)=u_x(L,t)=0\), \(u(x,0)=x\). \(u(x,t)\)'yi ve son sıcaklığı bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Neumann koşulu ⇒ kosinüs serisi</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(X'(0)=X'(L)=0\) ⇒ \(X=\cos(n\pi x/L)\), \(n=0,1,2,\dots\) (\(n=0\): sabit, izinli).</p></li>
+        <li class="step"><p>\(a_0=\tfrac2L\int_0^Lx\,dx=L\). \(a_n=\tfrac2L\int_0^Lx\cos\tfrac{n\pi x}{L}dx=\dfrac{2L\big((-1)^n-1\big)}{n^2\pi^2}\) ⇒ tek \(n\) için \(-\dfrac{4L}{n^2\pi^2}\).</p></li>
+        <li class="step"><p>\(\boxed{u=\dfrac L2-\dfrac{4L}{\pi^2}\sum_{n\ \text{tek}}\dfrac{1}{n^2}e^{-(n\pi\alpha/L)^2t}\cos\dfrac{n\pi x}{L}}\). \(t\to\infty\): \(u\to L/2\), başlangıç sıcaklığının ortalaması. Isı uçlardan kaçamaz, yalnızca yeniden dağılır.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p8"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p9" data-short="Uçlar 20° ve 80°">
+    <div class="prob-head"><span class="pid">KDD 9</span><span class="slot">ısı</span><span class="lvl">§13.3</span></div>
+    <h3>Uçları farklı sıcaklıkta tutulan çubuk</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Uzunluğu \(L\) olan çubuk başlangıçta her yerde 20°. \(t=0\)'dan itibaren \(x=0\) ucu 20°'de, \(x=L\) ucu 80°'de tutuluyor. \(u(x,t)\)'yi bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>\(u=u_s+w\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Kararlı hal: \(u_s''=0\), \(u_s(0)=20\), \(u_s(L)=80\) ⇒ \(u_s=20+60x/L\).</p></li>
+        <li class="step"><p>\(w\): uçlarda 0, \(w(x,0)=20-u_s=-60x/L\). \(f=x\) serisinden \(b_n=-\dfrac{60}{L}\cdot\dfrac{2L(-1)^{n+1}}{n\pi}=\dfrac{120(-1)^n}{n\pi}\).</p></li>
+        <li class="step"><p>\(\boxed{u=20+\dfrac{60x}{L}+\dfrac{120}{\pi}\sum_{n=1}^\infty\dfrac{(-1)^n}{n}e^{-(n\pi\alpha/L)^2t}\sin\dfrac{n\pi x}{L}}\). Kontrol: \(t=0\)'da 20 ✓ (seri \(-60x/L\)'yi verir), uçlarda 20 ve 80 ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p9"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p10" data-short="L/3'ten çekilen tel">
+    <div class="prob-head"><span class="pid">KDD 10</span><span class="slot">dalga</span><span class="lvl">§13.4</span></div>
+    <h3>Üçte birinden çekilen tel</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>Uzunluğu \(L\), iki ucu bağlı tel \(x=L/3\) noktasından \(h\) kadar çekilip durgun bırakılıyor. \(y(x,t)\)'yi bulun. Hangi modlar hiç uyarılmaz?</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>İki doğru parçasından oluşan başlangıç şekli</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(y(x,0)=\dfrac{3hx}{L}\) (\(x\lt L/3\)), \(\dfrac{3h(L-x)}{2L}\) (\(x>L/3\)); \(y_t(x,0)=0\) ⇒ \(B_n=0\).</p></li>
+        <li class="step"><p>Genel formül \(A_n=\dfrac{2hL^2}{n^2\pi^2d(L-d)}\sin\dfrac{n\pi d}{L}\), \(d=L/3\): \(\boxed{A_n=\dfrac{9h}{n^2\pi^2}\sin\dfrac{n\pi}{3}}\).</p></li>
+        <li class="step"><p>\(y=\sum A_n\sin\dfrac{n\pi x}{L}\cos\dfrac{n\pi vt}{L}\); \(A_1=\dfrac{9\sqrt3\,h}{2\pi^2}\), \(A_2=\dfrac{A_1}{4}\), \(A_3=0\), \(A_4=-\dfrac{A_1}{16}\).</p></li>
+        <li class="step"><p>\(n=3,6,9,\dots\) modları eksik: hepsinin \(x=L/3\)'te düğümü var ve tel tam o noktadan çekildi.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p10"> Çözdüm</label>
+  </article>
+
+  <article class="prob" id="p11" data-short="Vurulan tel">
+    <div class="prob-head"><span class="pid">KDD 11</span><span class="slot">dalga</span><span class="lvl">§13.4</span></div>
+    <h3>Başlangıç hızı verilen tel</h3>
+    <div class="box q"><span class="box-label">Soru</span><p>İki ucu bağlı, düz duran tele \(t=0\)'da her noktasında aynı \(V\) hızı veriliyor: \(y(x,0)=0\), \(y_t(x,0)=V\). \(y(x,t)\)'yi bulun.</p></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Adım adım</span><h4>Yalnızca \(B_n\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(y(x,0)=0\) ⇒ \(A_n=0\). \(\omega_nB_n=\tfrac2L\int_0^LV\sin\tfrac{n\pi x}{L}dx=\dfrac{4V}{n\pi}\) (tek \(n\)).</p></li>
+        <li class="step"><p>\(\omega_n=n\pi v/L\) ⇒ \(B_n=\dfrac{4VL}{n^2\pi^2v}\) (tek \(n\)).</p></li>
+        <li class="step"><p>\(\boxed{y=\dfrac{4VL}{\pi^2v}\sum_{n\ \text{tek}}\dfrac{1}{n^2}\sin\dfrac{n\pi x}{L}\sin\dfrac{n\pi vt}{L}}\). Kontrol: \(t=0\)'da \(y=0\) ✓; \(y_t\) seri olarak \(V\)'nin sinüs serisini verir ✓.</p></li>
+      </ol></div>
+    <label class="solved"><input type="checkbox" id="sv-p11"> Çözdüm</label>
   </article>
 </section>
 

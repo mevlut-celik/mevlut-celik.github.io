@@ -460,7 +460,7 @@ td .nb { display: inline-block; margin: .1rem 0; }
 .slot { display: inline-block; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; padding: .05rem .45rem; border-radius: 4px; background: color-mix(in srgb, var(--force) 13%, var(--panel)); color: var(--force); white-space: nowrap; }
 .src-tag { display: inline-block; font: 500 .72rem/1.5 var(--font-mono); padding: .05rem .45rem; border-radius: 4px; background: var(--panel-2); color: var(--muted); white-space: nowrap; }
 figure.fig { margin: 1.3rem 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--canvas); padding: .7rem .7rem .5rem; }
-figure.fig svg { display: block; width: 100%; height: auto; }
+figure.fig > svg { display: block; width: 100%; height: auto; }
 figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem .3rem 0; }
 .fig .s-ink { stroke: var(--ink); fill: none; }
 .fig .s-muted { stroke: var(--muted); fill: none; }
@@ -469,7 +469,7 @@ figure.fig figcaption { font-size: .86rem; color: var(--muted); padding: .35rem 
 .fig .s-vel { stroke: var(--vel); fill: none; }
 .fig .s-force { stroke: var(--force); fill: none; }
 .fig .f-region { fill: var(--panel-2); stroke: none; }
-.fig text { font: 500 12px var(--font-mono); fill: var(--muted); }
+.fig > svg text { font: 500 12px var(--font-mono); fill: var(--muted); }
 .fig text.t-ink { fill: var(--ink); }
 .fig text.t-psi { fill: var(--acc); font: italic 600 15px var(--font-display); }
 .fig text.t-en { fill: var(--energy); font: italic 600 15px var(--font-display); }
@@ -571,10 +571,10 @@ body.nav-lock { overflow: hidden; }
     <p class="nav-title">PHYS 210 · Matematiksel Yöntemler II</p>
     <ul>
       <li><a href="../" data-key="home"><b>Giriş</b><span>Dört sayfanın özeti ve sınav kalıbı</span></a></li>
-      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>12 bölüm · çözümlü sorular</span></a></li>
-      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>43 soru · 5 çıkmış sınav</span></a></li>
-      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 14 yöntem · tahmin</span></a></li>
-      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 formatında 2 sınav + 3 sınav</span></a></li>
+      <li><a href="../notlar/" data-key="notlar"><b>Matematiksel Yöntemler Defteri</b><span>15 bölüm · çözümlü sorular</span></a></li>
+      <li><a href="../cozumler/" data-key="cozumler"><b>Çözüm Defteri</b><span>54 soru · 5 çıkmış sınav</span></a></li>
+      <li><a href="../kit/" data-key="kit"><b>Yöntem Kiti</b><span>Kalıp · 18 yöntem · tahmin</span></a></li>
+      <li><a href="../deneme/" data-key="deneme"><b>Deneme Sınavları</b><span>Güz MT1 · MT2 · eski kalıp</span></a></li>
     </ul>
     <p class="nav-foot"><a href="/">mevlut-celik.github.io</a></p>
   </div>
@@ -586,11 +586,11 @@ body.nav-lock { overflow: hidden; }
     <div>
       <p class="eyebrow"><span>ODTÜ PHYS 210</span><span>Kalıp ve yöntem odaklı</span><span>Güz 2026 MT1 formatı dahil</span></p>
       <h1>PHYS 210 <i>Yöntem Kiti</i></h1>
-      <p class="lede">Beş sınavın 21 sorusu on dört soru tipine iner; her tip tek bir yöntemle çözülür. Bu kit önce hangi sınavda hangi tipin geldiğini gösterir, sonra her yöntemi reçetesi, tuzakları ve yeni bir örnekle öğretir.</p>
+      <p class="lede">Beş sınavın 21 sorusu on dört soru tipine iner; her tip tek bir yöntemle çözülür. Güz 2026 izlencesine eklenen kısmi diferansiyel denklemler dört tip daha getiriyor (Y15–Y18). Bu kit önce hangi sınavda hangi tipin geldiğini gösterir, sonra her yöntemi reçetesi, tuzakları ve yeni bir örnekle öğretir.</p>
     </div>
     <div class="hero-card">
       <div class="hero-stats">
-        <div><b id="st-m">14</b><span>yöntem</span></div>
+        <div><b id="st-m">18</b><span>yöntem</span></div>
         <div><b id="st-l">0</b><span>öğrendiğin</span></div>
         <div><b id="st-q">0</b><span>tanıma sorusu</span></div>
       </div>
@@ -609,11 +609,11 @@ body.nav-lock { overflow: hidden; }
 <div class="shell" lang="tr">
   <aside class="side">
     <details id="toc-details" open>
-      <summary><span>Kit</span><span class="sum-prog" id="sum-prog">0 / 14</span></summary>
+      <summary><span>Kit</span><span class="sum-prog" id="sum-prog">0 / 18</span></summary>
       <div class="toc-wrap">
         <p class="toc-title">İçindekiler</p>
         <div class="progress" aria-hidden="true"><span id="prog-bar"></span></div>
-        <p class="progress-txt" id="prog-txt">0 / 14 yöntem öğrenildi</p>
+        <p class="progress-txt" id="prog-txt">0 / 18 yöntem öğrenildi</p>
         <ol class="toc" id="toc"></ol>
         <div class="side-foot"><button type="button" class="linkbtn" id="reset-progress">İşaretleri sıfırla</button></div>
       </div>
@@ -632,7 +632,7 @@ body.nav-lock { overflow: hidden; }
   <div class="box exam"><span class="box-label">Güz 2026 · duyuru</span>
     <p><b>Bu dönem hoca değişti (İpekoğlu).</b> İki ara sınav ve final var. Ara sınav ortalaman finalden yüksekse ara sınavlar %60, final %40 sayılıyor; değilse ikisi %50'şer.</p>
     <p><b>MT1, 20 Kasım 2026 Cuma 17:40–19:40, P1:</b> 5 soru, her konudan bir tane: vektörler · dik eğrisel koordinatlar · yüzey integrali · çizgi integrali · Stokes ya da diverjans teoremi. <b>Green teoremi yok.</b> Formüller kâğıdın ilk sayfasında veriliyor, ezber gerekmiyor. Bu formatla yazılmış iki deneme ve örnek formül sayfası deneme sınavları sayfasının en üstünde.</p>
-    <p><b>MT2, 28 Aralık 2026 Pazartesi 17:40–19:40, P1.</b> İzlencenin sırası vektör analizi → kısmi diferansiyel denklemler → karmaşık fonksiyonlar. Eski hocaların kalıbında MT2'de olan eğrisel koordinat ve Stokes bu dönem MT1'e geçti.</p>
+    <p><b>MT2, 28 Aralık 2026 Pazartesi 17:40–19:40, P1.</b> İzlencenin sırası vektör analizi → kısmi diferansiyel denklemler → karmaşık fonksiyonlar. Eski hocaların kalıbında MT2'de olan eğrisel koordinat ve Stokes bu dönem MT1'e geçti. Kısmi diferansiyel denklemler eski sınavlarda hiç yoktu; yöntemleri Y15–Y18, deneme sınavı Deneme C.</p>
   </div>
   <div class="tbl-wrap"><table class="tbl pattern">
     <thead><tr><th>Sınav</th><th>Sorular (puan)</th><th>Yöntem</th></tr></thead>
@@ -661,7 +661,7 @@ body.nav-lock { overflow: hidden; }
     <thead><tr><th>Sınav</th><th>En olası tipler</th><th>Olasılık</th></tr></thead>
     <tbody>
       <tr><td><span class="slot">MT1</span></td><td>Duyurulan beş soru: vektör (indis kanıtı, üçlü çarpım, gradyan ya da uzay eğrisi) · eğrisel koordinat (diklik, \(h_i\), \(d\tau\), formül sayfasıyla \(\nabla\), \(\nabla\cdot\), \(\nabla\times\), \(\nabla^2\)) · yüzey integrali (alan, kütle ya da akı) · çizgi integrali + potansiyel · Stokes ya da diverjans, büyük ihtimalle iki yoldan</td><td><span class="odds hi">kesin</span></td></tr>
-      <tr><td><span class="slot">MT2</span></td><td>İzlenceye göre kısmi diferansiyel denklemler (değişkenlerine ayırma; Laplace, ısı ve dalga denklemleri) ve muhtemelen karmaşık fonksiyonların başı: kökler, analitiklik, Cauchy. Kısmi diferansiyel denklemler bu kitte henüz yok.</td><td><span class="odds md">orta</span></td></tr>
+      <tr><td><span class="slot">MT2</span></td><td>İzlenceye göre kısmi diferansiyel denklemler (değişkenlerine ayırma; Laplace, ısı ve dalga denklemleri) ve muhtemelen karmaşık fonksiyonların başı: kökler, analitiklik, Cauchy. Olası tipler: tür ve d'Alembert (Y15), kenarı sıcak levha ya da disk (Y16), uçları verilen çubuk (Y17), çekilen ya da vurulan tel (Y18).</td><td><span class="odds md">orta</span></td></tr>
       <tr><td><span class="slot">Final</span></td><td>Harmonik eşlenik · Laurent bölgeleri · tekillik · yol bağımlılığı · rezidüyle reel integral (PV)</td><td><span class="odds hi">yüksek</span></td></tr>
       <tr><td><span class="slot">—</span></td><td>Konform dönüşüm, sonsuzdaki rezidü, dal noktası integrali</td><td><span class="odds lo">düşük</span></td></tr>
     </tbody>
@@ -707,6 +707,9 @@ body.nav-lock { overflow: hidden; }
     <div class="math-card"><h4>Seriler</h4>
       \[ e^z=\sum\frac{z^n}{n!},\ \ \sin z=z-\frac{z^3}{6}+\frac{z^5}{120},\ \ \cos z=1-\frac{z^2}{2}+\frac{z^4}{24} \]
       \[ \frac{1}{1-w}=\sum w^n\ (|w|\lt1) \]</div>
+    <div class="math-card"><h4>Fourier katsayıları (\(0\lt x\lt L\))</h4>
+      \[ b_n=\frac2L\int_0^Lf\sin\frac{n\pi x}{L}dx:\quad 1\to\frac{4}{n\pi}\ (\text{tek}),\quad x\to\frac{2L(-1)^{n+1}}{n\pi} \]
+      <p>\(x(L-x)\to\frac{8L^2}{n^3\pi^3}\) (tek) · ortadan \(h\) çekilmiş üçgen \(\to\frac{8h}{n^2\pi^2}\sin\frac{n\pi}{2}\) · kosinüs serisinde \(x\): \(a_0=L\), \(a_n=-\frac{4L}{n^2\pi^2}\) (tek).</p></div>
     <div class="math-card"><h4>Rezidü kısayolları</h4>
       \[ \frac{N}{D}:\ \frac{N(z_0)}{D'(z_0)},\qquad \frac{g(z)}{(z-z_0)^2}:\ g'(z_0) \]
       <p>Girinti (saat yönünde yarım çember): \(-\pi i\,\mathrm{Res}\). Sonsuzda: \(-c_{-1}\).</p></div>
@@ -717,7 +720,7 @@ body.nav-lock { overflow: hidden; }
 <!-- ================================================= YÖNTEMLER -->
 <section class="part" id="yontemler" data-toc="Yöntem kartları">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm D</span><span class="sess">14 yöntem</span></p>
+    <p class="eyebrow"><span>Bölüm D</span><span class="sess">18 yöntem</span></p>
     <h2>Yöntem kartları</h2>
     <p class="ch-lede">Her kartın örneği yeni bir soru. Alttaki etiketler aynı yöntemi kullanan çözüm defteri sorularını açar.</p>
   </header>
@@ -930,6 +933,66 @@ body.nav-lock { overflow: hidden; }
       </ol></div>
     <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="s26f-5">B26 F S5</a><a class="nb" data-p="su25m1-4">Y25 MT1 S4</a><a class="nb" data-p="c7">Tip I</a><a class="nb" data-p="c8">Tip II</a><a class="nb" data-p="c9">Tip III</a><a class="nb" data-p="c10">Tip IV</a><a class="nb" data-p="c11">Tip V</a></span><label class="learned"><input type="checkbox" id="ln-y14"> Öğrendim</label></div>
   </article>
+
+  <article class="method" id="y15" data-short="KDD: tür, karakteristik, d'Alembert">
+    <div class="m-head"><span class="m-no">Y15</span><div><h3>Kısmi diferansiyel denklemler: tür, doğrudan integral, karakteristik, d'Alembert</h3><p>Güz 2026 izlencesi · Boas §13.1, §13.4.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Classify”, “find the general solution”, “\(u_{xy}=\dots\)”, “\(au_x+bu_y=0\)”.</li><li>Sonsuz (sınırsız) telde dalga denklemi, \(u(x,0)\) ve \(u_t(x,0)\) verilmiş.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(B\)'yi \(u_{xy}\)'nin katsayısı yerine yarısı olarak almak (\(\Delta=B^2-4AC\) bu tanımla).</li><li>İntegral “sabiti”ni sayı sanmak: öbür değişkenin fonksiyonudur.</li><li>d'Alembert'te \(\tfrac{1}{2v}\) çarpanını ya da integral sınırlarını \(x\pm vt\) yerine \(\pm vt\) yazmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Tür: \(\Delta=B^2-4AC\), yalnızca ikinci mertebe terimler.</li><li>Genel çözüm: \(u=f(y+mx)\), \(Am^2+Bm+C=0\); çift kökte ikinci çözüm \(x\,g(y+mx)\).</li><li>\(au_x+bu_y=0\Rightarrow u=f(bx-ay)\); koşuldan \(f\)'yi oku.</li><li>Sonsuz tel: d'Alembert formülü; sınırlı tel: değişkenlerine ayırma (Y18).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(3u_{xx}+2u_{xy}-u_{yy}=0\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>\(\Delta=4+12=16>0\): hiperbolik. \(3m^2+2m-1=0\) ⇒ \(m=\tfrac13,\ -1\).</p></li>
+        <li class="step"><p>\(\boxed{u=f(3y+x)+g(y-x)}\). Kontrol: \(f(3y+x)\) için \(3\cdot1+2\cdot3-9=0\), \(g(y-x)\) için \(3-2-1=0\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="p1">KDD 1</a><a class="nb" data-p="p2">KDD 2</a><a class="nb" data-p="p3">KDD 3</a><a class="nb" data-p="p4">KDD 4</a></span><label class="learned"><input type="checkbox" id="ln-y15"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y16" data-short="Laplace: levha ve disk">
+    <div class="m-head"><span class="m-no">Y16</span><div><h3>Laplace denklemi: şerit, dikdörtgen, disk</h3><p>Güz 2026 izlencesi · Boas §13.2.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“Steady-state temperature”, “potential inside the region”, bir kenarda \(f(x)\), diğerlerinde 0.</li><li>Disk ya da halkada \(u(a,\theta)=f(\theta)\).</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Sinüsü yanlış değişkene koymak: sinüs, <b>iki karşılıklı kenarı sıfır</b> olan yöndedir.</li><li>Sonlu levhada \(e^{-ky}\) kullanmak; üçüncü kenar sıfırsa \(\sinh\) gerekir.</li><li>Diskte \(a_0/2\) terimini unutmak, ya da halkada \(r^{-n}\) ve \(\ln r\)'yi atmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Sıfır olan karşılıklı kenarlar ⇒ \(\sin(n\pi x/a)\).</li><li>Öbür yön: sonsuz şerit \(e^{-n\pi y/a}\); sonlu levha \(\sinh(n\pi(b-y)/a)/\sinh(n\pi b/a)\).</li><li>Sıcak kenardaki \(f\)'nin sinüs katsayıları; birden çok sıcak kenar ⇒ ayrı problemler, topla.</li><li>Disk: \(r^n\); dış bölge: \(r^{-n}\); halka: ikisi de. Merkez değeri = sınır ortalaması.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>Birim diskin dışı: \(u(1,\theta)=\cos\theta\), sonsuzda sınırlı</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Dış bölgede \(r^n\) sonsuzda büyür, atılır; \(r^{-n}\) kalır. Sınır değeri tek kosinüs ⇒ yalnızca \(n=1\).</p></li>
+        <li class="step"><p>\(\boxed{u=\dfrac{\cos\theta}{r}}\). Kontrol: \(\tfrac1r\partial_r(r\cdot(-r^{-2}\cos\theta))-r^{-3}\cos\theta=r^{-3}\cos\theta-r^{-3}\cos\theta=0\) ✓.</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="p5">KDD 5</a><a class="nb" data-p="p6">KDD 6</a><a class="nb" data-p="p7">KDD 7</a></span><label class="learned"><input type="checkbox" id="ln-y16"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y17" data-short="Isı denklemi">
+    <div class="m-head"><span class="m-no">Y17</span><div><h3>Isı denklemi: uçlar, kararlı hal, yalıtım</h3><p>Güz 2026 izlencesi · Boas §13.3.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“A bar of length \(L\)… initial temperature… ends held at…”, “insulated ends”.</li><li>\(u_t=\alpha^2u_{xx}\) ve tek başlangıç koşulu.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>Uçlar 0 değilken doğrudan ayırmaya girişmek; önce \(u_s\)'yi çıkar.</li><li>\(w(x,0)=f-u_s\) yerine \(f\)'nin serisini almak.</li><li>Yalıtılmış uçta sinüs kullanmak (kosinüs olmalı) ya da \(n=0\) terimini unutmak.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>Kararlı hal \(u_s\) (doğrusal, \(u_s''=0\)).</li><li>\(w=u-u_s\): homojen uç koşulları; sinüs (Dirichlet) ya da kosinüs (Neumann).</li><li>\(w=\sum b_ne^{-(n\pi\alpha/L)^2t}\sin(n\pi x/L)\), \(b_n\) ← \(f-u_s\).</li><li>Kontrol: \(t=0\), uçlar, \(t\to\infty\).</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(L=\pi\), \(\alpha=1\), uçlar 0, \(u(x,0)=3\sin x-\sin2x\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Başlangıç zaten sinüslerin toplamı: integral gerekmez, \(b_1=3\), \(b_2=-1\).</p></li>
+        <li class="step"><p>\(\boxed{u=3e^{-t}\sin x-e^{-4t}\sin2x}\). İkinci mod dört kat hızlı söner; \(t=1\)'de oranı \(e^{-3}/3\approx1{,}7\%\).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="p8">KDD 8</a><a class="nb" data-p="p9">KDD 9</a></span><label class="learned"><input type="checkbox" id="ln-y17"> Öğrendim</label></div>
+  </article>
+
+  <article class="method" id="y18" data-short="Dalga denklemi: bağlı tel">
+    <div class="m-head"><span class="m-no">Y18</span><div><h3>Dalga denklemi: iki ucu bağlı tel</h3><p>Güz 2026 izlencesi · Boas §13.4.</p></div></div>
+    <div class="m-grid">
+      <div class="m-block when"><h4>Ne zaman?</h4><ul><li>“A string of length \(L\) is plucked / struck”, “find the displacement”, “frequencies”.</li><li>\(y_{tt}=v^2y_{xx}\), iki başlangıç koşulu.</li></ul></div>
+      <div class="m-block trap"><h4>Tuzaklar</h4><ul><li>\(B_n\)'yi bulurken \(\omega_n\)'ye bölmeyi unutmak.</li><li>Frekansı \(\omega_n\) ile karıştırmak: \(\nu_n=\omega_n/2\pi=nv/2L\).</li><li>Üçgen şekli tek bir doğru gibi integrallemek; iki parçaya böl.</li></ul></div>
+    </div>
+    <div class="m-recipe"><ol><li>\(y=\sum\sin\frac{n\pi x}{L}(A_n\cos\omega_nt+B_n\sin\omega_nt)\), \(\omega_n=n\pi v/L\).</li><li>\(A_n\) ← \(y(x,0)\)'ın sinüs katsayıları.</li><li>\(\omega_nB_n\) ← \(y_t(x,0)\)'ın sinüs katsayıları.</li><li>\(x=d\)'den çekilen tel: \(A_n\propto\sin(n\pi d/L)/n^2\); \(d\)'de düğümü olan modlar yok.</li></ol></div>
+    <div class="derive"><div class="derive-head"><span class="tag">Yeni örnek</span><h4>\(y(x,0)=0{,}02\sin\frac{\pi x}{L}+0{,}01\sin\frac{3\pi x}{L}\), \(y_t(x,0)=0\)</h4></div>
+      <ol class="steps">
+        <li class="step"><p>Katsayılar doğrudan: \(A_1=0{,}02\), \(A_3=0{,}01\), \(B_n=0\).</p></li>
+        <li class="step"><p>\(\boxed{y=0{,}02\sin\tfrac{\pi x}{L}\cos\tfrac{\pi vt}{L}+0{,}01\sin\tfrac{3\pi x}{L}\cos\tfrac{3\pi vt}{L}}\). Hareket \(2L/v\) periyoduyla tekrar eder (temel modun periyodu).</p></li>
+      </ol></div>
+    <div class="m-foot"><span class="links">Defterde: <a class="nb" data-p="p10">KDD 10</a><a class="nb" data-p="p11">KDD 11</a></span><label class="learned"><input type="checkbox" id="ln-y18"> Öğrendim</label></div>
+  </article>
 </section>
 
 
@@ -943,6 +1006,15 @@ body.nav-lock { overflow: hidden; }
   <div class="quiz" data-answer="b"><p class="quiz-q">“\(\int_C\mathbf F\cdot d\mathbf r\) along the helix from \(t=0\) to \(t=2\pi\), \(\mathbf F=(2x,2y,2z)\).”</p>
     <div class="quiz-opts"><button type="button" data-k="a">Helisi parametrize edip uzun integral</button><button type="button" data-k="b">\(\mathbf F=\nabla(x^2+y^2+z^2)\): uç noktalardaki fark</button><button type="button" data-k="c">Stokes</button><button type="button" data-k="d">Diverjans teoremi</button></div>
     <p class="quiz-why"><span class="verdict"></span>Y4. Potansiyel görünür hâlde; yol önemsiz.</p></div>
+  <div class="quiz" data-answer="c"><p class="quiz-q">“Solve \(u_{tt}=c^2u_{xx}\), \(-\infty\lt x\lt\infty\), with \(u(x,0)=e^{-x^2}\), \(u_t(x,0)=0\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Değişkenlerine ayırma, sinüs serisi</button><button type="button" data-k="b">Kararlı hal + geçici kısım</button><button type="button" data-k="c">d'Alembert: \(\tfrac12[\varphi(x-ct)+\varphi(x+ct)]\)</button><button type="button" data-k="d">Laplace dönüşümü</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y15. Sınırsız tel: uç koşulu yok, sinüs serisi kurulamaz; d'Alembert doğrudan verir.</p></div>
+  <div class="quiz" data-answer="a"><p class="quiz-q">“A rod has its ends held at 10° and 50°; initially it is at 0°. Find \(u(x,t)\).”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">Önce \(u_s=10+40x/L\), sonra \(w=u-u_s\) için sinüs serisi</button><button type="button" data-k="b">Doğrudan \(\sum b_ne^{-\dots}\sin\), \(b_n\) ← 0</button><button type="button" data-k="c">Kosinüs serisi</button><button type="button" data-k="d">d'Alembert</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y17. Uç koşulları homojen değil; sinüsler uçlarda 0 olduğu için önce kararlı hali çıkarmak gerekir.</p></div>
+  <div class="quiz" data-answer="b"><p class="quiz-q">“A rectangular plate \(0\lt x\lt a\), \(0\lt y\lt b\): the edge \(x=a\) is at \(f(y)\), the others at 0. Find the steady-state temperature.”</p>
+    <div class="quiz-opts"><button type="button" data-k="a">\(\sin(n\pi x/a)\sinh(n\pi y/a)\)</button><button type="button" data-k="b">\(\sin(n\pi y/b)\sinh(n\pi x/b)\)</button><button type="button" data-k="c">\(e^{-n\pi y/a}\sin(n\pi x/a)\)</button><button type="button" data-k="d">\(r^n\cos n\theta\)</button></div>
+    <p class="quiz-why"><span class="verdict"></span>Y16. Sıfır olan karşılıklı kenarlar \(y=0\) ve \(y=b\): sinüs \(y\)'de. \(x=0\)'da sıfır olan \(\sinh(n\pi x/b)\).</p></div>
   <div class="quiz" data-answer="d"><p class="quiz-q">“Find the flux of \(\mathbf F\) through the curved surface of the upper hemisphere.”</p>
     <div class="quiz-opts"><button type="button" data-k="a">Stokes</button><button type="button" data-k="b">Green</button><button type="button" data-k="c">Yalnızca diverjans teoremi</button><button type="button" data-k="d">Doğrudan (\(\hat{\mathbf r}R^2\sin\theta\,d\theta\,d\phi\)) ya da diverjans − kapak</button></div>
     <p class="quiz-why"><span class="verdict"></span>Y6. Yüzey kapalı değil; teorem için tabanı ekleyip çıkarın (Y25 final S2).</p></div>
@@ -995,6 +1067,10 @@ body.nav-lock { overflow: hidden; }
         <tr><td><span class="slot">MT1</span></td><td>\(\mathbf F=r^2\hat{\mathbf e}_\theta\), çeyrek disk sınırı (\(r\le a\))</td><td class="ans">Y7, \((\nabla\times\mathbf F)_z=3r\)</td><td class="ans">\(\pi a^3/2\)</td></tr>
         <tr><td><span class="slot">MT2</span></td><td>\(z^2+(1-i)z-i=0\)</td><td class="ans">Y9, \(\Delta=2i\), \(\sqrt{2i}=1+i\)</td><td class="ans">\(i\) ve \(-1\)</td></tr>
         <tr><td><span class="slot">MT2</span></td><td>\(\int_0^{1+i}\bar z\,dz\): doğru ve kırık yol</td><td class="ans">Y11, parametrize (analitik değil)</td><td class="ans">1 ve \(1+i\)</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>\(u_{xx}-4u_{xy}+3u_{yy}=0\): tür ve genel çözüm</td><td class="ans">Y15, \(\Delta=4\), \(m=1,3\)</td><td class="ans">hiperbolik · \(f(y+x)+g(y+3x)\)</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>Kare levha, iki komşu kenar 100°: merkez</td><td class="ans">Y16, süperpozisyon + simetri</td><td class="ans">50°</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>Yalıtılmış çubuk, \(u(x,0)=x\): son sıcaklık</td><td class="ans">Y17, kosinüs serisi</td><td class="ans">\(L/2\)</td></tr>
+        <tr><td><span class="slot">MT2</span></td><td>\(L/3\)'ten çekilen tel: eksik modlar</td><td class="ans">Y18, \(A_n\propto\sin(n\pi/3)/n^2\)</td><td class="ans">\(n=3,6,9,\dots\)</td></tr>
         <tr><td><span class="slot">Final</span></td><td>\(u=e^x(x\cos y-y\sin y)\)'nin eşleniği</td><td class="ans">Y10, Milne-Thomson</td><td class="ans">\(f=ze^z\)</td></tr>
         <tr><td><span class="slot">Final</span></td><td>\(\dfrac{\sin z}{z^3(e^z-1)}\)'in tekillikleri</td><td class="ans">Y13, sıfır sayma</td><td class="ans">0: 3. mertebe; \(2\pi ik\): basit</td></tr>
         <tr><td><span class="slot">Final</span></td><td>\(\int\frac{\sin x}{x(x^2+1)}dx\)</td><td class="ans">Y14, PV + girinti</td><td class="ans">\(\pi(1-e^{-1})\)</td></tr>
@@ -1030,12 +1106,28 @@ body.nav-lock { overflow: hidden; }
     </table></div>
     <div class="drill-bar"></div>
   </div>
+
+  <div class="drill" id="tb4">
+    <div class="drill-head"><span class="tag">Tablo 4 · ezber</span><h4>Sık çıkan Fourier katsayıları (\(0\lt x\lt L\))</h4></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>\(f(x)\)</th><th>Seri</th><th>Katsayı</th></tr></thead>
+      <tbody>
+        <tr><td>\(1\)</td><td>sinüs</td><td class="ans">\(b_n=\frac{4}{n\pi}\) (tek), 0 (çift)</td></tr>
+        <tr><td>\(x\)</td><td>sinüs</td><td class="ans">\(b_n=\frac{2L(-1)^{n+1}}{n\pi}\)</td></tr>
+        <tr><td>\(x\)</td><td>kosinüs</td><td class="ans">\(a_0=L\), \(a_n=-\frac{4L}{n^2\pi^2}\) (tek)</td></tr>
+        <tr><td>\(x(L-x)\)</td><td>sinüs</td><td class="ans">\(b_n=\frac{8L^2}{n^3\pi^3}\) (tek)</td></tr>
+        <tr><td>Ortadan \(h\) çekilmiş üçgen</td><td>sinüs</td><td class="ans">\(b_n=\frac{8h}{n^2\pi^2}\sin\frac{n\pi}{2}\)</td></tr>
+        <tr><td>Üst yarısı 100, alt yarısı 0 (disk sınırı)</td><td>tam Fourier</td><td class="ans">\(\frac{a_0}{2}=50\), \(b_n=\frac{200}{n\pi}\) (tek)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="drill-bar"></div>
+  </div>
 </section>
 
 <!-- ================================================= HARİTA -->
 <section class="part" id="harita" data-toc="Yöntem haritası">
   <header class="ch-head">
-    <p class="eyebrow"><span>Bölüm G</span><span class="sess">43 soru × 14 yöntem</span></p>
+    <p class="eyebrow"><span>Bölüm G</span><span class="sess">54 soru × 18 yöntem</span></p>
     <h2>Çözüm defterinin yöntem haritası</h2>
     <p class="ch-lede">Etiketler soruyu çözüm defterinde açar.</p>
   </header>
@@ -1056,6 +1148,10 @@ body.nav-lock { overflow: hidden; }
       <tr><td>Y12 · Laurent</td><td><a class="nb" data-p="s26f-2">B26 F S2</a> <a class="nb" data-p="su25m1-1">Y25 MT1 S1</a> <a class="nb" data-p="c5">C5</a></td></tr>
       <tr><td>Y13 · Tekillik</td><td><a class="nb" data-p="s26f-3">B26 F S3</a> <a class="nb" data-p="su25m1-3">Y25 MT1 S3</a> <a class="nb" data-p="c6">C6</a> <a class="nb" data-p="c12">C12</a></td></tr>
       <tr><td>Y14 · Reel integral</td><td><a class="nb" data-p="s26f-5">B26 F S5</a> <a class="nb" data-p="su25m1-4">Y25 MT1 S4</a> <a class="nb" data-p="c7">C7</a> <a class="nb" data-p="c8">C8</a> <a class="nb" data-p="c9">C9</a> <a class="nb" data-p="c10">C10</a> <a class="nb" data-p="c11">C11</a></td></tr>
+      <tr><td>Y15 · KDD temelleri</td><td><a class="nb" data-p="p1">KDD 1</a> <a class="nb" data-p="p2">KDD 2</a> <a class="nb" data-p="p3">KDD 3</a> <a class="nb" data-p="p4">KDD 4</a></td></tr>
+      <tr><td>Y16 · Laplace</td><td><a class="nb" data-p="p5">KDD 5</a> <a class="nb" data-p="p6">KDD 6</a> <a class="nb" data-p="p7">KDD 7</a></td></tr>
+      <tr><td>Y17 · Isı</td><td><a class="nb" data-p="p8">KDD 8</a> <a class="nb" data-p="p9">KDD 9</a></td></tr>
+      <tr><td>Y18 · Dalga</td><td><a class="nb" data-p="p10">KDD 10</a> <a class="nb" data-p="p11">KDD 11</a></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -1072,8 +1168,9 @@ body.nav-lock { overflow: hidden; }
     <div><span class="when-t">MT1 · önceki akşam</span><p>Deneme A'yı 120 dakikada, formül sayfası açık, çözümlere bakmadan. Puan listesiyle notla; kaybettiğin her puanın yöntem kartına dön.</p></div>
     <div><span class="when-t">MT1 · sınav günü</span><p>Sabah Deneme B. Öğleden sonra yalnızca eksik çıkan tipler: Çözüm Defteri'nde aynı tipten iki soru. Eski MT2 denemesinin Q1 (eğrisel) ve Q2 (Stokes) sorularını da çöz.</p></div>
     <div><span class="when-t">MT1 · girmeden</span><p>Formül sayfasını bir kez baştan sona oku: hangi formül nerede, \(h_i\) nereye giriyor. Protokolün beş adımı. Normalin yönünü ve yolun yönünü her soruda yazmayı unutma.</p></div>
-    <div><span class="when-t">MT2 · hazırlık</span><p>Kısmi diferansiyel denklemler bu kitte henüz yok. Karmaşık kısmı için Bölüm 8–10; Y9–Y11 ve Bahar 2026 MT2'nin S3–S5'i.</p></div>
-    <div><span class="when-t">Final · 1. gün</span><p>Bölüm 9–12; Y10, Y12–Y14. Tablo 2'deki beş integrali kâğıtta.</p></div>
+    <div><span class="when-t">MT2 · 1. gün</span><p>Konu defterinde Bölüm 8–10, çözümlü sorular kâğıtta. Y15–Y18 kartları ve Tablo 4'teki Fourier katsayıları: bunları hızlı çıkarabilmek sürenin yarısını kurtarır.</p></div>
+    <div><span class="when-t">MT2 · 2. gün</span><p>Deneme C'yi 120 dakikada, sonra Çözüm Defteri'nde KDD 1–11. Karmaşık kısım da sınava girerse Bölüm 11–13, Y9–Y11 ve eski Deneme 2'nin Q3–Q5'i.</p></div>
+    <div><span class="when-t">Final · 1. gün</span><p>Bölüm 12–15; Y10, Y12–Y14. Tablo 2'deki beş integrali kâğıtta.</p></div>
     <div><span class="when-t">Final · 2. gün</span><p>Bahar 2026 finali, Yaz 2025 MT1 ve final denemesi. Final kümülatif ise MT1/MT2 denemelerinden birer soru ekleyin.</p></div>
     <div><span class="when-t">Sınav sabahı</span><p>Bölüm A'daki altı gözlemi ve protokolü okuyun. Formül kartını bir kez yazın.</p></div>
   </div>
